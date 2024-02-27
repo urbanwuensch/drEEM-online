@@ -124,24 +124,31 @@ warning on
 disp('          Success.')
 %% STEP 4
 
-disp('Step 4/6: Checking for conflicting function names for drEEM...');pause(0.2)
+disp('Step 4/6: Checking for conflicting function names...');pause(0.2)
 try
-    lookforconflictsinstall('drEEM');
-    disp('          Success.')
+    mfiles=dir("*/*.m");
+    message=[];
+    for j=1:numel(mfiles)
+        a=which(mfiles(j).name);
+        if isempty(a)
+            message=[message,[mfiles(j).name,' no found.\n']];
+        elseif iscell(a)&&numel(a)>1
+            if strcmp(fileparts(a{1}),[pwd,filesep,f])
+            else
+                message=[message,...
+                    [mfilesstock{n},': Multiple functions with the same name & the installed one is not prioritized.\n']];
+            end
+        end
+    end
+    if not(isempty(message))
+        error(sprintf(message))
+    else
+        disp('          Success.')
+    end
 catch ME
     matlabpath(pbackup)
     rethrow(ME)
 end
-%% STEP 5
-disp('Step 5/6: Checking for conflicting function names for nway...');pause(0.2)
-try
-    lookforconflictsinstall('nway');
-    disp('          Success.')
-catch ME
-    matlabpath(pbackup)
-    rethrow(ME)
-end
-
 
 
 %% STEP 6
@@ -160,44 +167,6 @@ disp(' ')
 disp('Installation complete.')
 
 
-end
-
-
-function lookforconflictsinstall(f)
-% (C) Urban Wuensch (2019)
-% Quick rename of drEEM to drEEM_fun to reflect the toolbox reorganization
-if strcmp(f,'drEEM')
-    f='drEEM_fun';
-end
-%% Step 1: Check for folders.
-% Check if folder is found, if multiple folders with the same name are
-% present & if so: Is the installation prioritized?
-W = what(f);
-if size(W,1)==0
-    error([ f ' is not a recognised folder on the MATLAB path']);
-elseif size(W,1)>1
-    if strcmp(W(1).path,[pwd,filesep,f])
-        disp(['          ',f,': Multiple folders with the same name, but the drEEM toolbox is prioritized.'])
-    else
-        error([f,': Multiple folders with the same name & the installed one is not prioritized.'])
-    end
-end
-%% Step 1: Check for functions.
-% Check that each of the functions of drEEM are prioritized.
-mfilesstock=returnmfiles(f);
-for n=1:numel(mfilesstock)
-    a=which(mfilesstock{n},'-all');
-    if isempty(a)
-        error(['Function ''',mfilesstock{n},''' should be there, but was not found.'])
-    elseif iscell(a)&&numel(a)>1
-        if strcmp(fileparts(a{1}),[pwd,filesep,f])
-            %disp(['          ',mfilesstock{n},': Multiple functions with the same name, but the drEEM toolbox is prioritized.'])
-            % Line is commented, because this message is kind of irrelevant
-        else
-            error([mfilesstock{n},': Multiple functions with the same name & the installed one is not prioritized.'])
-        end
-    end
-end
 end
 
 
