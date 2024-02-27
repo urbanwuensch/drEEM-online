@@ -11,6 +11,7 @@ arguments
 
 end
 
+
 LRange  = options.LongRange;
 Rsq = options.rsq;
 diagn   = options.details ;

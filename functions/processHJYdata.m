@@ -19,7 +19,7 @@ if isstruct(Xin)&&nargin==1
 end
 
 
-DS=drEEMdataset;
+DS=drEEMdataset.create;
 DS.Ex=(Xin.Ex);
 DS.Em=Xin.Em;
 DS.nEx=numel(DS.Ex);
@@ -226,16 +226,13 @@ DSb=DS;
 DSb.X=Xblank;
 
 idx=1;
-DS.history(idx,1).datetime=char(datetime);
-DS.history(idx,1).function='importeems';
-DS.history(idx,1).details='created dataset';
-DS.history(idx,1).backup='NA';
+DS.history(idx,1)=...
+    drEEMhistory.addEntry(mfilename,'created dataset',[],DS);
+
 
 idx=1;
-DSb.history(idx,1).datetime=char(datetime);
-DSb.history(idx,1).function='importeems';
-DSb.history(idx,1).details='created dataset';
-DSb.history(idx,1).backup='NA';
+DSb.history(idx,1)=...
+    drEEMhistory.addEntry(mfilename,'created dataset',[],DSb);
 
 end
 % %% Blank modification
