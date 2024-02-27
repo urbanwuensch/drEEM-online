@@ -1,0 +1,461 @@
+classdef drEEMdataset
+    properties
+        history (:,1) drEEMhistory
+        X (:,:,:) double {mustBeNumeric}
+        abs (:,:) double {mustBeNumeric}
+        suppSpectra (:,:) double {mustBeNumeric}
+        filelist (:,1) cell
+        i (:,1) double {mustBeNumeric}
+        Ex (:,1) double {mustBeNumeric}
+        Em (:,1) double {mustBeNumeric}
+        nEx (1,1) double {mustBeNumeric}
+        nEm (1,1) double {mustBeNumeric}
+        absWave (:,1) double {mustBeNumeric}
+        suppSpectraAxis (:,1) double {mustBeNumeric}
+        nSample (1,1) double {mustBeNumeric}
+        models (:,1) drEEMmodel
+        metadata  (:,:) table
+        split drEEMdataset
+        status (1,1) drEEMstatus
+        userdata % anything goes
+        instrumentInfo struct % currently unused (placeholder)
+        measurementInfo struct % currently unused (placeholder)
+    end
+
+    properties (SetAccess = private)
+        toolboxdata
+    end
+
+    properties (SetAccess = private, Hidden = true)
+        Name
+    end
+
+
+    methods (Static=true)
+        function data = create
+            data=drEEMdataset;
+            data.toolboxdata.version = "1.0.0";
+
+            % https://www.mathworks.com/matlabcentral/fileexchange/16450-get-computer-name-hostname
+            [ret, name] = system('hostname');   
+            if ret ~= 0
+               if ispc
+                  name = getenv('COMPUTERNAME');
+               else      
+                  name = getenv('HOSTNAME');      
+               end
+            end
+            data.toolboxdata.host = strtrim(lower(name));
+            data.toolboxdata.matlabVersion=version;
+            data.toolboxdata.matlabToolboxes=ver;
+            data.toolboxdata.settings=struct;
+            data.toolboxdata.uifig=false;
+            data.status=drEEMstatus;
+        end
+
+        function data = saveall(data)
+            error('This function is currently under development and does not behave as intended. Exiting...')
+            varname=inputname(1);
+            eval([varname,'=data;'])
+            save(['drEEMdataset_',char(datetime("today")),'_inclBackupus','.mat'],varname)
+            disp('drEEMdataset was saved including backups.')
+        end
+
+        function validate(data)
+            if isMATLABReleaseOlderThan("R2022a")
+                warning('With Matlab older than R2022a, you might encounter errors. Continue at your own risk.')
+            end
+            flds=fieldnames(drEEMdataset);
+            C=intersect(flds,fieldnames(data));
+            if numel(C)~=numel(flds)
+                if not(matches(class(data),'drEEMdataset'))
+                    error('Object is not of the class "drEEMdataset".')
+                end
+            end
+
+            cnt=1;
+            if not(isempty(data.X))
+                sz=size(data.X);
+                if not(sz(1)==data.nSample)
+                    e{cnt}='size of EEM dimension 1 not consistent with data.nSample';
+                    cnt=cnt+1;
+                end
+                if not(sz(1)==numel(data.filelist))
+                    e{cnt}='size of EEM dimension 1 not consistent with height of data.filelist';
+                    cnt=cnt+1;
+                end
+                if not(sz(1)==height(data.metadata))
+                    e{cnt}='size of EEM dimension 1 not consistent with height of metadata table';
+                    cnt=cnt+1;
+                end
+                if not(sz(1)==numel(data.i))
+                    e{cnt}='size of EEM dimension 1 not consistent with height of data.i';
+                    cnt=cnt+1;
+                end
+                if not(sz(2)==numel(data.Em))
+                    e{cnt}='size of EEM dimension 2 not consistent with data.Em';
+                    cnt=cnt+1;
+                end
+                if not(sz(2)==data.nEm)
+                    e{cnt}='size of EEM dimension 2 not consistent with data.nEm';
+                    cnt=cnt+1;
+                end
+                if not(sz(3)==numel(data.Ex))
+                    e{cnt}='size of EEM dimension 3 not consistent with data.Ex';
+                    cnt=cnt+1;
+                end
+                if not(sz(3)==data.nEx)
+                    e{cnt}='size of EEM dimension 3 not consistent with data.nEx';
+                    cnt=cnt+1;
+                end
+
+                if any(all(all(isnan(data.X),2),3))
+                    sidx=find(all(all(isnan(data.X),2),3))';
+                    e{cnt}=['Some of the EEMs contain only missing numbers (sample(s): ',num2str(sidx),')'];
+                    cnt=cnt+1;
+                end
+
+                if not(isempty(data.models))
+                    f=find(arrayfun(@(x) not(isempty(x.loads{1})),data.models));
+                    for j=1:(numel(f))
+                        m=data.models(f(j));
+                        if not(sz(1)==size(m.loads{1},1))
+                            e{cnt}=['size of EEM dimension 1 not consistent with scores in the ',num2str(f(j)),'-component model'];
+                            cnt=cnt+1;
+                        end
+                        if not(sz(2)==size(m.loads{2},1))
+                            e{cnt}=['size of EEM dimension 2 not consistent with emission loadings in the ',num2str(f(j)),'-component model'];
+                            cnt=cnt+1;
+                        end
+                        if not(sz(3)==size(m.loads{3},1))
+                            e{cnt}=['size of EEM dimension 3 not consistent with excitation loadings in the ',num2str(f(j)),'-component model'];
+                            cnt=cnt+1;
+                        end
+                        
+                        if not(sz(1)==size(m.leverages{1},1))
+                            e{cnt}=['size of EEM dimension 1 not consistent with leverages in the ',num2str(f(j)),'-component model'];
+                            cnt=cnt+1;
+                        end
+                        if not(sz(2)==size(m.leverages{2},1))
+                            e{cnt}=['size of EEM dimension 2 not consistent with leverages in the ',num2str(f(j)),'-component model'];
+                            cnt=cnt+1;
+                        end
+                        if not(sz(3)==size(m.leverages{3},1))
+                            e{cnt}=['size of EEM dimension 3 not consistent with leverages in the ',num2str(f(j)),'-component model'];
+                            cnt=cnt+1;
+                        end
+
+                        if not(sz(1)==size(m.sse{1},1))
+                            e{cnt}=['size of EEM dimension 1 not consistent with SSE in the ',num2str(f(j)),'-component model'];
+                            cnt=cnt+1;
+                        end
+                        if not(sz(2)==size(m.sse{2},1))
+                            e{cnt}=['size of EEM dimension 2 not consistent with SSE in the ',num2str(f(j)),'-component model'];
+                            cnt=cnt+1;
+                        end
+                        if not(sz(3)==size(m.sse{3},1))
+                            e{cnt}=['size of EEM dimension 3 not consistent with SSE in the ',num2str(f(j)),'-component model'];
+                            cnt=cnt+1;
+                        end
+
+                    end
+                end
+            end
+            
+            if not(isempty(data.abs))
+                sz=size(data.abs);
+                if not(sz(1)==data.nSample)
+                    e{cnt}='size of absorbance dimension 1 not consistent with data.nSample';
+                    cnt=cnt+1;
+                end
+                if not(sz(1)==numel(data.filelist))
+                    e{cnt}='size of absorbance dimension 1 not consistent with height of data.filelist';
+                    cnt=cnt+1;
+                end
+                if not(sz(1)==height(data.metadata))
+                    e{cnt}='size of absorbance dimension 1 not consistent with height of metadata table';
+                    cnt=cnt+1;
+                end
+                if not(sz(2)==numel(data.absWave))
+                    e{cnt}='size of absorbance dimension 2 not consistent with data.absWave';
+                    cnt=cnt+1;
+                end
+                if any(all(isnan(data.abs),2))
+                    sidx=find(all(isnan(data.abs),2))';
+                    e{cnt}=['Some of the CDOM absorbance spectra contain only missing numbers (sample(s): ',num2str(sidx),')'];
+                    cnt=cnt+1;
+                end
+            end
+            
+            if cnt>1
+                varname = inputname(1);
+                if not(isempty(varname))
+                    varname=[' ("',varname,'")'];
+                end
+                message=[' \n <strong>Your dataset',varname,' did not pass the validation for one or several reasons: </strong> \n'];
+                for j=1:numel(e)
+                    message=[message,'\n ',num2str(j),':  ',e{j}];
+                end
+                message=[message,'\n Type "help drEEM" or "help drEEMdataset" to learn more'];
+                error(sprintf(message))
+            end
+        end
+
+        function mustBeMetadataColumn(data,colname)
+            if isempty(colname)
+                return
+            end
+            if not(ismember(colname,data.metadata.Properties.VariableNames))
+                message=[colname,' is not a column in data.metadata. Your options are:\n'];
+                flds=data.metadata.Properties.VariableNames;
+                for j=1:numel(flds)
+                    message=[' ',message,num2str(j),': ',flds{j},'\n'];
+                end
+                error(sprintf(message))
+            end
+
+        end
+
+        function mustBeInRangeEm(data,emwave)
+            for j=1:numel(emwave)
+                if data.Em(end)<emwave(j)||data.Em(1)>emwave(j)
+                    error(['Emission wavelength out of range for data. Range: ',num2str(data.Em(1)),' - ',num2str(data.Em(end)),' nm'])
+                end
+            end
+        end
+
+        function mustBeInRangeEx(data,exwave)
+            for j=1:numel(exwave)
+                if data.Em(end)<=exwave(j)||data.Ex(1)>=exwave(j)
+                    error(['Excitation wavelength out of range for data. Range: ',num2str(data.Ex(1)),' - ',num2str(data.Ex(end)),' nm'])
+                end
+            end
+        end
+
+        function mustBeInRangeSamplei(data,i)
+            for j=1:numel(i)
+                if not(ismember(i,data.i))
+                    error('sample identifier is not valid (not a member): ')
+                end
+            end
+        end
+
+        function f=modelsWithContent(data)
+            f=find(arrayfun(@(x) not(isempty(x.loads{1})),data.models));
+        end
+        
+        function mustBeModel(data,fac)
+            f{1}=find(arrayfun(@(x) not(isempty(x.loads{1})),data.models));
+            
+            for j=1:numel(data.split)
+                f{j+1}=find(arrayfun(@(x) not(isempty(x.loads{1})),data.split(j).models));
+            end
+            message=[];
+            for j=1:numel(f)
+                if not(ismember(fac,f{j}))
+                    if j==1
+                        message=[message,num2str(fac),'-component model not present in the main dataset. \n'];
+                    else
+                        message=[message,num2str(fac),'-component model not present in the split #',num2str(j-1),'\n'];
+                    end
+                end
+            end
+            if not(isempty(message))
+                error(sprintf(message))
+            end
+        end
+        
+
+        function VariableNames=returnVariableNames(data)
+            
+            VariableNames=data.metadata.Properties.VariableNames;
+            if not(isempty(VariableNames))
+                VariableNames=cellfun(@(x) string(x),VariableNames);
+            end
+
+        end
+
+
+        function dataout=cleanupBackup(data)
+            dataout=data;
+            dataout.history=drEEMhistory;
+            dataout.history.timestamp=datetime;
+            dataout.history.fname='drEEMdataset.cleanupBackup';
+            dataout.history.details='deleted all backups';
+        end
+
+        function sanityCheckAbsorbance(data)
+            message=[];
+            varname = inputname(1);
+            if not(isempty(varname))
+                varname=[varname,': '];
+            end
+
+            if isempty(data.abs)||all(isnan(data.abs(:)))
+                message=[message,'\n<strong>',varname,'Absorbance data does not exist or consists only of missing numbers.\n</strong>' ...
+                    ' \n'];
+            end
+
+            if any(all(isnan(data.abs),2))
+                sample=find(all(isnan(data.abs),2));
+                if not(isrow(sample))
+                    sample=sample';
+                end
+                message=[message,'\n<strong>',varname,'Some absorbance spectra contain only missing numbers.\n</strong>' ...
+                    ' sample(s): ',num2str(sample)];
+            end
+
+            if not(isempty(message))
+                error(sprintf(message))
+            end
+        end
+
+        function sanityCheckIFE(data)
+            message=[];
+            varname = inputname(1);
+            if not(isempty(varname))
+                varname=[varname,': '];
+            end
+            if contains(data.status.IFEcorrection,{'applied by'})
+                message=[message,'\n<strong>',varname,'Inner filter effects have already been corrected.\n</strong>' ...
+                    ' If IFEs have already been corrected, another call to a correction is not allowed.\n'];
+            end
+
+            if isempty(data.abs)||all(isnan(data.abs(:)))
+                message=[message,'\n<strong>',varname,'Absorbance data does not exist or consists only of missing numbers.\n</strong>' ...
+                    ' In drEEM, IFEs are corrected with the absorbance-based approach; absorbance data is thus required.\n'];
+            end
+
+            if any(all(isnan(data.abs),2))
+                sample=find(all(isnan(data.abs),2));
+                if not(isrow(sample))
+                    sample=sample';
+                end
+                message=[message,'\n<strong>',varname,'Some absorbance spectra contain only missing numbers.\n</strong>' ...
+                    ' In drEEM, IFEs are corrected with the absorbance-based approach; absorbance data is thus required.\n' ...
+                    ' sample(s): ',num2str(sample)];
+            end
+
+            if not(isempty(message))
+                error(sprintf(message))
+            end
+        end
+        
+        function sanityCheckScatter(data)
+            message=[];
+            varname = inputname(1);
+            if not(isempty(varname))
+                varname=[varname,': '];
+            end
+            if matches(data.status.blankSubtraction,{'unknown'})
+                message=[message,'\n<strong>',varname,'State of blank subtraction unknown.</strong>' ...
+                    ' It is recommended to subtract blanks in order to minimize scatter extent.' ...
+                    ' Either use "subtractblanks.m" or manually change the state of "blankSubtraction"' ...
+                    ' if blanks were subtracted elsewhere (e.g. instrument software).\n'];
+            end
+            if not(isempty(message))
+                warning(sprintf(message))
+            end
+        end
+        
+        function sanityCheckBlankSubtraction(data)
+            message=[];
+            varname = inputname(1);
+            if not(isempty(varname))
+                varname=[varname,': '];
+            end
+            if contains(data.status.blankSubtraction,{'applied by'})
+                message=[message,' <strong>',varname,'Blank EEMs already subtracted.</strong>' ...
+                    ' \n A repeated blank subtraction would lead to undesired results.\n'];
+            end
+            if not(isempty(message))
+                error(sprintf(message))
+            end
+        end
+
+        function sanityCheckPARAFAC(data)
+            message=[];
+            varname = inputname(1);
+            if not(isempty(varname))
+                varname=[varname,': '];
+            end
+            if matches(data.status.scatterTreatment,{'unknown'})
+                message=[message,'\n<strong>',varname,'State of scatter treatment is unknown.</strong>' ...
+                    ' Either remove physical scatter (handlescatter.m) or manually' ...
+                    ' overwrite the status of "data.scatterTreatment"' ...
+                    ' if scatter was cut elsewhere (e.g. instrument software).\n'];
+            end
+            if matches(data.status.IFEcorrection,{'unknown'})
+                message=[message,'\n<strong>',varname,'State of inner filter effect correction is unknown.</strong>' ...
+                    ' You must account for inner filter effects either here (ifecorrection.m)',...
+                    ' or in the instrument software. Alternatively, manually' ...
+                    ' set the status of "data.IFEcorrection" to "deemed unnecessary"' ...
+                    ' if absorbance was negligible (< 0.05 per cm at most).\n'];
+            end
+            if not(isempty(message))
+                error(sprintf(message))
+            end
+        end
+
+        function sanityCheckSignalCalibration(data)
+            varname = inputname(1);
+            if not(isempty(varname))
+                varname=[varname,': '];
+            end
+            message=[];
+            if contains(data.status.signalCalibration,{'applied by'})
+                message=[message,'\n<strong>',varname,'Signals in the dataset are already calibrated.</strong>\n' ...
+                    ' A signal calibration to e.g. Raman units should be performed on uncalibrated data.\n'];
+            end
+            if not(isempty(message))
+                error(sprintf(message))
+            end
+        end
+
+        function simi=calculateSampleSimilarities(data)
+            tens2mat=@(x,sz1,sz2,sz3) reshape(x,sz1,sz2*sz3);
+            tcc=@(l1,l2) l1'*l2/(sqrt(l1'*l1)*sqrt(l2'*l2)); % Tucker's congruence coefficient
+
+
+            combs=nchoosek(1:data.nSample,2);
+
+            Xunf = tens2mat(data.X,data.nSample,data.nEm,data.nEx);
+            simi=nan(data.nSample,data.nSample);
+            for j=1:size(combs,1)
+                X1=Xunf(combs(j,1),:);
+                X2=Xunf(combs(j,2),:);
+
+                nanout=isnan(X1)|isnan(X2);
+
+                X1=X1(not(nanout));
+                X2=X2(not(nanout));
+
+                simi(combs(j,1),combs(j,2))=tcc(X1',X2');
+
+            end
+        end
+
+        data =  rmsamples(data,index)
+        data =  rmemission(data,index)
+        data =  rmexcitation(data,index)
+        results = fitpca(data)
+    end
+    methods 
+
+            
+    end
+
+    methods
+        function savedata = saveobj(data)
+            savedata=data;
+            for j=1:numel(savedata.history)
+                if matches(class(savedata.history(j).backup),'drEEMdataset')
+                    savedata.history(j).backup=drEEMdataset;
+                    savedata.history(j).previous=drEEMdataset;
+                end
+            end
+            disp('drEEMdataset was saved w/o backups. Use "data.saveall(data)" to include backups.')
+        end      
+    end
+
+end
