@@ -234,11 +234,9 @@ end
 dataout=data;
 dataout.metadata=[dataout.metadata,slopes];
 
-idx=height(dataout.history);
-dataout.history(idx+1,1).datetime=char(datetime);
-dataout.history(idx+1,1).function='fitslopes';
-dataout.history(idx+1,1).details=options;
-dataout.history(idx+1,1).backup='NA';
+idx=height(dataout.history)+1;
+dataout.history(idx,1)=...
+    drEEMhistory.addEntry(mfilename,'CDOM slopes determined',options,dataout);
 
 dataout.validate(dataout);
 
