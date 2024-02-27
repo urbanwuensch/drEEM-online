@@ -1,4 +1,5 @@
 function getdreem(developer) %#ok<*INUSD>
+error('Not yet implemented')
 %
 % <strong>Syntax</strong>
 %   <strong>getdreem</strong>
