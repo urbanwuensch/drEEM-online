@@ -18,7 +18,7 @@ end
 % update=strfind(commithist,'<updated>');
 % versdate=commithist(update(1)+9:update(1)+18);
 % THIS NEXT LINE NEEDS CHANGING FOR EACH RELEASE!!!
-vers='1.0.0';
+vers='2.0.0';
 versdate='Month Year';
 clearvars commithist update
 
@@ -26,7 +26,7 @@ clearvars commithist update
 disp(' ')
 disp(' ')
 disp('-----------------------------------------------------')
-disp(['drEEM toolbox (',vers,', last update ',versdate,')'])
+disp(['drEEM toolbox 2.0 (',vers,', last update ',versdate,')'])
 disp('-----------------------------------------------------')
 disp(' ')
 disp('Installation routine')
@@ -35,7 +35,7 @@ disp(' ')
 pause(2)
 
 %% STEP 1
-disp('Step 1/6: Checking your MATLAB version and installed MATLAB products');pause(0.2)
+disp('Step 1/5: Checking your MATLAB version and installed MATLAB products');pause(0.2)
 
 if isMATLABReleaseOlderThan("R2022a")
     warning('With Matlab older than R2022a, <strong>you will encounter errors</strong>. Continue at your own risk.')
@@ -57,7 +57,7 @@ end
 
 
 %% STEP 2
-disp('Step 2/6: Checking for old drEEM versions.');pause(0.2)
+disp('Step 2/5: Checking for old drEEM versions.');pause(0.2)
 pbackup=path;
 
 
@@ -106,7 +106,7 @@ else
     disp('          No previous version of drEEM found.')
 end
 %% STEP 3
-disp('Step 3/6: Adding the new toolbox (make sure you changed the current directory)');pause(0.2)
+disp('Step 3/5: Adding the new toolbox (make sure you changed the current directory)');pause(0.2)
 fd=which('dreeminstall');
 p=genpath(fd(1:end-14));
 warning off
@@ -124,7 +124,7 @@ warning on
 disp('          Success.')
 %% STEP 4
 
-disp('Step 4/6: Checking for conflicting function names...');pause(0.2)
+disp('Step 4/5: Checking for conflicting function names...');pause(0.2)
 try
     mfiles=dir("*/*.m");
     message=[];
@@ -151,8 +151,8 @@ catch ME
 end
 
 
-%% STEP 6
-disp('Step 6/6: Initializing a few things (this could take a minute).');pause(0.2)
+%% STEP 5
+disp('Step 5/5: Initializing a few things (this could take a minute).');pause(0.2)
 try
     gcp;
 catch
