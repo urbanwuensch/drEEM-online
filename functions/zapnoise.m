@@ -69,3 +69,34 @@ message=['SampleIdent = ',num2str(rcvec(find(sampleIdent),'row')),...
 idx=height(dataout.history)+1;
 dataout.history(idx,1)=...
     drEEMhistory.addEntry(mfilename,message,[],dataout);
+
+end
+
+function [vout] = rcvec(v,rc)
+% Make row or column vector
+% v: vector
+% rc: either 'row' ([1:5])or 'column' ([1:5]')
+sz=size(v);
+if ~any(sz==1)
+    error('Input is not a vector')
+end
+
+switch rc
+    case 'row'
+        if ~[sz(1)<sz(2)]
+            vout=v';
+        else
+            vout=v;
+        end
+    case 'column'
+        if ~[sz(1)>sz(2)]
+            vout=v';
+        else
+            vout=v;
+        end
+    otherwise
+            error('Input ''rc'' not recognized. Options are: ''row'' and ''column''.')
+end
+
+
+end
