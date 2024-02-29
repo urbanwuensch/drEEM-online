@@ -76,6 +76,9 @@ classdef drEEMdataset
             cnt=1;
             if not(isempty(data.X))
                 sz=size(data.X);
+                if ndims(data.X)~=3
+                    error(['EEMs field (',inputname(1),'.X) must have 3 dimensions. Validation function exited prematurely. Fix the issue and rerun the validation'])
+                end
                 if not(sz(1)==data.nSample)
                     e{cnt}='size of EEM dimension 1 not consistent with data.nSample';
                     cnt=cnt+1;
@@ -164,6 +167,9 @@ classdef drEEMdataset
             
             if not(isempty(data.abs))
                 sz=size(data.abs);
+                if not(ismatrix(data.abs))
+                    error(['Absorbance field (',inputname(1),'.abs) must have 2 dimensions. Validation function exited prematurely. Fix the issue and rerun the validation'])
+                end
                 if not(sz(1)==data.nSample)
                     e{cnt}='size of absorbance dimension 1 not consistent with data.nSample';
                     cnt=cnt+1;
