@@ -22,6 +22,10 @@ samples=associatemetadata(samples,"metadata.xlsx",'sampleId');
 %% All the processing before PARAFAC
 samples=processabsorbance(samples);
 addcomment(samples,"main issue addressed was the absorbance baseline offset")
+test=samples;
+addcomment(test,"My 1st comment was bibbidi")
+addcomment(test,"My 2nd comment was bob")
+
 
 
 samples=ifecorrection(samples);

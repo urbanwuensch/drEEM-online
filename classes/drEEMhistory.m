@@ -15,21 +15,24 @@ classdef drEEMhistory
                 caller {mustBeText}
                 message {mustBeText}
                 details = ""
-                backup drEEMdataset = drEEMdataset
-                prev drEEMdataset = drEEMdataset
+                backup drEEMdataset = drEEMdataset.create
+                prev drEEMdataset = drEEMdataset.create
             end
             obj=drEEMhistory;
             obj.timestamp=datetime("now");
             obj.fname=caller;
             obj.fmessage=message;
             obj.details=details;
+            
             if backup.nSample~=0
-                obj.backup=drEEMdataset.cleanupBackup(backup);
+                backup=drEEMdataset.cleanupBackup(backup);
             end
-            if prev.nSample~=0
-                obj.previous=drEEMdataset.cleanupBackup(prev);
-            end
+            obj.backup=backup;
 
+            if prev.nSample~=0
+                prev=drEEMdataset.cleanupBackup(prev);
+            end
+            obj.previous=prev;
         end
 
         function idx = searchhistory(history,fname,firstLast)
