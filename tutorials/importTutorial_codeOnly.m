@@ -57,7 +57,6 @@ addcomment(data,"First try of cutting scatter. Seems to work ok.")
 
 % data=rmspikes(data);
 
-
 %% Dataset modifications prior to PARAFAC
 data=subdataset(data,[],data.Em<310|data.Em>600,data.Ex>500);
 addcomment(data,"Trimmed the edges of the EEM to focus on sensible areas")

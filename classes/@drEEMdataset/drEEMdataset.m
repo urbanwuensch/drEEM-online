@@ -209,6 +209,11 @@ classdef drEEMdataset
                 message=[message,'\n Type "help drEEM" or "help drEEMdataset" to learn more'];
                 error(sprintf(message))
             end
+
+            stack=dbstack;
+            if numel(stack)<2
+                disp('<strong> drEEMdataset validation successful.</strong> Your dataset passed all checks.')
+            end
         end
 
         function mustBeMetadataColumn(data,colname)
