@@ -25,11 +25,13 @@ classdef drEEMhistory
             obj.details=details;
             
             if backup.nSample~=0
+                backup=drEEMbackup.convert(backup);
                 backup=drEEMdataset.cleanupBackup(backup);
             end
             obj.backup=backup;
 
             if prev.nSample~=0
+                prev=drEEMbackup.convert(prev);
                 prev=drEEMdataset.cleanupBackup(prev);
             end
             obj.previous=prev;
