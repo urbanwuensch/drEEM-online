@@ -3,11 +3,13 @@ classdef drEEMhistory
         timestamp (1,1) datetime
         fname (1,:) {mustBeText} = ""
         fmessage (1,:) {mustBeText} = ""
-        details
-        backup (1,1)  % <- the dataout version at the end of call
         usercomment(1,:) {mustBeText} = ""
-        previous (1,1)  % <- for restoring the input variable of a call (currently only used for scaling)
 
+    end
+    properties (Hidden=true)
+        details % <- Option structure or a text giving details.
+        backup (1,1)  % <- the dataout version at the end of call
+        previous (1,1)  % <- for restoring the input variable of a call (currently only used for scaling)
     end
     methods (Static=true)
         function obj=addEntry(caller,message,details,backup,prev)
@@ -25,13 +27,13 @@ classdef drEEMhistory
             obj.details=details;
             
             if backup.nSample~=0
-                backup=drEEMbackup.convert(backup);
+                backup=drEEMbackup.convert2backup(backup);
                 backup=drEEMdataset.cleanupBackup(backup);
             end
             obj.backup=backup;
 
             if prev.nSample~=0
-                prev=drEEMbackup.convert(prev);
+                prev=drEEMbackup.convert2backup(prev);
                 prev=drEEMdataset.cleanupBackup(prev);
             end
             obj.previous=prev;
@@ -57,7 +59,7 @@ classdef drEEMhistory
 
         function tableout=convert2table(history)
             mustBeA(history,"drEEMhistory")
-            flds=fieldnames(history);
+            flds={'timestamp','fname','fmessage','details','backup','previous','usercomment'};
             
             conv=struct;
             for j=1:numel(flds)

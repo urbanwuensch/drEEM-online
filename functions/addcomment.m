@@ -10,10 +10,16 @@ outname=inputname(1);
 idx=height(data.history);
 dataout=data;
 if not(dataout.history(idx).usercomment=="") % Add an entry
-    idx=height(data.history)+1;
-    dataout.history(idx,1)=...
-        drEEMhistory.addEntry('usercomment',"user-added comment");
-    dataout.history(idx).usercomment=string(comment);
+    % Workaround 1: Entirely new entry
+    % idx=height(data.history)+1;
+    % dataout.history(idx,1)=...
+    %     drEEMhistory.addEntry('usercomment',"user-added comment");
+    % dataout.history(idx).usercomment=string(comment);
+
+    % Solution 2: add a string
+    dataout.history(idx).usercomment=...
+        [dataout.history(idx).usercomment,string(comment)];
+
 else % New entry
     dataout.history(idx).usercomment=string(comment);
 end

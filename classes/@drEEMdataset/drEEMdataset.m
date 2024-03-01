@@ -455,11 +455,15 @@ classdef drEEMdataset
 
             end
         end
+        
 
         data =  rmsamples(data,index)
         data =  rmemission(data,index)
         data =  rmexcitation(data,index)
         results = fitpca(data)
+        data = restore(data,whichone)
+        data = undo(data)
+        displayhistory(data)
     end
     methods 
 

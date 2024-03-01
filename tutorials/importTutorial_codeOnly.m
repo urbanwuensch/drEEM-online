@@ -13,6 +13,8 @@ samples.absWave=absorbance.absWave;
 samples.abs=absorbance.abs;
 samples.validate(samples);
 addcomment(samples,"transferred absorbance to the sample EEM dataset")
+addcomment(samples,"Just another comment here")
+
 clearvars absorbance
 
 %% Metadata integration
@@ -60,6 +62,13 @@ addcomment(data,"Trimmed the edges of the EEM to focus on sensible areas")
 
 data=scalesamples(data,1.7);
 addcomment(data,"Scaling of EEMs since main factor is estuarine mixing.")
+
+drEEMdataset.displayhistory(data)
+drEEMdataset.undo(data)
+
+data=scalesamples(data,1.5);
+addcomment(data,"On second thought, I adjusted the scaling option slightly to have more drastic scaling.")
+
 
 data = zapnoise(data,5,[350 370],275);
 addcomment(data,"Demonstration of the zapnoise function")
