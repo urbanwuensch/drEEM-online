@@ -223,7 +223,7 @@ if matches(options.mode,"split")
     f=drEEMdataset.modelsWithContent(dataout);
     C=intersect(f,options.f);
     for j=1:numel(C)
-        res=silentvalidation(dataout,C(j));
+        res=drEEMtoolbox.silentvalidation(dataout,C(j));
         if res
             disp(['<strong> Successful validation </strong> (',num2str(C(j)),'-compnent model)'])
             dataout.models(C(j)).status='validated';

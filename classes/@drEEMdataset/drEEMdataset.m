@@ -217,7 +217,10 @@ classdef drEEMdataset
             end
 
             stack=dbstack;
-            if numel(stack)<3
+            % Only spit out the message if the drEEMtoolbox version was
+            % involved (user-facing function). Internally, we use
+            % drEEMdataset.validate to do the job.
+            if matches(stack(end).name,'drEEMtoolbox.validatedataset')
                 disp('<strong> drEEMdataset validation successful.</strong> Your dataset passed all checks.')
             end
         end

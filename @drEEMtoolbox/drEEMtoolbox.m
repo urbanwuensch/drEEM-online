@@ -3,6 +3,20 @@ classdef drEEMtoolbox < handle
         version = "2.0.0"
         url = "https://gitlab.com/dreem/dreem-2.0"
     end
+    
+    % These are not meant for the general public, Origin Pro is required.
+    methods (Hidden = true,Static = true)
+         Xout = aqualogimport(workingpath,selector,deselector)
+         dataout = sampleQimport(workingpath,data)
+         [DS,DSb] = processHJYdata(Xin,opt)
+    end
+    
+    % These are not really needed to be visible to the user
+    methods (Hidden = true,Static=true)
+        [ modelout,neworder] = reordercomponents( model,varargin )
+        passed = silentvalidation(data,fac)
+
+    end
 
     methods (Static = true , Access = public)
         % import functions
@@ -38,6 +52,7 @@ classdef drEEMtoolbox < handle
         dataout = subdataset(data,outSample,outEm,outEx)
         dataout = zapnoise(data,sampleIdent,emRange,exRange)
         dataout = scalesamples(data,option)
+        dataout = rmspikes(data,name_value)
 
         % Slopes, peaks, indicies
         [dataout,slopes,metadata,model] = fitslopes(data,options)

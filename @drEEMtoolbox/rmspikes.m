@@ -1,4 +1,4 @@
-function [dataout] = rmspikes(data,name_value)
+function [dataout] = rmspikes(data,options)
 %
 % <strong>Syntax</strong>
 %   <strong>rmspikes</strong>(data,Name,Value)
@@ -9,19 +9,19 @@ function [dataout] = rmspikes(data,name_value)
 
 arguments
     data (1,1) {drEEMdataset.validate(data)}
-    name_value.plot (1,:) {mustBeNumericOrLogical} = true
-    name_value.details (1,:) {mustBeNumericOrLogical} = false
-    name_value.thresholdFactor (1,1) {mustBeNumeric} = 10
-    name_value.interpolate (1,:) {mustBeNumericOrLogical} = false
+    options.plot (1,:) {mustBeNumericOrLogical} = true
+    options.details (1,:) {mustBeNumericOrLogical} = false
+    options.thresholdFactor (1,1) {mustBeNumeric} = 10
+    options.interpolate (1,:) {mustBeNumericOrLogical} = false
 end
 
 %% Input parsing
 Xname = 'X';
-plt = name_value.plot;
-diagn = name_value.details;
-interpolate = name_value.interpolate;
+plt = options.plot;
+diagn = options.details;
+interpolate = options.interpolate;
 constOpts=struct;
-constOpts.medianDiff_fac=name_value.thresholdFactor;
+constOpts.medianDiff_fac=options.thresholdFactor;
 
 
 %% Set & decide options
@@ -243,7 +243,8 @@ end
 
 idx=height(dataout.history)+1;
 dataout.history(idx,1)=...
-    drEEMhistory.addEntry(mfilename,'Automatic removal of noisy data was carried out',dataout);
+    drEEMhistory.addEntry(mfilename,...
+    'Automatic removal of noisy data was carried out',options,dataout);
 end
 
 function B=inpaint_nans(A,method)
