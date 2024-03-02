@@ -19,7 +19,7 @@ dataout=data;
 if data.toolboxdata.uifig
     f=dreemuifig;
 else
-    f=dreemfig;
+    f=drEEMtoolbox.dreemfig;
 end
 f.Name='drEEM: processabsorbance.m';
 

@@ -23,8 +23,8 @@ s_em=setdiff(samples.Em,C);
 b_em=setdiff(blanks.Em,C);
 
 % subdataset call (will not do anything if wavelengths were identical)
-samples_mod=subdataset(samples,[],ismember(samples.Em,s_em),ismember(samples.Ex,s_ex));
-blanks_mod=subdataset(blanks,[],ismember(blanks.Em,b_em),ismember(blanks.Ex,b_ex));
+samples_mod=drEEMtoolbox.subdataset(samples,[],ismember(samples.Em,s_em),ismember(samples.Ex,s_ex));
+blanks_mod=drEEMtoolbox.subdataset(blanks,[],ismember(blanks.Em,b_em),ismember(blanks.Ex,b_ex));
 
 % Carry out the subtraction, but only if final dimension check was passed.
 if all(size(samples_mod.X)==size(blanks_mod.X))
@@ -48,9 +48,9 @@ end
 % clean and how well the subtraction worked for the elimitation of scatter.
 mindist=@(vec,val) find(ismember(abs(vec-val),min(abs(vec-val))));
 if samples.toolboxdata.uifig
-    f=dreemuifig;
+    f=drEEMtoolbox.dreemuifig;
 else
-    f=dreemfig;
+    f=drEEMtoolbox.dreemfig;
 end
 f.Name='drEEM: subtractblanks.m';
 t=tiledlayout(f,"flow");

@@ -217,7 +217,7 @@ classdef drEEMdataset
             end
 
             stack=dbstack;
-            if numel(stack)<2
+            if numel(stack)<3
                 disp('<strong> drEEMdataset validation successful.</strong> Your dataset passed all checks.')
             end
         end
@@ -294,15 +294,6 @@ classdef drEEMdataset
                 VariableNames=cellfun(@(x) string(x),VariableNames);
             end
 
-        end
-
-
-        function dataout=cleanupBackup(data)
-            dataout=data;
-            dataout.history=drEEMhistory;
-            dataout.history.timestamp=datetime;
-            dataout.history.fname='drEEMdataset.cleanupBackup';
-            dataout.history.details='deleted all backups';
         end
 
         function sanityCheckAbsorbance(data)
@@ -473,13 +464,13 @@ classdef drEEMdataset
     methods
         function savedata = saveobj(data)
             savedata=data;
-            for j=1:numel(savedata.history)
-                if matches(class(savedata.history(j).backup),'drEEMdataset')
-                    savedata.history(j).backup=drEEMdataset;
-                    savedata.history(j).previous=drEEMdataset;
-                end
-            end
-            disp('drEEMdataset was saved w/o backups. Use "data.saveall(data)" to include backups.')
+            % for j=1:numel(savedata.history)
+            %     if matches(class(savedata.history(j).backup),'drEEMdataset')
+            %         savedata.history(j).backup=drEEMdataset;
+            %         savedata.history(j).previous=drEEMdataset;
+            %     end
+            % end
+            % disp('drEEMdataset was saved w/o backups. Use "data.saveall(data)" to include backups.')
         end      
     end
 

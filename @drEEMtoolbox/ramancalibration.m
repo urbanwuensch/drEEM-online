@@ -84,9 +84,9 @@ dataout.validate(dataout);
 
 % final plots
 if samples.toolboxdata.uifig
-    f=dreemuifig;
+    f=drEEMtoolbox.dreemuifig;
 else
-    f=dreemfig;
+    f=drEEMtoolbox.dreemfig;
 end
 f.Name='drEEM toolbox: Raman calibration overview';
 movegui(f,'center')

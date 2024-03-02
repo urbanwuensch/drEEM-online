@@ -28,7 +28,7 @@ mindist=@(vec,val) find(ismember(abs(vec-val),min(abs(vec-val))));
 idx=drEEMhistory.searchhistory(data.history,'scalesamples','first');
 if not(isempty(idx))
     previouseem=data.history(idx).previous;
-    previouseem=zapnoise(previouseem,sampleIdent,emRange,exRange);
+    previouseem=drEEMtoolbox.zapnoise(previouseem,sampleIdent,emRange,exRange);
     data.history(idx).previous=previouseem;
 end
 

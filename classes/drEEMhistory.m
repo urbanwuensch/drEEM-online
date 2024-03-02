@@ -6,6 +6,7 @@ classdef drEEMhistory
         usercomment(1,:) {mustBeText} = ""
 
     end
+    % Hidden properties for toolbox-internal use only (not visible to user)
     properties (Hidden=true)
         details % <- Option structure or a text giving details.
         backup (1,1)  % <- the dataout version at the end of call
@@ -28,13 +29,11 @@ classdef drEEMhistory
             
             if backup.nSample~=0
                 backup=drEEMbackup.convert2backup(backup);
-                backup=drEEMdataset.cleanupBackup(backup);
             end
             obj.backup=backup;
 
             if prev.nSample~=0
                 prev=drEEMbackup.convert2backup(prev);
-                prev=drEEMdataset.cleanupBackup(prev);
             end
             obj.previous=prev;
         end

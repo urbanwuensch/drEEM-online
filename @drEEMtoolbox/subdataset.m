@@ -33,7 +33,7 @@ end
 idx=drEEMhistory.searchhistory(data.history,'scalesamples','first');
 if not(isempty(idx))
     previouseem=data.history(idx).previous;
-    previouseem=subdataset(previouseem,outSample,outEm,outEx);
+    previouseem=drEEMtoolbox.subdataset(previouseem,outSample,outEm,outEx);
     data.history(idx).previous=previouseem;
 end
 

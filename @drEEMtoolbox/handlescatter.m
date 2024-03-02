@@ -91,7 +91,7 @@ end
 
 % Scenario: User wants GUI for decision support
 if nargin==2&&strcmp(varargin{1},'exploreoptions')
-    diagscatter(data)
+    drEEMtoolbox.viewscatter(data)
     return
 end
 
@@ -230,9 +230,9 @@ dataout.status=...
 
 if strcmp(options.plot,'on')
     if data.toolboxdata.uifig
-        fh=dreemuifig;
+        fh=drEEMtoolbox.dreemuifig;
     else
-        fh=dreemfig;
+        fh=drEEMtoolbox.dreemfig;
     end
     set(fh, 'units','normalized','pos',[0.05    0.1611    0.9    0.3700]);
     ax=gobjects(1,3);
