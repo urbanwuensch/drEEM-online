@@ -15,12 +15,16 @@ samples.abs=absorbance.abs;
 dr.validatedataset(samples);
 dr.addcomment(samples,"transferred absorbance to the sample EEM dataset")
 dr.addcomment(samples,"Just another comment here")
+dr.addcomment(samples,"And I had this other thought too")
 
 clearvars absorbance
 
 %% Metadata integration
 samples.filelist=erase(samples.filelist,{' (01)'});
 samples=dr.associatemetadata(samples,"metadata.xlsx",'sampleId');
+dr.addcomment(samples,"Not 100% of samples matched. Here, one can make a comment to tell myself to investigate this.")
+dr.addcomment(samples,"Now here, I really had something interesting to say")
+
 
 %% All the processing before PARAFAC
 samples=dr.processabsorbance(samples);

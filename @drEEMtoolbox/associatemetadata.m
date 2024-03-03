@@ -191,6 +191,11 @@ disp(array2table([dataout.nSample height(md);numel(ia) numel(ib);eem_matched,md_
     "RowNames",{'No. samples','Total matched','% matched'}))
 disp('')
 
+idx=height(dataout.history)+1;
+dataout.history(idx,1)=...
+    drEEMhistory.addEntry(mfilename,"Metadata associated (look at data.metadata)",[],dataout);
+dataout.validate(dataout);
+
 
 end
 
