@@ -16,7 +16,7 @@ arguments
     name_value.plot ...
         (1,:) {mustBeNumericOrLogical} = true
 end
-
+error('not yet implemented. Urban@work')
 filename=[pwd,filesep,filename];
 
 writetable(struct2table(data.history),filename,"FileType","spreadsheet",...

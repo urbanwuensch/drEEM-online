@@ -7,6 +7,9 @@ end
 %% Secondary validation of inputs.
 f=drEEMdataset.modelsWithContent(data);
 
+if isempty(f)
+    error('This function requires PARAFAC models in the dataset. There are none.')
+end
 if not(ismember(ftarget,f))
     error(['Input to "ftarget" must point to an existing model. Choices are: ',num2str(f')])
 end
@@ -125,6 +128,8 @@ warning off
 scifig('width',18,'height',12,'font','Arial','FontSize',9);
 labelplots(-0.05,0.07,'^');
 warning on
+fhandle=fh;
+
 end
 
 function map = residualcolormap(nneg,npos)

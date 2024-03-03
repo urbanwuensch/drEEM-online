@@ -3,6 +3,9 @@ classdef drEEMtoolbox < handle
         version = "2.0.0"
         url = "https://gitlab.com/dreem/dreem-2.0"
     end
+    properties (Constant = true, Hidden = true)
+        uifig = false % Should uifigure be used instead of figures?
+    end
     
     % These are not meant for the general public, Origin Pro is required.
     methods (Hidden = true,Static = true)
@@ -65,7 +68,9 @@ classdef drEEMtoolbox < handle
         
         % Data export
         export2openfluor(data, f, filename)
-        
+        export2netcdf(data,filename)
+        exportresults(data,filename,f,name_value)
+        fhandle = reportresidualanalysis(data,ftarget,mdfield)
 
         % Visualization (incl. app workarounds)
         f=dreemfig

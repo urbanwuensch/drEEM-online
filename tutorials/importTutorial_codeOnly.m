@@ -58,7 +58,9 @@ dr.addcomment(data,"First try of cutting scatter. Seems to work ok.")
 
 
 
-% data=rmspikes(data);
+data=dr.rmspikes(data);
+dr.vieweems(data)
+dr.explorevariability(data)
 
 %% Dataset modifications prior to PARAFAC
 data=dr.subdataset(data,[],data.Em<310|data.Em>600,data.Ex>500);
