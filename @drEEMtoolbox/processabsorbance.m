@@ -1,4 +1,4 @@
-function [dataout] = processabsorbance(data,options)
+function dataout = processabsorbance(data,options)
 arguments
         % Required
         data ...
@@ -11,6 +11,12 @@ arguments
         options.zero (1,:) {mustBeNumericOrLogical} = false
         options.extrapolate (1,:) {mustBeNumericOrLogical} = true
 end
+
+% Experimental feature; overwrite workspace variable, needs no outputarg check
+if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
+    nargoutchk(1,1)
+end
+
 % Assign the output variable
 dataout=data;
 
@@ -142,6 +148,13 @@ message=[...
 idx=height(dataout.history)+1;
 dataout.history(idx,1)=...
     drEEMhistory.addEntry(mfilename,message,options,dataout);
+
+if drEEMtoolbox.outputscenario(nargout)=="implicitOut"
+    assignin("base",inputname(1),dataout);
+    disp(['<strong> "',inputname(1), '" processed. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
+    return
+end
+
 end
 
 function yhat = CDOMexp_K(beta,x)

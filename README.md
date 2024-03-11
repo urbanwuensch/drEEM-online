@@ -8,6 +8,10 @@ MATLAB toolbox aiding the multiway decomposition of fluorescence EEMs into under
 - Run `dreeminstall`
 
 ## Usage
+- drEEM version 2 is based on object-oriented programming (OOP); to initialize the toolbox, type `tbx = drEEMtoolbox;`.
+- Access the toolbox methods by calling e.g. `tbx.importeems(...)`
+- To see which methods are available, type `tbx.` followed by hitting the TAB key to get a list of method suggestions.
+- For orientation, method names generally refer to an action and an object, e.g. `importeems`, `fitparafac`, `subtractblanks`, `splitdataset`, etc.
 - Type `help drEEM` for for an overview of functions.
 
 ## Further reading (peer-reviewed publications)

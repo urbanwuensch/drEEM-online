@@ -75,7 +75,7 @@ end
 
 Xblank=nan(DS.nSample,DS.nEm,DS.nEx);
 if opt.visualize
-    fig=dreemfig;
+    fig=drEEMtoolbox.dreemfig;
 end
 for j=1:DS.nSample
     

@@ -1,10 +1,16 @@
-function [dataout] = splitvalidation(data,fac)
+function dataout = splitvalidation(data,fac)
 
 arguments
     data (1,1) {mustBeNonempty,drEEMdataset.validate(data)}
     fac (1,1) {mustBeNumeric}
 end
 drEEMdataset.mustBeModel(data,fac)
+
+% Experimental feature; overwrite workspace variable, needs no outputarg check
+if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
+    nargoutchk(1,1)
+end
+
 %% Input argument parsing and initial checks
 narginchk(2,7)
 overallModel=data;
@@ -217,6 +223,15 @@ dataout.history(idx,1)=...
 
 
 end
+
+% Will only run if toolbox is set to overwrite workspace variable and user
+% didn't provide an output argument
+if drEEMtoolbox.outputscenario(nargout)=="implicitOut"
+    assignin("base",inputname(1),dataout);
+    disp(['<strong> "',inputname(1), '" processed. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
+    return
+end
+
 end
 
 

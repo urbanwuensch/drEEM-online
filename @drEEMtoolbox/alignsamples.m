@@ -3,7 +3,10 @@ function varargout = alignsamples(varargin)
 arguments (Repeating)
     varargin (1,1) {mustBeA(varargin,"drEEMdataset"),drEEMdataset.validate(varargin)}
 end
-
+% Optional feature; overwrite workspace variable, needs no outputarg check
+if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
+    nargoutchk(numel(varargin),numel(varargin))
+end
 % Get the dataset names for messages
 for j=1:numel(varargin)
     name(j,1)=string(inputname(j));
@@ -91,4 +94,12 @@ for j=1:numel(varargin)
     %Final validation of the dataset
     drEEMdataset.validate(varargout{j});
 end
+
+if drEEMtoolbox.outputscenario(nargout)=="implicitOut"
+    for j=1:numel(varargout)
+        assignin("base",varargout{j},name(j))
+        disp(['<strong> ',name(j), '" processed. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
+                
+    end
+    return
 end

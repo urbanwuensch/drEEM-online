@@ -1,4 +1,4 @@
-function [dataout] = associatemetadata(data,pathtofile,metadatakey,datakey)
+function dataout = associatemetadata(data,pathtofile,metadatakey,datakey)
 arguments
     data(1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
     pathtofile
@@ -23,6 +23,11 @@ if not(isfield(data,datakey))
         message=['invalid input for optional argument "datakey" #1. ',datakey,' is not a field in the drEEMdataset. #2: ',ME.message];
         error(sprintf(message))
     end
+end
+
+% Experimental feature; overwrite workspace variable, needs no outputarg check
+if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
+    nargoutchk(1,1)
 end
 
 
@@ -195,6 +200,12 @@ idx=height(dataout.history)+1;
 dataout.history(idx,1)=...
     drEEMhistory.addEntry(mfilename,"Metadata associated (look at data.metadata)",[],dataout);
 dataout.validate(dataout);
+
+if drEEMtoolbox.outputscenario(nargout)=="implicitOut"
+    assignin("base",inputname(1),dataout);
+    disp(['<strong> "',inputname(1), '" processed. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
+    return
+end
 
 
 end

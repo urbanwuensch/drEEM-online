@@ -1,4 +1,4 @@
-function [dataout] = subtractblanks(samples,blanks)
+function dataout = subtractblanks(samples,blanks)
 
 arguments
     samples (1,1) {mustBeNonempty,drEEMdataset.validate(samples),...

@@ -9,6 +9,7 @@ arguments
         options.absColumn (1,:) {mustBeNumeric} = 10
         options.NumHeaderLines (1,1) {mustBeNumeric}= 0
 end
+nargoutchk(1,1)
 
 % Find files & throw error when none are found
 files=dir(filePattern);

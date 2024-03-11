@@ -1,11 +1,14 @@
-function [dataout,emout,exout] = ifecorrection(data)
+function dataout = ifecorrection(data)
 
 arguments
     data...
         (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),...
         drEEMdataset.sanityCheckIFE(data)}
 end
-
+% Experimental feature; overwrite workspace variable, needs no outputarg check
+if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
+    nargoutchk(1,1)
+end
 % Assign the final output variable based on input
 dataout=data;
 
@@ -42,6 +45,14 @@ idx=height(dataout.history)+1;
 dataout.history(idx,1)=...
     drEEMhistory.addEntry(mfilename,message,[],dataout);
 dataout.validate(dataout);
+
+% Will only run if toolbox is set to overwrite workspace variable and user
+% didn't provide an output argument
+if drEEMtoolbox.outputscenario(nargout)=="implicitOut"
+    assignin("base",inputname(1),dataout);
+    disp(['<strong> "',inputname(1), '" processed. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
+    return
+end
 
 end
 

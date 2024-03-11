@@ -37,6 +37,12 @@ if matches(options.mode,"split")
         error('mode="split" requires data.split to be populated with datasets. Have you run "splitdataset.m"?')
     end
 end
+
+% Experimental feature; overwrite workspace variable, needs no outputarg check
+if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
+    nargoutchk(1,1)
+end
+
 %% Version check
 if isMATLABReleaseOlderThan("R2022a")
     error("You need Matlab R2022a or newer to use this function.")
@@ -235,6 +241,14 @@ if matches(options.mode,"split")
     end
 end
 
+
+% Will only run if toolbox is set to overwrite workspace variable and user
+% didn't provide an output argument
+if drEEMtoolbox.outputscenario(nargout)=="implicitOut"
+    assignin("base",inputname(1),dataout);
+    disp(['<strong> "',inputname(1), '" processed. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
+    return
+end
 
 end
 

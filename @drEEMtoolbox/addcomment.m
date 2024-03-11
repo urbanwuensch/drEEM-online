@@ -1,4 +1,4 @@
-function addcomment(data,comment)
+function dataout = addcomment(data,comment)
 
 arguments
     data ...
@@ -6,16 +6,14 @@ arguments
     comment (1,:) {mustBeText}
 end
 
-outname=inputname(1);
+% Experimental feature; overwrite workspace variable, needs no outputarg check
+if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
+    nargoutchk(1,1)
+end
+
 idx=height(data.history);
 dataout=data;
-if not(dataout.history(idx).usercomment=="") % Add an entry
-    % Workaround 1: Entirely new entry
-    % idx=height(data.history)+1;
-    % dataout.history(idx,1)=...
-    %     drEEMhistory.addEntry('usercomment',"user-added comment");
-    % dataout.history(idx).usercomment=string(comment);
-
+if not(dataout.history(idx).usercomment=="")
     % Solution 2: add a string
     dataout.history(idx).usercomment=...
         [dataout.history(idx).usercomment,string(comment)];
@@ -23,6 +21,11 @@ if not(dataout.history(idx).usercomment=="") % Add an entry
 else % New entry
     dataout.history(idx).usercomment=string(comment);
 end
-assignin("base",outname,dataout)
+
+if drEEMtoolbox.outputscenario(nargout)=="implicitOut"
+    assignin("base",inputname(1),dataout);
+    disp(['<strong> "',inputname(1), '" processed. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
+    return
+end
 
 end

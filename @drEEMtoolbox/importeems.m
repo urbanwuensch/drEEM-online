@@ -25,6 +25,8 @@ arguments
         options.columnIsEx (1,:) {mustBeNumericOrLogical}= true
         options.NumHeaderLines (1,1) {mustBeNumeric}= 0
 end
+nargoutchk(1,1)
+
 
 % Find files & throw error when none are found
 files=dir(filePattern);

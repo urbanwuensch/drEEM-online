@@ -5,15 +5,16 @@ classdef drEEMtoolbox < handle
     end
     properties (Constant = true, Hidden = true)
         uifig = false % Should uifigure be used instead of figures?
+        OvrWrteUnless = true
     end
-    
+
     % These are not meant for the general public, Origin Pro is required.
     methods (Hidden = true,Static = true)
-         Xout = aqualogimport(workingpath,selector,deselector)
-         dataout = sampleQimport(workingpath,data)
-         [DS,DSb] = processHJYdata(Xin,opt)
+        Xout = aqualogimport(workingpath,selector,deselector)
+        dataout = sampleQimport(workingpath,data)
+        [DS,DSb] = processHJYdata(Xin,opt)
     end
-    
+
     % These are not really needed to be visible to the user
     methods (Hidden = true,Static=true)
         [ modelout,neworder] = reordercomponents( model,varargin )
@@ -21,12 +22,40 @@ classdef drEEMtoolbox < handle
 
     end
 
+    % These are toolbox internal, would just be confusing if visible
+    methods (Static = true, Hidden = true)
+        function methodEnd(dataout,name)
+            if drEEMtoolbox.OvrWrteUnless
+                assignin("base",dataout,name)
+            end
+        end
+
+        function scenario=outputscenario(n_in)
+        if n_in ~= 0 && not(drEEMtoolbox.OvrWrteUnless)
+            % User wants explicit assignments & toolbox agrees
+            scenario=categorical({'explicitOut'});
+        end
+        if drEEMtoolbox.OvrWrteUnless && n_in==0
+            % User wants workspace variable to be overwritten  & toolbox agrees
+            scenario=categorical({'implicitOut'});
+        end
+        if drEEMtoolbox.OvrWrteUnless && n_in~=0
+            % User wants explicit assignments but toolbox disagrees
+            scenario=categorical({'explicitOut'});
+        end
+        if not(drEEMtoolbox.OvrWrteUnless) && n_in==0
+            % Toolbox is set to make explicit assignments, but user didn't give output args
+            scenario=categorical({'explicitOut'});
+        end
+        end
+    end
+
     methods (Static = true , Access = public)
         % import functions
         data = importeems(filePattern,options)
         data = importabsorbance(filePattern,options)
         dataout = associatemetadata(data,pathtofile,metadatakey,datakey)
-        
+
         % Status-specific functions
         changestatus(data)
 
@@ -35,8 +64,28 @@ classdef drEEMtoolbox < handle
         function validatedataset(data)
             drEEMdataset.validate(data)
         end
-        function undolast(data)
-            drEEMdataset.undo(data)
+        function [dataout] = undolast(data)
+            arguments
+                data {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+            end
+            n=numel(data.history);
+            if n==1
+                error('Nothing to undo')
+            end
+
+            temp=data.history(n-1).backup;
+            temp=drEEMbackup.convert2dataset(temp);
+            temp.history=data.history(1:n-1);
+            temp.toolboxdata=data.toolboxdata;
+
+            if nargout==0
+                assignin("base",inputname(1),temp);
+                disp(['<strong> Last step (',num2str(n-1),') in dataset "',inputname(1), '" undone. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
+                return
+            else
+                dataout=temp;
+            end
+
         end
         function restore(data,whichone)
             drEEMdataset.restore(data,whichone)
@@ -65,7 +114,7 @@ classdef drEEMtoolbox < handle
         dataout = fitparafac(data,options)
         dataout = splitdataset(data,options)
         dataout = splitvalidation(data,fac)
-        
+
         % Data export
         export2openfluor(data, f, filename)
         export2netcdf(data,filename)
@@ -97,7 +146,7 @@ classdef drEEMtoolbox < handle
             diagscatter(data)
         end
 
-        
-        
+
     end
+
 end

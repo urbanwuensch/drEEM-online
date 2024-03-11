@@ -13,9 +13,9 @@ cd ..
 samples.absWave=absorbance.absWave;
 samples.abs=absorbance.abs;
 tbx.validatedataset(samples);
-tbx.addcomment(samples,"transferred absorbance to the sample EEM dataset")
-tbx.addcomment(samples,"Just another comment here")
-tbx.addcomment(samples,"And I had this other thought too")
+tbx.addcomment(samples,"transferred absorbance to the sample EEM dataset");
+tbx.addcomment(samples,"Just another comment here");
+tbx.addcomment(samples,"And I had this other thought too");
 
 clearvars absorbance
 
