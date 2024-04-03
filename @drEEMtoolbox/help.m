@@ -20,25 +20,18 @@ end
 % Database of published function docs
 try functionname=lower(functionname);end %#ok<TRYNC>
 
-helpdatabase=retreivefileinfo;
+% helpdatabase=retreivefileinfo;
 
 
 %% Catch users that just want to see the start page of doc 
-if nargin<1
+if nargin==0
     cd(fileparts(doclocs{restoredoc_i}));
     help
     return
 end
 
-%% Search for existing documentation based on entries in "functiondirectory"
-for i = 1:size(helpdatabase,1)
-    if strcmpi(functionname, helpdatabase{i,1})
-        web(helpdatabase{i,2}, '-notoolbar','-new');
-        return
-    end
-end
-
 %% If nothing was found, just display the default MATLAB output
 cd(fileparts(doclocs{restoredoc_i}));
 help(functionname);
+
 end

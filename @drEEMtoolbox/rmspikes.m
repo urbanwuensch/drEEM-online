@@ -196,7 +196,7 @@ dataout.(Xname)=Xi;
 vec=@(x) x(:);
 if diagn
     if diagn
-        fig=dreemfig;
+        fig=drEEMtoolbox.dreemfig;
         try
             WinOnTop
         catch

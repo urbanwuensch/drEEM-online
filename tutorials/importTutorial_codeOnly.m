@@ -41,7 +41,7 @@ data=tbx.ramancalibration(samples,blanks);
 tbx.addcomment(data,"Calibration Raman scans looked good, integration parameters worked well.")
 
 opt=handlescatterOptions; % or opt=handlescatter('options');
-opt.ray1 = [30 15];
+opt.ray1 = [30 10];
 opt.ram1 = [5 5];
 opt.ray2 = [15 15];
 opt.ram2 = [5 5];
@@ -58,7 +58,7 @@ tbx.addcomment(data,"First try of cutting scatter. Seems to work ok.")
 
 
 
-data=tbx.rmspikes(data);
+data=tbx.rmspikes(data,"details",true,thresholdFactor=15);
 tbx.vieweems(data)
 tbx.explorevariability(data)
 

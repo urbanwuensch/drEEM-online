@@ -146,6 +146,11 @@ classdef drEEMtoolbox < handle
             diagscatter(data)
         end
 
+        function help(fname)
+            help(fname)
+        end
+        doc(fname)
+
 
     end
 
