@@ -9,6 +9,7 @@ end
 Xname = 'X';
 plt = options.plot;
 diagn = options.details;
+dataout=data;
 
 %% Definition of peaks: B, T, A, M, C, D, E, N.
 peaks(1).name=cellstr('B');
@@ -304,7 +305,6 @@ switch plt
         %disp('No plots shown. Please check the function output to inspect the extracted values')
 end
 
-dataout=data;
 dataout.metadata=[dataout.metadata,picklist];
 
 idx=height(dataout.history)+1;

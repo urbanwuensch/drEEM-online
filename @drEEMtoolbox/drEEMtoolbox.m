@@ -76,7 +76,7 @@ classdef drEEMtoolbox < handle
             temp=data.history(n-1).backup;
             temp=drEEMbackup.convert2dataset(temp);
             temp.history=data.history(1:n-1);
-            temp.toolboxdata=data.toolboxdata;
+            %temp.toolboxdata=data.toolboxdata;
 
             if nargout==0
                 assignin("base",inputname(1),temp);

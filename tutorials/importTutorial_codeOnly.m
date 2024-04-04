@@ -58,7 +58,7 @@ tbx.addcomment(data,"First try of cutting scatter. Seems to work ok.")
 
 
 
-data=tbx.rmspikes(data,"details",true,thresholdFactor=15);
+data=tbx.rmspikes(data,"details",false,thresholdFactor=15);
 tbx.vieweems(data)
 tbx.explorevariability(data)
 
