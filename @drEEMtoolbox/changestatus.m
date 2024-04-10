@@ -1,4 +1,7 @@
 function changestatus(data)
+arguments
+    data (1,1)  {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+end
     % Get input name
     x_name = inputname(1);
     
