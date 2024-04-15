@@ -20,6 +20,11 @@ classdef drEEMtoolbox < handle
         [ modelout,neworder] = reordercomponents( model,varargin )
         passed = silentvalidation(data,fac)
 
+        function out=tbxpath
+            out=fileparts(which('drEEMtoolbox.m'));
+            out=erase(out,"@drEEMtoolbox");
+        end
+
     end
 
     % These are toolbox internal, would just be confusing if visible

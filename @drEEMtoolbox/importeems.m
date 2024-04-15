@@ -112,16 +112,16 @@ for j=1:numel(files)
     [ ~ ,iCol] = sort(colAxis,"ascend");
     [ ~ ,iRow] = sort(rowAxis,"ascend");
     x=x(iRow,iCol);
-    colAxis=colAxis(iCol);
-    rowAxis=rowAxis(iRow);
+    colAxis_sorted=colAxis(iCol);
+    rowAxis_sorted=rowAxis(iRow);
 
     % Make sure the matrix is rotated as expected (requires user expertise)
     if options.columnIsEx==true
-        ex=colAxis;
-        em=rowAxis;
+        ex=colAxis_sorted;
+        em=rowAxis_sorted;
     else
-        em=colAxis;
-        ex=rowAxis;
+        em=colAxis_sorted;
+        ex=rowAxis_sorted;
         x=x';
     end
     
