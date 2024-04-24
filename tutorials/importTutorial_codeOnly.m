@@ -40,6 +40,8 @@ tbx.addcomment(samples,"Blanks looked fine (no sign of fluorescence). Raman scat
 data=tbx.ramancalibration(samples,blanks);
 tbx.addcomment(data,"Calibration Raman scans looked good, integration parameters worked well.")
 
+data=tbx.handlescatter(data,'gui');
+% Alternative "old" way
 opt=handlescatterOptions; % or opt=handlescatter('options');
 opt.ray1 = [30 10];
 opt.ram1 = [5 5];
@@ -71,7 +73,6 @@ data=tbx.scalesamples(data,1.7);
 tbx.addcomment(data,"Scaling of EEMs since main factor is estuarine mixing.")
 
 tbx.displayhistory(data)
-tbx.undolast(data)
 
 data=tbx.scalesamples(data,1.5);
 tbx.addcomment(data,"On second thought, I adjusted the scaling option slightly to have more drastic scaling.")
@@ -128,7 +129,7 @@ data=tbx.scalesamples(data,'reverse');
 tbx.addcomment(data,"Reversed the scaling for export.")
 
 tbx.viewmodels(data)
-tbx.viewhistory(data) % All backups still here
+tbx.viewhistory(data)
 tbx.export2openfluor(data,2,'test2openfluor')
 
 save("testSaving.mat","data") % This deletes backups

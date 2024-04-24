@@ -99,7 +99,6 @@ if drEEMtoolbox.outputscenario(nargout)=="implicitOut"
     for j=1:numel(varargout)
         assignin("base",varargout{j},name(j))
         disp(['<strong> ',name(j), '" processed. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
-                
     end
     return
 end

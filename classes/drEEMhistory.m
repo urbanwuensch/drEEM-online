@@ -25,12 +25,12 @@ classdef drEEMhistory
             obj.timestamp=datetime("now");
             obj.fname=caller;
             obj.fmessage=message;
-            %obj.details=details;
+            obj.details=details;
             
             if backup.nSample~=0
                 backup=drEEMbackup.convert2backup(backup);
             end
-            obj.backup=backup;
+            %obj.backup=backup;
 
             if prev.nSample~=0
                 prev=drEEMbackup.convert2backup(prev);
