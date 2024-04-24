@@ -148,7 +148,7 @@ classdef drEEMtoolbox < handle
             explorevariability(data)
         end
         function viewscatter(data)
-            diagscatter(data)
+            viewscatter(data)
         end
 
         function help(fname)

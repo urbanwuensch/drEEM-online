@@ -96,8 +96,18 @@ if nargin==1&&not(ischar(data))
 end
 
 % Scenario: User wants GUI for decision support
-if nargin==2&&strcmp(varargin{1},'exploreoptions')
-    drEEMtoolbox.viewscatter(data)
+if nargin==2&&strcmp(varargin{1},'gui')
+    
+    % Start app with names
+    handle=viewscatter(data);
+    waitfor(handle,"finishedHere",true);
+    try
+        dataout=handle.dataTreated;
+        delete(handle.deleteThis)
+        delete(handle)
+    catch
+        error('App window closed before apply & exit button was pushed.')
+    end
     return
 end
 

@@ -20,9 +20,9 @@ arguments
         filePattern (1,:) {mustBeText}
         
         % Optional
-        options.colWave (1,:) {mustBeNumericOrLogical} = true
+        options.columnWave (1,:) {mustBeNumericOrLogical} = true
         options.rowWave (1,:) {mustBeNumericOrLogical} = true
-        options.columnIsEx (1,:) {mustBeNumericOrLogical}= true
+        options.columnIsExcitation (1,:) {mustBeNumericOrLogical}= true
         options.NumHeaderLines (1,1) {mustBeNumeric}= 0
 end
 nargoutchk(1,1)
@@ -35,8 +35,8 @@ if isempty(files)
 end
 
 % Extract axis values if not given in files
-if isnumeric(options.colWave)
-    colAxis=options.colWave;
+if isnumeric(options.columnWave)
+    colAxis=options.columnWave;
 end
 if isnumeric(options.rowWave)
     rowAxis=options.rowWave;
@@ -54,7 +54,7 @@ for j=1:numel(files)
         rowAxis=xorg(:,1);
         x=x(:,2:end);
     end
-    if options.colWave==true
+    if options.columnWave==true
         colAxis=xorg(1,:);
         x=x(2:end,:);
     end
@@ -99,7 +99,7 @@ for j=1:numel(files)
         rowAxis=xorg(:,1);
         x=x(:,2:end);
     end
-    if options.colWave==true
+    if options.columnWave==true
         colAxis=xorg(1,:);
         x=x(2:end,:);
     end
@@ -116,7 +116,7 @@ for j=1:numel(files)
     rowAxis_sorted=rowAxis(iRow);
 
     % Make sure the matrix is rotated as expected (requires user expertise)
-    if options.columnIsEx==true
+    if options.columnIsExcitation==true
         ex=colAxis_sorted;
         em=rowAxis_sorted;
     else
