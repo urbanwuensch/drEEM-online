@@ -80,7 +80,7 @@ end
 data.absWave=rcvec(wave,'column');
 data.nSample=size(data.abs,1);
 data.metadata.i=data.i;
-data.metadata.filelist=data.filelist;
+% data.metadata.filelist=data.filelist; % Disabled since it's redundant.
 
 % Validate the dataset
 data.validate(data);

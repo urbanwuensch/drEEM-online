@@ -23,11 +23,7 @@ if any(emout)||any(exout)
     message=[message,'CDOM and FDOM coverage different (subdataset applied). '];
 end
 % Remove wavelengths not covered by absorbance from DS
-dataout=drEEMtoolbox.subdataset(...
-    dataout,...
-    [],...
-    emout,...
-    exout);
+dataout=drEEMtoolbox.subdataset(dataout,outEm=emout,outEx=exout);
 
 % Calculate the IFE correction factors based on ABA
 IFCmat=ABAife(dataout.Ex,dataout.Em,[rcvec(dataout.absWave,'row');dataout.abs]);  %or use Abs.Aug here
@@ -46,11 +42,13 @@ dataout.history(idx,1)=...
     drEEMhistory.addEntry(mfilename,message,[],dataout);
 dataout.validate(dataout);
 
+disp(message)
+
 % Will only run if toolbox is set to overwrite workspace variable and user
 % didn't provide an output argument
 if drEEMtoolbox.outputscenario(nargout)=="implicitOut"
     assignin("base",inputname(1),dataout);
-    disp(['<strong> "',inputname(1), '" processed. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
+    disp(['<strong> "',char(inputname(1)), '" processed. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
     return
 end
 
@@ -150,13 +148,13 @@ for i=1:N_samples
             Aex_t=Aex(k,2);
             Aem_t=Aem(j,2);
             
-            if Aex_t>2
-                Aex_t=NaN;
-            end
-            if Aem_t>2
-                Aem_t=NaN;
-            end
-            
+            % if Aex_t>2
+            %     Aex_t=NaN;
+            % end
+            % if Aem_t>2
+            %     Aem_t=NaN;
+            % end
+            % 
             Atot(j,k)=Aex_t+Aem_t;
         end
     end

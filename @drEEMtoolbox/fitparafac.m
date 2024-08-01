@@ -6,7 +6,7 @@ arguments
 
     % Optional (but important)
     options.f ...
-        (1,:) {mustBeNumeric} = 2:7
+        (1,:) {mustBeNumeric,mustBeNonempty} = 2:7
     options.mode ...
         (1,:) {mustBeMember(options.mode,["overall","split"])} = 'overall'
 
@@ -131,64 +131,67 @@ Iter=cellfun(@(x) x(:),Iter);
 dataout=data;
 for j=1:nsplit
     %mdl=drEEMmodel;
-    for k=fac
-        idx=splitsource==j&facCalls==k;
+    for k=1:numel(fac)
+        conum=fac(k);
+
+        idx=splitsource==j&facCalls==conum;
         spltsrc = splitsource(idx);
         
         
-        i=Iter(idx);
-        e=Err(idx);
-        e(i==options.maxIteration)=NaN;
-        if all(isnan(e))
+        ihere=Iter(idx);
+        ehere=Err(idx);
+        ehere(ihere==options.maxIteration)=NaN;
+        if all(isnan(ehere))
             continue
         end
-        m=Model(idx);
-        c=corecon(idx);
-        pu=sum(isnan(e))/numel(e)*100;
-        [~,midx] = min(e,[],"omitmissing");
+        mhere=Model(idx);
+        chere=corecon(idx);
+        pu=sum(isnan(ehere))/numel(ehere)*100;
+        [~,midx] = min(ehere,[],"omitmissing");
         
         measuredF = mdata.split(spltsrc(midx)).X;
         measuredSS = sum(measuredF(:).^2,'omitnan'); % sum of sq. data
-        modelledF = nmodel(m{midx});
+        modelledF = nmodel(mhere{midx});
         
-        mdl(k,1)=drEEMmodel;
-        mdl(k,1).loads=m{midx};
+        mdl=drEEMmodel;
+        mdl.loads=mhere{midx};
 
-        for n=1:numel(mdl(k,1).loads)
-            lev=diag(mdl(k,1).loads{n}*(mdl(k,1).loads{n}'*mdl(k,1).loads{n})^-1*mdl(k,1).loads{n}');
-            mdl(k,1).leverages(1,n)={lev};
+        for n=1:numel(mdl.loads)
+            lev=diag(mdl.loads{n}*(mdl.loads{n}'*mdl.loads{n})^-1*mdl.loads{n}');
+            mdl.leverages(1,n)={lev};
         end
 
         E=measuredF-modelledF;
         E_ex = squeeze(sum(sum(E.^2,1,'omitnan'),2,'omitnan'));
         E_em = squeeze(sum(sum(E.^2,1,'omitnan'),3,'omitnan'))';
         E_sample = squeeze(sum(sum(E.^2,2,'omitnan'),3,'omitnan'));
-        mdl(k,1).sse={E_sample E_em E_ex};
+        mdl.sse={E_sample E_em E_ex};
         
-        mdl(k,1).status='not yet validated';
-        mdl(k,1).percentExplained=...
-            100 * (1 - e(midx) / measuredSS );
+        mdl.status='not yet validated';
+        mdl.percentExplained=...
+            100 * (1 - ehere(midx) / measuredSS );
 
-        mdl(k,1).error=e(midx);
-        mdl(k,1).core=c{midx};
-        mdl(k,1).percentUnconverged=pu;
+        mdl.error=ehere(midx);
+        mdl.core=chere{midx};
+        mdl.percentUnconverged=pu;
 
-        sizeF=nan(1,size(mdl(k,1).loads{1},2));
-        for l=1:size(mdl(k,1).loads{1},2)
-            modelledH=nmodel([{mdl(k,1).loads{1}(:,l)} {mdl(k,1).loads{2}(:,l)} {mdl(k,1).loads{3}(:,l)}]);
+        sizeF=nan(1,size(mdl.loads{1},2));
+        for l=1:size(mdl.loads{1},2)
+            modelledH=nmodel([{mdl.loads{1}(:,l)} {mdl.loads{2}(:,l)} {mdl.loads{3}(:,l)}]);
             sizeF(l)=100 * (1 - (sum((measuredF(:) - modelledH(:)).^2,'omitnan')) / measuredSS);
         end
-        mdl(k,1).componentContribution=sizeF;
-        mdl(k,1).initialization=options.initialization;
-        mdl(k,1).starts=options.starts;
-        mdl(k,1).convergence=options.convergence;
-        mdl(k,1).constraints=options.constraints;
-        mdl(k,1).toolbox=options.toolbox;
-    end
-    if nsplit==1
-        dataout.models=mdl;
-    elseif nsplit>1
-        dataout.split(j).models=mdl;
+        mdl.componentContribution=sizeF;
+        mdl.initialization=options.initialization;
+        mdl.starts=options.starts;
+        mdl.convergence=options.convergence;
+        mdl.constraints=options.constraints;
+        mdl.toolbox=options.toolbox;
+    
+        if nsplit==1
+            dataout.models(conum,1)=mdl;
+        elseif nsplit>1
+            dataout.split(j).models(conum,1)=mdl;
+        end
     end
 end
 
@@ -405,6 +408,7 @@ end
 
 %%
 function [out] = dreemparafac(tensor,f,opt,tbox,initvalues)
+vec=@(x) x(:);
 % Start the PARAFAC model. PLS_toolbox reads a pref-file, which is tricky if
 % that's done in parallel. This here is to catch errors related to that.
 if opt.init==0

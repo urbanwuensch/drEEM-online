@@ -166,7 +166,7 @@ data.nEx=numel(data.Ex);
 data.nEm=numel(data.Em);
 data.nSample=size(data.X,1);
 data.metadata.i=data.i;
-data.metadata.filelist=data.filelist;
+% data.metadata.filelist=data.filelist; % Disabled since it's redundant.
 
 % Validate the dataset to make sure it's good to go (class-specific method)
 data.validate(data);

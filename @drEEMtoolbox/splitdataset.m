@@ -45,6 +45,7 @@ for j=1:options.numsplit
     dataout.split(j,1)=drEEMdataset.rmsamples(data,out);
     dataout.split(j,1).history=...
         drEEMhistory.addEntry(mfilename,'created dataset through splitting',options,drEEMdataset);
+    dataout.split(j,1).models=drEEMmodel;
 end
 idx=height(dataout.history)+1;
 dataout.history(idx,1)=...

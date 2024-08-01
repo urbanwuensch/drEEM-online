@@ -21,13 +21,15 @@ clearvars absorbance
 
 %% Metadata integration
 samples.filelist=erase(samples.filelist,{' (01)'});
+blanks.filelist=erase(blanks.filelist,{' (01)'});
+
 samples=tbx.associatemetadata(samples,"metadata.xlsx",'sampleId');
 tbx.addcomment(samples,"Not 100% of samples matched. Here, one can make a comment to tell myself to investigate this.")
 tbx.addcomment(samples,"Now here, I really had something interesting to say")
 
 
 %% All the processing before PARAFAC
-samples=tbx.processabsorbance(samples);
+samples=tbx.processabsorbance(samples,"baseWave",600);
 tbx.addcomment(samples,"main issue addressed was the absorbance baseline offset")
 
 
@@ -59,13 +61,12 @@ data=tbx.handlescatter(data,opt);
 tbx.addcomment(data,"First try of cutting scatter. Seems to work ok.")
 
 
-
 data=tbx.rmspikes(data,"details",false,thresholdFactor=15);
 tbx.vieweems(data)
 tbx.explorevariability(data)
 
 %% Dataset modifications prior to PARAFAC
-data=tbx.subdataset(data,[],data.Em<310|data.Em>600,data.Ex>500);
+data=tbx.subdataset(data,outEm=data.Em<310|data.Em>600,outEx=data.Ex>500);
 tbx.addcomment(data,"Trimmed the edges of the EEM to focus on sensible areas")
 
 
@@ -78,17 +79,35 @@ data=tbx.scalesamples(data,1.5);
 tbx.addcomment(data,"On second thought, I adjusted the scaling option slightly to have more drastic scaling.")
 
 
-data = tbx.zapnoise(data,5,[350 370],275);
+data = tbx.zapnoise(data,4,[350 370],275);
 tbx.addcomment(data,"Demonstration of the zapnoise function")
 
 
 data=tbx.scalesamples(data,1.5);
 tbx.addcomment(data,"On second thought, I adjusted the scaling option slightly")
 
-data=tbx.subdataset(data,1,[],[]);
+data=tbx.subdataset(data,outSample=1);
 tbx.addcomment(data,"Demonstration that deleting samples will also delete unscaled samples in the backup.")
 
 %% PARAFAC part
+data=tbx.fitparafac(data,f=2, ...
+    starts=2, ...
+    convergence=1e-4,...
+    parallelization=false, ...
+    mode="overall");
+
+data=tbx.fitparafac(data,f=2:3, ...
+    starts=2, ...
+    convergence=1e-4,...
+    parallelization=false, ...
+    mode="overall");
+
+data=tbx.fitparafac(data,f=5:6, ...
+    starts=2, ...
+    convergence=1e-4,...
+    parallelization=false, ...
+    mode="overall");
+
 data=tbx.fitparafac(data,f=2:6, ...
     starts=2, ...
     convergence=1e-4,...
@@ -115,7 +134,7 @@ tbx.addcomment(data,"First try at splitting. Let's see if this works.")
 
 data=tbx.fitparafac(data,f=2:6, ...
     starts=4, ...
-    convergence=1e-6,...
+    convergence=1e-2,...
     parallelization=false, ...
     mode="split");
 tbx.addcomment(data,"Models in all the splits (the overall model is there already).")

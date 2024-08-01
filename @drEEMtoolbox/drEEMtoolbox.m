@@ -61,6 +61,9 @@ classdef drEEMtoolbox < handle
         data = importabsorbance(filePattern,options)
         dataout = associatemetadata(data,pathtofile,metadatakey,datakey)
 
+        dataout=upgradedataset(data,atypicalFieldnames)
+
+
         % Status-specific functions
         changestatus(data)
 
@@ -106,7 +109,7 @@ classdef drEEMtoolbox < handle
         dataout = subtractblanks(samples,blanks)
         dataout = ramancalibration(samples,blanks,options)
         dataout = handlescatter(data,varargin)
-        dataout = subdataset(data,outSample,outEm,outEx)
+        dataout = subdataset(data,options)
         dataout = zapnoise(data,sampleIdent,emRange,exRange)
         dataout = scalesamples(data,option)
         dataout = rmspikes(data,name_value)

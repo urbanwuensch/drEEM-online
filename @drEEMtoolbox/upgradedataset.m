@@ -1,8 +1,8 @@
 function dataout = upgradedataset(data,atypicalFieldnames)
 
 arguments
-    data
-    atypicalFieldnames (:,2) cell = []
+    data (1,1) {mustBeA(data,'struct')}
+    atypicalFieldnames (:,2) cell = {}
 end
 
 dataout=drEEMdataset.create;

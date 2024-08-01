@@ -16,8 +16,6 @@ arguments
         (1,1) {mustBeNumeric} = 378
     options.iEnd ...
         (1,1) {mustBeNumeric} = 424
-    options.plot ...
-        (1,:) {mustBeNumericOrLogical} = true
 end
 % Experimental feature; overwrite workspace variable, needs no outputarg check
 if drEEMtoolbox.outputscenario(nargout)=="explicitOut"

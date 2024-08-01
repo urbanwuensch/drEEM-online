@@ -12,6 +12,20 @@ arguments
         options.extrapolate (1,:) {mustBeNumericOrLogical} = true
 end
 
+% Check if the function has already been run
+idx=drEEMhistory.searchhistory(data.history,'processabsorbance','first');
+if not(isempty(idx))
+    warning(['"processabsorbance has already been run before.' ...
+        ' It is recommended to chose appropriate settings and only' ...
+        ' run this function once."'])
+    optionsbefore=data.history(idx).details;
+    
+    if isequal(options,optionsbefore)
+        error('Identical options to a previous execution detected. Exiting...')
+    end
+   
+end
+
 % Experimental feature; overwrite workspace variable, needs no outputarg check
 if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
     nargoutchk(1,1)
@@ -151,7 +165,7 @@ dataout.history(idx,1)=...
 
 if drEEMtoolbox.outputscenario(nargout)=="implicitOut"
     assignin("base",inputname(1),dataout);
-    disp(['<strong> "',inputname(1), '" processed. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
+    disp(['<strong> "',char(inputname(1)), '" processed. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
     return
 end
 

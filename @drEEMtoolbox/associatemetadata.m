@@ -5,6 +5,11 @@ arguments
     metadatakey (1,:) {mustBeText}
     datakey (1,:) {mustBeText} = 'filelist';
 end
+% If the default value for datakey is used, transfer the filelist to the
+% metadata.
+if matches(datakey,'filelist')
+    data.metadata.filelist=data.filelist;
+end
 
 if not(istable(pathtofile))
     try mustBeFile(pathtofile)
@@ -203,7 +208,7 @@ dataout.validate(dataout);
 
 if drEEMtoolbox.outputscenario(nargout)=="implicitOut"
     assignin("base",inputname(1),dataout);
-    disp(['<strong> "',inputname(1), '" processed. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
+    disp(['<strong> "',char(inputname(1)), '" processed. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
     return
 end
 
@@ -216,9 +221,12 @@ function mdnew = metadataconverter(metadata)
     for j=1:numel(metadata.Properties.VariableNames)
         here=metadata.Properties.VariableNames{j};
         md=metadata.(here);
+        % Removes columns with the same information (i.e. always the same)
+        % Currently not used (but the statement largely remains to catch
+        % different datatypes in a column.
         try
             if numel(unique(md))==1
-                continue
+                %continue
             end
         catch
             % different data types (nogo)
@@ -230,7 +238,7 @@ function mdnew = metadataconverter(metadata)
                 alltype=cellfun(@(x) class(x),md,'UniformOutput',false);
                 celltypes=unique(alltype);
                 if numel(celltypes)>1
-                    warning(['Variable "',here,'" consists of different datatypes and will not be included for plotting'])
+                    warning(['Variable "',here,'" consists of different datatypes and will not be included.'])
                     continue
                 else
                     celltypes=celltypes{1};

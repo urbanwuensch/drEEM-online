@@ -23,8 +23,39 @@ s_em=setdiff(samples.Em,C);
 b_em=setdiff(blanks.Em,C);
 
 % subdataset call (will not do anything if wavelengths were identical)
-samples_mod=drEEMtoolbox.subdataset(samples,[],ismember(samples.Em,s_em),ismember(samples.Ex,s_ex));
-blanks_mod=drEEMtoolbox.subdataset(blanks,[],ismember(blanks.Em,b_em),ismember(blanks.Ex,b_ex));
+samples_mod=drEEMtoolbox.subdataset(samples, ...
+    outEm=ismember(samples.Em,s_em),outEx=ismember(samples.Ex,s_ex));
+blanks_mod=drEEMtoolbox.subdataset(blanks, ...
+    outEm=ismember(blanks.Em,b_em),outEx=ismember(blanks.Ex,b_ex));
+
+[C,is,ib] = intersect(samples_mod.filelist,blanks_mod.filelist);
+s_miss=setdiff(1:samples_mod.nSample,is);
+b_miss=setdiff(1:blanks_mod.nSample,ib);
+
+if not(isempty(b_miss))||not(isempty(s_miss))
+    message=['Cannot go ahead since the filenames between both datasets don''t match.\n' ...
+        'Troubleshooting information follows below:\n\n'];
+    message=[message,'Number of samples: ',num2str(samples_mod.nSample),...
+        ', number of blanks: ',num2str(blanks_mod.nSample),'\n\n'];
+    
+    if not(isempty(b_miss))
+        message=[message,'\nThe following blanks have no corresponding sample:\n'];
+        for j=1:numel(b_miss)
+            message=[message,blanks_mod.filelist{b_miss(j)}];
+        end
+    end
+
+    if not(isempty(s_miss))
+        message=[message,'\nThe following samples have no corresponding blanks:\n'];
+        for j=1:numel(s_miss)
+            message=[message,samples_mod.filelist{s_miss(j)}];
+        end
+    end
+
+    message=[message,'\n\nIt is recommended to use the "alignsamples" function prior to the execution of "subtractblanks" to avoid this issue.'];
+
+    error(sprintf(message))
+end
 
 % Carry out the subtraction, but only if final dimension check was passed.
 if all(size(samples_mod.X)==size(blanks_mod.X))

@@ -1,16 +1,18 @@
-function dataout=subdataset(data,outSample,outEm,outEx)
+function dataout=subdataset(data,options)
 
 arguments
     data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
-    outSample (1,:) {mustBeNumericOrLogical} = []
-    outEm (1,:) {mustBeNumericOrLogical} = []
-    outEx (1,:) {mustBeNumericOrLogical} = []
+    options.outSample (1,:) {mustBeNumericOrLogical(options.outSample)} = false
+    options.outEm (1,:) {mustBeA(options.outEm,'logical')} = false
+    options.outEx (1,:) {mustBeA(options.outEx,'logical')} = false
 end
 % Experimental feature; overwrite workspace variable, needs no outputarg check
 if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
     nargoutchk(1,1)
 end
-
+outSample=options.outSample;
+outEm=options.outEm;
+outEx=options.outEx;
 % Validation of outSample input (not possible in the arguments block)
 try 
     mustBeLessThanOrEqual(outSample,data.nSample)
@@ -36,7 +38,8 @@ end
 idx=drEEMhistory.searchhistory(data.history,'scalesamples','first');
 if not(isempty(idx))
     previouseem=data.history(idx).previous;
-    previouseem=drEEMtoolbox.subdataset(previouseem,outSample,outEm,outEx);
+    previouseem=drEEMtoolbox.subdataset(previouseem,...
+        outSample=outSample,outEm=outEm,outEx=outEx);
     data.history(idx).previous=previouseem;
 end
 
@@ -50,13 +53,13 @@ dataout=data;
 % They will not be subset (one could do that) because the dataset behind the fit has changed
 % and the model is no longer representing the dataset.
 
-if not(isempty(outSample))
+if not(all(outSample==false))
     dataout=drEEMdataset.rmsamples(dataout,outSample);
 end
-if not(isempty(outEm))
+if not(all(outEm==false))
     dataout=drEEMdataset.rmemission(dataout,outEm);
 end
-if not(isempty(outEx))
+if not(all(outEx==false))
     dataout=drEEMdataset.rmexcitation(dataout,outEx);
 end
 

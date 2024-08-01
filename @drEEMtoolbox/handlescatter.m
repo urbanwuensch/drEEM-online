@@ -24,7 +24,7 @@ function dataout = handlescatter(data,varargin)
 % obtained by calling 'opt = handlescatter('options')'. The values in the
 % fields of opt can then be modified as desired.
 %
-% NEW: with opt = 'exploreoptions', an app allows you to use a GUI
+% NEW: with opt = 'gui', an app allows you to use a GUI
 % interface to explore options
 % IMPORTANT: handlescatter accepts inputs just like they used to be provided with 
 % smootheem. If you are used to providing inputs the "old" way, handlescatter
@@ -87,7 +87,7 @@ end
 
 % Scenario: No options provided
 if nargin==1&&not(ischar(data))
-    options=defaultoptions;
+    options=handlescatterOptions;
     disp(' ')
     warning(sprintf(['No options were provided, the defaults were assumed.\n'...
         '     Please inspect the result and see if adjustments are necessary.\n'...
@@ -244,7 +244,7 @@ dataout.status=...
     drEEMstatus.change(dataout.status,"scatterTreatment","applied by toolbox");
 %% Plotting
 
-if strcmp(options.plot,'on')
+if options.plot
     if data.toolboxdata.uifig
         fh=drEEMtoolbox.dreemuifig;
     else

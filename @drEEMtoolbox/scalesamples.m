@@ -18,7 +18,7 @@ if isnumeric(option)
     mustBePositive(option)
     mustBeLessThanOrEqual(option,50)
     opmode='apply';
-elseif ischar(option)
+elseif ischar(option)|isstring(option)
     mustBeMember(option,["reverse","help"])
     if matches(option,'reverse')
         opmode='reverse';
@@ -34,16 +34,20 @@ end
 % If scaling operation is repeated (i.e. dataset was already scaled),
 % restore the backup and scale that version (it is up to date!).
 pidx=drEEMhistory.searchhistory(data.history,"scalesamples","first");
-if not(isempty(pidx))&&matches(opmode,'apply')
-    unscaled=data.history(pidx).previous;
-    data.X=unscaled.X;
-    
-    % But let's document what happened!
-    idx=height(data.history)+1;
-    data.history(idx,1)=...
-        drEEMhistory.addEntry(mfilename,...
-        'Repeated scaling; restored unscaled .X',[],data,unscaled);
-    warning('FYI, repeated scaling detected. Original was restored and used for this call.')
+lastidx=drEEMhistory.searchhistory(data.history,"scalesamples","last");
+if not(isempty(pidx))&&not(isempty(lastidx))
+    lastmessage=data.history(lastidx).fmessage;
+    if not(isempty(pidx))&&matches(opmode,'apply')&&not(contains(lastmessage,'reversed'))
+        unscaled=data.history(pidx).previous;
+        data.X=unscaled.X;
+        
+        % But let's document what happened!
+        idx=height(data.history)+1;
+        data.history(idx,1)=...
+            drEEMhistory.addEntry(mfilename,...
+            'Repeated scaling; restored unscaled .X',[],data,unscaled);
+        warning('FYI, repeated scaling detected. Original was restored and used for this call.')
+    end
 end
 
 switch opmode
@@ -79,6 +83,13 @@ switch opmode
     case 'reverse'
         dataout=data;
         f=drEEMdataset.modelsWithContent(dataout);
+        idx=drEEMhistory.searchhistory(data.history,'scalesamples','first');
+
+        if isempty(idx)
+            error('It appears that this dataset has not been scaled before. Exiting...')
+        end
+        Xnotscaled=data.history(idx).previous.X;
+        dataout.X=Xnotscaled;
         for n=1:numel(f)
             loads=data.models(f(n)).loads;
             cc=data.models(f(n)).convergence;
@@ -93,14 +104,13 @@ switch opmode
                 error(['unknown constraint: ',char(const)])
             end
 
-            idx=drEEMhistory.searchhistory(data.history,'scalesamples','first');
-            Xnotscaled=data.history(idx).previous.X;
+            
             
             forced=nwayparafac(Xnotscaled,f(n),[cc 2 0 -1 0 5000],constr,...
                 {rand(data.history(idx).backup.nSample,f(n));loads{2};loads{3}},[0 1 1]);
             dataout.models(f(n)).loads = forced;
-            dataout.X=Xnotscaled;
-            end
+           
+        end
         disp('Scaling reversed.')
         dataout.status=drEEMstatus.change(dataout.status,...
                 "signalScaling","reversed");
@@ -118,6 +128,7 @@ switch opmode
         else
             scaleeemdiag(data,[1 3])
         end
+        return
     otherwise
         error('Input to ''intensity'' (second input) not understood.')
 end
@@ -202,7 +213,7 @@ end
 strength=[1 nthrootspec];
 
 close all
-fig=dreemfig;
+fig=drEEMtoolbox.dreemfig;
 tiledlayout(3,4,'padding','tight','TileSpacing','tight')
 for i=1:numel(peakletter)
     nexttile

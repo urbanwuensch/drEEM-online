@@ -26,7 +26,8 @@ for j=1:size(combs,1)
     % Store the common names for later
     cmn{j}=C;
     % Store the names of the comparison (could be useful, not used atm).
-    comparison(j,1)=categorical(cellstr([char(name(combs(j,1))),' vs. ',char(name(combs(j,2)))]));
+    comparison(j,1)= ...
+        categorical(cellstr([char(name(combs(j,1))),' vs. ',char(name(combs(j,2)))]));
 end
 
 % A bit of transformation to obtain the filenames that occur
@@ -34,7 +35,7 @@ end
 cmn=vertcat(cmn{:});
 cmn=cmn(:);
 cmn=categorical(cmn);
-cmn=cmn(countcats(cmn)==numel(varargin));
+cmn=cmn(countcats(cmn)==size(combs,1));
 
 % This loop sorts the files and deletes missing samples
 for j=1:numel(varargin)
@@ -46,7 +47,7 @@ for j=1:numel(varargin)
 
     % Now delete the sample information in all fields of interest.
     flds=fieldnames(varargin{j});
-    flds(matches(flds,{'history','Ex','Em','Abs_wave'}))=[]; % These won't be touched
+    flds(matches(flds,{'history','Ex','Em','absWave'}))=[]; % These won't be touched
     sel=[];cnt=1;
     for k=1:numel(flds)
         if size(varargin{j}.(flds{k}),1)==varargin{j}.nSample
@@ -97,8 +98,8 @@ end
 
 if drEEMtoolbox.outputscenario(nargout)=="implicitOut"
     for j=1:numel(varargout)
-        assignin("base",varargout{j},name(j))
-        disp(['<strong> ',name(j), '" processed. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
+        assignin("base",name(j),varargout{j})
+        disp(['<strong> "',char(name(j)), '" processed. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
     end
     return
 end
