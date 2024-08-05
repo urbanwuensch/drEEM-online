@@ -55,10 +55,10 @@ classdef drEEMdataset
 
         function data = saveall(data)
             error('This function is currently under development and does not behave as intended. Exiting...')
-            varname=inputname(1);
-            eval([varname,'=data;'])
-            save(['drEEMdataset_',char(datetime("today")),'_inclBackupus','.mat'],varname)
-            disp('drEEMdataset was saved including backups.')
+            % varname=inputname(1);
+            % eval([varname,'=data;'])
+            % save(['drEEMdataset_',char(datetime("today")),'_inclBackupus','.mat'],varname)
+            % disp('drEEMdataset was saved including backups.')
         end
 
         function validate(data)
@@ -250,7 +250,7 @@ classdef drEEMdataset
 
         function mustBeInRangeEx(data,exwave)
             for j=1:numel(exwave)
-                if data.Em(end)<=exwave(j)||data.Ex(1)>=exwave(j)
+                if data.Ex(end)<exwave(j)||data.Ex(1)>exwave(j)
                     error(['Excitation wavelength out of range for data. Range: ',num2str(data.Ex(1)),' - ',num2str(data.Ex(end)),' nm'])
                 end
             end

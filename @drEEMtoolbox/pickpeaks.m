@@ -5,7 +5,10 @@ arguments
     options.plot {mustBeNumericOrLogical} = true
     options.details  {mustBeNumericOrLogical} = false
 end
-
+% Experimental feature; overwrite workspace variable, needs no outputarg check
+if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
+    nargoutchk(1,3)
+end
 Xname = 'X';
 plt = options.plot;
 diagn = options.details;
@@ -131,7 +134,7 @@ FrI=nan(1,data.nSample);
 BIX=nan(1,data.nSample);
 HIX=nan(1,data.nSample);
 if diagn
-    dfig=dreemfig;
+    dfig=drEEMtoolbox.dreemfig;
     set(dfig,'units','normalized','pos',[0.1344    0.2537    0.7625    0.3194])
     set(dfig,'name','pickPeaks.m - raw vs. smoothed fluorescence for indicies')
 end
@@ -275,8 +278,8 @@ end
 
 switch plt
     case true
-        fig1=dreemfig;
-        set(fig1,'units','normalized','Name','pickPeaks: Extracted intensities of prefefined fluorescence peaks','pos',[0.2594    0.2296    0.4448    0.5130])
+        fig1=drEEMtoolbox.dreemfig;
+        set(fig1,'units','normalized','Name','pickPeaks: Extracted intensities of predefined fluorescence peaks','pos',[0.2594    0.2296    0.4448    0.5130])
         subplot(2,1,1)
         for n=1:numel(peaks)
             plot(Cpeak(:,n),'LineWidth',1.5),hold on
@@ -300,11 +303,13 @@ switch plt
         xlabel('# of sample in dataset')
         hold off
         axis tight
-        dreemfig(fig1);
+        
     otherwise
         %disp('No plots shown. Please check the function output to inspect the extracted values')
 end
-
+[C,ia,ib]=intersect(dataout.metadata.Properties.VariableNames, ...
+    picklist.Properties.VariableNames);
+dataout.metadata(:,ia)=[];
 dataout.metadata=[dataout.metadata,picklist];
 
 idx=height(dataout.history)+1;
@@ -313,6 +318,14 @@ dataout.history(idx,1)=...
 
 dataout.validate(dataout);
 
+
+% Will only run if toolbox is set to overwrite workspace variable and user
+% didn't provide an output argument
+if drEEMtoolbox.outputscenario(nargout)=="implicitOut"
+    assignin("base",inputname(1),dataout);
+    disp(['<strong> "',char(inputname(1)), '" processed. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
+    return
+end
 
 end
 

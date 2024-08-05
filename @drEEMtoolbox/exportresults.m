@@ -85,9 +85,11 @@ disp('    Finished spreadsheet: Peaks & indicies')
 % Models overview
 mover=drEEMmodel.convert2table(data.models(fs(1)));
 mover.loads=[];mover.leverages=[];mover.sse=[];mover.componentContribution=[];
+mover.status=string(mover.status);
 for j=2:numel(fs)
     mhere=drEEMmodel.convert2table(data.models(fs(j)));
     mhere.loads=[];mhere.leverages=[];mhere.sse=[];mhere.componentContribution=[];
+    mhere.status=string(mhere.status)
     mover=[mover;mhere];
 end
 writetable(mover,filename,"FileType","spreadsheet",...
@@ -125,7 +127,7 @@ load.sample=data.Ex;
 for j=1:size(FMax,2)
     load.(['C',num2str(j)])=loads{3}(:,j);
 end
-writetable(scoretable,filename,"FileType","spreadsheet",...
+writetable(load,filename,"FileType","spreadsheet",...
     "WriteMode","overwritesheet","Sheet",[num2str(f),'C ex loadings'])
 
 load=table;
@@ -133,7 +135,7 @@ load.sample=data.Em;
 for j=1:size(FMax,2)
     load.(['C',num2str(j)])=loads{2}(:,j);
 end
-writetable(scoretable,filename,"FileType","spreadsheet",...
+writetable(load,filename,"FileType","spreadsheet",...
     "WriteMode","overwritesheet","Sheet",[num2str(f),'C em loadings'])
 disp('    Finished spreadsheets for selected PARAFAC model (scores and loadings)')
 disp('<strong> Success! Done with result export.</strong>')

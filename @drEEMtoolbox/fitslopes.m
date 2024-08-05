@@ -11,6 +11,10 @@ arguments
 
 end
 
+% Experimental feature; overwrite workspace variable, needs no outputarg check
+if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
+    nargoutchk(1,4)
+end
 
 LRange  = options.LongRange;
 Rsq = options.rsq;
@@ -233,6 +237,11 @@ if not(quiet)
 end
 
 dataout=data;
+
+[C,ia,ib]=intersect(dataout.metadata.Properties.VariableNames, ...
+    slopes.Properties.VariableNames);
+dataout.metadata(:,ia)=[];
+
 dataout.metadata=[dataout.metadata,slopes];
 
 idx=height(dataout.history)+1;
@@ -246,7 +255,7 @@ dataout.validate(dataout);
 switch diagn
     case true
         close gcf
-        fig2=dreemfig;
+        fig2=drEEMtoolbox.dreemfig;
         set(fig2,'units','normalized')
         set(fig2,'pos',[0.1365    0.2926    0.6490    0.2852])
         movegui('center')
@@ -258,7 +267,7 @@ switch diagn
                 yyaxis left
                 cla
                 set(gca,'YColor','k')
-                plot(data.Abs_wave,data.Abs(n,:),'LineWidth',0.5,'Color',[0.5 0.5 0.5]),hold on
+                plot(data.absWave,data.abs(n,:),'LineWidth',0.5,'Color',[0.5 0.5 0.5]),hold on
                 plot(waveSel{1},absSel{1}(:,n),'Color','k','LineStyle','-','LineWidth',1.5)
                 plot(waveSel{1},model(n,:),'Color',lines(1),'LineStyle','-')
                 ylabel('Absorbance'),xlabel('Wavelength (nm)')
@@ -285,7 +294,7 @@ switch diagn
                 yyaxis left
                 cla
                 set(gca,'YColor','k')
-                plot(data.Abs_wave,data.Abs(n,:),'LineWidth',0.5,'Color',[0.5 0.5 0.5]),hold on
+                plot(data.absWave,data.abs(n,:),'LineWidth',0.5,'Color',[0.5 0.5 0.5]),hold on
                 plot(waveSel{2},exp(absSel{2}(n,:)),'Color','k','LineStyle','-','LineWidth',1.5),hold on
                 plot(waveSel{2},exp(feval(shortfit{n},waveSel{2})),'Color',lines(1),'Marker','none','LineStyle','-')
                 xlim([250 320])
@@ -313,7 +322,7 @@ switch diagn
                 yyaxis left
                 cla
                 set(gca,'YColor','k')
-                plot(data.Abs_wave,data.Abs(n,:),'LineWidth',0.5,'Color',[0.5 0.5 0.5]);hold on
+                plot(data.absWave,data.abs(n,:),'LineWidth',0.5,'Color',[0.5 0.5 0.5]);hold on
                 plot(waveSel{3},exp(absSel{3}(n,:)),'Color','k','LineStyle','-','LineWidth',1.5);hold on
                 plot(waveSel{3},exp(feval(longfit{n},waveSel{3})),'Color',lines(1),'Marker','none','LineStyle','-');
                 xlim([310 450])
@@ -342,7 +351,7 @@ switch diagn
                 line(nan,nan)
                 legend('No fit possible')
             end
-            dreemfig(fig2);
+            
             pause
         end
 end
@@ -350,7 +359,7 @@ end
 switch plt
     case true
 
-    fig1=dreemfig;
+    fig1=drEEMtoolbox.dreemfig;
     set(fig1,'units','normalized','Name','slopefit: CDOM spectral slopes','pos',[0.3542    0.3648    0.2917    0.2000])
 
     plot(1:data.nSample,slopes.exp_slope_microm,'Color','k')
@@ -363,6 +372,14 @@ switch plt
     title('CDOM spectral slopes')
     xlim([0 data.nSample])
     legend(['S_{',num2str(LRange(1)),'-',num2str(LRange(2)),'nm}'],'S_{275-295nm}','S_{350-400nm}','location','eastoutside')
+end
+
+% Will only run if toolbox is set to overwrite workspace variable and user
+% didn't provide an output argument
+if drEEMtoolbox.outputscenario(nargout)=="implicitOut"
+    assignin("base",inputname(1),dataout);
+    disp(['<strong> "',char(inputname(1)), '" processed. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
+    return
 end
 
 

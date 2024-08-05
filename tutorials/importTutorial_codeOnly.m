@@ -42,7 +42,7 @@ tbx.addcomment(samples,"Blanks looked fine (no sign of fluorescence). Raman scat
 data=tbx.ramancalibration(samples,blanks);
 tbx.addcomment(data,"Calibration Raman scans looked good, integration parameters worked well.")
 
-data=tbx.handlescatter(data,'gui');
+% data=tbx.handlescatter(data,'gui');
 % Alternative "old" way
 opt=handlescatterOptions; % or opt=handlescatter('options');
 opt.ray1 = [30 10];
@@ -59,6 +59,8 @@ opt.plot = false;
 opt.imethod = 'inpaint';
 data=tbx.handlescatter(data,opt);
 tbx.addcomment(data,"First try of cutting scatter. Seems to work ok.")
+
+data = tbx.zapnoise(data,4,[350 370],240);
 
 
 data=tbx.rmspikes(data,"details",false,thresholdFactor=15);
@@ -110,7 +112,7 @@ data=tbx.fitparafac(data,f=5:6, ...
 
 data=tbx.fitparafac(data,f=2:6, ...
     starts=2, ...
-    convergence=1e-4,...
+    convergence=1e-2,...
     parallelization=false, ...
     mode="overall");
 tbx.addcomment(data,"Outliertest equivalent")
@@ -132,7 +134,7 @@ tbx.addcomment(data,"Models loook fine for demo purpose.")
 data=tbx.splitdataset(data);
 tbx.addcomment(data,"First try at splitting. Let's see if this works.")
 
-data=tbx.fitparafac(data,f=2:6, ...
+data=tbx.fitparafac(data,f=[2 6], ...
     starts=4, ...
     convergence=1e-2,...
     parallelization=false, ...
@@ -141,11 +143,13 @@ tbx.addcomment(data,"Models in all the splits (the overall model is there alread
 
 tbx.viewmodels(data) % Validation results already visible here
 
-data=tbx.splitvalidation(data,5); % Just for visualization
+data=tbx.splitvalidation(data,2); % Just for visualization
 tbx.addcomment(data,"Validation successful!")
 
 data=tbx.scalesamples(data,'reverse');
 tbx.addcomment(data,"Reversed the scaling for export.")
+
+tbx.exportresults(data,'test',2)
 
 tbx.viewmodels(data)
 tbx.viewhistory(data)

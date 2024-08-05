@@ -132,6 +132,7 @@ classdef drEEMtoolbox < handle
         % Visualization (incl. app workarounds)
         f=dreemfig
         f=dreemuifig
+        spectralvariance(data)
         function vieweems(data)
             vieweems(data)
         end

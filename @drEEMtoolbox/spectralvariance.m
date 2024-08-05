@@ -37,11 +37,11 @@ function [cdom,fdom] = spectralvariance(data)
 %%
 
 
-if isfield(data,'X')&&isfield(data,'Abs')
+if isfield(data,'X')&&isfield(data,'abs')
     pltcase=1;
-elseif isfield(data,'X')&&~isfield(data,'Abs')
+elseif isfield(data,'X')&&~isfield(data,'abs')
     pltcase=2;
-elseif isfield(data,'Abs')&&~isfield(data,'X')
+elseif isfield(data,'abs')&&~isfield(data,'X')
     pltcase=3;
 else
     pltcase=10;

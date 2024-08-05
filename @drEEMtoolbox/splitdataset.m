@@ -24,12 +24,27 @@ end
 if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
     nargoutchk(1,1)
 end
-
-splitIdent=repmat((1:options.numsplit)',ceil(data.nSample./options.numsplit),1);
-splitIdent=splitIdent(1:data.nSample);
+% This bit is doing the splitting
 switch options.stype
-    case "alternating"
-        % splitIdent is already formatted like this
+    case {"alternating","random","contiguous"}
+        % #1 Create an alternating-type split allocation by repeating 1:nSplit
+        % until number of samples is exceeded.
+        % This can be used by several methods
+        splitIdent=repmat((1:options.numsplit)',ceil(data.nSample./options.numsplit),1);
+        % #2 since nSample can be exceeded, truncate the identity vector to nSample
+        splitIdent=splitIdent(1:data.nSample);
+    case "exact"
+        groups = categorical(data.metadata.(options.bysort));
+        grps=categories(groups);
+        splitIdent=nan(data.nSample,1);
+        for j=1:numel(grps)
+            idx=groups==grps{j};
+            splitIdent(idx,1)=j;
+        end
+        options.numsplit=numel(grps);
+end
+
+switch options.stype
     case "random"
         mixer=randperm(data.nSample);
         splitIdent=splitIdent(mixer);

@@ -6,13 +6,17 @@ arguments
 end
 drEEMdataset.mustBeModel(data,fac)
 
+if isempty(data.split)
+    error('data.split is empty. Please read the documentation to followt the workflow of the toolbox.')
+end
+
 % Experimental feature; overwrite workspace variable, needs no outputarg check
 if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
     nargoutchk(1,1)
 end
 
 %% Input argument parsing and initial checks
-narginchk(2,7)
+narginchk(2,2)
 overallModel=data;
 nSplit=numel(data.split);
 splitComparisons=nchoosek(1:nSplit,2);
@@ -109,9 +113,9 @@ end
 
 %% Step 5: Plot
 if data.toolboxdata.uifig
-    hf=dreemuifig;
+    hf=drEEMtoolbox.dreemuifig;
 else
-    hf=dreemfig;
+    hf=drEEMtoolbox.dreemfig;
 end
 set(hf,'Units','normalized');
 pos=get(hf,'Position');
@@ -228,7 +232,7 @@ end
 % didn't provide an output argument
 if drEEMtoolbox.outputscenario(nargout)=="implicitOut"
     assignin("base",inputname(1),dataout);
-    disp(['<strong> "',inputname(1), '" processed. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
+    disp(['<strong> "',char(inputname(1)), '" processed. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
     return
 end
 
