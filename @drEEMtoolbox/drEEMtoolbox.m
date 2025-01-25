@@ -101,6 +101,9 @@ classdef drEEMtoolbox < handle
         function displayhistory(data)
             drEEMdataset.displayhistory(data)
         end
+        
+        % Benchmark the system performance
+        [singlescore,multiscore]=benchmark
 
         % Data processing
         varargout = alignsamples(varargin)

@@ -204,8 +204,7 @@ switch funmode
     ips=sum(Iter)/ttot;
     if ~strcmp(options.consoleoutput,'none')
         disp(' ')
-        disp('Finished.')
-        disp(['Time elaped: ',num2str(round(ttot./60,2)),'min. Iterations per second: ',num2str(round(ips))])
+        disp(['Done. This took: ',num2str(round(ttot./60,2)),'min. Iterations per second (parallelized): ',num2str(round(ips))])
         disp(' ');
     end
  case 'sequential'
@@ -723,11 +722,11 @@ while numCompleted < numtry
         ttc(completedIdx)=datetime(futures(completedIdx).FinishDateTime,'TimeZone','Europe/London')-...
             datetime(futures(completedIdx).StartDateTime,'TimeZone','Europe/London');
         if ~strcmp(consoleoutput,'none')||strcmp(consoleoutput,'minimum')
-            disp(['mod-id ',sprintf('%03d',completedIdx),' done. | #it.: ',...
-                sprintf('%-*s',4,num2str(Iter{completedIdx,1})),' | err.: ',num2str(Err{completedIdx,1}),...
+            disp(['# ',sprintf('%03d',completedIdx),' done | #iter: ',...
+                sprintf('%-*s',4,num2str(Iter{completedIdx,1})),...
                 ' | core%: ',num2str(round(corecon{completedIdx,1})),...
                 ' | time: ',char(ttc(completedIdx)),...
-                ' | it./sec.: ',num2str(round(Iter{completedIdx,1}./seconds(ttc(completedIdx))))]);
+                ' | it/sec: ',num2str(round(Iter{completedIdx,1}./seconds(ttc(completedIdx))))]);
         end
     else % Analyze parfeval diary if future is still running.
     end
@@ -759,7 +758,7 @@ while numCompleted < numtry
         try
             plotfacs(Model(idx(~isnan(idx))),facCalls(idx(~isnan(idx)))',[],Em,Ex);
         catch
-            disp('Couln''t plot that')
+            warning('intermediate plotfac call failed')
         end
         idxOld=idx;
     end

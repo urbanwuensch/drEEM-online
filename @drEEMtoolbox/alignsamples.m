@@ -37,6 +37,10 @@ cmn=cmn(:);
 cmn=categorical(cmn);
 cmn=cmn(countcats(cmn)==size(combs,1));
 
+if isempty(cmn)
+    error("No common sample names were found. Exiting...")
+end
+
 % This loop sorts the files and deletes missing samples
 for j=1:numel(varargin)
     % This one finds the indices of the common files

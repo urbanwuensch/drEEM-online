@@ -2,11 +2,15 @@
 cd(fileparts(matlab.desktop.editor.getActiveFilename))
 clearvars
 tbx=drEEMtoolbox;
-cd demofiles_AL_HYI\
+cd demofiles_AL_HYI
 samples=tbx.importeems('* - Waterfall Plot Sample.dat');
 blanks=tbx.importeems('* - Waterfall Plot Blank.dat');
 absorbance=tbx.importabsorbance('* - Abs Spectra Graphs.dat');
 cd ..
+
+samples.filelist=erase(samples.filelist,{' (01)'});
+blanks.filelist=erase(blanks.filelist,{' (01)'});
+absorbance.filelist=erase(absorbance.filelist,{' (01)'});
 
 %% Integration of samples, blanks, absorbance into one dataset
 [samples,blanks,absorbance]=tbx.alignsamples(samples,blanks,absorbance);
@@ -20,8 +24,6 @@ tbx.addcomment(samples,"And I had this other thought too");
 clearvars absorbance
 
 %% Metadata integration
-samples.filelist=erase(samples.filelist,{' (01)'});
-blanks.filelist=erase(blanks.filelist,{' (01)'});
 
 samples=tbx.associatemetadata(samples,"metadata.xlsx",'sampleId');
 tbx.addcomment(samples,"Not 100% of samples matched. Here, one can make a comment to tell myself to investigate this.")
@@ -125,7 +127,7 @@ tbx.addcomment(data,"Deleted short excitation due to noisyness.")
 data=tbx.fitparafac(data,f=2:6, ...
     starts=10, ...
     convergence=1e-6,...
-    parallelization=false, ...
+    parallelization=true, ...
     mode="overall");
 
 tbx.viewmodels(data)

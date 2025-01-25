@@ -61,7 +61,7 @@ for j=1:numel(files)
         continue
     else
         data.abs(cnt,:)=abso;
-        data.filelist{cnt,1}=erase(lower(files(j).name),erase(lower(filePattern),'*'));
+        filelist{cnt,1}=strtrim(erase(files(j).name,erase(filePattern,'*')));
         data.i(cnt,1)=j; % this will leave a hint if an import did not work
         cnt=cnt+1;
 
@@ -69,10 +69,14 @@ for j=1:numel(files)
         tc=toc(tc);
         ttl=num2str(numel(files));
         remain=num2str(round(tc.*(numel(files)-j),2));
-        disp([num2str(j),'/',ttl,': ',data.filelist{j,1},...
+        disp([num2str(j),'/',ttl,': ',filelist{j,1},...
             ' (',remain,' sec. remaining)'])
     end
 end
+
+% move filelist into the dataset
+data.filelist=filelist;
+
 % Assign the final fields and finish up
 data.absWave=rcvec(wave,'column');
 data.nSample=size(data.abs,1);

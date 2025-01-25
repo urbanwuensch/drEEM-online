@@ -143,7 +143,7 @@ for j=1:numel(files)
     
     % Fill the dataset with the info now that all checks passed.
     data.X(cnt,:,:)=x;
-    data.filelist{cnt,1}=erase(files(j).name,erase(filePattern,'*'));
+    filelist{cnt,1}=strtrim(erase(files(j).name,erase(filePattern,'*')));
     data.i(cnt,1)=j;
     cnt=cnt+1; % +1 on the counter for a successful import.
 
@@ -151,9 +151,12 @@ for j=1:numel(files)
     tc=toc(tc);
     ttl=num2str(numel(files));
     remain=num2str(round(tc.*(numel(files)-j),2));
-    disp([num2str(j),'/',ttl,': ',data.filelist{j,1},...
+    disp([num2str(j),'/',ttl,': ',filelist{j,1},...
         ' (',remain,' sec. remaining)'])
 end
+
+% move filelist into the dataset
+data.filelist=filelist;
 
 % Final dataset variables can now be assigned.
 data.Ex=rcvec(ex,'column');

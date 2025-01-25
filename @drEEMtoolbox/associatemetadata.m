@@ -143,7 +143,7 @@ if matches(cb,'char')
 end
 
 if not(matches(ca,cb))
-    error(['data.',datakey,' and metadata.',metadatakey,'are not of the same class. Please convert one or both and try again.'])
+    error(['data.',datakey,' and metadata.',metadatakey,' are not of the same class. Please convert one or both and try again.'])
 end
     
 
