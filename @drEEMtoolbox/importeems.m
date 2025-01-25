@@ -24,6 +24,7 @@ arguments
         options.rowWave (1,:) {mustBeNumericOrLogical} = true
         options.columnIsExcitation (1,:) {mustBeNumericOrLogical}= true
         options.NumHeaderLines (1,1) {mustBeNumeric}= 0
+        options.waveDiffTollerance (1,1) {mustBeNumeric} = 1
 end
 nargoutchk(1,1)
 
@@ -75,13 +76,8 @@ for j=1:numel(files)
     sz(j,:)=size(x);
 
 end
-% Check that all stored sizes in the prelim. analysis match (row + column)
-if numel(unique(sz(:,1)))>1
-    error('EEMs in directory have inconsistent number of rows')
-end
-if numel(unique(sz(:,2)))>1
-    error('EEMs in directory have inconsistent number of columns')
-end
+% Next line will fail if there is an issue with the dimensions of the files
+diagnoseDimensionIssue({files.name}',sz)
 
 % All checks passed, now move on to import
 data=drEEMdataset.create; % Create a drEEMdataset (fills in machine-specific info)
@@ -117,11 +113,11 @@ for j=1:numel(files)
 
     % Make sure the matrix is rotated as expected (requires user expertise)
     if options.columnIsExcitation==true
-        ex=colAxis_sorted;
-        em=rowAxis_sorted;
+        ex=round(colAxis_sorted,1); % Round in case for some reason many digits are supplied;
+        em=round(rowAxis_sorted,1); % Round in case for some reason many digits are supplied;
     else
-        em=colAxis_sorted;
-        ex=rowAxis_sorted;
+        em=round(colAxis_sorted,1); % Round in case for some reason many digits are supplied;
+        ex=round(rowAxis_sorted,1); % Round in case for some reason many digits are supplied;
         x=x';
     end
     
@@ -136,12 +132,12 @@ for j=1:numel(files)
     % those files that will result in the largest number of imported
     % samples.
 
-    if not(isequal(ex4Check{1},ex))
-        warning(['File ',files(j).name,': Missmatch in the excitation wavlengths (compared to 1st file). Skipped...'])
+    if not(isequal(ex4Check{1},ex))&&any(abs(ex4Check{1}-ex)>options.waveDiffTollerance)
+        warning(['File ',files(j).name,': Missmatch in the excitation wavlengths that exceeded the wavelength difference tollerance (compared to 1st file). Skipped...'])
         continue
     end
-    if not(isequal(em4Check{1},em))
-        warning(['File ',files(j).name,': Missmatch in the emission wavlengths (compared to 1st file). Skipped...'])
+    if not(isequal(em4Check{1},em))&&any(abs(em4Check{1}-em)>options.waveDiffTollerance)
+        warning(['File ',files(j).name,': Missmatch in the emission wavlengths that exceeded the wavelength difference tollerance (compared to 1st file). Skipped...'])
         continue
     end
     
@@ -215,5 +211,45 @@ switch rc
             error('Input ''rc'' not recognized. Options are: ''row'' and ''column''.')
 end
 
+
+end
+
+function diagnoseDimensionIssue(filenames,sz)
+
+
+
+if isscalar(unique(sz(:,1)))&&isscalar(unique(sz(:,2)))
+    disp('Dimension check for files <strong>passed</strong>.')
+else
+    message='Dimension check for files <strong>not passed</strong>. Information follows ... \n\n';
+    szident=["Rows","Columns"];
+    for j=1:2
+        sinf=(sz(:,j));
+        if not(isscalar(unique(sinf))) % issue
+            sinf=categorical(sinf);
+            message=[message,'Issue with <strong>',char(szident(j)),'</strong> ...\n'];
+            cats=categories(sinf);
+            counts=countcats(sinf);
+
+            if numel(counts)==2&ismember(1,counts)
+                % One sample sticks out
+                culpritsz=str2num(cats{counts==1})
+                culprit=sz(:,j)==culpritsz;
+                culpritname=filenames{culprit}
+
+                message=[message,'<strong>One sample is the culprit </strong>(open & inspect): ',culpritname,'\n'];
+
+            else
+                diagt=table;
+                diagt.name=categorical(filenames);
+                diagt.nrow=sz(:,1);
+                message=[message,'<strong>Seems like a complex issue. Inspect the figure </strong>\n'];
+                f=uifigure("Name",'Dimension issue: Inspect the table...');
+                uit=uitable(f,Data=diagt,Units="normalized",OuterPosition=[0 0 1 1]);
+            end
+        end
+    end
+    error(sprintf(message))
+end
 
 end

@@ -22,15 +22,34 @@ C=intersect(samples.Em,blanks.Em,"stable");
 s_em=setdiff(samples.Em,C);
 b_em=setdiff(blanks.Em,C);
 
+% number of samples comparisons
+if not(samples.nSample==blanks.nSample)
+    error('Number of samples and blanks not equal. Use "alignsamples" prior to the execution of "subtractblanks" to avoid this issue.')
+end
 % subdataset call (will not do anything if wavelengths were identical)
 samples_mod=drEEMtoolbox.subdataset(samples, ...
     outEm=ismember(samples.Em,s_em),outEx=ismember(samples.Ex,s_ex));
 blanks_mod=drEEMtoolbox.subdataset(blanks, ...
     outEm=ismember(blanks.Em,b_em),outEx=ismember(blanks.Ex,b_ex));
 
-[C,is,ib] = intersect(samples_mod.filelist,blanks_mod.filelist);
-s_miss=setdiff(1:samples_mod.nSample,is);
-b_miss=setdiff(1:blanks_mod.nSample,ib);
+% Next three lines are short but sometimes fail for no apparent reason and
+% produce "no match" despite match.
+% [C,is,ib] = intersect(samples_mod.filelist,blanks_mod.filelist);
+% s_miss=setdiff(1:samples_mod.nSample,is);
+% b_miss=setdiff(1:blanks_mod.nSample,ib);
+cnt=1;
+is=[];ib=[];s_miss=[];b_miss=[];
+for j=1:samples_mod.nSample
+    res=matches(samples_mod.filelist{j},blanks_mod.filelist{j});
+    if res
+        is(cnt)=cnt;
+        ib(cnt)=cnt;
+    else
+        s_miss=cnt;
+        b_miss=cnt;
+    end
+    cnt=cnt+1;
+end
 
 if not(isempty(b_miss))||not(isempty(s_miss))
     message=['Cannot go ahead since the filenames between both datasets don''t match.\n' ...
@@ -41,14 +60,14 @@ if not(isempty(b_miss))||not(isempty(s_miss))
     if not(isempty(b_miss))
         message=[message,'\nThe following blanks have no corresponding sample:\n'];
         for j=1:numel(b_miss)
-            message=[message,blanks_mod.filelist{b_miss(j)}];
+            message=[message,' | ',blanks_mod.filelist{b_miss(j)}];
         end
     end
 
     if not(isempty(s_miss))
         message=[message,'\nThe following samples have no corresponding blanks:\n'];
         for j=1:numel(s_miss)
-            message=[message,samples_mod.filelist{s_miss(j)}];
+            message=[message,' | ',samples_mod.filelist{s_miss(j)}];
         end
     end
 

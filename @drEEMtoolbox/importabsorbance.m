@@ -27,13 +27,10 @@ for j=1:numel(files)
     % Find size for diagnosis step
     sz(j,:)=size(x);
 end
-% Sizes need to be the same across the files for the function to work.
-if numel(unique(sz(:,1)))>1
-    error('Absorbance spectra in directory have inconsistent number of rows')
-end
-if numel(unique(sz(:,2)))>1
-    error('Absorbance spectra in directory have inconsistent number of columns')
-end
+
+% Next line will fail if there is an issue with the dimensions of the files
+diagnoseDimensionIssue({files.name}',sz)
+
 % Create the drEEMdataset (fills in session-specific information)
 data=drEEMdataset.create;
 % Actual import run
@@ -64,7 +61,7 @@ for j=1:numel(files)
         continue
     else
         data.abs(cnt,:)=abso;
-        data.filelist{cnt,1}=erase(files(j).name,erase(filePattern,'*'));
+        data.filelist{cnt,1}=erase(lower(files(j).name),erase(lower(filePattern),'*'));
         data.i(cnt,1)=j; % this will leave a hint if an import did not work
         cnt=cnt+1;
 
@@ -119,5 +116,44 @@ switch rc
             error('Input ''rc'' not recognized. Options are: ''row'' and ''column''.')
 end
 
+
+end
+
+function diagnoseDimensionIssue(filenames,sz)
+
+
+
+if isscalar(unique(sz(:,1)))&&isscalar(unique(sz(:,2)))
+    disp('Dimension check for files <strong>passed</strong>.')
+else
+    message='Dimension check for files <strong>not passed</strong>. Information follows ... \n\n';
+    szident=["Rows","Columns"];
+    for j=1:2
+        sinf=(sz(:,j));
+        if not(isscalar(unique(sinf))) % issue
+            sinf=categorical(sinf);
+            message=[message,'Issue with <strong>',char(szident(j)),'</strong> ...\n'];
+            cats=categories(sinf);
+            counts=countcats(sinf);
+
+            if numel(counts)==2&ismember(1,counts)
+                % One sample sticks out
+                culpritsz=str2num(cats{counts==1})
+                culprit=sz(:,j)==culpritsz;
+                culpritname=filenames{culprit}
+
+                message=[message,'<strong>One sample is the culprit </strong>(open & inspect): ',culpritname,'\n'];
+            end
+        else
+            diagt=table;
+            diagt.name=categorical(filenames);
+            diagt.nrow=sz(:,1);
+            message=[message,'<strong>Seems like a complex issue. Inspect the figure </strong>\n'];
+            f=uifigure("Name",'Dimension issue: Inspect the table...');
+            uit=uitable(f,Data=diagt,Units="normalized",OuterPosition=[0 0 1 1]);
+        end
+    end
+    error(sprintf(message))
+end
 
 end

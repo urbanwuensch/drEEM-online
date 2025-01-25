@@ -44,6 +44,12 @@ for j=1:numel(varargin)
 
     % Convert that into the ones that should be deleted
     deleted=setdiff(1:numel(varargin{j}.filelist),idx);
+    delP=numel(deleted)/varargin{j}.nSample;
+    if delP==1
+        error(['The call to this function would delete all samples for dataset "<strong>',char(name(j)),'"</strong> Exiting...'])
+    elseif delP>0.1
+        error(['Deleted more than 10% of the samples for dataset "<strong>',char(name(j)),'"</strong> You might want to investigate what''s wrong...'])
+    end
 
     % Now delete the sample information in all fields of interest.
     flds=fieldnames(varargin{j});
