@@ -1,4 +1,4 @@
-function  [singlescore,multiscore,tsinglecore]=benchmark()
+function  varargout=benchmark()
 
 funmode=parallelcomp;
 
@@ -11,13 +11,17 @@ nfac=5;
 opthere=struct;
 opthere.ConvCrit=1e-6;
 opthere.MaxIt = 5000;
+
+%% Single core stuff
 disp('single-core non-negative PARAFAC (50 passes) ... ')
 tsingle=tic;
 for j=1:50
     rs(j)=parafac3w(X,nfac,opthere); %#ok<AGROW>
 end
 s_its=arrayfun(@(x) x.it/x.tela,rs);
-tsingle=toc(tsingle);
+tsingle=toc(tsingle)./50;
+
+%% Multicore stuff
 if matches(funmode,'parallel')
     disp('multi-core non-negative PARAFAC (100 passes) ... ')
     nc=gcp().NumWorkers;
@@ -32,6 +36,7 @@ if matches(funmode,'parallel')
     
     sp=p_its_overall./median(s_its);
 end
+%% Messages at the end
 disp(' ')
 disp('................................................................')
 disp('<strong>drEEM toolbox PARAFAC CPU Benchmark results</strong>')
@@ -44,7 +49,12 @@ if matches(funmode,'parallel')
 end
 disp(' ')
 disp('<strong>Other performance indicators ...</strong>')
-disp(['Time for single-core passes (lower is better):   <strong>',num2str(round(tsingle,1)),'s</strong>'])
+if matches(funmode,'sequential')
+    disp(['Average time per model (lower is better):        <strong>',num2str(round(tsingle,1)),'s</strong>'])
+else
+    disp(['Average time per model (lower is better):        <strong>',num2str(round(tsingle,1)),...
+        's (sequential) vs. ',num2str(round(tela,1)/100),'s (parallel)</strong>'])
+end
 if matches(funmode,'parallel')
     disp(['Multi-core accel. factor (higher is better):     <strong>',num2str(round(sp,1)),' vs. ',num2str(nc),' (theroretical hardware limit)','</strong>'])
 end
@@ -59,7 +69,10 @@ else
     multiscore=missing;
 end
 tsinglecore=tsingle;
-
+out=[singlescore,multiscore,tsinglecore];
+for j=1:nargout
+    varargout{j}=out(j);
+end
 end
 
 function funmode=parallelcomp
