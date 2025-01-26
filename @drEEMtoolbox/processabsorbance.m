@@ -37,7 +37,7 @@ dataout=data;
 % The function creates a result figure. The dataset setting determines if
 % it's a uifigure (somewhat cleaner & simple) or figure (much faster)
 if data.toolboxdata.uifig
-    f=dreemuifig;
+    f=drEEMtoolbox.dreemuifig;
 else
     f=drEEMtoolbox.dreemfig;
 end

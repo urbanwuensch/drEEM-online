@@ -4,7 +4,7 @@ classdef drEEMtoolbox < handle
         url = "https://gitlab.com/dreem/dreem-2.0"
     end
     properties (Constant = true, Hidden = true)
-        uifig = false % Should uifigure be used instead of figures?
+        uifig = true % Should uifigure be used instead of figures?
         OvrWrteUnless = true
     end
 

@@ -49,7 +49,7 @@ classdef drEEMdataset
             data.toolboxdata.matlabVersion=version;
             data.toolboxdata.matlabToolboxes=ver;
             data.toolboxdata.settings=struct;
-            data.toolboxdata.uifig=false;
+            data.toolboxdata.uifig=drEEMtoolbox.uifig;
             data.status=drEEMstatus;
         end
 

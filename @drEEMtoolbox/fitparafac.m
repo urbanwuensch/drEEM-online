@@ -533,7 +533,8 @@ end
 function [cncl] = blockbar(names,state,col)
 % Blockbar is similar to a multiwaitbar, but visualizes the state of
 % individual jobs rather than a % completed bar.
-% (c) Urban Wünsch, 2019
+% (c) Urban Wünsch, 2019 (first version).
+% Modified for drEEM 2.0
 %% Default options
 icalpha = 0.2;
  calpha = 1;
@@ -542,7 +543,7 @@ multi=numel(names);
 init=true; % init state is true by default. When old figure is found, init = false.
 cncl=false(numel(names),1);
 %% Find existing blockbar and axes within it (not the buttons)
-figHandles =  get(groot, 'Children');
+figHandles =  findall(0,'Type','figure','tag','Progress uifigure for drEEM');
 for n=1:numel(figHandles)
     if strcmp(figHandles(n).Name,'Progress...')
         init=false; % Success, do not make another figure, use the old
@@ -572,19 +573,19 @@ end
 %% Draw the blockbar
 stp=[0:1/size(state,2):1 1];
 if init % This generates the figure and bars
-    set(0, 'Units', 'pixel');
     screenSize = get(0,'ScreenSize');
     pointsPerPixel = 72/get(0,'ScreenPixelsPerInch');
     width = 360 * pointsPerPixel;
     height = multi * 75 * pointsPerPixel;
     fpos = [screenSize(3)/2-width/2 screenSize(4)/2-height/2 width height];
-    figureh=figure('Position',fpos,...
+    figureh=uifigure('Position',fpos,...
         'MenuBar','none',...
         'Numbertitle','off',...
         'Name','Progress...',...
-        'Resize','off');
-    axeswidth = 172;
-    axesheight = 172/14;
+        'Resize','off',...
+        Tag='Progress uifigure for drEEM',Units='pixels');
+    axeswidth = round(width*0.6);
+    axesheight = round(axeswidth/14);
     axesbottom = fliplr(linspace(15,fpos(4)-axesheight*3,multi));
     addprop(figureh,'state');
     addprop(figureh,'sname');
@@ -594,10 +595,10 @@ if init % This generates the figure and bars
         axPos = [axesheight*2.5 axesbottom(i) axeswidth axesheight];
         bPos = [axPos(1)+axPos(3)+10 axPos(2) 50 axPos(4)*1.5];
         bPos(2) = bPos(2)-0.5*(bPos(4)-axPos(4));
-        ax(i)=axes('units','pixel','pos',axPos);
+        ax(i)=axes(figureh,'units','pixel','pos',axPos); %#ok<AGROW>
         addprop(ax(i),'sname');
         set(ax(i),'units','pixel','Tag',names{i});
-        uic=uicontrol( 'Style', 'togglebutton', ...
+        uic=uicontrol(figureh,'Style', 'togglebutton', ...
             'String', '', ...
             'FontWeight', 'Bold', ...
             'units','pixel',...
@@ -617,12 +618,14 @@ if init % This generates the figure and bars
                 av=icalpha;
             end
             p=patch(ax(i),[stp(n) stp(n+1) stp(n+1) stp(n)],[0 0 1 1],col(n,:),...
-                'EdgeColor','none','FaceAlpha',av);hold on
+                'EdgeColor','none','FaceAlpha',av);hold(ax(i),"on")
             addprop(p,'id');
             p.id=n;
         end
         set(ax(i),'YColor',[0 0 0 0.5],'XColor',[0 0 0 0.5],'Box','on','YTick','','XTick','')
     end
+    drawnow
+    uistack(figureh, 'top')
 else % This updates  the figure and bars
     oldstate=old.state;
     if ~isequal(oldstate,state)
@@ -647,15 +650,17 @@ else % This updates  the figure and bars
     tbutt=childs(strcmp(get(childs,'Type'),'uicontrol'));
     ni=multi:-1:1;    
     for n=1:numel(names)
-        if logical(tbutt(ni(n)).Value)&any(~state(n,:))
+        if logical(tbutt(ni(n)).Value)&&any(~state(n,:))
             cncl(n)=true;
         else
             cncl(n)=false;
         end
     end
-    
+    drawnow
+    uistack(old, 'top')
 end
 end
+
 
 %%
 function [Model,Iter,Err,corecon,ttc] = trackprogress(futures,numtry,facCalls,toolbox,data,Em,Ex,consoleoutput,splitsource)
@@ -755,11 +760,13 @@ while numCompleted < numtry
         end
     end
     if ~isequal(isnan(idxOld),isnan(idx))&&~all(isnan(idx))
-        try
-            plotfacs(Model(idx(~isnan(idx))),facCalls(idx(~isnan(idx)))',[],Em,Ex);
-        catch
-            warning('intermediate plotfac call failed')
-        end
+        % %Dropping the intermediate call for plotfacs. 
+        % %CPUs are becoming too fast for this to make sense
+        % try
+        %     plotfacs(Model(idx(~isnan(idx))),facCalls(idx(~isnan(idx)))',[],Em,Ex);
+        % catch
+        %     warning('intermediate plotfac call failed')
+        % end
         idxOld=idx;
     end
     
