@@ -14,12 +14,12 @@ opthere.MaxIt = 5000;
 
 %% Single core stuff
 disp('single-core non-negative PARAFAC (50 passes) ... ')
-tsingle=tic;
+s_tpm=tic;
 for j=1:50
     rs(j)=parafac3w(X,nfac,opthere); %#ok<AGROW>
 end
-s_its=arrayfun(@(x) x.it/x.tela,rs);
-tsingle=toc(tsingle)./50;
+s_its=arrayfun(@(x) x.it/x.tela,rs); % Iterations per second
+s_tpm=toc(s_tpm)./50; % time per model
 
 %% Multicore stuff
 if matches(funmode,'parallel')
@@ -31,8 +31,9 @@ if matches(funmode,'parallel')
     end
     tela=toc(tela);
     
-    p_its=arrayfun(@(x) x.it/x.tela,rp);
-    p_its_overall=sum(arrayfun(@(x) x.it,rp))./tela;
+    p_its=arrayfun(@(x) x.it/x.tela,rp); % iterations per second per model
+    p_tpm=sum(arrayfun(@(x) x.tela,rp))./100; % time per model
+    p_its_overall=sum(arrayfun(@(x) x.it,rp))./tela;  % apparent iterations per second (parallel)
     
     sp=p_its_overall./median(s_its);
 end
@@ -41,7 +42,6 @@ disp(' ')
 disp('................................................................')
 disp('<strong>drEEM toolbox PARAFAC CPU Benchmark results</strong>')
 disp('................................................................')
-disp(' ')
 disp('<strong>Scores ...</strong>')
 disp(['Single-core score (higher is better):            <strong>',num2str(round(median(s_its))),'</strong>'])
 if matches(funmode,'parallel')
@@ -50,17 +50,15 @@ end
 disp(' ')
 disp('<strong>Other performance indicators ...</strong>')
 if matches(funmode,'sequential')
-    disp(['Average time per model (lower is better):        <strong>',num2str(round(tsingle,1)),'s</strong>'])
+    disp(['Average time per model (lower is better):        <strong>',num2str(round(s_tpm,1)),'s</strong>'])
 else
-    disp(['Average time per model (lower is better):        <strong>',num2str(round(tsingle,1)),...
-        's (sequential) vs. ',num2str(round(tela,1)/100),'s (parallel)</strong>'])
+    disp(['Average time per model (lower is better):        <strong>',num2str(round(s_tpm,1)),...
+        's (sequential) vs. ',num2str(round(p_tpm,1)),'s (parallel)</strong>'])
 end
 if matches(funmode,'parallel')
-    disp(['Multi-core accel. factor (higher is better):     <strong>',num2str(round(sp,1)),' vs. ',num2str(nc),' (theroretical hardware limit)','</strong>'])
+    disp(['Multi-core accel. factor (higher is better):     <strong>',num2str(round(sp,1)),' with ',num2str(nc),' cores ("workers")','</strong>'])
 end
-disp(' ')
 disp('................................................................')
-disp(' ')
 
 singlescore=round(median(s_its));
 if matches(funmode,'parallel')
@@ -68,7 +66,7 @@ if matches(funmode,'parallel')
 else
     multiscore=missing;
 end
-tsinglecore=tsingle;
+tsinglecore=s_tpm;
 out=[singlescore,multiscore,tsinglecore];
 for j=1:nargout
     varargout{j}=out(j);
@@ -78,7 +76,7 @@ end
 function funmode=parallelcomp
 test=ver;
 funmode='sequential';
-consoleoutput=false;
+consoleoutput='none';
 if any(contains({test.Name},'Parallel'))
     funmode='parallel';
     try
