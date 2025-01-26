@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>upgradedataset</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* CSS stylesheet for drEEM toolbox documentatio */
+/* Author: Urban Wünsch */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Tahoma,sans-serif, Helvetica, arial, freesans, clean;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #404040;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-family: Tahoma;
+  font-size: 28px;
+  border-bottom: 1px solid #ccc;
+  color: #c05708;
+}
+
+h2 {
+  font-size: 24px;
+  color: #404040;
+  border-bottom: 1px solid #ccc;
+}
+
+h3 {
+  font-size: 16px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+  color: #404040;
+  font-weight: bold;
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #fcfcfc;
+  background-color: #fcfcfc;
+  border-radius: 3px;
+}
+
+h4 {
+  font-size: 16px;
+  white-space: nowrap;
+  border: 1px solid #ececec;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  margin: 20px 0 10px;
+}
+
+h5 {
+  font-size: 20px;
+  color: #c05708;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  font-familiy: Verdana;
+  color: #0076a8;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 16px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+  color: #404040;
+  font-weight: bold;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #fcfcfc;
+  background-color: #fcfcfc;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #fcfcfc;
+  border: 1px solid #fcfcfc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<img src="top right corner logo.png" width="100" height="auto" align="right"/>
+<h1>upgradedataset</h1>
+<p>Upgrade a given dataset to a newer format compatible with the new version of drEEM toolbox (2.0.0).</p>
+<h2>Syntax</h2>
+<h3><a href="#syntax1">dataout = upgradedataset (data)</a></h3>
+<h3><a href="#syntax1">dataout = upgradedataset (data, atypicalFieldnames)</a></h3>
+<h2>Description</h2>
+<h3><a href="#varargout">dataout</a> = upgradedataset (<a href="#varargin">data</a>) <a name="syntax1"></a></h3>
+<p>The <code>upgradedataset</code> function upgrades a given dataset to a newer format compatible with the drEEM toolbox. The functions assumes that <code>data</code> is a typical dreem data structure built by previous versions of the toolbox. Hence, it expects the fields  <code>'X', 'Ex', 'Em','nEm',</code> <code>'nEx', 'filelist', 'i', 'nSample', 'Abs_wave', 'Abs'</code> to be present in the <code>data</code>. Other fields in the <code>data</code> that have compatible size will be transferred to the <code>metadata</code> field of the <code>dataout</code>. If compatible models are present in the <code>data</code> they will be transferred to the <code>models</code> field. For more information about model transfer, see Model Transfer in  the topics section.</p>
+<h3><a href="#varargout">dataout</a> = upgradedataset (<a href="#varargin">data, atypicalFieldnames</a>) <a name="syntax1"></a></h3>
+<p>If the information in <code>data</code> is stored in fields that differ from the typical field names, use <code>atypicalFieldnames</code> to identify those fields. For example, use <code>atypicalFieldnames={'EEM','X'}</code> if the information that the function expects to find as <code>X</code> is stored in field <code>EEM</code> inside <code>data</code>. </p>
+<h2>Input arguments</h2>
+<h4>data - data structure containing the typical fields expected by drEEMtoolbox <a name="varargin"></a> <br> Type: struct</h4>
+<p>Dataset to be upgraded. The <code>data</code> should contain the fields that are common in a fluorescence data structure, namely: <code>'X', 'Ex', 'Em','nEm','nEx', 'filelist', 'i', 'nSample', 'Abs_wave', 'Abs'</code>. If field names are different from those specified above, they should be explicitly defined in <code>atypicalFieldnames</code>.</p>
+<h4>atypicalFieldnames - names of non-typical fields and their corresponding new field names<a name="varargin"></a> <br> Type:  cell array</h4>
+<p>A cell array of size N x 2. Each row should contain a pair of field names where the first column is the old field name (should exist in <code>data</code>), and the second column is the new field name (should exist in drEEMdataset class object, see <code>drEEMdataset</code> for more information). <br>Default is <code>[]</code>.</p>
+<h2>Output arguments (optional)</h2>
+<h4>dataout - drEEMdataset   <a name="varargin"></a> <br> Type: drEEMdataset class object</h4>
+<p>Dataset of the class <code>drEEMdataset</code>, with standardized contents and automated validation methods, compatible with the new version of the drEEM toolbox (2.0.0).
+If no output argument is specified, the function overwrites the original object in the workspace.</p>
+<h2>See Also</h2>
+<p><a href="link.com"> drEEMdataset </a> | 
+<a href="link.com"> Link2 </a> |
+<a href="link.com"> Link3 </a> |</p>
+<h2>Topics</h2>
+<p><strong>Model Transfer</strong>:<br>
+Models should be stored in the <code>Model1</code>, <code>Model2</code>, <code>Model3</code> and <code>ModelN</code> fields in the <code>data</code>.<br>
+Loadings are taken from <code>data.Model1</code>, <code>data.Model2</code>, ..., and <code>data.ModelN</code>, and assigned to <code>dataout.models(1,1).loads</code>, ..., <code>dataout.models(N,1).loads</code>.<br>
+Leverages are calculated for each element in loads and assigned to <code>dataout.models(1,1).leverages</code>, ..., <code>dataout.models(N,1).leverages</code>.<br>
+Sum of Squared Errors (SSE) are computed for different modes (samples, emission, excitation) and assigned to <code>dataout.models(1,1).sse</code>, ..., <code>dataout.models(N,1).sse</code>.<br>
+Model's status is set to <code>'transferred from old dataset. status unknown'</code>.<br>
+Percentage Explained is calculated as the percentage of variance explained by the model and assigned to <code>dataout.models(N,1).percentExplained</code>.<br>
+Core Consistency is calculated and assigned to <code>dataout.models(N,1).core</code>.<br>
+Percentage Unconverged is set to <code>NaN</code>.<br>
+Component Contribution is calculated for each component and assigned to <code>dataout.models(N,1).componentContribution</code>.
+<code>Initialization</code> is set to <code>'random'</code>.<br>
+<code>Starts</code> is set to <code>NaN</code>.
+<code>Convergence</code> is retrieved from <code>data</code>, if it exists, otherwise is set to <code>NaN</code>.
+<code>Constraints</code> is retrieved from <code>data</code>, if it exists, otherwise is set to <code>'unknown'</code>.
+<code>Toolbox</code> is set to <code>'nway'</code> by default.</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

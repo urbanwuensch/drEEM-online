@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>fitparafac</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* CSS stylesheet for drEEM toolbox documentatio */
+/* Author: Urban Wünsch */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Tahoma,sans-serif, Helvetica, arial, freesans, clean;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #404040;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-family: Tahoma;
+  font-size: 28px;
+  border-bottom: 1px solid #ccc;
+  color: #c05708;
+}
+
+h2 {
+  font-size: 24px;
+  color: #404040;
+  border-bottom: 1px solid #ccc;
+}
+
+h3 {
+  font-size: 16px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+  color: #404040;
+  font-weight: bold;
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #fcfcfc;
+  background-color: #fcfcfc;
+  border-radius: 3px;
+}
+
+h4 {
+  font-size: 16px;
+  white-space: nowrap;
+  border: 1px solid #ececec;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  margin: 20px 0 10px;
+}
+
+h5 {
+  font-size: 20px;
+  color: #c05708;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  font-familiy: Verdana;
+  color: #0076a8;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 16px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+  color: #404040;
+  font-weight: bold;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #fcfcfc;
+  background-color: #fcfcfc;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #fcfcfc;
+  border: 1px solid #fcfcfc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<img src="top right corner logo.png" width="100" height="auto" align="right"/>
+<h1>fitparafac</h1>
+<p>Create PARAFAC models for fluorescence data (works with MATLAB 2022a or newer)</p>
+<h2>Syntax</h2>
+<h3><a href="#syntax1">dataout = fitparafac(data)</a></h3>
+<h3><a href="#syntax1">dataout = fitparafac( ___ , Name,Value)</a></h3>
+<h2>Description</h2>
+<h3><a href="#varargout">dataout</a> = fitparafac(<a href="#varargin">data</a>) <a name="syntax1"></a></h3>
+<p>The <code>fitparafac</code> function performs Parallel Factor Analysis (PARAFAC) on the provided <code>data</code>. The models are saved in <code>data.models</code>. The function supports various configurations, including different constraints, convergence criteria, initialization methods, and etc.
+The function can also run in parallel for improved performance on multi-core systems. The function uses default values of input arguments (see Input arguments section) when options are not specified. <br>
+An entry will be added to the <code>history</code> field of the <code>data</code>, detailing the  options used for <code>fitparafac</code>. If no output argument is specified, the function will overwrite the original <code>data</code> in the workspace.</p>
+<blockquote>
+</blockquote>
+<h3><a href="#varargout">dataout</a> = fitparafac(<a href="#varargin"> ___ , Name,Value</a>) <a name="syntax1"></a></h3>
+<p>specifies additional options using one or more name-value pair arguments. For example, you can specify the number of components for models, constraints, initialization and parallelization options. <br>
+Example: <code>fitparafac(data,f=2:6, starts=2, convergence=1e-4,  parallelization=false)</code> to fit parafac models with <code>2</code> to <code>6</code> components using with <code>2</code> random starts and a convergence criteria of <code>0.0001</code>, and turning off the parallelization option.</p>
+<h2>Input arguments</h2>
+<h4>data - drEEMdataset containing fluorescence data  <a name="varargin"></a> <br> Type: drEEMdataset class object</h4>
+<p>Dataset of the class <code>drEEMdataset</code>, with standardized contents and automated validation methods. If <code>&quot;split&quot;</code> is used as <code>mode</code> option, <code>data.split</code> should be non-empty (see <code>splitdataset</code>).
+If <code>data</code> already contains models, the old models will be deleted, keeping only the new models. </p>
+<h5>Name-Value Arguments  <a name="data"></a></h5>
+<p>Specify optional pairs of arguments as <code>Name1=Value1,...,NameN=ValueN</code>, where <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. Name-value arguments must appear after other arguments, <code>data</code> in this case, but the order of the pairs does not matter. </p>
+<h4>f - specify the number of components  <a name="varargin"></a> <br> Type:  numeric</h4>
+<p>Numeric array specifying the number of components to use in the PARAFAC  models. Default is <code>[2, 3, 4, 5, 6, 7]</code>.</p>
+<h4>mode - specify if data should be treated as whole or splits   <a name="varargin"></a> <br> Type: string | character</h4>
+<p>A text specifying the mode of operation. Can be set to <code>&quot;overall&quot;</code> for analyzing the whole dataset in <code>data</code> or <code>&quot;split&quot;</code> for analyzing subsets of the data obtained from <code>data.splits</code>. Subsets of <code>data</code> should be previously created using <code>splitdataset</code> function. Default is &quot;overall&quot;</p>
+<h4>constraints - specify the constraints for PARAFAC   <a name="varargin"></a> <br> Type: string | character</h4>
+<p>Specify the constraints to apply to the models. You can choose from: <br></p>
+<ul>
+<li>
+<p><code>&quot;unconstrained&quot;</code>: there are no restrictions on the values that the elements of the factor matrices can take. They can be positive, negative, or zero. While this option provides greater flexibility in fitting the data, the resulting factors might be harder to interpret, especially where negative values do not make sense (e.g., physical quantities like concentrations or intensities). </p>
+</li>
+<li>
+<p><code>&quot;nonnegativity&quot;</code>: Nonnegativity constraints ensure that all the elements in the factor matrices are greater than or equal to zero.
+This option can sometimes make it harder to achieve the best possible fit to the data because the model is less flexible but is particularly useful in where the factors represent quantities that cannot be negative.</p>
+</li>
+<li><code>&quot;unimodnonneg&quot;</code>:T his constraint ensures that the factor matrices are both nonnegative and unimodal. A factor is unimodal if it has a single peak or mode, meaning it increases to a maximum value and then decreases. This constraint can help in obtaining more realistic and interpretable factors, while, meantime, making it more challenging to achieve the best fit to the data. </li>
+</ul>
+<p>Default constraint is <code>&quot;nonnegativity&quot;</code>.</p>
+<h4>starts - specify the number of random starts<a name="varargin"></a> <br> Type: numeric</h4>
+<p>Number of random starts for the algorithm refers to initializing the factor matrices with random values and running the algorithm multiple times. Default is <code>40</code>.</p>
+<h4>convergence - specify the convergence criteria for models<a name="varargin"></a> <br> Type: numeric</h4>
+<p>Convergence criterion. If the change in errors falls below a <code>convergence</code> threshold, the algorithm is considered to have converged and will stop running. Default is <code>1e-6</code>.</p>
+<h4>MaxIteration - specify the maximum number of iteration if convergence criteria is not met <a name="varargin"></a> <br> Type: numeric</h4>
+<p>Specify the maximum number of iterations for the algorithm. If the convergence criteria, <code>convergence</code>, is not met before the specified maximum number of iteration the algorithm will stop running.
+Default is <code>3000</code> iterations.</p>
+<h4>initialization - specify the initialization method<a name="varargin"></a> <br> Type: string | character</h4>
+<p>Specify the method used to set the starting values for the factor matrices. you can choose from:</p>
+<ul>
+<li><code>&quot;random&quot;</code>: Factor matrices are initialized with random values.</li>
+<li><code>&quot;svd&quot;</code>: Factor matrices are initialized using Singular Value Decomposition (SVD) often leading to faster convergence compared to random initialization. SVD computation can be expensive for very large datasets.</li>
+<li><code>&quot;multiplesmall&quot;</code>: multiple small-scale models are fitted first, and their results are combined to initialize the full-scale factor matrices.</li>
+</ul>
+<p>Default initialization method is <code>&quot;random&quot;</code>.</p>
+<h4>parallelization - turn on/off parallel computing<a name="varargin"></a> <br> Type: numeric | Logical</h4>
+<p>Enable or disable parallelization. If enabled can dramatically decrease the time required for the analysis. Default is <code>true</code>.</p>
+<h4>consoleoutput - specify the level of details displayed in the console output<a name="varargin"></a> <br> Type: string | character</h4>
+<p>Specify the level of console output during execution. You can choose from:</p>
+<ul>
+<li><code>&quot;all&quot;</code>: displays all the information during the process. </li>
+<li><code>&quot;minimum&quot;</code>: minimizes the level of displayed information to only highly important ones.</li>
+<li><code>&quot;none&quot;</code>: does not display anything on the console.</li>
+</ul>
+<p>Default is <code>&quot;minimum&quot;</code>.</p>
+<h4>toolbox - specify which toolbox to use for creating PARAFAC models<a name="varargin"></a> <br> Type: string | character</h4>
+<p>Specify the toolbox to use for the PARAFAC algorithm. You can choose from:</p>
+<ul>
+<li><code>&quot;parafac3w&quot;</code></li>
+<li><code>&quot;nway&quot;</code></li>
+<li><code>&quot;pls&quot;</code>: Note:  <code>PLS_toolbox</code> should be installed. </li>
+</ul>
+<p>Default is <code>&quot;parafac3w&quot;</code>.</p>
+<h2>Output arguments (optional)</h2>
+<h4>dataout - drEEMdataset   <a name="varargin"></a> <br> Type: drEEMdataset class object</h4>
+<p>Dataset of the class <code>drEEMdataset</code>, with standardized contents and automated validation methods, in which the parafac models are stored in <code>dataout.models</code>. To visualize and analyze the models use one of the following functions: <code>viewmodels</code>, <code>viewcomcorr</code>.<br> 
+If no output argument is specified, the function overwrites the original object in the workspace.</p>
+<h2>See Also</h2>
+<p><a href="link.com">splitdataset</a> | 
+<a href="link.com"> drEEMdataset </a> |
+<a href="link.com"> Link3 </a> |</p>
+<h2>Topics</h2>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
