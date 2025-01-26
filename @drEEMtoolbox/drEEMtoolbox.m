@@ -161,7 +161,6 @@ classdef drEEMtoolbox < handle
         function help(fname)
             help(fname)
         end
-        doc(fname)
 
 
     end
