@@ -6,13 +6,34 @@ classdef drEEMtoolbox < handle
     properties (Constant = true, Hidden = true)
         uifig = true % Should uifigure be used instead of figures?
         OvrWrteUnless = true
+        requiredVersion = 'R2022a'
     end
-
+    
     % These are not meant for the general public, Origin Pro is required.
     methods (Hidden = true,Static = true)
         Xout = aqualogimport(workingpath,selector,deselector)
         dataout = sampleQimport(workingpath,data)
         [DS,DSb] = processHJYdata(Xin,opt)
+    end
+    
+    % This is hidden because it's only ever used for install
+    methods (Hidden = true,Static = true)
+        function versionRequires
+            if isMATLABReleaseOlderThan(drEEMtoolbox.requiredVersion)
+                error(['You need Matlab ',drEEMtoolbox.requiredVersion,' or newer to use this version of drEEM.'])
+            end
+            mallver=ver;
+            tbs={'Statistics and Machine Learning Toolbox' 'Parallel Computing Toolbox' 'Curve Fitting Toolbox','Image Processing Toolbox','Signal Processing Toolbox'};
+            isthere=zeros(1,numel(tbs));
+            for n=1:numel(tbs)
+                isthere(n)=any(~cellfun(@isempty,strfind({mallver.Name},tbs{n})));
+            end
+            if all(isthere)
+                disp('          Success.')
+            else
+                warning(['Missing toolbox(es):',tbs{~isthere},'. Some functions may not work as intended.'])
+            end
+        end
     end
 
     % These are not really needed to be visible to the user
@@ -56,6 +77,7 @@ classdef drEEMtoolbox < handle
     end
 
     methods (Static = true , Access = public)
+
         % import functions
         data = importeems(filePattern,options)
         data = importabsorbance(filePattern,options)

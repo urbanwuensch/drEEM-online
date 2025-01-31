@@ -5,67 +5,49 @@ end
 mustBeOnline % Check right away whether the instance can access www
 
 
-displayall=true; % Debugging / if needed or wanted
+displayall=false; % Debugging / if needed or wanted
+
+%% Backups
+pathlist = path;
+
 
 %% Detect which scenario is found
-if displayall,disp('Detecting install scenario'),end
+if displayall,disp('Detecting install scenario'),end %#ok<*UNRCH>
 existing=fetchExisting; % This assumes modern drEEM (proper Contents.m)
 online=fetchRepository;
 if isempty(existing)
-    if displayall,disp('No pre-existing drEEM installation'),end
+    if displayall,disp('No pre-existing drEEM installation ... '),end
     scenario='clean';
 elseif isscalar(existing)
-    if displayall,disp('One pre-existing drEEM installation'),end
+    if displayall,disp('One pre-existing drEEM installation ... '),end
     scenario=compareVersions(existing,online);
 elseif length(existing)>1
-    if displayall,disp('A mess of installations'),end
+    if displayall,disp('Multiple installations found ... '),end
     scenario=compareVersions(existing,online);
 end
 
 if matches(scenario,'up-to-date')
-    disp('Version up to date. Exiting')
+    disp('drEEM is up to date')
     return
 end
 
 % scenario = {}
-%% Uninstall (needs to be implemented)
+%% Uninstall
 if not(isempty(existing)) 
-    disp('uninstall')
+    disp('Uninstalling old versions by removing them from the path ... ')
+    uninstall
 end
 %% Download
 if matches(scenario,{'clean install','outdated'})
-    folder=downloadAndUnpackToolbox(online.url{1});
-    dreeminstall(folder)
+    %folder=downloadAndUnpackToolbox(online.url{1});
+    
 end
 %% Install
+% Dummy during development
+folder='/Users/urban/Documents/MATLAB/drEEM-2.0';
+installroutine(folder,pathlist)
+disp('Success ... ')
 
-
-
-
-disp('Success. ')
-% cellvhist=textscan(vhist,'%s%s','Delimiter',';');
-% tvhist=cell2table([cellvhist{:}],'VariableNames',{'Version','URL'});
-% 
-% if exist('developer','var')
-%     disp(' ')
-%     disp('--- Available versions -----------')
-%     message=strcat(num2str((1:height(tvhist))'),repmat(" : ",height(tvhist),1),tvhist.Version);
-%     for n=1:size(message,1)
-%         disp(message(n,:))
-%     end
-%     disp('----------------------------------')
-%     disp(' ')
-%     ui=input(['Enter number of the desired release (',num2str(1:2),' ... ):  '],'s');
-%     reqver=tvhist.Version{str2double(ui)}; 
-% else
-%     reqver=tvhist.Version{strcmp(tvhist.Version,'latest released (same as first entry)')};
-% end
-% 
-% urlselected=find(strcmp(tvhist.Version,reqver));
-
-
-    dreeminstall
-    cd(olddir)
 end
 
 function mustBeOnline
@@ -108,6 +90,7 @@ for j=1:length(ev)
 end
 
 % Compare versions
+update=true;
 for j=1:height(evd)
     if ov(1)>=evd(j,1)
         if ov(2)>=evd(j,2)
@@ -124,11 +107,58 @@ for j=1:height(evd)
     end
 end
 
-if all(update)
+if any(update)
     outcome='outdated';
 else
     outcome='up-to-date';
 end
+end
+
+function uninstall
+%%
+% Current path list (cell array)
+curPath = path;
+curPath=textscan(curPath,'%s','delimiter',pathsep);
+curPath=curPath{:};
+% The subset with dreem (all lower) in the path
+foldermatches=contains(lower(curPath),'dreem');
+dreemFolders=curPath(foldermatches);
+
+% Make a table with the drEEM folders
+listing=table;
+for j=1:numel(dreemFolders)
+    files=dir(dreemFolders{j});
+    listing=[listing;struct2table(files)];
+end
+
+% In case this there are no folders, just exit
+if isempty(listing)
+    return
+end
+listing(listing.isdir==1,:)=[]; % deletes the directory entries
+
+% These three m-files target drEEM-2, drEEM > 0.4 and drEEM < 0.4
+targetMfiles={'viewmodels.mlapp','randinitanal.m','nmodel.m'};
+
+% subset the listing to the folders that contain the entries
+listing=listing(matches(listing.name,targetMfiles),:);
+
+% Now, isolate the root folder of each installation. This is done assuming 
+% that each m-file is one up from the root and the last folder is deleted 
+% from each path
+for j=1:height(listing)
+    temp=strsplit(listing.folder{j},filesep); % Split the path with filesep
+    temp=temp(1:end-1); % delete the last folder
+    temp(cellfun(@(x) isempty(x),temp))=[]; % delete empty cells
+    temp=cellfun(@(x) [filesep,x],temp,uni=false); % fuse the path back together
+    listing.folder{j}=[temp{:}]; % paste it back in
+end
+% Isolate the unique paths (there will be multiples for each) and then prepare
+% for the deletion
+deleteThese=curPath(contains(curPath,unique(listing.folder)));
+% delete the drEEM toolboxes
+rmpath(deleteThese{:})  % This removes old drEEM folders
+
 end
 
 function tbPath=downloadAndUnpackToolbox(url)
@@ -154,27 +184,22 @@ function tbPath=downloadAndUnpackToolbox(url)
 
 end
 
-function uninstall
-%%
-curPath = path;curPath=textscan(curPath,'%s','delimiter',pathsep);curPath=curPath{:};
-foldermatches=contains(lower(curPath),'dreem');
 
-dreemFolders=curPath(foldermatches);
-listing=table;
-for j=1:numel(dreemFolders)
-    files=dir(dreemFolders{j});
-    listing=[listing;struct2table(files)];
+
+function installroutine(folder,backup)
+p=genpath(folder);
+addpath(p)
+try
+    savepath
+catch
+    warning('Could not save the current searchpath. You will have to reinstall drEEM after restarting Matlab.')
 end
-listing(listing.isdir==1,:)=[];
 
-targetMfiles={'viewmodels.mlapp','randinitanal.m','nmodel.m'};
-
-listing=listing(matches(listing.name,targetMfiles),:);
-for j=1:height(listing)
-    temp=strsplit(listing.folder{j},filesep);
-    temp=temp(1:end-1);
-    temp(cellfun(@(x) isempty(x),temp))=[];
-    temp=cellfun(@(x) [filesep,x],temp,uni=false);
-    listing.folder{j}=[temp{:}];
+try
+    drEEMtoolbox.versionRequires
+catch ME
+    restoredefaultpath
+    path(backup)
+    rethrow(ME)
 end
 end
