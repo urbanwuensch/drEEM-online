@@ -1,11 +1,9 @@
-function dreeminstall
-%
-% <strong>Syntax</strong>
-%   <strong>dreeminstall</strong>
-%
-% <a href="matlab: doc dreeminstall">help for dreeminstall</a> <- click on the link
-
-
+function dreeminstall(toolboxDir)
+arguments
+    toolboxDir {mustBeFolder(toolboxDir)}
+end
+currentDir=pwd; % For restoring
+cd(toolboxDir)
 %% Initial check before anything else
 % Check if the highest priority dreeminstall is in the current folder & if
 % this specific function being executed is also the one in the current
@@ -26,7 +24,7 @@ clearvars commithist update
 disp(' ')
 disp(' ')
 disp('-----------------------------------------------------')
-disp(['drEEM toolbox 2.0 (',vers,', last update ',versdate,')'])
+disp(['drEEM toolbox 2 (',vers,', last update ',versdate,')'])
 disp('-----------------------------------------------------')
 disp(' ')
 disp('Installation routine')
