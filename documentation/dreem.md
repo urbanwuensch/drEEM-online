@@ -1,10 +1,12 @@
-# drEEM toolbox for MATLAB 2
-Welcome to this MATLAB toolbox that aids the multiway decomposition of fluorescence EEMs into underlying fluorescence components using PARAFAC.
+# drEEM toolbox for MATLAB
+This toolbox that aids the multiway decomposition of fluorescence EEMs into underlying fluorescence components using PARAFAC.
 
-## About this documentation
+## About this documentation and version 2
 This documentation is intended to ease the use of the toolbox and will walk you through the installation and usage of the toolbox and its functions. Most importantly, we provide a number of tutorials that should allow new users and those not experienced in the programming environment to get started.
 
-## Contents
+Since the initial release of drEEM in 2013, Matlab has expanded considerably in terms of ease-of-use, functionality, and computation speed. drEEM version 2 takes advantage of new Matlab features and is a complete redevelopment of the code.
+
+## Topics of this documentation
 [Installation & Getting started]()
 
 [Tutorials]()
@@ -13,8 +15,19 @@ This documentation is intended to ease the use of the toolbox and will walk you 
 
 [Installation]()
 
-## About version 2
-drEEM version 2 is a complete redevelopment of the code base. Since it's first release in 2013, Matlab has expanded considerably in terms of ease-of-use, functionality, and computation speed and version 2 takes advantage of these facts.
+## Tutorials
+
+[Importing data]()
+
+[Data processing]()
+
+[Scatter removal]()
+
+[Data manipulation]()
+
+[Data manipulation]()
+
+
 
 ## About the developers
 ### Urban Wünsch

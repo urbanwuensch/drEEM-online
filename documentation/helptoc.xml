@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding="utf-8"?>
+
+<toc version="2.0">
+<!-- First tocitem specifies top level in Help browser Contents pane -->
+<!-- This can be a roadmap page, as shown below, or a content page -->
+    <tocitem target="dreem.html">drEEM Toolbox
+        <!-- Nest tocitems to create hierarchical entries in  Contents-->
+        <!-- To include icons, use the following syntax for tocitems: -->
+        <!-- <tocitem target="foo.html" image="HelpIcon.NAME"> -->
+        <!-- Title-of-Section </tocitem> -->
+        <!-- where NAME is one of the following (use capital letters): -->
+        <!-- FUNCTION, USER_GUIDE, EXAMPLES, BLOCK, GETTING_STARTED, -->
+        <!-- DEMOS, RELEASE_NOTES --> 
+        <!-- Icon images used for these entries are also stored in -->
+        <!-- matlabroot/toolbox/matlab/icons -->
+        <!-- A Getting Started Guide usually comes first -->
+        <tocitem target="installation of the toolbox.html" image="HelpIcon.GETTING_STARTED">
+            Installation and Requirements
+        </tocitem>
+        <!-- User Guide comes next -->
+        <tocitem target="doc_userguide_start.html" 
+            image="HelpIcon.USER_GUIDE">Tutorials
+            <tocitem target="doc_gettingstarted.html">Toolbox setup
+            </tocitem>
+            <tocitem target="doc_importexport.html">Data import / export
+            </tocitem>
+            <tocitem target="doc_spectralcor.html">Spectral correction
+            </tocitem>
+            <tocitem target="doc_datamanimulation.html">Data manipulation
+            </tocitem>
+            <tocitem target="doc_bulkdescript-fun.html">CDOM and FDOM indicies
+            </tocitem>
+            <tocitem target="doc_parafac-fun.html">PARAFAC fitting
+            </tocitem>
+            <tocitem target="doc_plotting-fun.html">Data / model plotting
+            </tocitem>
+        </tocitem>
+        <!-- Tutorial -->
+        <tocitem target="doc_dreemhelp.html" 
+                 image="HelpIcon.HelpIcon.EXAMPLES">Tips and Tricks
+            <tocitem target="tut_dataimport_dreem_1.html">Data import with sample log.
+            </tocitem>
+            <tocitem target="tut_dataimport_dreem_2.html">Simple data import (AquaLog)
+            </tocitem>
+            <tocitem target="tut_smoothing.html">Scatter excision
+            </tocitem>
+            <tocitem target="tut_parafactutorial_dreem_1.html">PARAFAC (PortSurvey)
+            </tocitem>
+            <tocitem target="tut_parafactutorial_dreem_2.html">PARAFAC (pure)
+            </tocitem>
+        </tocitem>
+        <!-- Optional link or links to your or other Web sites -->
+        <tocitem target="http://dreem.openfluor.org/"
+                 image="$toolbox/matlab/icons/webicon.gif">
+        drEEM project website
+        </tocitem>
+        <tocitem target="https://gitlab.com/dreem"
+                 image="$toolbox/matlab/icons/webicon.gif">
+        GitLab
+        </tocitem>
+    </tocitem>
+</toc>
+
