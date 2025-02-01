@@ -213,8 +213,8 @@ if strcmp(options.iopt,'conservative')
 
     nanmat2=false(data.nEm,data.nEx);
     if exlim>=min(data.Ex)&&emlim>=min(data.Em)
-        nanmat2(:,1:knnsearch(data.Ex,exlim))=true;
-        nanmat2(1:knnsearch(data.Ex,exlim),:)=true;
+        nanmat2(:,1:drEEMtoolbox.mindist(data.Ex,exlim))=true;
+        nanmat2(1:drEEMtoolbox.mindist(data.Ex,exlim),:)=true;
     end
     nanmat3=nanmat2&compmat{1}|nanmat2&compmat{2};
     exlim=ex(find(any(secondorderexcl==4,1),1,'last'));
@@ -222,8 +222,8 @@ if strcmp(options.iopt,'conservative')
 
     nanmat2=false(data.nEm,data.nEx);
     if exlim>=min(data.Ex)&&emlim>=min(data.Em)
-        nanmat2(:,1:knnsearch(data.Ex,exlim))=true;
-        nanmat2(1:knnsearch(data.Ex,exlim),:)=true;
+        nanmat2(:,1:drEEMtoolbox.mindist(data.Ex,exlim))=true;
+        nanmat2(1:drEEMtoolbox.mindist(data.Ex,exlim),:)=true;
     end
     nanmat4=nanmat2==true&compmat{1}==true|nanmat2==true&compmat{2}==true;
     

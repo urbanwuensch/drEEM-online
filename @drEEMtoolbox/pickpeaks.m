@@ -105,10 +105,10 @@ for i=1:data.nSample
     % Running through different scenarios
     % #1: Ex/Em pair
     for n=1:size(peaks,2)
-        if numel(peaks(n).Em)==1&&numel(peaks(n).Ex)==1
+        if isscalar(peaks(n).Em)&&isscalar(peaks(n).Ex)
             Cpeak(i,n)=data.(Xname)(i,mindist(data.Em,peaks(n).Em{1}),mindist(data.Ex,peaks(n).Ex{1}));
             % #2: Specific Ex, but Em range
-        elseif numel(peaks(n).Ex)==1&&numel(peaks(n).Em)~=1
+        elseif isscalar(peaks(n).Ex)&&numel(peaks(n).Em)~=1
             tempEm=data.(Xname)(i,mindist(data.Em,peaks(n).Em{1}):mindist(data.Em,peaks(n).Em{end}),mindist(data.Ex,peaks(n).Ex{1}));
             Cpeak(i,n)=max(tempEm,[],'omitnan');
             % #3: Ex and Em range-peaks

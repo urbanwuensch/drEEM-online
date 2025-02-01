@@ -23,7 +23,7 @@ classdef drEEMtoolbox < handle
                 error(['You need Matlab ',drEEMtoolbox.requiredVersion,' or newer to use this version of drEEM.'])
             end
             mallver=ver;
-            tbs={'Statistics and Machine Learning Toolbox' 'Parallel Computing Toolbox' 'Curve Fitting Toolbox','Image Processing Toolbox','Signal Processing Toolbox'};
+            tbs={'Statistics and Machine Learning Toolbox' 'Parallel Computing Toolbox'};
             isthere=zeros(1,numel(tbs));
             for n=1:numel(tbs)
                 isthere(n)=any(~cellfun(@isempty,strfind({mallver.Name},tbs{n})));
@@ -31,8 +31,9 @@ classdef drEEMtoolbox < handle
             if all(isthere)
                 disp('          Success.')
             else
-                warning(['Missing toolbox(es):',tbs{~isthere},'. Some functions may not work as intended.'])
+                warning(['Missing toolbox(es):',tbs{~isthere},'. Some toolbox functionality will not be available.'])
             end
+
         end
     end
 
@@ -44,6 +45,17 @@ classdef drEEMtoolbox < handle
         function out=tbxpath
             out=fileparts(which('drEEMtoolbox.m'));
             out=erase(out,"@drEEMtoolbox");
+        end
+
+        function [idx,distance] = mindist(vec,value)
+            if isscalar(value)
+                [distance,idx]=min(abs(vec-value));
+            else
+                for j=1:numel(value)
+                    [distance(j,1),idx(j,1)]=min(abs(vec-value(j)));
+                end
+            end
+
         end
 
     end

@@ -176,7 +176,7 @@ function tbPath=downloadAndUnpackToolbox(url)
             error('Could not download the requested version of drEEM. Contact support if the issue persists.')
         end
     end
-    disp('Success. ')
+    disp('Success.')
     tbPath=strsplit(tvhist.URL{urlselected},{'/'});
     tbPath=tbPath{end};
     tbPath=strsplit(tbPath,'.zip');

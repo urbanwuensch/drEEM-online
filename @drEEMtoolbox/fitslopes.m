@@ -25,18 +25,9 @@ quiet   = options.quiet;
 
 
 mv=ver;
-stool=false;
-for n=1:numel(mv)
-    if strcmp(mv(n).Name,'MATLAB')
-        mver=mv(n).Version;
-    end
-    if strfind(mv(n).Name,'Statistics')
-        stool=true;
-    end
-end
-
+stool=any(contains({mv(:).Name},'Statistics and Machine Learning'));
 if ~stool
-    error('slopefit.m requires the Statistics and Machine Learning Toolbox.')
+    warning('Statistics and Machine Learning Toolbox not installed. No exponential slopes will be calculated.')
 end
 
 %% Extract data
@@ -86,9 +77,10 @@ Coef2=nan(2,data.nSample);
 Coef3=nan(2,data.nSample);
 shortfit=cell(data.nSample,1);
 longfit=cell(data.nSample,1);
-
-opts=statset;
-opts.MaxIter=2500;
+if stool
+    opts=statset;
+    opts.MaxIter=2500;
+end
 if not(quiet)
     wb=waitbar(0,'Fitting spectral slopes...','CreateCancelBtn','setappdata(gcbf,''canceling'',1)');cnt=0;
     setappdata(wb,'canceling',0);
@@ -113,9 +105,14 @@ for n=1:3
                     continue
                 end
                 try
+                    if stool
                     warning off
                     beta = nlinfit(waveSel{n},absSel{n}(:,i),@CDOMexp_K,[(mean(absSel{n}(1,i))); 18; 0],opts);
                     warning on
+                    else
+                        beta=[nan nan nan]';
+                    end
+
                 catch
                     warning(['Could not calculate the exponential slope for sample',num2str(i)])
                     beta=[nan nan nan]';
@@ -277,7 +274,7 @@ switch diagn
                 yyaxis right
                 cla
                 set(gca,'YColor', [1       0.663       0.094] )
-                plot(waveSel{1},(absSel{1}(:,n)-model(n,:)')./nanmax(absSel{1}(:,n)),'Color', [1       0.663       0.094] ,'Marker','none','LineStyle','-')
+                plot(waveSel{1},(absSel{1}(:,n)-model(n,:)')./max(absSel{1}(:,n),"omitmissing"),'Color', [1       0.663       0.094] ,'Marker','none','LineStyle','-')
                 ylabel('Relative residual'),xlabel('Wavelength (nm)')
                 hold off
                 title(['S_{',num2str(LRange(1)),'-',num2str(LRange(2)),'} exp. model vs. fitted & residuals'])
@@ -298,14 +295,14 @@ switch diagn
                 set(gca,'YColor','k')
                 plot(data.absWave,data.abs(n,:),'LineWidth',0.5,'Color',[0.5 0.5 0.5]),hold on
                 plot(waveSel{2},exp(absSel{2}(n,:)),'Color','k','LineStyle','-','LineWidth',1.5),hold on
-                plot(waveSel{2},exp(feval(shortfit{n}.fit,waveSel{2})),'Color',lines(1),'Marker','none','LineStyle','-')
+                plot(waveSel{2},exp(polyval(shortfit{n}.fit,waveSel{2})),'Color',lines(1),'Marker','none','LineStyle','-')
                 xlim([250 320])
                 ylabel('Absorbance'),xlabel('Wavelength (nm)')
 
                 yyaxis right
                 cla
                 set(gca,'YColor',[1       0.663       0.094])
-                plot(waveSel{2},(exp(absSel{2}(n,:))'-exp(feval(shortfit{n}.fit,waveSel{2})))./max(exp(absSel{2}(n,:))),'Color',[1       0.663       0.094],'Marker','none','LineStyle','-')
+                plot(waveSel{2},(exp(absSel{2}(n,:))-exp(polyval(shortfit{n}.fit,waveSel{2})))./max(exp(absSel{2}(n,:))),'Color',[1       0.663       0.094],'Marker','none','LineStyle','-')
                 hold off
                 title('S_{275-295} model vs. fitted & residuals')
                 ylabel('Relative residual'),xlabel('Wavelength (nm)')
@@ -326,13 +323,13 @@ switch diagn
                 set(gca,'YColor','k')
                 plot(data.absWave,data.abs(n,:),'LineWidth',0.5,'Color',[0.5 0.5 0.5]);hold on
                 plot(waveSel{3},exp(absSel{3}(n,:)),'Color','k','LineStyle','-','LineWidth',1.5);hold on
-                plot(waveSel{3},exp(feval(longfit{n}.fit,waveSel{3})),'Color',lines(1),'Marker','none','LineStyle','-');
+                plot(waveSel{3},exp(polyval(longfit{n}.fit,waveSel{3})),'Color',lines(1),'Marker','none','LineStyle','-');
                 xlim([310 450])
                 ylabel('Absorbance'),xlabel('Wavelength (nm)')
                 yyaxis right
                 cla
                 set(gca,'YColor',[1       0.663       0.094])
-                plot(waveSel{3},(exp(absSel{3}(n,:))'-exp(feval(longfit{n}.fit,waveSel{3})))./max(exp(absSel{3}(n,:))),'Color',[1       0.663       0.094],'Marker','none','LineStyle','-');
+                plot(waveSel{3},(exp(absSel{3}(n,:))-exp(polyval(longfit{n}.fit,waveSel{3})))./max(exp(absSel{3}(n,:))),'Color',[1       0.663       0.094],'Marker','none','LineStyle','-');
                 ylabel('Relative residual'),xlabel('Wavelength (nm)')
                 hold off
                 title('S_{350-400} model vs. fitted & residuals')
@@ -450,17 +447,31 @@ end
 end
 
 function results = customlmfit(x,y)
-out=fit(x,y,'poly1');
+% out=fit(x,y,'poly1');
+% 
+% sum_of_squares = sum((y-mean(y)).^2);
+% sum_of_squares_of_residuals = sum((y-feval(out,x)).^2);
+% Rsquared = 1 - sum_of_squares_of_residuals/sum_of_squares;
+% 
+% results=struct;
+% results.Coefficients=table;
+% results.Coefficients.Estimate(1)=out.p2;
+% results.Coefficients.Estimate(2)=out.p1;
+% results.Rsquared=Rsquared;
+% results.fit=out; % store that stuff for later feval
 
+% results=fitlm(x,y,RobustOpts='off');
+
+[out,S] = polyfit(x,y,1);
 sum_of_squares = sum((y-mean(y)).^2);
-sum_of_squares_of_residuals = sum((y-feval(out,x)).^2);
+sum_of_squares_of_residuals = sum((y-polyval(out,x)).^2);
 Rsquared = 1 - sum_of_squares_of_residuals/sum_of_squares;
 
 results=struct;
 results.Coefficients=table;
-results.Coefficients.Estimate(1)=out.p2;
-results.Coefficients.Estimate(2)=out.p1;
+results.Coefficients.Estimate(1)=out(2);
+results.Coefficients.Estimate(2)=out(1);
 results.Rsquared=Rsquared;
-results.fit=out; % store that stuff for later feval
+results.fit=out; % store that stuff for later polyval
 
 end

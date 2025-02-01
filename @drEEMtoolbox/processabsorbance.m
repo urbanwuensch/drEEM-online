@@ -7,11 +7,17 @@ arguments
         
         % Optional
         options.correctBase (1,:) {mustBeNumericOrLogical} = true
-        options.baseWave (1,:) {mustBeNumeric} = 590
+        options.baseWave (1,:) {mustBeNumeric,mustBeGreaterThan(options.baseWave,580)} = 595
         options.zero (1,:) {mustBeNumericOrLogical} = false
         options.extrapolate (1,:) {mustBeNumericOrLogical} = true
 end
-
+mv=ver;
+stool=any(contains({mv(:).Name},'Statistics and Machine Learning'));
+stool=false
+if options.extrapolate&&not(stool)
+    options.extrapolate=false;
+    warning('Statistics and Machine Learning Toolbox not installed. CDOM spectra extrapolation disabled.')
+end
 % Check if the function has already been run
 idx=drEEMhistory.searchhistory(data.history,'processabsorbance','first');
 if not(isempty(idx))
@@ -53,28 +59,33 @@ ylabel(ax,'Absorbance')
 title(ax,'Absorbance prior to any correction')
 %% Baseline correction (if possible and wanted)
 % It's only allowed if there's plenty of long-wl information though
-if max(dataout.absWave)>580
-    blcor=true;
+if max(dataout.absWave)>=580
+    blcor_allowed=true;
 else
-    blcor=false;
+    warning('CDOM coverage does not allow baseline correction (needs to be > 580 nm). Option disabled.')
+    blcor_allowed=false;
 end
 
 % Baseline possible, wanted, and no extrapolation necessary
-if blcor&&options.correctBase&&not(options.extrapolate)
-    i=dataout.absWave>options.baseWave;
-    bl=mean(dataout.abs(:,i),2,'omitnan');
-    dataout.abs=dataout.abs-bl;
+% Otherwise, the baseline subtraction is done later.
+if blcor_allowed&&options.correctBase&&not(options.extrapolate)
+    i=dataout.absWave>=options.baseWave;
+    if not(any(i))
+        warning('Please double-check the baseline correction wavelength. Could not perform the baseline correction.')
+    else
+        bl=mean(dataout.abs(:,i),2,'omitmissing');
+        dataout.abs=dataout.abs-bl;
+    end
 end
 
 %% Stitch-on (if needed)
 if max([dataout.Ex;dataout.Em])>max(dataout.absWave)
-    disp(['Absorbance and fluoresence cover different wavelength areas. The EEM will be cut during the IFE correction unless ' ...
-        'absorbance is extrapolated. This should only be done if CDOM absorbance was measured, as extrapolation is possible ' ...
-        'due to the featureless properties of CDOM absorbance at high wavelengths.'])
+    disp('EEMs were measured at wavelengths longer than CDOM spectra.')
     % The extrapolation bit
     if options.extrapolate
-        abswave=dataout.absWave(mindist(dataout.absWave,300):end);
-        absspec=dataout.abs(:,mindist(dataout.absWave,300):end)';
+        disp('Extrapolation of CDOM spectra will avoid the automatic deletion of EEM data during IFE correction.')
+        abswave=dataout.absWave(drEEMtoolbox.mindist(dataout.absWave,300):end);
+        absspec=dataout.abs(:,drEEMtoolbox.mindist(dataout.absWave,300):end)';
 
         % This bit sets options for a non-linear exponential CDOM spectra
         % fit and carries it out ( (c) Stedmon 2001)
@@ -123,18 +134,19 @@ if max([dataout.Ex;dataout.Em])>max(dataout.absWave)
         
         % Now let's try the baseline correction again. Same code as above
         if max(dataout.absWave)>580
-            blcor=true;
+            blcor_allowed=true;
         else
-            blcor=false;
+            blcor_allowed=false;
         end
         
-        if blcor&&options.correctBase
+        if blcor_allowed&&options.correctBase
             i=dataout.absWave>options.baseWave;
             bl=mean(dataout.abs(:,i),2,'omitnan');
             dataout.abs=dataout.abs-bl;
         end
         
-
+    else
+        disp('The EEMs will be cut automatically when IFE corrections are carried out.')
     end
 end
 

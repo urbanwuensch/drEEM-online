@@ -199,10 +199,10 @@ end
 % Correlations
 r=table('Size',[(numel(nthrootspec)+1) 4],'VariableTypes',{'double','double','double','double'});
 for n=1:(numel(nthrootspec)+1)
-    r.('MT')(n,1)=corr(peak.('M')(:,n),peak.('T')(:,n),'Rows','complete');
-    r.('CM')(n,1)=corr(peak.('C')(:,n),peak.('M')(:,n),'Rows','complete');
-    r.('CD')(n,1)=corr(peak.('C')(:,n),peak.('D')(:,n),'Rows','complete');
-    r.('TD')(n,1)=corr(peak.('T')(:,n),peak.('D')(:,n),'Rows','complete');
+    r.('MT')(n,1)=rsquared(peak.('M')(:,n),peak.('T')(:,n));
+    r.('CM')(n,1)=rsquared(peak.('C')(:,n),peak.('M')(:,n));
+    r.('CD')(n,1)=rsquared(peak.('C')(:,n),peak.('D')(:,n));
+    r.('TD')(n,1)=rsquared(peak.('T')(:,n),peak.('D')(:,n));
 end
 
 %% Plotting
@@ -212,14 +212,20 @@ end
 % strength=scaling(strength)*100;
 strength=[1 nthrootspec];
 
-close all
-fig=drEEMtoolbox.dreemfig;
-tiledlayout(3,4,'padding','tight','TileSpacing','tight')
+if data.toolboxdata.uifig
+    f=drEEMtoolbox.dreemuifig;
+else
+    f=drEEMtoolbox.dreemfig;
+end
+f.Name='drEEM: scalesamples.m';
+t=tiledlayout(f,3,4,'padding','tight','TileSpacing','tight');
 for i=1:numel(peakletter)
-    nexttile
-    hold on
-    plot(strength,1-median(peak.(peakletter{i}),'omitnan'),'LineWidth',2,'Color','k')
-    title(peakletter{i})
+    ax=nexttile(t);
+    hold(ax,'on')
+    plot(ax,strength,1-median(peak.(peakletter{i}),'omitnan'),'LineWidth',2,'Color','k')
+    title(ax,peakletter{i})
+    ylabel(ax,'Median distance from max.')
+
 end
 
 
@@ -228,9 +234,11 @@ end
 target={'MT','CM','CD','TD'};
 
 for n=1:numel(target)
-    nexttile
-    scatter(strength,reldist.(target{n}),'filled','k')
-    title([target{n}(1),' / ',target{n}(2)])
+    ax=nexttile(t);
+    scatter(ax,strength,reldist.(target{n}),'filled','k')
+    title(ax,[target{n}(1),' / ',target{n}(2)])
+    ylabel(ax,'Median distance')
+
 end
 
 
@@ -238,23 +246,20 @@ end
 target={'MT','CM','CD','TD'};
 
 for n=1:numel(target)
-    nexttile
-    scatter(strength,r.(target{n}),'filled','k')
-    yline(0,'-','Color','r')
-    title([target{n}(1),' vs. ',target{n}(2)])
-    ylim([-1 1])
-end
-ax=flipud(findall(fig,'type','axes'));
-for n=1:numel(ax)
-    grid(ax(n),'on')
+    ax=nexttile(t);
+    scatter(ax,strength,r.(target{n}),'filled','k')
+    yline(ax,0,'-','Color','r')
+    title(ax,[target{n}(1),' vs. ',target{n}(2)])
+    ylim(ax,[-1 1])
+    ylabel(ax,'Correlation (r)')
 end
 
-t=sgtitle('scaleeem: scaling diagnosis');
-t.FontWeight='bold';
-t.FontName='Arial';
-ylabel(ax(1),'Median distance from max.')
-ylabel(ax(5),'Median distance')
-ylabel(ax(9),'Correlation (r)')
-for n=9:12,xlabel(ax(n),'n^{th} root');end
+xlabel(t,'n^{th} root')
 
+end
+% Quick R suared with built-in Matlab functions (pair-wise complete)
+function rsq = rsquared(x,y)
+compare=not(ismissing(x))&not(ismissing(y));
+R=corrcoef(x(compare),y(compare));
+rsq=(R(2,1));
 end
