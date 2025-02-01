@@ -149,24 +149,26 @@ for n=1:3
                 if ~all(isnan(absSel{n}(i,:)))
                     warning off
                     try
-                        shortfit{i}= fitlm(waveSel{n},absSel{n}(i,:)','robustopts','off');
+                        %shortfit{i}= fitlm(waveSel{n},absSel{n}(i,:)','robustopts','off');
+                        shortfit{i} = customlmfit(waveSel{n}',absSel{n}(i,:)');
                     catch
-                        shortfit{i}= fitlm(waveSel{n},real(absSel{n}(i,:)'),'robustopts','off');
+                        %shortfit{i}= fitlm(waveSel{n},real(absSel{n}(i,:)'),'robustopts','off');
+                        shortfit{i}= customlmfit(waveSel{n}',real(absSel{n}(i,:)'));
                     end
                     warning on
                     if strcmp(lastwarn,'Iteration limit reached.')
                         disp(['Sample ',num2str(i),': Limit of fitting iterations reached (S275-295)'])
                         lastwarn('')
                     end
-                    if shortfit{i}.Rsquared.Adjusted>Rsq
+                    if shortfit{i}.Rsquared>Rsq
                         p_short=shortfit{i}.Coefficients{2,1};
                     else
                         p_short=NaN;
                     end
                 else
-                    shortfit{i}.Rsquared.Adjusted=nan;
+                    shortfit{i}.Rsquared=nan;
                 end
-                Coef2([1 2],i)=[p_short.*-1E3;shortfit{i}.Rsquared.Adjusted];
+                Coef2([1 2],i)=[p_short.*-1E3;shortfit{i}.Rsquared];
                 if not(quiet)
                     if ~getappdata(wb,'canceling')
                         cnt=cnt+1;waitbar(cnt./(data.nSample*2),wb,'Fitting spectral slopes... (short-range S)');
@@ -188,24 +190,24 @@ for n=1:3
                 if ~all(isnan(absSel{n}(i,:)))
                     warning off
                     try
-                        longfit{i}= fitlm(waveSel{n},absSel{n}(i,:)','robustopts','off');
+                        longfit{i} = customlmfit(waveSel{n}',absSel{n}(i,:)');
                     catch
-                        longfit{i}= fitlm(waveSel{n},real(absSel{n}(i,:)'),'robustopts','off');
+                        longfit{i} = customlmfit(waveSel{n}',real(absSel{n}(i,:)'));
                     end
                     warning on
                     if strcmp(lastwarn,'Iteration limit reached.')
                         disp(['Sample ',num2str(i),': Limit of fitting iterations reached (S350-400)'])
                         lastwarn('')
                     end
-                    if longfit{i}.Rsquared.Adjusted>Rsq
+                    if longfit{i}.Rsquared>Rsq
                         p_long=longfit{i}.Coefficients{2,1};
                     else
                         p_long=NaN;
                     end
                 else
-                    longfit{i}.Rsquared.Adjusted=nan;
+                    longfit{i}.Rsquared=nan;
                 end
-                Coef3([1 2],i)=[p_long*-1E3;longfit{i}.Rsquared.Adjusted];
+                Coef3([1 2],i)=[p_long*-1E3;longfit{i}.Rsquared];
                 if not(quiet)
                     if ~getappdata(wb,'canceling')
                         cnt=cnt+1;waitbar(cnt./(data.nSample*2),wb,'Fitting spectral slopes... (short-range S)');
@@ -296,14 +298,14 @@ switch diagn
                 set(gca,'YColor','k')
                 plot(data.absWave,data.abs(n,:),'LineWidth',0.5,'Color',[0.5 0.5 0.5]),hold on
                 plot(waveSel{2},exp(absSel{2}(n,:)),'Color','k','LineStyle','-','LineWidth',1.5),hold on
-                plot(waveSel{2},exp(feval(shortfit{n},waveSel{2})),'Color',lines(1),'Marker','none','LineStyle','-')
+                plot(waveSel{2},exp(feval(shortfit{n}.fit,waveSel{2})),'Color',lines(1),'Marker','none','LineStyle','-')
                 xlim([250 320])
                 ylabel('Absorbance'),xlabel('Wavelength (nm)')
 
                 yyaxis right
                 cla
                 set(gca,'YColor',[1       0.663       0.094])
-                plot(waveSel{2},(exp(absSel{2}(n,:))-exp(feval(shortfit{n},waveSel{2})))./max(exp(absSel{2}(n,:))),'Color',[1       0.663       0.094],'Marker','none','LineStyle','-')
+                plot(waveSel{2},(exp(absSel{2}(n,:))'-exp(feval(shortfit{n}.fit,waveSel{2})))./max(exp(absSel{2}(n,:))),'Color',[1       0.663       0.094],'Marker','none','LineStyle','-')
                 hold off
                 title('S_{275-295} model vs. fitted & residuals')
                 ylabel('Relative residual'),xlabel('Wavelength (nm)')
@@ -324,13 +326,13 @@ switch diagn
                 set(gca,'YColor','k')
                 plot(data.absWave,data.abs(n,:),'LineWidth',0.5,'Color',[0.5 0.5 0.5]);hold on
                 plot(waveSel{3},exp(absSel{3}(n,:)),'Color','k','LineStyle','-','LineWidth',1.5);hold on
-                plot(waveSel{3},exp(feval(longfit{n},waveSel{3})),'Color',lines(1),'Marker','none','LineStyle','-');
+                plot(waveSel{3},exp(feval(longfit{n}.fit,waveSel{3})),'Color',lines(1),'Marker','none','LineStyle','-');
                 xlim([310 450])
                 ylabel('Absorbance'),xlabel('Wavelength (nm)')
                 yyaxis right
                 cla
                 set(gca,'YColor',[1       0.663       0.094])
-                plot(waveSel{3},(exp(absSel{3}(n,:))-exp(feval(longfit{n},waveSel{3})))./max(exp(absSel{3}(n,:))),'Color',[1       0.663       0.094],'Marker','none','LineStyle','-');
+                plot(waveSel{3},(exp(absSel{3}(n,:))'-exp(feval(longfit{n}.fit,waveSel{3})))./max(exp(absSel{3}(n,:))),'Color',[1       0.663       0.094],'Marker','none','LineStyle','-');
                 ylabel('Relative residual'),xlabel('Wavelength (nm)')
                 hold off
                 title('S_{350-400} model vs. fitted & residuals')
@@ -445,4 +447,20 @@ for n=1:numPlots
     hold on;
     h(n) = line(ax,NaN,NaN,'Marker','o','MarkerSize',5,'MarkerFaceColor',col(n,:),'MarkerEdgeColor','k','LineStyle','none');
 end
+end
+
+function results = customlmfit(x,y)
+out=fit(x,y,'poly1');
+
+sum_of_squares = sum((y-mean(y)).^2);
+sum_of_squares_of_residuals = sum((y-feval(out,x)).^2);
+Rsquared = 1 - sum_of_squares_of_residuals/sum_of_squares;
+
+results=struct;
+results.Coefficients=table;
+results.Coefficients.Estimate(1)=out.p2;
+results.Coefficients.Estimate(2)=out.p1;
+results.Rsquared=Rsquared;
+results.fit=out; % store that stuff for later feval
+
 end
