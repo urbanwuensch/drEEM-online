@@ -49,15 +49,26 @@ lowdelete = lowdelete|any(isnan(Xbackup),2); % Mark samples (also samples contai
 
 Xunf(lowdelete,:) = [];
 warning off
-[loads, score, ~ , ~ , explained] = pca(Xunf,...
-    'NumComponents',comp,...
-    'Centered',false,...
-    'Rows','complete');
+% [loads, score, ~ , ~ , explained] = pca(Xunf,...
+%     'NumComponents',comp,...
+%     'Centered',false,...
+%     'Rows','complete');
+[U,S,V] = svd(Xunf,"econ"); %V = coeff/loads
+score=Xunf*V(:,1:comp);
+loads=V;
+data_ssq=sum(Xunf(:).^2);
+
+for j=1:comp
+    Xhat=score(:,j)*loads(:,j)';
+    error_ssq=data_ssq-sum(Xhat(:).^2,"omitmissing");
+    explained(j,1)=100 * (1 - error_ssq / data_ssq );
+end
 warning on
 results.loads = loads;
 results.score = score;
 results.explained = explained;
 results.lev=lev(score);
+
 for j=1:comp
     dat=nan(data.nEm*data.nEx,1);
     dat(incl)=results.loads(:,j);
