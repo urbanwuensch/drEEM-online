@@ -1,9 +1,15 @@
 function export2openfluor(data, f, filename)
+% <a href = "matlab:doc export2openfluor">export2openfluor(data,f,filename) (click to access documentation)</a>
+%
+% <strong>Inputs - Required</strong>
+% data (1,1)      {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+% f   (1,1)       {mustBeInteger}
+% filename (1,:)  {mustBeText}
 
 arguments
-    data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
-    f   (1,1) {mustBeInteger}
-    filename (1,:) {mustBeText}
+    data (1,1)      {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+    f   (1,1)       {mustBeInteger}
+    filename (1,:)  {mustBeText}
 end
 
 drEEMdataset.mustBeModel(data,f)

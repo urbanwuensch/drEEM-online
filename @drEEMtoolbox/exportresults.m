@@ -1,10 +1,16 @@
 function exportresults(data,filename,f)
+% <a href = "matlab:doc exportresults">exportresults(data,filename,f) (click to access documentation)</a>
+%
+% <strong>Inputs - Required</strong>
+% data (1,1)      {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+% filename (1,:)  {mustBeText}
+% f (1,1)         {mustBeNumeric}
 
 arguments
     % Required
-    data (1,1)  {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
-    filename (1,:) {mustBeText}
-    f (1,1) {mustBeNumeric}
+    data (1,1)      {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+    filename (1,:)  {mustBeText}
+    f (1,1)         {mustBeNumeric}
 end
 fs=drEEMdataset.modelsWithContent(data);
 if not(ismember(f,fs))

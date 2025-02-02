@@ -1,4 +1,5 @@
-function  varargout=benchmark()
+function  varargout=benchmark
+% <a href = "matlab:doc benchmark">[singlescore,multiscore,tsinglecore] = benchmark (click to access documentation)</a>
 
 funmode=parallelcomp;
 

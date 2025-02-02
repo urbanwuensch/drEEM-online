@@ -2,6 +2,7 @@ classdef drEEMtoolbox < handle
     properties (Constant = true, Hidden = false)
         version = "2.0.0"
         url = "https://gitlab.com/dreem/dreem-2.0"
+        rootfolder = drEEMtoolbox.tbxpath;
     end
     properties (Constant = true, Hidden = true)
         uifig = true % Should uifigure be used instead of figures?
@@ -167,7 +168,7 @@ classdef drEEMtoolbox < handle
         fhandle = reportresidualanalysis(data,ftarget,mdfield)
 
         % Visualization (incl. app workarounds)
-        f=dreemfig
+        f=dreemfig(fighandlein)
         f=dreemuifig
         spectralvariance(data)
         function vieweems(data)

@@ -1,21 +1,28 @@
 function dataout = ramancalibration(samples,blanks,options)
+% <a href = "matlab:doc ramancalibration">dataout = ramancalibration(samples,blanks,options) (click to access documentation)</a>
+%
+% <strong>Inputs - Required</strong>
+% samples (1,1) {mustBeA(samples,"drEEMdataset"),drEEMdataset.validate(samples),...
+%     drEEMdataset.sanityCheckSignalCalibration(samples)}
+% blanks  (1,1) {mustBeA(blanks,"drEEMdataset"),drEEMdataset.validate(blanks),...
+%     drEEMdataset.sanityCheckSignalCalibration(blanks)}
+% 
+% <strong>Inputs - Optional</strong>
+% ExWave (1,1) {mustBeNumeric} = 350
+% iStart (1,1) {mustBeNumeric} = 378
+% iEnd   (1,1) {mustBeNumeric} = 424
 
 arguments
     % Required
-    samples ...
-        (1,1) {mustBeA(samples,"drEEMdataset"),drEEMdataset.validate(samples),...
+    samples (1,1) {mustBeA(samples,"drEEMdataset"),drEEMdataset.validate(samples),...
         drEEMdataset.sanityCheckSignalCalibration(samples)}
-    blanks ...
-        (1,1) {mustBeA(blanks,"drEEMdataset"),drEEMdataset.validate(blanks),...
+    blanks (1,1) {mustBeA(blanks,"drEEMdataset"),drEEMdataset.validate(blanks),...
         drEEMdataset.sanityCheckSignalCalibration(blanks)}
 
     % Optional (but important)
-    options.ExWave ...
-        (1,1) {mustBeNumeric} = 350
-    options.iStart ...
-        (1,1) {mustBeNumeric} = 378
-    options.iEnd ...
-        (1,1) {mustBeNumeric} = 424
+    options.ExWave (1,1) {mustBeNumeric} = 350
+    options.iStart (1,1) {mustBeNumeric} = 378
+    options.iEnd   (1,1) {mustBeNumeric} = 424
 end
 % Experimental feature; overwrite workspace variable, needs no outputarg check
 if drEEMtoolbox.outputscenario(nargout)=="explicitOut"

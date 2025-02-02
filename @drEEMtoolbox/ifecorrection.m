@@ -1,8 +1,11 @@
 function dataout = ifecorrection(data)
+% <a href = "matlab:doc ifecorrection">dataout = ifecorrection(data) (click to access documentation)</a>
+%
+% <strong>Inputs - Required</strong>
+% data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),drEEMdataset.sanityCheckIFE(data)}
 
 arguments
-    data...
-        (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),...
+    data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),...
         drEEMdataset.sanityCheckIFE(data)}
 end
 % Experimental feature; overwrite workspace variable, needs no outputarg check

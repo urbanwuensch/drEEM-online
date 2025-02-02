@@ -1,4 +1,11 @@
 function dataout = zapnoise(data,sampleIdent,emRange,exRange)
+% <a href = "matlab:doc zapnoise">dataout = zapnoise(data,sampleIdent,emRange,exRange) (click to access documentation)</a>
+%
+% <strong>Inputs - Required</strong>
+% data (1,1)    {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+% sampleIdent   {mustBeNonempty,mustBeNumericOrLogical}
+% emRange (1,:) {mustBeNumeric,mustBeNonempty,drEEMdataset.mustBeInRangeEm(data,emRange)}
+% exRange (1,:) {mustBeNumeric,mustBeNonempty,drEEMdataset.mustBeInRangeEx(data,exRange)}
 
 arguments
     data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}

@@ -17,18 +17,21 @@
         <tocitem target="installation of the toolbox.html" image="HelpIcon.GETTING_STARTED">
             Installation and Requirements
         </tocitem>
+        <tocitem target="installation of the toolbox.html" image="HelpIcon.GETTING_STARTED">
+            What's new
+        </tocitem>
         <!-- User Guide comes next -->
-        <tocitem target="doc_userguide_start.html" 
+        <tocitem target="tutorials.html" 
             image="HelpIcon.USER_GUIDE">Tutorials
-            <tocitem target="doc_gettingstarted.html">Toolbox setup
+            <tocitem target="dreem_workflow.html">Toolbox setup
             </tocitem>
-            <tocitem target="doc_importexport.html">Data import / export
+            <tocitem target="need_to_know.html">Tips and Tricks
             </tocitem>
-            <tocitem target="doc_spectralcor.html">Spectral correction
+            <tocitem target="import_tutorial_01.html">Simple data import
             </tocitem>
-            <tocitem target="doc_datamanimulation.html">Data manipulation
+            <tocitem target="import_tutorial_02.html">Separate instruments import
             </tocitem>
-            <tocitem target="doc_bulkdescript-fun.html">CDOM and FDOM indicies
+            <tocitem target="import_tutorial_03.html">Import metadata
             </tocitem>
             <tocitem target="doc_parafac-fun.html">PARAFAC fitting
             </tocitem>

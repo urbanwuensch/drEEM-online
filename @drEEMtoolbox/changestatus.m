@@ -1,4 +1,10 @@
-function changestatus(data)
+function dataout = changestatus(data)
+% <a href = "matlab:doc changestatus">dataout = changestatus(data) (click to access documentation)</a>
+%
+% <strong>Inputs - Required</strong>
+% data (1,1)  {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+% 
+
 arguments
     data (1,1)  {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
 end

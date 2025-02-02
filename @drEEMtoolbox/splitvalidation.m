@@ -1,4 +1,9 @@
 function dataout = splitvalidation(data,fac)
+% <a href = "matlab:doc splitvalidation">dataout = splitvalidation(data,fac) (click to access documentation)</a>
+%
+% <strong>Inputs - Required</strong>
+% data (1,1) {mustBeNonempty,drEEMdataset.validate(data)}
+% fac (1,1)  {mustBeNumeric}
 
 arguments
     data (1,1) {mustBeNonempty,drEEMdataset.validate(data)}

@@ -1,4 +1,13 @@
 function dataout=subdataset(data,options)
+% <a href = "matlab:doc subdataset">dataout=subdataset(data,options) (click to access documentation)</a>
+%
+% <strong>Inputs - Required</strong>
+% data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+% 
+% <strong>Inputs - Optional</strong>
+% options.outSample (1,:)   {mustBeNumericOrLogical(options.outSample)} = false
+% options.outEm (1,:)       {mustBeA(options.outEm,'logical')} = false
+% options.outEx (1,:)       {mustBeA(options.outEx,'logical')} = false
 
 arguments
     data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}

@@ -1,7 +1,11 @@
 function varargout = alignsamples(varargin)
+% <a href = "matlab:doc alignsamples">varargout = alignsamples(varargin) (click to access documentation)</a>
+%
+% <strong>Inputs - Required</strong>
+% varargin (1,1) {mustBeA(varargin,"drEEMdataset"),drEEMdataset.validate(varargin)}
 
 arguments (Repeating)
-    varargin (1,1) {mustBeA(varargin,"drEEMdataset"),drEEMdataset.validate(varargin)}
+    varargin {mustBeA(varargin,"drEEMdataset"),drEEMdataset.validate(varargin)}
 end
 % Optional feature; overwrite workspace variable, needs no outputarg check
 if drEEMtoolbox.outputscenario(nargout)=="explicitOut"

@@ -1,4 +1,11 @@
 function dataout = upgradedataset(data,atypicalFieldnames)
+% <a href = "matlab:doc subdataset">dataout=subdataset(data,options) (click to access documentation)</a>
+%
+% <strong>Inputs - Required</strong>
+% data (1,1) {mustBeA(data,'struct')}
+%
+% <strong>Inputs - Optional</strong>
+% atypicalFieldnames (:,2) cell = {}
 
 arguments
     data (1,1) {mustBeA(data,'struct')}

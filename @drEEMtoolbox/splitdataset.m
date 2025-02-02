@@ -1,14 +1,19 @@
 function dataout = splitdataset(data,options)
+% <a href = "matlab:doc splitdataset">dataout = splitdataset(data,options) (click to access documentation)</a>
+%
+% <strong>Inputs - Required</strong>
+% data {drEEMdataset.validate(data)}
+% 
+% <strong>Inputs - Optional</strong>
+% options.bysort (1,:)    {drEEMdataset.mustBeMetadataColumn(data,options.bysort)} = []
+% options.numsplit (1,1)  {mustBePositive} = 2
+% options.stype (1,:)     {mustBeMember(options.stype,["alternating","random","contiguous","exact"])} = "alternating"
 
 arguments
     data {drEEMdataset.validate(data)}
-    options.bysort ...
-        (1,:) {drEEMdataset.mustBeMetadataColumn(data,options.bysort)} = []
-    options.numsplit ...
-        (1,1) {mustBePositive} = 2
-    options.stype ...
-        (1,:) {mustBeMember(options.stype,["alternating","random","contiguous",...
-        "exact"])} = "alternating"  
+    options.bysort (1,:)    {drEEMdataset.mustBeMetadataColumn(data,options.bysort)} = []
+    options.numsplit (1,1)  {mustBePositive} = 2
+    options.stype (1,:)     {mustBeMember(options.stype,["alternating","random","contiguous","exact"])} = "alternating"  
 end
 
 if matches(options.stype,"exact")&&isempty(options.bysort)

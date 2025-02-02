@@ -1,5 +1,9 @@
 function dataout = scalesamples(data,option)
+% <a href = "matlab:doc scalesamples">dataout = scalesamples(data,option) (click to access documentation)</a>
 %
+% <strong>Inputs - Required</strong>
+% data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+% option (1,:)
 arguments
     data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
     option (1,:) 

@@ -1,15 +1,26 @@
 function dataout = processabsorbance(data,options)
+% <a href = "matlab:doc processabsorbance">dataout = processabsorbance(data,options) (click to access documentation)</a>
+%
+% <strong>Inputs - Required</strong>
+% data (1,:) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),drEEMdataset.sanityCheckAbsorbance(data)}%
+%
+% <strong>Inputs - Optional</strong>
+% correctBase (1,:)     {mustBeNumericOrLogical} = true
+% baseWave (1,:)        {mustBeNumeric,mustBeGreaterThan(options.baseWave,580)} = 595
+% zero (1,:)            {mustBeNumericOrLogical} = false
+% extrapolate (1,:)     {mustBeNumericOrLogical} = true
+
+
 arguments
-        % Required
-        data ...
-            (1,:) {mustBeNonempty,mustBeA(data,"drEEMdataset"),...
-            drEEMdataset.validate(data),drEEMdataset.sanityCheckAbsorbance(data)}
-        
-        % Optional
-        options.correctBase (1,:) {mustBeNumericOrLogical} = true
-        options.baseWave (1,:) {mustBeNumeric,mustBeGreaterThan(options.baseWave,580)} = 595
-        options.zero (1,:) {mustBeNumericOrLogical} = false
-        options.extrapolate (1,:) {mustBeNumericOrLogical} = true
+    % Required
+    data (1,:) {mustBeNonempty,mustBeA(data,"drEEMdataset"),...
+        drEEMdataset.validate(data),drEEMdataset.sanityCheckAbsorbance(data)}
+
+    % Optional
+    options.correctBase (1,:)   {mustBeNumericOrLogical} = true
+    options.baseWave (1,:)      {mustBeNumeric,mustBeGreaterThan(options.baseWave,580)} = 595
+    options.zero (1,:)          {mustBeNumericOrLogical} = false
+    options.extrapolate (1,:)   {mustBeNumericOrLogical} = true
 end
 mv=ver;
 stool=any(contains({mv(:).Name},'Statistics and Machine Learning'));

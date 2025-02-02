@@ -1,4 +1,16 @@
 function data = importeems(filePattern,options)
+% <a href = "matlab:doc importeems">data = importeems(filePattern,options) (click to access documentation)</a>
+%
+% <strong>Inputs - Required</strong>
+% filePattern (1,:)                 {mustBeText}
+% 
+% <strong>Inputs - Optional</strong>
+% columnWave (1,:)          {mustBeNumericOrLogical} = true
+% rowWave (1,:)             {mustBeNumericOrLogical} = true
+% columnIsExcitation (1,:)  {mustBeNumericOrLogical}= true
+% NumHeaderLines (1,1)      {mustBeNumeric}= 0
+% waveDiffTollerance (1,1)  {mustBeNumeric} = 1
+
 %% Description:
 %   Import excitation-emission-matrices
 %
@@ -16,15 +28,15 @@ function data = importeems(filePattern,options)
 %
 
 arguments
-        % Required
-        filePattern (1,:) {mustBeText}
+        % Inputs - Required
+        filePattern (1,:)                   {mustBeText}
         
-        % Optional
-        options.columnWave (1,:) {mustBeNumericOrLogical} = true
-        options.rowWave (1,:) {mustBeNumericOrLogical} = true
-        options.columnIsExcitation (1,:) {mustBeNumericOrLogical}= true
-        options.NumHeaderLines (1,1) {mustBeNumeric}= 0
-        options.waveDiffTollerance (1,1) {mustBeNumeric} = 1
+        % Inputs - Optional
+        options.columnWave (1,:)            {mustBeNumericOrLogical} = true
+        options.rowWave (1,:)               {mustBeNumericOrLogical} = true
+        options.columnIsExcitation (1,:)    {mustBeNumericOrLogical}= true
+        options.NumHeaderLines (1,1)        {mustBeNumeric}= 0
+        options.waveDiffTollerance (1,1)    {mustBeNumeric} = 1
 end
 nargoutchk(1,1)
 

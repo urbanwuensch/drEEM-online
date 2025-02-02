@@ -1,4 +1,11 @@
 function fhandle = reportresidualanalysis(data,ftarget,mdfield)
+% <a href = ""matlab:doc reportresidualanalysis">fhandle = reportresidualanalysis(data,ftarget,mdfield) (click to access documentation)</a>
+%
+% <strong>Inputs - Required</strong>
+% data      {mustBeA(data,"drEEMdataset")}
+% ftarget   {mustBeNumeric}
+% mdfield   
+
 arguments
     data {mustBeA(data,"drEEMdataset")}
     ftarget {mustBeNumeric}

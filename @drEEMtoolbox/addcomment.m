@@ -1,8 +1,12 @@
 function dataout = addcomment(data,comment)
+% <a href = "matlab:doc addcomment">dataout = addcomment(data,comment) (click to access documentation)</a>
+%
+% <strong>Inputs - Required</strong>
+% data (1,1)    {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+% comment (1,:) {mustBeText}
 
 arguments
-    data ...
-        (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+    data (1,1)    {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
     comment (1,:) {mustBeText}
 end
 

@@ -1,34 +1,40 @@
 function dataout = fitparafac(data,options)
+% <a href = "matlab:doc fitparafac">dataout = fitparafac(data,options) (click to access documentation)</a>
+%
+% <strong>Inputs - Required</strong>
+% data (1,:) {drEEMdataset.sanityCheckPARAFAC(data)}
+% 
+% <strong>Inputs - Optional</strong> 
+% f (1,:)                 {mustBeNumeric,mustBeNonempty} = 2:7
+% mode (1,:)              {mustBeMember(options.mode,["overall","split"])} = 'overall'
+% constraints (1,:)       {mustBeMember(options.constraints,["unconstrained", "nonnegativity", "unimodnonneg"])} = 'nonnegativity'
+% starts  (1,:)           {mustBeNumeric} = 40
+% convergence (1,:)       {mustBeLessThanOrEqual(options.convergence,1e-2)} = 1e-6
+% maxIteration (1,1)      {mustBeNumeric} = 3000
+% initialization (1,:)    {mustBeMember(options.initialization,["svd", "random","multiplesmall"])} = 'random'
+% parallelization (1,1)   {mustBeNumericOrLogical}= true
+% consoleoutput (1,:)     {mustBeMember(options.consoleoutput,["all", "minimum","none"])} = 'minimum'
+% toolbox (1,:)           {mustBeMember(options.toolbox,["parafac3w","nway", "pls"])} = 'parafac3w'
 
 arguments
     % Required
-    data (1,:) {drEEMdataset.sanityCheckPARAFAC(data)}
+    data (1,:)                      {drEEMdataset.sanityCheckPARAFAC(data)}
 
     % Optional (but important)
-    options.f ...
-        (1,:) {mustBeNumeric,mustBeNonempty} = 2:7
-    options.mode ...
-        (1,:) {mustBeMember(options.mode,["overall","split"])} = 'overall'
+    options.f (1,:)                 {mustBeNumeric,mustBeNonempty} = 2:7
+    options.mode (1,:)              {mustBeMember(options.mode,["overall","split"])} = 'overall'
 
     % Optional
-    options.constraints ...
-        (1,:) {mustBeMember(options.constraints,["unconstrained", "nonnegativity", "unimodnonneg"])} = 'nonnegativity'
-    options.starts ...
-        (1,:) {mustBeNumeric} = 40
-    options.convergence ...
-        (1,:) {mustBeLessThanOrEqual(options.convergence,1e-2)}= 1e-6
-    options.maxIteration ...
-        (1,1) {mustBeNumeric}= 3000
+    options.constraints (1,:)       {mustBeMember(options.constraints,["unconstrained", "nonnegativity", "unimodnonneg"])} = 'nonnegativity'
+    options.starts  (1,:)           {mustBeNumeric} = 40
+    options.convergence (1,:)       {mustBeLessThanOrEqual(options.convergence,1e-2)}= 1e-6
+    options.maxIteration (1,1)      {mustBeNumeric}= 3000
 
     % Very optional
-    options.initialization ...
-        (1,:) {mustBeMember(options.initialization,["svd", "random","multiplesmall"])} = 'random'
-    options.parallelization ...
-        (1,1) {mustBeNumericOrLogical}= true
-    options.consoleoutput ...
-        (1,:) {mustBeMember(options.consoleoutput,["all", "minimum","none"])}='minimum'
-    options.toolbox ...
-        (1,:) {mustBeMember(options.toolbox,["parafac3w","nway", "pls"])} = 'parafac3w'
+    options.initialization (1,:)    {mustBeMember(options.initialization,["svd", "random","multiplesmall"])} = 'random'
+    options.parallelization (1,1)   {mustBeNumericOrLogical}= true
+    options.consoleoutput (1,:)     {mustBeMember(options.consoleoutput,["all", "minimum","none"])}='minimum'
+    options.toolbox (1,:)           {mustBeMember(options.toolbox,["parafac3w","nway", "pls"])} = 'parafac3w'
 end
 
 %% Input argument handling

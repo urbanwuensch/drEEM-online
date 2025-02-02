@@ -1,11 +1,14 @@
 function dataout = rmspikes(data,options)
+% <a href = "matlab:doc rmspikes">dataout = rmspikes(data,options) (click to access documentation)</a>
 %
-% <strong>Syntax</strong>
-%   <strong>rmspikes</strong>(data,Name,Value)
-%
-%   <strong>Options</strong>: 'thresholdFactor','interpolate','plot','details'
-%
-% <a href="matlab: doc rmspikes">help for rmspikes</a> <- click on the link
+% <strong>Inputs - Required</strong>
+% data (1,1) {drEEMdataset.validate(data)}
+% 
+% <strong>Inputs - Optional</strong>
+% plot (1,:)            {mustBeNumericOrLogical} = true
+% details (1,:)         {mustBeNumericOrLogical} = false
+% thresholdFactor (1,1) {mustBeNumeric} = 10
+% interpolate (1,:)     {mustBeNumericOrLogical} = false
 
 arguments
     data (1,1) {drEEMdataset.validate(data)}

@@ -1,14 +1,24 @@
 function [dataout,slopes,metadata,model] = fitslopes(data,options)
+% <a href = "matlab:doc fitslopes">[dataout,slopes,metadata,model] = fitslopes(data,options) (click to access documentation)</a>
+%
+% <strong>Inputs - Required</strong>
+% data (1,1)              {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+%
+% <strong>Inputs - Optional</strong>
+% LongRange (1,2) {mustBeNumeric} = [300 600]
+% rsq (1,1)       {mustBeNumeric,mustBeLessThanOrEqual(options.rsq,1)} = 0.95
+% plot            {mustBeNumericOrLogical} = true
+% details         {mustBeNumericOrLogical} = false
+% quiet           {mustBeNumericOrLogical} = false
 
 
 arguments
-    data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+    data (1,1)              {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
     options.LongRange (1,2) {mustBeNumeric} = [300 600]
-    options.rsq (1,1) {mustBeNumeric,mustBeLessThanOrEqual(options.rsq,1)} = 0.95
-    options.plot {mustBeNumericOrLogical} = true
-    options.details  {mustBeNumericOrLogical} = false
-    options.quiet  {mustBeNumericOrLogical} = false
-
+    options.rsq (1,1)       {mustBeNumeric,mustBeLessThanOrEqual(options.rsq,1)} = 0.95
+    options.plot            {mustBeNumericOrLogical} = true
+    options.details         {mustBeNumericOrLogical} = false
+    options.quiet           {mustBeNumericOrLogical} = false
 end
 
 % Experimental feature; overwrite workspace variable, needs no outputarg check
