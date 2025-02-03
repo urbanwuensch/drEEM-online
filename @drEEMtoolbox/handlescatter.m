@@ -1,103 +1,34 @@
-function dataout = handlescatter(data,varargin)
+function dataout = handlescatter(data,option)
+% <a href = "matlab:doc handlescatter">dataout = handlescatter(data,option) (click to access documentation)</a>
 %
-% <strong>Syntax</strong>
-%
-%   dataout = <strong>handlescatter</strong>(data,options)
-% <a href="matlab:opt=handlescatter('options')">opt=handlescatter('options')</a>
-%
-%
-% <a href="matlab: doc handlescatter">help for handlescatter</a> <- click on the link
-
-% Excise EEM scatter and (optionally) interpolate between missing values.
-% Primary and secondary Rayleigh and Raman are removed and interpolated if 
-% requested, or left as NaNs. Zeros may be placed at a specified
-% distance below the line Em=Ex. Optional plots can be shown that compare 
-% the EEMs before and after excising/smoothing.
-%
-% USEAGE:
-% [dataout] = handlescatter(data,options) OR
-% [dataout] = handlescatter(Xin,Ray1,Ram1,Ray2,Ram2,NaNfilter,d2zero,freq,plotview)
-%
-%
-% OPTIONS:
-% Options can be conveniantly supplied as a single structure. Default values are
-% obtained by calling 'opt = handlescatter('options')'. The values in the
-% fields of opt can then be modified as desired.
-%
-% NEW: with opt = 'gui', an app allows you to use a GUI
-% interface to explore options
-% IMPORTANT: handlescatter accepts inputs just like they used to be provided with 
-% smootheem. If you are used to providing inputs the "old" way, handlescatter
-% can also digest these inputs. Some newer options will however be left at
-% their default values!
-%
-% Fields:
-% cutout=[1 1 1 1];         % Cut scatter?  [Ray1 Ram1 Ray2 Ram2]
-% interpolate=[0 1 1 1];    % Interpolate scatter? [Ray1 Ram1 Ray2 Ram2]
-% ray1=[10 10];             % Rayleigh 1st: [below above]
-% ram1=[15 15];             % Raman 1st:    [below above]
-% ray2=[5  5];              % Rayleigh 2nd: [below above]
-% ram2=[5  5];              % Raman 2nd:    [below above]
-% d2zero=60;                % Distance in nm below Ray1. When Em<Ray1-d2zero, values are forced zero
-% iopt='normal';            % Chose if overlapping NaN's should be interpolated {'normal'|'conservative'}
-% imethod='inpaint';        % Interpolation method {'inpaint'|'fillmissing'}
-% negativetozero='on';      % If 'on', all negative values will be set to zero
-% iopt='normal';            % Should overlapping NaN's areas  be left uninterpolated (conserved)? {'normal'|'conservative'}
-% plot='on';                % Plot raw, cut, and final EEMs, sample-by-sample
-%                             NOTE: Plots will always be shown for all samples,
-%                             but simply closing the window will terminate
-%                             plotting and return the smoothed data.
-% samples='all'             % 'all': all samples will be cut as specified.
-%                              If numeric vector is supplied, only part of the dataset will be treated.
-% plottype='mesh';          % If plot is 'on', which type of plot should be shown {'mesh'|'surface'|'contourf'}
-%
-%
-% OUTPUT:
-%
-%   dataout: A data structure with the smoothed EEM in dataout.X
-%
-%
-% handlescatter: Copyright (C) 2020 Urban J. Wuensch
-% Chalmers University of Technology
-% Sven Hultins Gata 6
-% 41296 Gothenburg
-% Sweden
-% wuensch@chalmers.se
-% $ Version 0.1.0 $ September 2019 $ First Release
+% <strong>Inputs - Required</strong>
+% data      must be a drEEMdataset or the string "options"
 % 
-% inpaintn: Copyright (c) 2017, Damien Garcia
-% All rights reserved.
-%
+% <strong>Inputs - Optional</strong>
+% option    if supplied, must be a handlescatterOptions object or the string "gui"
+
+arguments
+    data (1,:) {dataValidation(data)}
+    option (1,:) {optionValidation(data,option)} = handlescatterOptions;
+end
+
 %% Check input arguments and react to different scenarios
 % Scenario: Return options
-if nargin==1&&strcmp(data,'options')
+if nargin==1&&not(isa(data,"drEEMdataset"))
     options=handlescatterOptions;
-    if strcmp(data,'options')
-        dataout=options;
-        return
-    end
+    dataout=options;
+    return
 end
-drEEMdataset.sanityCheckScatter(data)
-
-% Experimental feature; overwrite workspace variable, needs no outputarg check
-if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
-    nargoutchk(1,1)
-end
-
 
 % Scenario: No options provided
-if nargin==1&&not(ischar(data))
-    options=handlescatterOptions;
-    disp(' ')
+if nargin==1&&isa(data,"drEEMdataset")
     warning(sprintf(['No options were provided, the defaults were assumed.\n'...
         '     Please inspect the result and see if adjustments are necessary.\n'...
         '     Options can be obtained by calling ''handlescatter(''options'')'''])) %#ok<SPWRN>
-    disp(' ')
 end
 
 % Scenario: User wants GUI for decision support
-if nargin==2&&strcmp(varargin{1},'gui')
-    
+if isa(data,"drEEMdataset")&&not(isa(option,"handlescatterOptions"))
     % Start app with names
     handle=viewscatter(data);
     waitfor(handle,"finishedHere",true);
@@ -111,18 +42,16 @@ if nargin==2&&strcmp(varargin{1},'gui')
     return
 end
 
-
-
 % Scenario: data & options provided
-if not(ischar(data))&&nargin==2
-    options=varargin{1};
-    if not(matches(class(options),'handlescatterOptions'))
-        error('handlescatter options not in the correct format.')
-    end
+if isa(data,"drEEMdataset")&&isa(option,"handlescatterOptions")
+    options=option;
 end
 
-data.validate(data);
-handlescatterOptions.validate(data,options)
+
+% Experimental feature; overwrite workspace variable, needs no outputarg check
+if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
+    nargoutchk(1,1)
+end
 %% Check user input
 if ischar(options.samples)||isstring(options.samples)
     allsamples=true;
@@ -251,14 +180,14 @@ if options.plot
         fh=drEEMtoolbox.dreemfig;
     end
     set(fh, 'units','normalized','pos',[0.05    0.1611    0.9    0.3700]);
-    ax=gobjects(1,3);
+    t=tiledlayout(fh);
     for n=1:3
-        ax(n)=subplot(1,3,n);
+        ax(n)=nexttile(t); %#ok<AGROW>
     end
-    huic = uicontrol('Style', 'pushbutton','String','Next',...
+    huic = uicontrol(fh,'Style', 'pushbutton','String','Next',...
     'Units','normalized','Position', [0.9323 0.0240 0.0604 0.0500],...
     'Callback',{@pltnext});
-    huic2 = uicontrol('Style', 'pushbutton','String','Close figure',...
+    huic2 = uicontrol(fh,'Style', 'pushbutton','String','Close figure',...
     'Units','normalized','Position', [0.9323 0.0816 0.0604 0.0500],...
     'Callback',{@endfunc,fh});
     az=[83.2,83.2,83.2];
@@ -410,7 +339,7 @@ end
 
 %%
 function pltnext(sosurce,event) %#ok<INUSD>
-uiresume
+uiresume(sosurce.Parent)
 end
 
 %%
@@ -983,4 +912,44 @@ function opts=convertopts(smooth)
         end
     end
     opts.description='Options converted from smootheem to be handlescatter-compatible';
+end
+
+function dataValidation(input)
+input_class=class(input);
+switch input_class
+    case "drEEMdataset"
+        try
+        drEEMdataset.validate(input)
+        drEEMdataset.sanityCheckScatter(input)
+        catch ME
+            throwAsCaller(ME)
+        end
+    case {'string','char'}
+        if not(matches(input,'options'))
+            mess='Retreive options by supplying the string <strong>"options"</strong> to the function';
+            throwAsCaller(MException("drEEM:IncorrectInput",mess))
+        end
+    otherwise
+        mess='Must be an object of type <strong>drEEMdataset</strong> or the string </strong>"options"</strong>.';
+        throwAsCaller(MException("drEEM:IncorrectInput",mess))
+end
+
+end
+
+
+function optionValidation(data,input)
+input_class=class(input);
+
+switch input_class
+    case "handlescatterOptions"
+        handlescatterOptions.validate(data,input)
+    case {'string','char'}
+        if not(matches(input,'gui'))
+            mess='Use the GUI tool to handle scatter by supplying <strong>"gui"</strong> as the second input';
+            throwAsCaller(MException("drEEM:IncorrectInput",mess))
+        end
+    otherwise
+        mess='Must be an object of type <strong>handlescatterOptions</strong> or the string <strong>"gui"</strong>).';
+        throwAsCaller(MException("drEEM:IncorrectInput",mess))
+end
 end
