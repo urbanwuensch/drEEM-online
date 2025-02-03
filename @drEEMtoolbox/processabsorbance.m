@@ -24,7 +24,6 @@ arguments
 end
 mv=ver;
 stool=any(contains({mv(:).Name},'Statistics and Machine Learning'));
-stool=false
 if options.extrapolate&&not(stool)
     options.extrapolate=false;
     warning('Statistics and Machine Learning Toolbox not installed. CDOM spectra extrapolation disabled.')
