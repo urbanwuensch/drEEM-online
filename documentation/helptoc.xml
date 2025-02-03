@@ -25,7 +25,7 @@
             image="HelpIcon.USER_GUIDE">Tutorials
             <tocitem target="dreem_workflow.html">Toolbox setup
             </tocitem>
-            <tocitem target="need_to_know.html">Tips and Tricks
+            <tocitem target="tips_tricks.html">Tips and Tricks
             </tocitem>
             <tocitem target="import_tutorial_01.html">Simple data import
             </tocitem>
