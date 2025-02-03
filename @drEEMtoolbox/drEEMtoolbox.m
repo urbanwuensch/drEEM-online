@@ -6,7 +6,7 @@ classdef drEEMtoolbox < handle
     end
     properties (Constant = true, Hidden = true)
         uifig = true % Should uifigure be used instead of figures?
-        OvrWrteUnless = true
+        OvrWrteUnless = false % If true and no output is given, the input variable will be overwritten (non-transparent behavior)
         requiredVersion = 'R2022a'
     end
     
