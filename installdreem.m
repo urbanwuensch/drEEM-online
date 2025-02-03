@@ -17,7 +17,7 @@ existing=fetchExisting; % This assumes modern drEEM (proper Contents.m)
 online=fetchRepository;
 if isempty(existing)
     if displayall,disp('No pre-existing drEEM installation ... '),end
-    scenario='clean';
+    scenario='clean install';
 elseif isscalar(existing)
     if displayall,disp('One pre-existing drEEM installation ... '),end
     scenario=compareVersions(existing,online);
