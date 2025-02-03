@@ -6,29 +6,6 @@ This documentation is intended to ease the use of the toolbox and will walk you 
 
 Since the initial release of drEEM in 2013, Matlab has expanded considerably in terms of ease-of-use, functionality, and computation speed. drEEM version 2 takes advantage of new Matlab features and is a complete redevelopment of the code.
 
-## Topics of this documentation
-[Installation & Getting started]()
-
-[Tutorials]()
-
-[Tips & tricks]()
-
-[Installation]()
-
-## Tutorials
-
-[Importing data]()
-
-[Data processing]()
-
-[Scatter removal]()
-
-[Data manipulation]()
-
-[Data manipulation]()
-
-
-
 ## About the developers
 ### Urban Wünsch
 Urban is a researcher in the field of aquatic environmental chemistry. He has obtained his PhD at the Technical University of Denmark (DTU) in 2018 and since held postdoctoral positions at Chalmers University of Technology and DTU. Read more on his [personal website](https://ujwunsch.com).

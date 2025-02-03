@@ -14,16 +14,14 @@
         <!-- Icon images used for these entries are also stored in -->
         <!-- matlabroot/toolbox/matlab/icons -->
         <!-- A Getting Started Guide usually comes first -->
-        <tocitem target="installation of the toolbox.html" image="HelpIcon.GETTING_STARTED">
-            Installation and Requirements
+        <tocitem target="installation of the toolbox.html">Installation and Requirements
         </tocitem>
-        <tocitem target="installation of the toolbox.html" image="HelpIcon.GETTING_STARTED">
-            What's new
+        <tocitem target="Whats new.html">Whats new
         </tocitem>
         <!-- User Guide comes next -->
         <tocitem target="tutorials.html" 
             image="HelpIcon.USER_GUIDE">Tutorials
-            <tocitem target="dreem_workflow.html">Toolbox setup
+            <tocitem target="dreem_workflow.mlx">Toolbox setup
             </tocitem>
             <tocitem target="tips_tricks.html">Tips and Tricks
             </tocitem>
@@ -36,20 +34,6 @@
             <tocitem target="doc_parafac-fun.html">PARAFAC fitting
             </tocitem>
             <tocitem target="doc_plotting-fun.html">Data / model plotting
-            </tocitem>
-        </tocitem>
-        <!-- Tutorial -->
-        <tocitem target="doc_dreemhelp.html" 
-                 image="HelpIcon.HelpIcon.EXAMPLES">Tips and Tricks
-            <tocitem target="tut_dataimport_dreem_1.html">Data import with sample log.
-            </tocitem>
-            <tocitem target="tut_dataimport_dreem_2.html">Simple data import (AquaLog)
-            </tocitem>
-            <tocitem target="tut_smoothing.html">Scatter excision
-            </tocitem>
-            <tocitem target="tut_parafactutorial_dreem_1.html">PARAFAC (PortSurvey)
-            </tocitem>
-            <tocitem target="tut_parafactutorial_dreem_2.html">PARAFAC (pure)
             </tocitem>
         </tocitem>
         <!-- Optional link or links to your or other Web sites -->

@@ -5,6 +5,7 @@
 
 ## Working with drEEM version 2
 * [The typical drEEM workflow](dreem_workflow.html)
+* [Function overview](function_overview.html)
 * [Did you know drEEM can do this?](need_to_know.html)
 
 ## Data import
