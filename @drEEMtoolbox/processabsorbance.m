@@ -37,7 +37,8 @@ if not(isempty(idx))
     optionsbefore=data.history(idx).details;
     
     if isequal(options,optionsbefore)
-        error('Identical options to a previous execution detected. Exiting...')
+        warning('Identical options to a previous execution detected. Exiting...')
+        return
     end
    
 end
@@ -67,29 +68,32 @@ yline(ax,0,LineStyle="-",Color='b')
 xlabel(ax,'Wavelength (nm)')
 ylabel(ax,'Absorbance')
 title(ax,'Absorbance prior to any correction')
-%% Baseline correction (if possible and wanted)
-% It's only allowed if there's plenty of long-wl information though
-if max(dataout.absWave)>=580
-    blcor_allowed=true;
-else
-    warning('CDOM coverage does not allow baseline correction (needs to be > 580 nm). Option disabled.')
-    blcor_allowed=false;
-end
 
-% Baseline possible, wanted, and no extrapolation necessary
-% Otherwise, the baseline subtraction is done later.
-if blcor_allowed&&options.correctBase&&not(options.extrapolate)
-    i=dataout.absWave>=options.baseWave;
-    if not(any(i))
-        warning('Please double-check the baseline correction wavelength. Could not perform the baseline correction.')
+%% Scenario 1, no extrapolation needed
+if max([dataout.Ex;dataout.Em])<max(dataout.absWave)
+    %% Baseline correction (if possible and wanted)
+    % It's only allowed if there's plenty of long-wl information though
+    if max(dataout.absWave)>=580
+        blcor_allowed=true;
     else
-        bl=mean(dataout.abs(:,i),2,'omitmissing');
-        dataout.abs=dataout.abs-bl;
+        warning('CDOM coverage does not allow baseline correction (needs to be > 580 nm). Option disabled.')
+        blcor_allowed=false;
     end
-end
+    
+    % Baseline possible, wanted, and no extrapolation necessary
+    % Otherwise, the baseline subtraction is done later.
+    if blcor_allowed&&options.correctBase&&not(options.extrapolate)
+        i=dataout.absWave>=options.baseWave;
+        if not(any(i))
+            warning('Please double-check the baseline correction wavelength. Could not perform the baseline correction.')
+        else
+            bl=mean(dataout.abs(:,i),2,'omitmissing');
+            dataout.abs=dataout.abs-bl;
+        end
+    end
 
-%% Stitch-on (if needed)
-if max([dataout.Ex;dataout.Em])>max(dataout.absWave)
+%% Scenario 2: Stitch-on (extrapolation
+elseif max([dataout.Ex;dataout.Em])>max(dataout.absWave)
     disp('EEMs were measured at wavelengths longer than CDOM spectra.')
     % The extrapolation bit
     if options.extrapolate
