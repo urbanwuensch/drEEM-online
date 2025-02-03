@@ -589,7 +589,8 @@ if init % This generates the figure and bars
         'Numbertitle','off',...
         'Name','Progress...',...
         'Resize','off',...
-        Tag='Progress uifigure for drEEM',Units='pixels');
+        Tag='Progress uifigure for drEEM',Units='pixels', ...
+        WindowStyle='alwaysontop');
     axeswidth = round(width*0.6);
     axesheight = round(axeswidth/14);
     axesbottom = fliplr(linspace(15,fpos(4)-axesheight*3,multi));
@@ -631,7 +632,7 @@ if init % This generates the figure and bars
         set(ax(i),'YColor',[0 0 0 0.5],'XColor',[0 0 0 0.5],'Box','on','YTick','','XTick','')
     end
     drawnow
-    uistack(figureh, 'top')
+    %uistack(figureh, 'top')
 else % This updates  the figure and bars
     oldstate=old.state;
     if ~isequal(oldstate,state)
@@ -663,7 +664,7 @@ else % This updates  the figure and bars
         end
     end
     drawnow
-    uistack(old, 'top')
+    %uistack(old, 'top')
 end
 end
 
