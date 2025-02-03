@@ -44,7 +44,11 @@ if matches(scenario,{'clean install','outdated'})
 end
 %% Install
 % Dummy during development
-folder='/Users/urban/Documents/MATLAB/drEEM-2.0';
+if isunix
+    folder='/Users/urban/Documents/MATLAB/drEEM-2.0';
+else
+    folder='C:\Users\urbw\OneDrive - Danmarks Tekniske Universitet\Documents 1\Work\git\drEEM-2.0';
+end
 installroutine(folder,pathlist)
 disp('Success ... ')
 
@@ -147,10 +151,17 @@ listing=listing(matches(listing.name,targetMfiles),:);
 % that each m-file is one up from the root and the last folder is deleted 
 % from each path
 for j=1:height(listing)
-    temp=strsplit(listing.folder{j},filesep); % Split the path with filesep
-    temp=temp(1:end-1); % delete the last folder
-    temp(cellfun(@(x) isempty(x),temp))=[]; % delete empty cells
-    temp=cellfun(@(x) [filesep,x],temp,uni=false); % fuse the path back together
+    if isunix
+        temp=strsplit(listing.folder{j},filesep); % Split the path with filesep
+        temp=temp(1:end-1); % delete the last folder
+        temp(cellfun(@(x) isempty(x),temp))=[]; % delete empty cells
+        temp=cellfun(@(x) [filesep,x],temp,uni=false); % fuse the path back together
+    else
+        temp=strsplit(listing.folder{j},filesep); % Split the path with filesep
+        temp=temp(1:end-1); % delete the last folder
+        temp(cellfun(@(x) isempty(x),temp))=[]; % delete empty cells
+        temp=cellfun(@(x) [x,filesep],temp,uni=false); % fuse the path back together
+    end
     listing.folder{j}=[temp{:}]; % paste it back in
 end
 % Isolate the unique paths (there will be multiples for each) and then prepare
