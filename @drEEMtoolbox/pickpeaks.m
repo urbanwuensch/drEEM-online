@@ -284,36 +284,43 @@ else
         'VariableNames',VarName(1:end-1));
 end
 
-switch plt
-    case true
-        fig1=drEEMtoolbox.dreemfig;
-        set(fig1,'units','normalized','Name','pickPeaks: Extracted intensities of predefined fluorescence peaks','pos',[0.2594    0.2296    0.4448    0.5130])
-        subplot(2,1,1)
-        for n=1:numel(peaks)
-            plot(Cpeak(:,n),'LineWidth',1.5),hold on
-        end
-        legend([peaks.name]','location','best');
-        title('Fluorescence peaks')
-        xlabel('# of sample in dataset')
-        axis tight
-        
-        subplot(2,1,2)
-        plot(FI,'LineWidth',1.5),hold on
-        plot(FrI,'LineWidth',1.5),hold on
-        plot(BIX,'LineWidth',1.5),hold on
-        if ~HIX_excl
-            plot(HIX,'LineWidth',1.5),hold on
-            legend('Fluorescence index','Freshness index' ,'Biological index','Humification index','location','best')
-        else
-            legend('Fluorescence index','Freshness index','Biological index','location','best')
-        end
-        title('Fluorescence indicies')
-        xlabel('# of sample in dataset')
-        hold off
-        axis tight
-        
-    otherwise
-        %disp('No plots shown. Please check the function output to inspect the extracted values')
+if plt
+    if data.toolboxdata.uifig
+        f=drEEMtoolbox.dreemuifig;
+    else
+        f=drEEMtoolbox.dreemfig;
+    end
+    f.Name='drEEM: processabsorbance.m';
+
+    set(f,'units','normalized','Name','pickPeaks: Extracted intensities of predefined fluorescence peaks','pos',[0.2594    0.2296    0.4448    0.5130])
+    t=tiledlayout(f);
+    ax=nexttile(t);
+    hold(ax,'on')
+    for n=1:numel(peaks)
+        plot(ax,Cpeak(:,n),'LineWidth',1.5)
+    end
+    legend(ax,[peaks.name]','location','bestoutside');
+    title(ax,'Fluorescence peaks')
+    xlabel(ax,'# of sample in dataset')
+    axis(ax,'tight')
+
+    ax=nexttile(t);
+    hold(ax,'on')
+    plot(ax,FI,'LineWidth',1.5)
+    plot(ax,FrI,'LineWidth',1.5)
+    plot(ax,BIX,'LineWidth',1.5)
+    if ~HIX_excl
+        plot(ax,HIX,'LineWidth',1.5)
+        legend(ax,'Fluorescence index','Freshness index' ,'Biological index','Humification index', ...
+            'location','bestoutside')
+    else
+        legend(ax,'Fluorescence index','Freshness index','Biological index', ...
+            'location','bestoutside')
+    end
+    title(ax,'Fluorescence indicies')
+    xlabel(ax,'# of sample in dataset')
+    hold(ax,'off')
+    axis(ax,'tight')
 end
 [C,ia,ib]=intersect(dataout.metadata.Properties.VariableNames, ...
     picklist.Properties.VariableNames);
