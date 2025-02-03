@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB 2024b"><title>Tips and Tricks</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(192, 76, 11); font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: 700; text-align: left;  }
+.S1 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }
+.S2 { margin-bottom: 20px; padding-bottom: 4px;  }
+.S3 { margin: 0px; padding: 10px 0px 10px 5px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 700; text-align: start;  }
+.S4 { margin: -1px 0px 0px; padding: 10px 0px 10px 7px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: start;  }
+.S5 { margin: 20px 10px 5px 4px; padding: 0px; line-height: 25px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: 700; text-align: left;  }
+.S6 { margin: 15px 10px 5px 4px; padding: 0px; line-height: 18px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-style: normal; font-size: 17px; font-weight: 700; text-align: left;  }
+.CodeBlock { background-color: #F5F5F5; margin: 10px 15px 10px 0; display: inline-block }
+.S7 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 1px solid rgb(217, 217, 217); border-bottom: 0px none rgb(33, 33, 33); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace, Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S8 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 0px none rgb(33, 33, 33); border-bottom: 0px none rgb(33, 33, 33); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace, Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S9 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 0px none rgb(33, 33, 33); border-bottom: 1px solid rgb(217, 217, 217); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace, Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S10 { margin: 10px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }</style></head><body><div class = rtcContent><h1  class = 'S0' id = 'T_0a8c' ><span>Tips and Tricks</span></h1><div  class = 'S1'><span>Depending on the scientific discipline, Matlab is not the most popular choise of scientific programing language for the users of fluorescence spectroscopy. If you spend most of your time in R or Phython, you might find yourself frustrated at not knowing how to do ceratain jobs. If you're mostly using Excel, this might be even more pronounced. </span><span style=' font-weight: bold; font-style: italic; text-decoration: underline;'>Don't worry, this page is for you!</span></div><div  class = 'S1'><span>We will go through several topics that often hinder users of our toolbox in getting to the fun part. Most of this is related to data importing and associated initial tasks. So let's start there.</span></div><div  class = 'S2'><div  class = 'S3'><span style=' font-weight: bold;'>Table of Contents</span></div><div  class = 'S4'><a href = "#H_3c01"><span>Working with filenames
+</span></a><span>    </span><a href = "#H_02e2"><span>Correcting filename errors
+</span></a><a href = "#H_89df"><span>Useful Matlab functionality
+</span></a><span>    </span><a href = "#H_537e"><span>Universal script header</span></a></div></div><div  class = 'S1'><span></span></div><h2  class = 'S5' id = 'H_3c01' ><span>Working with filenames</span></h2><div  class = 'S1'><span>Often, fluorescence and absorbance are measured on separate instruments. Upon exporting, the filenames will often differ. Sometimes just by the extension (e.g. ".csv" vs. ".dat" or ".txt"), but often they are entirely different.</span></div><div  class = 'S1'><span>If you use </span><a href = "importabsorbance.html"><span style=' font-family: monospace;'>importabsorbance</span></a><span style=' font-family: monospace;'> </span><span>or </span><a href = "importeems.html"><span style=' font-family: monospace;'>importeems</span></a><span>, the common extension part of the filenames (e.g. ".csv") and trailing or leading empty characters are already removed for you. So you don't need to worry about those anymore. Problem solved!</span></div><h3  class = 'S6' id = 'H_02e2' ><span>Correcting filename errors</span></h3><div  class = 'S1'><span>Say you made a mistake in naming one of your samples. It was supposed to be called "PCEP26" but accidentally got called "LCEP26". You could fix the filename(s), but you can also handle this sort of issue in Matlab:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span >load(</span><span style="color: #a709f5;">"benchmarkDataset.mat"</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >idx=matches(data.filelist,</span><span style="color: #a709f5;">'LCEP26'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >data.filelist{idx}=</span><span style="color: #a709f5;">'PCEP26'</span><span >;</span></span></div></div></div><div  class = 'S10'><span>If you're not used to Matlab, the use of "{}" vs. "()" seems strange (especially the third vs. the second line). We chose to store the filenames of your samples in a cell array. This allows us to store character arrays of different lengths together in one variable, but cell arrays can also be a little confusing </span><span style=' font-style: italic;'>because</span><span> they are so flexible as information storage. Luckily, Matlab's internal text-focused functions can and do handle it for us. Long story short, read more </span><a href = "https://www.mathworks.com/help/matlab/cell-arrays.html"><span>here</span></a><span> if you are completely unfamiliar with this.</span></div><h2  class = 'S5' id = 'H_89df' ><span>Useful Matlab functionality</span></h2><div  class = 'S1'><span>This section is dedicated to sharing code that the developer team has discovered over the years. This is of course mostly documented already, but you might still find it useful!</span></div><h3  class = 'S6' id = 'H_537e' ><span>Universal script header</span></h3><div  class = 'S1'><span>Once the projects pile up, you find yourself importing a lot of fluorescence data. Wouldn't it be nice to have a script that you can use to import the data? Of course, but a lot of things change between each project, so modifications always seem necessary. But it's all too easy to forget about modifications you made to a script 2 months ago down in line 58 where you loaded and overwrote some variable for some reason. You could start your script as follows:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span >clearvars</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >close </span><span style="color: #a709f5;">all</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >cd(fileparts(matlab.desktop.editor.getActiveFilename))</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >installdreem</span></span></div></div></div><div  class = 'S10'><span>Regardless of what follows, this ensures that all variables are cleared, figures are closed, that you are in fact in the project directory (which is  automatically chosen as the one where the file is saved!) and that drEEM is properly installed.</span></div><div  class = 'S1'><span>Next, standard folder names are a good idea. E.g. store raw data in a folder called "raw data". Separate absorbance data in e.g. "absorbance data". If you don't change these names, you can reuse the same import script. Example:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span >clearvars</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >close </span><span style="color: #a709f5;">all</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >cd(fileparts(matlab.desktop.editor.getActiveFilename))</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >installdreem</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >projectName=</span><span style="color: #a709f5;">'someNiceDataset'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >cd </span><span style="color: #a709f5;">'raw data'</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >samples=tbx.importeems(</span><span style="color: #a709f5;">'* - Waterfall Plot Sample.dat'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >blanks=tbx.importeems(</span><span style="color: #a709f5;">'* - Waterfall Plot Blank.dat'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >absorbance=tbx.importabsorbance(</span><span style="color: #a709f5;">'* - Abs Spectra Graphs.dat'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >cd </span><span style="color: #a709f5;">..</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >save([projectName,</span><span style="color: #a709f5;">'.mat'</span><span >],</span><span style="color: #a709f5;">"samples"</span><span >,</span><span style="color: #a709f5;">"blanks"</span><span >,</span><span style="color: #a709f5;">"absorbance"</span><span >)</span></span></div></div></div>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% Tips and Tricks
+% Depending on the scientific discipline, Matlab is not the most popular choise 
+% of scientific programing language for the users of fluorescence spectroscopy. 
+% If you spend most of your time in R or Phython, you might find yourself frustrated 
+% at not knowing how to do ceratain jobs. If you're mostly using Excel, this might 
+% be even more pronounced. _*Don't worry, this page is for you!*_
+% 
+% We will go through several topics that often hinder users of our toolbox in 
+% getting to the fun part. Most of this is related to data importing and associated 
+% initial tasks. So let's start there.
+%% 
+% 
+%% Working with filenames
+% Often, fluorescence and absorbance are measured on separate instruments. Upon 
+% exporting, the filenames will often differ. Sometimes just by the extension 
+% (e.g. ".csv" vs. ".dat" or ".txt"), but often they are entirely different.
+% 
+% If you use <importabsorbance.html |importabsorbance|> or <importeems.html 
+% |importeems|>, the common extension part of the filenames (e.g. ".csv") and 
+% trailing or leading empty characters are already removed for you. So you don't 
+% need to worry about those anymore. Problem solved!
+% Correcting filename errors
+% Say you made a mistake in naming one of your samples. It was supposed to be 
+% called "PCEP26" but accidentally got called "LCEP26". You could fix the filename(s), 
+% but you can also handle this sort of issue in Matlab:
+
+load("benchmarkDataset.mat")
+idx=matches(data.filelist,'LCEP26');
+data.filelist{idx}='PCEP26';
+%% 
+% If you're not used to Matlab, the use of "{}" vs. "()" seems strange (especially 
+% the third vs. the second line). We chose to store the filenames of your samples 
+% in a cell array. This allows us to store character arrays of different lengths 
+% together in one variable, but cell arrays can also be a little confusing _because_ 
+% they are so flexible as information storage. Luckily, Matlab's internal text-focused 
+% functions can and do handle it for us. Long story short, read more <https://www.mathworks.com/help/matlab/cell-arrays.html 
+% here> if you are completely unfamiliar with this.
+%% Useful Matlab functionality
+% This section is dedicated to sharing code that the developer team has discovered 
+% over the years. This is of course mostly documented already, but you might still 
+% find it useful!
+% Universal script header
+% Once the projects pile up, you find yourself importing a lot of fluorescence 
+% data. Wouldn't it be nice to have a script that you can use to import the data? 
+% Of course, but a lot of things change between each project, so modifications 
+% always seem necessary. But it's all too easy to forget about modifications you 
+% made to a script 2 months ago down in line 58 where you loaded and overwrote 
+% some variable for some reason. You could start your script as follows:
+
+clearvars
+close all
+cd(fileparts(matlab.desktop.editor.getActiveFilename))
+installdreem
+%% 
+% Regardless of what follows, this ensures that all variables are cleared, figures 
+% are closed, that you are in fact in the project directory (which is  automatically 
+% chosen as the one where the file is saved!) and that drEEM is properly installed.
+% 
+% Next, standard folder names are a good idea. E.g. store raw data in a folder 
+% called "raw data". Separate absorbance data in e.g. "absorbance data". If you 
+% don't change these names, you can reuse the same import script. Example:
+
+clearvars
+close all
+cd(fileparts(matlab.desktop.editor.getActiveFilename))
+installdreem
+
+projectName='someNiceDataset';
+
+cd 'raw data'
+samples=tbx.importeems('* - Waterfall Plot Sample.dat');
+blanks=tbx.importeems('* - Waterfall Plot Blank.dat');
+absorbance=tbx.importabsorbance('* - Abs Spectra Graphs.dat');
+cd ..
+save([projectName,'.mat'],"samples","blanks","absorbance")
+##### SOURCE END #####
+-->
+</div></body></html>
