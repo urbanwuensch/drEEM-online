@@ -247,11 +247,11 @@ end
 
 dataout=data;
 
-[C,ia,ib]=intersect(dataout.metadata.Properties.VariableNames, ...
+[C,ia,ib]=intersect(dataout.opticalMetadata.Properties.VariableNames, ...
     slopes.Properties.VariableNames);
-dataout.metadata(:,ia)=[];
+dataout.opticalMetadata(:,ia)=[];
 
-dataout.metadata=[dataout.metadata,slopes];
+dataout.opticalMetadata=[dataout.opticalMetadata,slopes];
 
 idx=height(dataout.history)+1;
 dataout.history(idx,1)=...

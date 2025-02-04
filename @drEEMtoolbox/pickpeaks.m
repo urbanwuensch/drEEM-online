@@ -322,10 +322,10 @@ if plt
     hold(ax,'off')
     axis(ax,'tight')
 end
-[C,ia,ib]=intersect(dataout.metadata.Properties.VariableNames, ...
+[C,ia,ib]=intersect(dataout.opticalMetadata.Properties.VariableNames, ...
     picklist.Properties.VariableNames);
-dataout.metadata(:,ia)=[];
-dataout.metadata=[dataout.metadata,picklist];
+dataout.opticalMetadata(:,ia)=[];
+dataout.opticalMetadata=[dataout.opticalMetadata,picklist];
 
 idx=height(dataout.history)+1;
 dataout.history(idx,1)=...

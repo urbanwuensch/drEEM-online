@@ -15,6 +15,7 @@ classdef drEEMdataset
         nSample (1,1) double {mustBeNumeric}
         models (:,1) drEEMmodel
         metadata  (:,:) table
+        opticalMetadata (:,:) table
         split drEEMdataset
         status (1,1) drEEMstatus
         userdata % anything goes
