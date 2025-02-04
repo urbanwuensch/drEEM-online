@@ -103,7 +103,7 @@ classdef drEEMtoolbox < handle
         changestatus(data)
 
         % History-specific functions
-        addcomment(data,comment)
+        data = addcomment(data,comment)
         function validatedataset(data)
             drEEMdataset.validate(data)
         end

@@ -18,32 +18,32 @@ absorbance.filelist=erase(absorbance.filelist,{' (01)'});
 samples.absWave=absorbance.absWave;
 samples.abs=absorbance.abs;
 tbx.validatedataset(samples);
-tbx.addcomment(samples,"transferred absorbance to the sample EEM dataset");
-tbx.addcomment(samples,"Just another comment here");
-tbx.addcomment(samples,"And I had this other thought too");
+samples=tbx.addcomment(samples,"transferred absorbance to the sample EEM dataset");
+samples=tbx.addcomment(samples,"Just another comment here");
+samples=tbx.addcomment(samples,"And I had this other thought too");
 
 clearvars absorbance
 
 %% Metadata integration
 
 samples=tbx.associatemetadata(samples,"metadata.xlsx",'sampleId');
-tbx.addcomment(samples,"Not 100% of samples matched. Here, one can make a comment to tell myself to investigate this.")
-tbx.addcomment(samples,"Now here, I really had something interesting to say")
+samples=tbx.addcomment(samples,"Not 100% of samples matched. Here, one can make a comment to tell myself to investigate this.")
+samples=tbx.addcomment(samples,"Now here, I really had something interesting to say")
 
 
 %% All the processing before PARAFAC
 samples=tbx.processabsorbance(samples,"baseWave",600);
-tbx.addcomment(samples,"main issue addressed was the absorbance baseline offset")
+samples=tbx.addcomment(samples,"main issue addressed was the absorbance baseline offset")
 
 
 samples=tbx.ifecorrection(samples);
-tbx.addcomment(samples,"minor IFEs, but decided to correct.")
+samples=tbx.addcomment(samples,"minor IFEs, but decided to correct.")
 
 samples=tbx.subtractblanks(samples,blanks);
-tbx.addcomment(samples,"Blanks looked fine (no sign of fluorescence). Raman scatter almost gone.")
+samples=tbx.addcomment(samples,"Blanks looked fine (no sign of fluorescence). Raman scatter almost gone.")
 
 data=tbx.ramancalibration(samples,blanks);
-tbx.addcomment(data,"Calibration Raman scans looked good, integration parameters worked well.")
+samples=tbx.addcomment(data,"Calibration Raman scans looked good, integration parameters worked well.")
 
 % data=tbx.handlescatter(data,'gui');
 % Alternative "old" way
@@ -61,7 +61,7 @@ opt.iopt =  "normal";
 opt.plot = false;
 opt.imethod = 'inpaint';
 data=tbx.handlescatter(data,opt);
-tbx.addcomment(data,"First try of cutting scatter. Seems to work ok.")
+samples=tbx.addcomment(data,"First try of cutting scatter. Seems to work ok.")
 
 data = tbx.zapnoise(data,4,[350 370],240);
 
