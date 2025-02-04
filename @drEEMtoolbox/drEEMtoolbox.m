@@ -30,7 +30,7 @@ classdef drEEMtoolbox < handle
                 isthere(n)=any(~cellfun(@isempty,strfind({mallver.Name},tbs{n})));
             end
             if all(isthere)
-                disp('          Success.')
+                % No action or information needed.
             else
                 warning(['Missing toolbox(es):',tbs{~isthere},'. Some toolbox functionality will not be available.'])
             end
