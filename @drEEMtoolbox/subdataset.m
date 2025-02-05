@@ -54,7 +54,11 @@ end
 
 % Assign output variable
 dataout=data;
-
+if not(isempty(dataout.split))
+    splitChange=true;
+else
+    splitChange=false;
+end
 % Carry out the subsetting. We subset with separate methods in the three
 % dimensions with class-specific methods to make it clear what happened.
 
@@ -62,19 +66,37 @@ dataout=data;
 % They will not be subset (one could do that) because the dataset behind the fit has changed
 % and the model is no longer representing the dataset.
 
-if not(all(outSample==false))
+if any(outSample)
     dataout=drEEMdataset.rmsamples(dataout,outSample);
+    if not(isempty(dataout.split))
+        for j=1:numel(dataout.split)
+            s_outSample=dataout.i(outSample)==dataout.split(j).i;
+            dataout.split(j)=drEEMdataset.rmsamples(dataout.split(j),s_outSample);
+        end
+    end
 end
-if not(all(outEm==false))
+if any(outEm)
     dataout=drEEMdataset.rmemission(dataout,outEm);
+    if not(isempty(dataout.split))
+        for j=1:numel(dataout.split)
+            dataout.split(j)=drEEMdataset.rmemission(dataout.split(j),outEm);
+        end
+    end
 end
-if not(all(outEx==false))
+if any(outEx)
     dataout=drEEMdataset.rmexcitation(dataout,outEx);
+    if not(isempty(dataout.split))
+        for j=1:numel(dataout.split)
+            dataout.split(j)=drEEMdataset.rmexcitation(dataout.split(j),outEx);
+        end
+    end
 end
 
 % Validate the end result to make sure things are good to go.
 dataout.validate(dataout);
-
+if splitChange
+    disp('subdataset operation was also applied to split datasets!')
+end
 % Will only run if toolbox is set to overwrite workspace variable and user
 % didn't provide an output argument
 if drEEMtoolbox.outputscenario(nargout)=="implicitOut"

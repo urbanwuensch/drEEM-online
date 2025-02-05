@@ -46,7 +46,7 @@ ident=data.filelist(index);
 if iscolumn(ident)
     ident=ident';
 end
-if numel(ident)==1
+if isscalar(ident)
     ident=ident{1};
 else
     newident=[];
