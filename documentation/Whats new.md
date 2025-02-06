@@ -20,8 +20,7 @@ Please head over to the section [Toolbox setup](dreem_workflow.html) to learn ho
 
 ### General improvements
 
-* Rewrites of all drEEM functions with `arguments` input validation. For the user, this means smart input argument suggestions and quick and helpful input validation. Hitting the tab-key during scripting is extremely helpful from now on.
-* EEMs processing steps are implemented as **standalone** functions. No more custom code for vital standard operations (e.g. raman normalization or IFE correction).
+* Rewrites of all drEEM functions with `arguments` input validation. For the user, this means smart input argument suggestions and quick and helpful input validation. Hitting the tab-key during scripting is extremely helpful from now.
+* EEMs processing steps are implemented as **standalone** functions. No more custom code for vital standard operations (e.g. raman normalization or IFE correction). This also generally reduces the skills required for Matlab.
 * Reduction in Addon Product dependencies. We've done our best to cut down the costly additional Matlab products requirements.
-* Reduction in the number of functions by 1/3rd while adding functionality!
 * Renamed functions to help occasional users remember / find functionality.

@@ -27,9 +27,11 @@
             </tocitem>
             <tocitem target="import_tutorial_01.html">Simple data import
             </tocitem>
-            <tocitem target="import_tutorial_02.html">Separate instruments import
+            <tocitem target="import_tutorial_02.html">Complex data import
             </tocitem>
             <tocitem target="import_tutorial_03.html">Import metadata
+            </tocitem>
+            <tocitem target="processing_tutorial_01.html">Data processing
             </tocitem>
             <tocitem target="doc_parafac-fun.html">PARAFAC fitting
             </tocitem>
