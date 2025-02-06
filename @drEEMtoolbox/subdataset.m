@@ -70,7 +70,7 @@ if any(outSample)
     dataout=drEEMdataset.rmsamples(dataout,outSample);
     if not(isempty(dataout.split))
         for j=1:numel(dataout.split)
-            s_outSample=dataout.i(outSample)==dataout.split(j).i;
+            s_outSample=ismember(dataout.split(j).i,data.i(outSample));
             dataout.split(j)=drEEMdataset.rmsamples(dataout.split(j),s_outSample);
         end
     end
@@ -95,7 +95,7 @@ end
 % Validate the end result to make sure things are good to go.
 dataout.validate(dataout);
 if splitChange
-    disp('subdataset operation was also applied to split datasets!')
+    % disp('subdataset operation was also applied to split datasets!')
 end
 % Will only run if toolbox is set to overwrite workspace variable and user
 % didn't provide an output argument
