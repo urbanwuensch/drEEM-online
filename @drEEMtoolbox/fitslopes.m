@@ -9,7 +9,6 @@ function [dataout,slopes,metadata,model] = fitslopes(data,options)
 % rsq (1,1)       {mustBeNumeric,mustBeLessThanOrEqual(options.rsq,1)} = 0.95
 % plot            {mustBeNumericOrLogical} = true
 % details         {mustBeNumericOrLogical} = false
-% quiet           {mustBeNumericOrLogical} = false
 
 
 arguments
