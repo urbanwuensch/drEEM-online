@@ -193,10 +193,9 @@ classdef drEEMtoolbox < handle
             viewscatter(data)
         end
 
-        function help(fname)
-            help(fname)
+        function viewabsorbance(data)
+            viewabsorbance(data)
         end
-
 
     end
 

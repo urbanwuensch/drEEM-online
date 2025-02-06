@@ -33,9 +33,9 @@
             </tocitem>
             <tocitem target="processing_tutorial_01.html">Data processing
             </tocitem>
-            <tocitem target="doc_parafac-fun.html">PARAFAC fitting
+            <tocitem target="parafac_tutorial_01.html">PARAFAC
             </tocitem>
-            <tocitem target="doc_plotting-fun.html">Data / model plotting
+            <tocitem target="doc_plotting.html">Data / model plotting
             </tocitem>
         </tocitem>
         <!-- Optional link or links to your or other Web sites -->
