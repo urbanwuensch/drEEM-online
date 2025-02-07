@@ -183,7 +183,7 @@ data.metadata.i=data.i;
 data.validate(data);
 
 % User needs to tell the toolbox what the status of the dataset is.
-handle=setstatus(data,'data');
+handle=setstatus(data,'data','New fluorescence dataset.');
 waitfor(handle,"finishedHere",true);
 try
     data=handle.data;
