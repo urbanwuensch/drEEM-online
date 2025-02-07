@@ -14,6 +14,9 @@ if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
 end
 % Assign the final output variable based on input
 dataout=data;
+dataout=absorbanceConverter(dataout,dataout.status.absorbanceUnit);
+
+
 
 % IFE correction only works for the EEM wavelengths covered by CDOM abs.
 AbsRange=[min(data.absWave) max(data.absWave)];
@@ -207,3 +210,59 @@ plot(V1(:,1),V1(:,2)), hold on, plot(Y(:,1),Y(:,2),'ro')
 legend('VECTOR 1', 'VECTOR 2')
 end
 end
+
+function dataout = absorbanceConverter(data,unitIn)
+            arguments
+                data (1,1) {mustBeA(data,'drEEMdataset')}
+                unitIn (1,:) {mustBeText(unitIn),mustBeMember(unitIn,["absorbance per cm","absorbance per 5 cm","absorbance per 10 cm","Napierian absorption coefficient","Linear decadic absorption coefficient"])}
+            end
+            unitOut="per cm";
+            dataout=data;
+            switch unitIn
+                case "absorbance per cm"
+                    switch unitOut
+                        case "per cm"
+                            return
+                        case "decadal absorption coefficient"
+                            dataout.abs=dataout.abs./0.01;
+                        case "naperian absorption coefficient"
+                            dataout.abs=dataout.abs./0.01.*2.303;
+                    end
+                case "absorbance per 5 cm"
+                    switch unitOut
+                        case "per cm"
+                            dataout.abs=dataout.abs./5;
+                        case "decadal absorption coefficient"
+                            dataout.abs=dataout.abs./5./0.01;
+                        case "naperian absorption coefficient"
+                            dataout.abs=dataout.abs./5./0.01.*2.303;
+                    end
+                case "absorbance per 10 cm"
+                    switch unitOut
+                        case "per cm"
+                            dataout.abs=dataout.abs./10;
+                        case "decadal absorption coefficient"
+                            dataout.abs=dataout.abs./10./0.01;
+                        case "naperian absorption coefficient"
+                            dataout.abs=dataout.abs./10./0.01.*2.303;
+                    end
+                case "Napierian absorption coefficient"
+                    switch unitOut
+                        case "per cm"
+                            dataout.abs=dataout.abs.*0.01./2.303;
+                        case "decadal absorption coefficient"
+                            dataout.abs=dataout.abs.*2.303;
+                        case "naperian absorption coefficient"
+                            return
+                    end
+                case "Linear decadic absorption coefficient"
+                    switch unitOut
+                        case "per cm"
+                            dataout.abs=dataout.abs.*0.01;
+                        case "decadal absorption coefficient"
+                            return
+                        case "naperian absorption coefficient"
+                            dataout.abs=dataout.abs./2.303;
+                    end
+            end
+        end
