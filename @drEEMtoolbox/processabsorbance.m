@@ -132,7 +132,7 @@ elseif max([dataout.Ex;dataout.Em])>max(dataout.absWave)
         off=data.abs(:,end)-new(:,1);
         new=new+off;
         
-        % show results
+        % show intermediate results
         ax=nexttile(t);
         plot(ax,data.absWave,data.abs,Color=[0 0 0 0.5])
         hold(ax,'on')
@@ -147,7 +147,7 @@ elseif max([dataout.Ex;dataout.Em])>max(dataout.absWave)
         dataout.absWave=vertcat(dataout.absWave,extrawave);
         
         % Now let's try the baseline correction again. Same code as above
-        if max(dataout.absWave)>580
+        if max(extrawave)>580
             blcor_allowed=true;
         else
             blcor_allowed=false;
@@ -160,7 +160,26 @@ elseif max([dataout.Ex;dataout.Em])>max(dataout.absWave)
         end
         
     else
-        disp('The EEMs will be cut automatically when IFE corrections are carried out.')
+        %% Baseline correction (if possible and wanted)
+        % It's only allowed if there's plenty of long-wl information though
+        if max(dataout.absWave)>=580
+            blcor_allowed=true;
+        else
+            warning('CDOM coverage does not allow baseline correction (needs to be > 580 nm). Option disabled.')
+            blcor_allowed=false;
+        end
+
+        % Baseline possible, wanted, and no extrapolation necessary
+        % Otherwise, the baseline subtraction is done later.
+        if blcor_allowed&&options.correctBase
+            i=dataout.absWave>=options.baseWave;
+            if not(any(i))
+                warning('Please double-check the baseline correction wavelength. Could not perform the baseline correction.')
+            else
+                bl=mean(dataout.abs(:,i),2,'omitmissing');
+                dataout.abs=dataout.abs-bl;
+            end
+        end
     end
 end
 
