@@ -229,11 +229,11 @@ Sr=Coef2(1,:)./Coef3(1,:);
 
 %% Transfer results into table
 if ~isreal(Coef1)
-    warning(' Exponential fit terms contained complex numbers. Output converted to real()')
+    %warning(' Exponential fit terms contained complex numbers. Output converted to real()')
     Coef1=real(Coef1);
 end
 if any([~isreal(Coef2),~isreal(Coef3),~isreal(Sr)])
-    warning(' log-transformed linear fit terms contained complex numbers. Output converted to real()')
+    %warning(' log-transformed linear fit terms contained complex numbers. Output converted to real()')
     Coef2=real(Coef2);
     Coef3=real(Coef3);
     Sr=real(Sr);
