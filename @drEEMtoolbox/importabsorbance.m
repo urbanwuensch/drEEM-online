@@ -94,6 +94,16 @@ data.metadata.i=data.i;
 % Validate the dataset
 data.validate(data);
 
+% User needs to tell the toolbox what the status of the dataset is.
+handle=setstatus(data,'data');
+waitfor(handle,"finishedHere",true);
+try
+    data=handle.data;
+    delete(handle)
+catch
+    error('setstatus closed before save & exit button was pushed.')
+end
+
 % Make the drEEMhistory entry
 idx=1;
 data.history(idx,1)=...
