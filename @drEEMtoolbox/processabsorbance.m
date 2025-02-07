@@ -82,7 +82,7 @@ if max([dataout.Ex;dataout.Em])<max(dataout.absWave)
     
     % Baseline possible, wanted, and no extrapolation necessary
     % Otherwise, the baseline subtraction is done later.
-    if blcor_allowed&&options.correctBase&&not(options.extrapolate)
+    if blcor_allowed&&options.correctBase
         i=dataout.absWave>=options.baseWave;
         if not(any(i))
             warning('Please double-check the baseline correction wavelength. Could not perform the baseline correction.')
