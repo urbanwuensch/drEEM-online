@@ -7,10 +7,10 @@ Export history, status, scatter treatment, Coble peaks, model overview, and load
 
 ## Syntax
 
-### [exportresults (data, filename, f)](#syntax1) ###
+### [exportresults (data, f, filename)](#syntax1) ###
 
 ## Description ##
-### exportresults ([data, filename, f](#varargin)) <a name="syntax1"></a>
+### exportresults ([data, f, filename](#varargin)) <a name="syntax1"></a>
 The `exportresults` function takes a drEEMdataset object, `data`, a `filename`, and a PARAFAC model index, `f`, and exports relevant data and results, including history, status, scatter treatment, Coble peaks and indicies, chosen parafac model overview, fluorescence maxima of samples, and excitation and emission loadings, to an Excel file. The function ensures the specified PARAFAC model exists within the `data` and organizes the data into several sheets within the spreadsheet.<br>
 Note: The function deletes any existing file with the same name before writing the new data.
 

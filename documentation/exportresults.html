@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>exportresults</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
 <style type="text/css">
 /* CSS stylesheet for drEEM toolbox documentatio */
 /* Author: Urban Wünsch */
@@ -204,7 +209,9 @@ code, tt {
   padding: 0px 0px;
   white-space: nowrap;
   border: 1px solid #fcfcfc;
-  background-color: #fcfcfc;
+  background-color: #f8f8ff;
+  border:1px solid #dedede;
+  color:#444;
   border-radius: 3px;
 }
 
@@ -308,35 +315,60 @@ img {
   max-width: 100%
 }
 </style>
+
+
 </head>
+
 <body>
-<img src="top right corner logo.png" width="100" height="auto" align="right"/>
-<h1>exportresults</h1>
+
+<p><img src="top right corner logo.png" width="100" height="auto" align="right"/></p>
+
+<h1 id="toc_0">exportresults</h1>
+
 <p>Export history, status, scatter treatment, Coble peaks, model overview, and loadings of a specific PARAFAC model to an Excel spreadsheet</p>
-<h2>Syntax</h2>
-<h3><a href="#syntax1">exportresults (data, filename, f)</a></h3>
-<h2>Description</h2>
-<h3>exportresults (<a href="#varargin">data, filename, f</a>) <a name="syntax1"></a></h3>
+
+<h2 id="toc_1">Syntax</h2>
+
+<h3 id="toc_2"><a href="#syntax1">exportresults (data, f, filename)</a></h3>
+
+<h2 id="toc_3">Description</h2>
+
+<h3 id="toc_4">exportresults (<a href="#varargin">data, f, filename</a>) <a name="syntax1"></a></h3>
+
 <p>The <code>exportresults</code> function takes a drEEMdataset object, <code>data</code>, a <code>filename</code>, and a PARAFAC model index, <code>f</code>, and exports relevant data and results, including history, status, scatter treatment, Coble peaks and indicies, chosen parafac model overview, fluorescence maxima of samples, and excitation and emission loadings, to an Excel file. The function ensures the specified PARAFAC model exists within the <code>data</code> and organizes the data into several sheets within the spreadsheet.<br>
 Note: The function deletes any existing file with the same name before writing the new data.</p>
-<p>Example: <code>exportresults(data, 5, 'mymodel.xlsx')</code> or <code>exportresults(data, 5, 'mymodel')</code> to export the 5-component model from <code>data</code> to Excel spreadsheet <code>mymodel.xlsx</code>.
+
+<p>Example: <code>exportresults(data, 5, &#39;mymodel.xlsx&#39;)</code> or <code>exportresults(data, 5, &#39;mymodel&#39;)</code> to export the 5-component model from <code>data</code> to Excel spreadsheet <code>mymodel.xlsx</code>.
 <br></p>
-<h2>Input arguments</h2>
-<h4>data - drEEMdataset containing the specified parafac model  <a name="varargin"></a> <br> Type: drEEMdataset class object</h4>
+
+<h2 id="toc_5">Input arguments</h2>
+
+<h4 id="toc_6">data - drEEMdataset containing the specified parafac model  <a name="varargin"></a> <br> Type: drEEMdataset class object</h4>
+
 <p>Dataset of the class <code>drEEMdataset</code>, with standardized contents and automated validation methods. <code>data</code> must contain the specified parafac model (<code>f</code> for the number of components in the model).<br>
 Note: only the parafac models that are created in the <code>&quot;overall&quot;</code> mode in <code>firparafac</code> will be exported. To export a parafac model from a <code>split</code> use the <code>data.split(n,1)</code> as input argument to access the models in the <code>nth</code> split.<br>
-Example: <code>exportresults(data.split(2,1), 5, 'mysplittedmodel')</code> to export the 5-component model from the second split in <code>data</code>.</p>
-<h4>filename - name of the exported file<a name="varargin"></a> <br> Type:  string | character</h4>
+Example: <code>exportresults(data.split(2,1), 5, &#39;mysplittedmodel&#39;)</code> to export the 5-component model from the second split in <code>data</code>.</p>
+
+<h4 id="toc_7">filename - name of the exported file<a name="varargin"></a> <br> Type:  string | character</h4>
+
 <p>The name of the output file. It should be a text and will be saved with a <code>.xlsx</code> extension.
 Note: any extension at the end of the <code>filename</code> will be changed to <code>.xlsx</code>.</p>
-<h4>f - represents the number of components in the targeted model <a name="varargin"></a> <br> Type:  numeric</h4>
+
+<h4 id="toc_8">f - represents the number of components in the targeted model <a name="varargin"></a> <br> Type:  numeric</h4>
+
 <p>Specify the number of parafac components in the model that you want to export.</p>
-<h2>See Also</h2>
+
+<h2 id="toc_9">See Also</h2>
+
 <p><a href="link.com"> export2netcdf </a> | 
 <a href="link.com"> export2openfluor </a> |
 <a href="link.com"> Link3 </a> |</p>
-<h2>Topics</h2>
+
+<h2 id="toc_10">Topics</h2>
+
+
+
 
 </body>
+
 </html>
-<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

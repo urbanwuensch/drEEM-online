@@ -1,22 +1,28 @@
-function exportresults(data,filename,f)
+function exportresults(data,f,filename)
 % <a href = "matlab:doc exportresults">exportresults(data,filename,f) (click to access documentation)</a>
 %
 % <strong>Inputs - Required</strong>
 % data (1,1)      {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
-% filename (1,:)  {mustBeText}
 % f (1,1)         {mustBeNumeric}
+% filename (1,:)  {mustBeText}
 
 arguments
     % Required
     data (1,1)      {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
-    filename (1,:)  {mustBeText}
     f (1,1)         {mustBeNumeric}
+    filename (1,:)  {mustBeText}
 end
 fs=drEEMdataset.modelsWithContent(data);
 if not(ismember(f,fs))
     error('input to "f" must point to an existing PARAFAC model. Export cancelled.')
 end
 %%
+% Reverse scaling (if needed)
+if contains(lower(data.status.signalScaling),'scaled to')
+    data=drEEMtoolbox.scalesamples(data,'reverse');
+end
+
+% Add an entry to include the export as an action
 idx=height(data.history)+1;
 data.history(idx,1)=...
     drEEMhistory.addEntry(mfilename,'exported results',[],data);
@@ -28,74 +34,120 @@ filename=[pwd,filesep,filename];
 disp(' ')
 if isfile(filename)
     delete(filename)
-    disp('    Attempted to delete an existing file at the specified location.')
 end
-% Dataset history
+
+
+% Export dataset history
 disp(['<strong> Writing to file: ',filename,'</strong>'])
 t=drEEMhistory.convert2table(data.history);
 t.backup=[];t.previous=[];
+
+t.Properties.VariableNames={'Date / time','Method name','Function message','details','Comment by analyst'};
+
+t=t(:,[1 2 5 3]);
+
 writetable(t,filename,"FileType","spreadsheet",...
     "WriteMode","replacefile","Sheet",'dataset history')
 disp('    Finished spreadsheet: dataset history')
-% Dataset status
-stat=struct;
+
+
+% Export dataset status
 flds=fieldnames(data.status);
 stat=table;
 warning off
 for j=1:numel(flds)
-    stat.Step{j}=flds{j};
-    stat.Value{j}=data.status.(flds{j});
+    stat.Aspect{j}=flds{j};
+    stat.Status{j}=data.status.(flds{j});
 end
+stat.Step={'Spectral correction';...
+    'Inner filter effect correction';...
+    'Blank subtraction';...
+    'Fluorescence signal calibration';...
+    'Scatter treatment';...
+    'Fluorescence signal scaling';...
+    'Absorbance unit'};
 warning on
 writetable(stat,filename,"FileType","spreadsheet",...
     "WriteMode","overwritesheet","Sheet",'dataset status')
 disp('    Finished spreadsheet: dataset status')
 
-% Dataset scatter treatment
-sci=drEEMhistory.searchhistory(data.history,'handlescatter','all');
+% Export dataset scatter treatment
+scatter_i=drEEMhistory.searchhistory(data.history,'handlescatter','all');
 
-if isempty(sci)
+if isempty(scatter_i)
     writematrix("no scatter treatment found",filename,"FileType","spreadsheet",...
         "WriteMode","overwritesheet","Sheet",'scatter treatment')
 else
-    start=1:14:14*numel(sci);
-    for j=1:numel(sci)
-        det=data.history(sci(j)).details;
-        flds=fieldnames(det);
+    start=1:3:3*numel(scatter_i);
+    for j=1:numel(scatter_i)
+        details=data.history(scatter_i(j)).details;
         warning off
-        sct=table;
-        for k=1:numel(flds)
-            sct.option{k}=flds{k};
-            sct.Value{k}=det.(flds{k});
-        end
+        details=struct(details);
         warning on
-        writetable(sct,filename,"FileType","spreadsheet",...
+        details=struct2table(details);
+
+        details.plot=[];details.plottype=[];
+        details.description=['handlescatter executed on ',char(data.history(scatter_i(j)).timestamp)];
+        details.Properties.VariableNames=...
+            {'Scatter deleted (Ray/Ram 1st/2nd)',...
+            'Scatter interpolated (Ray/Ram 1st/2nd)',...
+            'Negative fluorescence zero''ed',...
+            'Rayleigh 1st (below,above)',...
+            'Raman 1st (below,above)',...
+            'Rayleigh 2nd (below,above)',...
+            'Raman 2nd (below,above)',...
+            'nm below Rayleigh 1st zero''ed',...
+            'interpolation method',...
+            'interpolation approach',...
+            'samples',...
+            'date / time'};
+        varNames=details.Properties.VariableNames;
+        for k=1:numel(varNames)
+            details.(varNames{k})=num2str(details.(varNames{k}));
+        end
+        
+        writetable(details,filename,"FileType","spreadsheet",...
             "WriteMode","inplace","Sheet",'scatter treatment',...
-            "Range",['A',num2str(start(j))])
+            "Range",['A',num2str(start(j))],"PreserveFormat",true)
 
     end
 end
 disp('    Finished spreadsheet: scatter treatment')
 
-% Coble peaks
+% Export optical metadata
 warning off
+data=drEEMtoolbox.fitslopes(data,quiet=true);
+data=drEEMtoolbox.pickpeaks(data,quiet=true);
 pl=table;
 pl.filelist=data.filelist;
-[~,npl]=drEEMtoolbox.pickpeaks(data,plot=false);
-pl=[pl npl];
+pl=[pl data.opticalMetadata];
 writetable(pl,filename,"FileType","spreadsheet",...
     "WriteMode","overwritesheet","Sheet",'Peaks & indicies')
 warning on
 disp('    Finished spreadsheet: Peaks & indicies')
 
-% Models overview
-mover=drEEMmodel.convert2table(data.models(fs(1)));
+% Export models overview
+mover=table;
+mover.('# of components')=fs(1);
+mover=[mover , drEEMmodel.convert2table(data.models(fs(1)))];
 mover.loads=[];mover.leverages=[];mover.sse=[];mover.componentContribution=[];
 mover.status=string(mover.status);
+if fs(1)==f
+    mover.("selected for export")="yes";
+else
+    mover.("selected for export")="no";
+end
 for j=2:numel(fs)
-    mhere=drEEMmodel.convert2table(data.models(fs(j)));
+    mhere=table;
+    mhere.('# of components')=fs(j);
+    mhere=[mhere , drEEMmodel.convert2table(data.models(fs(j)))];
     mhere.loads=[];mhere.leverages=[];mhere.sse=[];mhere.componentContribution=[];
-    mhere.status=string(mhere.status)
+    mhere.status=string(mhere.status);
+    if fs(j)==f
+        mhere.("selected for export")="yes";
+    else
+        mhere.("selected for export")="no";
+    end
     mover=[mover;mhere];
 end
 writetable(mover,filename,"FileType","spreadsheet",...
@@ -105,14 +157,6 @@ disp('    Finished spreadsheet: PARAFAC model overview')
 % Model
 loads=data.models(f).loads;
 scores=loads{1};
-
-if contains(lower(data.status.signalCalibration),'scaled to')
-    warning(['<strong> Your data is still scaled and thus scores (and component fl. maxima) reflect' ...
-        ' qualitative and not quantitative changes. </strong>' ...
-        ' If this is undesired, please reverse scaling by calling "scalesamples(data,''reverse'').' ...
-        ' Press any key to acknowledge and continue. '])
-    waitforbuttonpress
-end
 
 FMax=nan(size(scores,1),size(loads{2},2));
 for i=1:size(FMax,1)
