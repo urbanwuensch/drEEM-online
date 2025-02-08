@@ -163,7 +163,8 @@ classdef drEEMtoolbox < handle
 
         % Data export
         export2openfluor(data, f, filename)
-        export2netcdf(data,filename)
+        export2zip(data,filename)
+        %export2netcdf(data,filename)
         exportresults(data,filename,f,name_value)
         fhandle = reportresidualanalysis(data,ftarget,mdfield)
 
