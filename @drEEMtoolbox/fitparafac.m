@@ -125,8 +125,8 @@ switch funmode
         for i=1:numstarts
             modout(i)=parfeval(@dreemparafac,1,mdata.split(splitsource(i)).X,facCalls(i),opt,options.toolbox,ivalsCalls{i});
         end
-        [Model,Iter,Err,corecon,ttc]=...
-            trackprogress(modout,numstarts,facCalls,options.toolbox,mdata,data.Em,data.Ex,options.consoleoutput,splitsource);
+        [Model,Iter,Err,ttc]=...
+            trackprogress(modout,numstarts,facCalls,options.consoleoutput,splitsource);
 end
 
 restoreoldpath(oldp,newp); % In case matlabpath was changed, restore it.
@@ -151,7 +151,6 @@ for j=1:nsplit
             continue
         end
         mhere=Model(idx);
-        chere=corecon(idx);
         pu=sum(isnan(ehere))/numel(ehere)*100;
         [~,midx] = min(ehere,[],"omitmissing");
         
@@ -178,7 +177,7 @@ for j=1:nsplit
             100 * (1 - ehere(midx) / measuredSS );
 
         mdl.error=ehere(midx);
-        mdl.core=chere{midx};
+        mdl.core=corcond(mdata.split(spltsrc(midx)).X,mdl.loads);
         mdl.percentUnconverged=pu;
 
         sizeF=nan(1,size(mdl.loads{1},2));
@@ -670,14 +669,13 @@ end
 
 
 %%
-function [Model,Iter,Err,corecon,ttc] = trackprogress(futures,numtry,facCalls,toolbox,data,Em,Ex,consoleoutput,splitsource)
+function [Model,Iter,Err,ttc] = trackprogress(futures,numtry,facCalls,consoleoutput,splitsource)
 % Monitor parfeval progress supervision (c) Urban Wünsch, 2016-2019
 
 % Allocation of PARAFAC outputs
 Model = cell(numtry,1);            % Allocate Model cell
 Iter = cell(numtry,1);             % Allocate cell for #of interations
 Err = cell(numtry,1);              % Allocate cell for SSE
-corecon = cell(numtry,1);          % Allocate cell for core consistency
 
 % Allocation of monitoring variables
 fetchthese=true(1,numel(facCalls));% fetchNext: only these (not cancelled)
@@ -686,9 +684,7 @@ numCompleted = 0;                  % Total number of completed models
 ttc=repmat(duration,numtry,1);     % time-to-convergence for each run
 
 % Allocation of variables for prelim. plotfacs
-[facs,iF]=unique(facCalls);
-idx=nan(numel(facs),1);
-idxOld=nan(numel(facs),1);
+facs=unique(facCalls);
 
 % 1st Blockbar
 state=false(numel(facs),numtry/numel(facs));
@@ -723,24 +719,18 @@ while numCompleted < numtry
         Model{completedIdx,1} = rcvec(Modelres.model,'row');
         Iter{completedIdx,1} = Modelres.iterations;
         Err{completedIdx,1} = Modelres.err;
-        try
-            corecon{completedIdx,1} = corcond(data.split(splitsource(completedIdx)).X,Model{completedIdx,1},[],0);
-        catch ME
-            disp(ME)
-            warning('Could not calculate core [Unknown error in N-way toolbox.]')
-            corecon{completedIdx,1} = NaN;
-        end
         
-        ttc(completedIdx)=datetime(futures(completedIdx).FinishDateTime,'TimeZone','Europe/London')-...
-            datetime(futures(completedIdx).StartDateTime,'TimeZone','Europe/London');
+        ttc(completedIdx)=datetime(futures(completedIdx).FinishDateTime,'TimeZone','Europe/London',Format='mm:ss')-...
+            datetime(futures(completedIdx).StartDateTime,'TimeZone','Europe/London',Format='mm:ss');
+        
+        [~,m,s]=hms(ttc(completedIdx));
+        ttc_string=[sprintf( '%02d', round(m) ),':',sprintf( '%02d', ceil(s) )];
         if ~strcmp(consoleoutput,'none')||strcmp(consoleoutput,'minimum')
             disp(['# ',sprintf('%03d',completedIdx),' done | #iter: ',...
                 sprintf('%-*s',4,num2str(Iter{completedIdx,1})),...
-                ' | core%: ',num2str(round(corecon{completedIdx,1})),...
-                ' | time: ',char(ttc(completedIdx)),...
+                ' | time: ',ttc_string,...
                 ' | it/sec: ',num2str(round(Iter{completedIdx,1}./seconds(ttc(completedIdx))))]);
         end
-    else % Analyze parfeval diary if future is still running.
     end
     % Check status of blockbar
     c=blockbar(mname,state,col);
@@ -756,118 +746,8 @@ while numCompleted < numtry
             warning('User canceled some models prematurely. No output fetched for those.')
         end
     end
-    
-    
-    for n=1:numel(facs)
-        if ~all(isnan(cell2mat(Err(facCalls==facs(n)))))&&all(completed(facCalls==facs(n)))
-            [~,idx(n)]=min(cell2mat(Err(facCalls==facs(n))));
-            idx(n)=idx(n)+iF(n)-1;
-        else
-            idx(n)=nan;
-        end
-    end
-    if ~isequal(isnan(idxOld),isnan(idx))&&~all(isnan(idx))
-        % %Dropping the intermediate call for plotfacs. 
-        % %CPUs are becoming too fast for this to make sense
-        % try
-        %     plotfacs(Model(idx(~isnan(idx))),facCalls(idx(~isnan(idx)))',[],Em,Ex);
-        % catch
-        %     warning('intermediate plotfac call failed')
-        % end
-        idxOld=idx;
-    end
-    
 end
 % If complete, cancel the futures and delete the waitbar.
 cancel(futures);
 blockbar('close');
-end
-
-%%
-function plotfacs(ModelFin,factors,ford,Em,Ex)
-figHandles = get(0,'Children');
-if isempty(figHandles)
-    hf=dreemfig;
-    w=.8;h=.4;l=(1-w)/2;b=(1-h)/2;
-    set(hf, 'units','normalized','outerposition',[l b w h],...
-        'Name','Scores / Spectral loadings plot');
-end
-figHandles = get(0,'Children');
-
-if any(contains({figHandles.Name},'Scores / Spectral loadings plot'))
-    if sum(contains({figHandles.Name},'Scores / Spectral loadings plot'))>1
-        close(figHandles(contains({figHandles.Name},'Scores / Spectral loadings plot')))
-        hf=dreemfig;
-        w=.8;h=.4;l=(1-w)/2;b=(1-h)/2;
-        set(hf, 'units','normalized','outerposition',[l b w h],...
-            'Name','Scores / Spectral loadings plot');
-    else
-        ax = (findobj(figHandles(contains({figHandles.Name},'Scores / Spectral loadings plot')), 'type', 'axes'));
-        for n=1:numel(ax)
-            delete(ax(n))
-        end
-        hf=figure(figHandles(contains({figHandles.Name},'Scores / Spectral loadings plot')));
-    end
-else
-    hf=dreemfig;
-    w=.8;h=.4;l=(1-w)/2;b=(1-h)/2;
-    set(hf, 'units','normalized','outerposition',[l b w h],...
-        'Name','Scores / Spectral loadings plot');
-end
-mfac=max(factors);
-nfac=length(factors);
-plotcount=1;
-for j=1:nfac
-    [A,B,C]=fac2let(ModelFin{j});
-    
-    if ~isempty(ford)
-        if iscell(ford)
-            fordbyn=ford{j};
-        else
-            fordbyn=ford;
-        end
-        
-        if ~isempty(fordbyn)
-            A=A(:,fordbyn);
-            B=B(:,fordbyn);
-            C=C(:,fordbyn);
-        end
-    end
-    subplot(nfac,mfac+1,plotcount);
-    plot(A,'LineWidth',1.2,'Marker','.','MarkerSize',7)
-    if all(A>=0)
-        ylim([0 max(A(:))])
-    end
-    title('Scores')
-    xlabel('Sample')
-    ylabel(['Scores: ' num2str(factors(j))])
-    plotcount=plotcount+1;
-    col=lines(mfac);
-    for i=1:mfac
-        try
-            B(:,i);
-            subplot(nfac,mfac+1,plotcount);
-            plot(Em,B(:,i),'-','color',col(i,:),'LineWidth',1.2);
-            if j==nfac
-                xlabel('Wave. (nm)');
-            end
-            if i==1
-                ylabel(['Loads: ' num2str(factors(j))]);
-            end
-            hold on
-            plot(Ex,C(:,i),'-.','color',col(i,:),'LineWidth',1.2);
-            axis tight
-            grid on
-            plotcount=plotcount+1;
-        catch
-            plotcount=plotcount+1;
-        end
-    end
-end
-dreemfig(hf);
-
-if any(contains({figHandles.Name},'Progress...'))
-    figure(figHandles(contains({figHandles.Name},'Progress...')))
-end
-
 end
