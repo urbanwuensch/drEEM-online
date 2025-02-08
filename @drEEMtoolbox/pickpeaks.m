@@ -12,15 +12,22 @@ arguments
     data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
     options.plot {mustBeNumericOrLogical} = true
     options.details  {mustBeNumericOrLogical} = false
+    options.quiet {mustBeNumericOrLogical} = false
 end
 % Experimental feature; overwrite workspace variable, needs no outputarg check
 if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
     nargoutchk(1,3)
 end
 Xname = 'X';
+if options.quiet
+    options.plot = false;
+    options.details = false;
+end
+
 plt = options.plot;
 diagn = options.details;
 dataout=data;
+
 
 %% Definition of peaks: B, T, A, M, C, D, E, N.
 peaks(1).name=cellstr('B');
@@ -62,12 +69,16 @@ nEm_i=size(Em_i,1);
 Xi=zeros(data.nSample,size(Em_i,1),size(Ex_i,2));
 
 if mean(diff(data.Ex))>5
-    warning('Excitation increment>5nm. The performed interpolation might introduce significant biases!')
-    pause(2)
+    if not(options.quiet)
+        warning('Excitation increment>5nm. The performed interpolation might introduce significant biases!')
+        pause(2)
+    end
 end
 if mean(diff(data.Em))>10
-    warning('Emission increment>10nm. The performed interpolation might introduce significant biases!')
-    pause(2)
+    if not(options.quiet)
+        warning('Emission increment>10nm. The performed interpolation might introduce significant biases!')
+        pause(2)
+    end
 end
 
 
@@ -85,7 +96,9 @@ data.Em=Em_i;
 %% Check if distance between fluorescence peaks and dataset Ex and Em is too big
 
 if ~any(data.Ex==254)
-    warning('Humification index cannot be calculated due to dataset limitations')
+    if not(options.quiet)
+        warning('Humification index cannot be calculated due to dataset limitations')
+    end
     HIX_excl=true;
 else
     HIX_excl=false;
@@ -99,10 +112,14 @@ for n=1:numel(peaks)
 end
 
 if any(distEx>=5)
-    warning('Distance between some peak definitions and Dataset-wavelengths >=5nm: Excitation');
+    if not(options.quiet)
+        warning('Distance between some peak definitions and Dataset-wavelengths >=5nm: Excitation');
+    end
 end
 if any(distEm>=5)
-    warning('Distance between some peak definitions and Dataset-wavelengths >=10nm: Emission');
+    if not(options.quiet)
+        warning('Distance between some peak definitions and Dataset-wavelengths >=10nm: Emission');
+    end
 end
 
 

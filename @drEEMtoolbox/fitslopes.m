@@ -24,6 +24,10 @@ end
 if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
     nargoutchk(1,4)
 end
+if options.quiet
+    options.plot = false;
+    options.details = false;
+end
 
 LRange  = options.LongRange;
 Rsq = options.rsq;
