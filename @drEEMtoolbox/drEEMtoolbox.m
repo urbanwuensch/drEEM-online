@@ -166,7 +166,7 @@ classdef drEEMtoolbox < handle
         export2zip(data,filename)
         %export2netcdf(data,filename)
         exportresults(data,filename,f,name_value)
-        fhandle = reportresidualanalysis(data,ftarget,mdfield)
+        %fhandle = reportresidualanalysis(data,ftarget,mdfield)
 
         % Visualization (incl. app workarounds)
         f=dreemfig(fighandlein)
