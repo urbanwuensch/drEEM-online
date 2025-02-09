@@ -18,6 +18,8 @@
         </tocitem>
         <tocitem target="Whats new.html">Whats new
         </tocitem>
+        <tocitem target="drEEMdataset.html">The drEEM dataset object
+        </tocitem>
         <!-- User Guide comes next -->
         <tocitem target="tutorials.html" 
             image="HelpIcon.USER_GUIDE">Tutorials
