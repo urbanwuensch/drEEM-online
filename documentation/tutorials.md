@@ -3,27 +3,21 @@
 
 
 
-## Working with drEEM version 2
+## Working with drEEM
 * [The typical drEEM workflow](dreem_workflow.html)
 * [Function overview](function_overview.html)
-* [Did you know drEEM can do this?](need_to_know.html)
+* [Tips and Tricks](tips_tricks.html)
 
 ## Data import
-* [Horiba AquaLog import](import_tutorial_01.hmtl)
-* [Horiba AquaLog + separate absorbance files](import_tutorial_02.html)
-* [Metadata import and merging](import_tutorial_03.html)
-* 
-
+* [Simple data import](import_tutorial_01.html)
+* [Complex data import](import_tutorial_02.html)
 
 
 ## Processing
-* [The typical processing workflow](processing_tutorial.hmtl)
-* [Subsetting, zapping, and noise removal](datahandling_tutorial.html)
-* [Data scaling](scaling_tutorial.html)
+* [Data processing](processing_tutorial_01.html)
 
 ## PARAFAC'ing
-* [The typical PARAFAC workflow](parafac_tutorial.html)
-* [Residual analyis](residual_tutorial.html)
-* 
+* [PARAFAC workflow](parafac_tutorial_01.html)
 
 ## Data export
+* [Open research data (data export)](tutorial_export_01.html)
