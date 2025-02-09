@@ -81,3 +81,6 @@ You can see above that there are tons of properties (i.e. variables) in the obje
 	As you could guess from the names, each of these entries informs the toolbox about the dataset's status in regard to certain aspects. The functions will actually check and stop you from performing something if it makes no sense. The only way to change the status is through calling `drEEMtoolbox.changestatus()`. The GUI will give you valid options and you will have to chose what's appropriate. Any drEEM function that changes the status of the dataset will also change the status object!
 	This information will be exported along with the data or PARAFAC results.
 
+* **userdata**. Not maintained by the toolbox and simply a placeholder. You could use this variable as a container for any data you'd want to imagine. It's there for you. If we didn't provide it but you'd want to make it yourself, Matlab would throw an error. Better have it and not need it...
+* **instrumentInfo**: An unused placeholder. Room for future developments!
+* **toolboxdata**:
