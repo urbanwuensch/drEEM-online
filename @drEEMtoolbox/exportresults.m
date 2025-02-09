@@ -59,6 +59,7 @@ for j=1:numel(flds)
     stat.Aspect{j}=flds{j};
     stat.Status{j}=data.status.(flds{j});
 end
+stat.Properties.VariableNames{1}='Step';
 stat.Step={'Spectral correction';...
     'Inner filter effect correction';...
     'Blank subtraction';...
@@ -154,6 +155,35 @@ writetable(mover,filename,"FileType","spreadsheet",...
     "WriteMode","overwritesheet","Sheet",'PARAFAC model overview')
 disp('    Finished spreadsheet: PARAFAC model overview')
 
+% Export splitdataset settings
+split_i=drEEMhistory.searchhistory(data.history,'splitdataset','all');
+if not(isempty(split_i))
+    splitH=data.history(split_i(1));
+    splittable=struct2table(splitH.details);
+    splittable.Properties.VariableNames={'Split by Variable','Number of splits','Assignment into splits'};
+    if isempty(splittable.("Split by Variable"))
+        splittable.("Split by Variable")='option not used.';
+    end
+    splittable.('Date / time created')=splitH.timestamp;
+    splittable.('Dataset history entry #')=split_i(1);
+    if numel(split_i)>1
+        for j=2:numel(split_i)
+            splitH=data.history(split_i(j));
+            temp=struct2table(splitH.details);
+            temp.Properties.VariableNames={'Split by Variable','Number of splits','Assignment into splits'};
+            if isempty(temp.("Split by Variable"))
+                temp.("Split by Variable")='option not used.';
+            end
+            temp.('Date / time created')=splitH.timestamp;
+            temp.('Dataset history entry #')=split_i(j);
+            splittable=[splittable;temp];
+        end
+    end
+    writetable(splittable,filename,"FileType","spreadsheet",...
+        "WriteMode","overwritesheet","Sheet",'Split-validation approach')
+    disp('    Finished spreadsheet: Split-validation approach')
+
+end
 % Model
 loads=data.models(f).loads;
 scores=loads{1};

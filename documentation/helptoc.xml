@@ -29,13 +29,11 @@
             </tocitem>
             <tocitem target="import_tutorial_02.html">Complex data import
             </tocitem>
-            <tocitem target="import_tutorial_03.html">Import metadata
-            </tocitem>
             <tocitem target="processing_tutorial_01.html">Data processing
             </tocitem>
             <tocitem target="parafac_tutorial_01.html">PARAFAC
             </tocitem>
-            <tocitem target="doc_plotting.html">Data / model plotting
+            <tocitem target="tutorial_export_01.html">Open research data (data export)
             </tocitem>
         </tocitem>
         <!-- Optional link or links to your or other Web sites -->
