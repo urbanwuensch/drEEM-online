@@ -3,7 +3,7 @@ function  varargout=benchmark
 
 funmode=parallelcomp;
 
-fpath=[drEEMtoolbox.tbxpath,'tutorials',filesep,'benchmarkDataset.mat'];
+fpath=[drEEMtoolbox.tbxpath,'documentation',filesep,'benchmarkDataset.mat'];
 load(fpath,'data')
 X=data.X;
 clearvars data
