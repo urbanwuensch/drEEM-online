@@ -16,6 +16,8 @@
         <!-- A Getting Started Guide usually comes first -->
         <tocitem target="installation of the toolbox.html">Installation and Requirements
         </tocitem>
+        <tocitem target="function_overview.html">Function overview (graphical)
+            </tocitem>
         <tocitem target="Whats new.html">Whats new
         </tocitem>
         <tocitem target="drEEMdataset.html">The drEEM dataset object
