@@ -27,8 +27,12 @@ classdef drEEMdataset
         toolboxdata
     end
 
+    properties (Hidden = true)
+        XBlank
+    end
+
     properties (SetAccess = private, Hidden = true)
-        Name
+        Name 
     end
 
 

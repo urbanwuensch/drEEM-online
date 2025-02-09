@@ -18,6 +18,9 @@ if islogical(index)|isnumeric(index)
     dataout.X(:,index,:)=[];
     dataout.Em(index)=[];
     dataout.nEm=size(dataout.X,2);
+    if not(isempty(dataout.XBlank))
+        dataout.XBlank(:,index,:)=[];
+    end
 else
     error("input to index must be numeric or logical")
 end

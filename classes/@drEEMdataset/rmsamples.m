@@ -19,6 +19,12 @@ if islogical(index)|isnumeric(index)
     dataout.i(index)=[];
     dataout.filelist(index)=[];
     dataout.metadata(index,:)=[];
+    if not(isempty(dataout.opticalMetadata))
+        dataout.opticalMetadata(index,:)=[];
+    end
+    if not(isempty(dataout.XBlank))
+        dataout.XBlank(index,:,:)=[];
+    end
     if not(isempty(dataout.abs))
         dataout.abs(index,:)=[];
     end

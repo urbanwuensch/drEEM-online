@@ -136,6 +136,7 @@ T=["The contents of this file was created with the drEEM toolbox for Matlab",new
     newline,...
     "FOLDER INFORMATION",newline,...
     "The folder 'EEMs contains fluorescence EEMs with emission wavelengths as rows and excitation wavelengths as columns.",newline,...
+    "If blank EEMs were subtracted by the toolbox (and only then), these will be provided as an additional file, same filename with an '_blank' added before the '.csv'.",newline,...
     "The folder 'absorbance spectra contains wavelengths in column 1 and absorbance data in column 2. The unit is specified in column 2 header.",newline,...
     "",newline,...
     "PROCESSING / STATUS INFORMATION",newline,...
@@ -170,6 +171,15 @@ for j=1:data.nSample
     eem=[data.Em,eem];
     eem=[nan,data.Ex';eem];
     writematrix(eem,[data.filelist{j},'.csv'],"Delimiter",',','WriteMode','overwrite')
+
+    if not(isempty(data.XBlank))
+        eem=squeeze(data.XBlank(j,:,:));
+
+        eem=[data.Em,eem];
+        eem=[nan,data.Ex';eem];
+        writematrix(eem,[data.filelist{j},'_blank.csv'],"Delimiter",',','WriteMode','overwrite')
+    end
+
 end
 cd ..
 
