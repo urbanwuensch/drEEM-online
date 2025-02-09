@@ -83,4 +83,4 @@ You can see above that there are tons of properties (i.e. variables) in the obje
 
 * **userdata**. Not maintained by the toolbox and simply a placeholder. You could use this variable as a container for any data you'd want to imagine. It's there for you. If we didn't provide it but you'd want to make it yourself, Matlab would throw an error. Better have it and not need it...
 * **instrumentInfo**: An unused placeholder. Room for future developments!
-* **toolboxdata**:
+* **toolboxdata**: An unused placeholder. Room for future developments!
