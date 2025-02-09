@@ -21,7 +21,7 @@
         <!-- User Guide comes next -->
         <tocitem target="tutorials.html" 
             image="HelpIcon.USER_GUIDE">Tutorials
-            <tocitem target="dreem_workflow.hmtl">Working with the toolbox
+            <tocitem target="dreem_workflow.html">Working with the toolbox
             </tocitem>
             <tocitem target="tips_tricks.html">Tips and Tricks
             </tocitem>
