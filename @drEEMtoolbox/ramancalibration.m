@@ -23,6 +23,7 @@ arguments
     options.ExWave (1,1) {mustBeNumeric} = 350
     options.iStart (1,1) {mustBeNumeric} = 378
     options.iEnd   (1,1) {mustBeNumeric} = 424
+    options.doAlignmentcheck (1,1) {mustBeNumericOrLogical} = false
 end
 % Experimental feature; overwrite workspace variable, needs no outputarg check
 if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
@@ -81,6 +82,13 @@ dataout.status=...
 
 % Carry out signal calibration
 dataout.X=dataout.X./RA;
+
+
+% Carry out an alignment check based on Raman peaks (if desired)
+if options.doAlignmentcheck
+    warning('This is an undocumented, experimental feature. Don''t assume it will work.')
+    dataout.toolboxdata.alginmentcheck=alignmentcheck(blanks);
+end
 
 % drEEMhistory entry
 idx=height(dataout.history)+1;
@@ -218,4 +226,45 @@ if sizeY(2) > 1
     Sj = Sj(:, ones(1, sizeY(2)));  % Expand Sj
 end
 Yi = Y(Xj, :) .* (1 - Sj) + Y(Xj + 1, :) .* Sj;
+end
+
+
+function results = alignmentcheck(data)
+
+
+sign=@(x,y) minus(x,y);
+for n=1:data.nEx
+    em(n,:) = sign(data.Em,(1e7*((1e7)/(data.Ex(n))-3382)^-1));
+end
+
+minmax=[-12 12];
+dem=rcvec(minmax(1):mean(diff(data.Em)):minmax(2),'column');
+dem_i=dem(1):0.2:dem(end);
+
+Xn=nan(data.nSample,numel(dem),data.nEx);
+results=struct;
+results.peakposition=nan(data.nSample,data.nEx);
+results.Ex=data.Ex;
+for n=1:data.nSample
+    for i=1:data.nEx
+        Xn=interp1(em(i,:),squeeze(data.X(n,:,i)),dem);
+        f=fit(dem,Xn,'gauss1');
+        Xn_f=feval(f,dem_i);
+        results.peakposition(n,i)=dem_i(maxi(Xn_f));
+    end
+end
+
+
+
+dataout=data;
+dataout.Em=dem;
+dataout.nEm=numel(dem);
+% dataout.Xorg=data.X;
+dataout.X=Xn;
+% eemreview(dataout,'hold',true)
+
+end
+
+function [idx] = maxi(y)
+[~,idx]=max(y);
 end
