@@ -35,6 +35,8 @@
             </tocitem>
             <tocitem target="processing_tutorial_01.html">Data processing
             </tocitem>
+            <tocitem target="prepare4Parafac_tutorial.html">Data quality inspection
+            </tocitem>
             <tocitem target="parafac_tutorial_01.html">PARAFAC
             </tocitem>
             <tocitem target="tutorial_export_01.html">Open research data (data export)
