@@ -1,12 +1,13 @@
-function dataout = ifecorrection(data)
+function dataout = ifecorrection(data,options)
 % <a href = "matlab:doc ifecorrection">dataout = ifecorrection(data) (click to access documentation)</a>
 %
 % <strong>Inputs - Required</strong>
 % data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),drEEMdataset.sanityCheckIFE(data)}
-
+% options.plot (1,1) {mustBeNumericOrLogical} = true
 arguments
     data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),...
         drEEMdataset.sanityCheckIFE(data)}
+    options.plot (1,1) {mustBeNumericOrLogical} = true
 end
 % Experimental feature; overwrite workspace variable, needs no outputarg check
 if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
@@ -49,6 +50,21 @@ dataout.history(idx,1)=...
 dataout.validate(dataout);
 
 disp(message)
+
+
+if options.plot
+    if data.toolboxdata.uifig
+        f=drEEMtoolbox.dreemuifig;
+    else
+        f=drEEMtoolbox.dreemfig;
+    end
+    f.Name='drEEM: ifecorrection.m';
+    t=tiledlayout(f);
+    mesh(nexttile(t),dataout.Ex,dataout.Em,squeeze(mean(IFCmat,1,"omitmissing")))
+    title('Average Inner-filter effect correction matrix')
+    xlabel('Excitation (nm)')
+    ylabel('Emission (nm)')
+end
 
 % Will only run if toolbox is set to overwrite workspace variable and user
 % didn't provide an output argument

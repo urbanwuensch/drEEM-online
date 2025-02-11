@@ -9,6 +9,8 @@ function dataout = processabsorbance(data,options)
 % baseWave (1,:)        {mustBeNumeric,mustBeGreaterThan(options.baseWave,580)} = 595
 % zero (1,:)            {mustBeNumericOrLogical} = false
 % extrapolate (1,:)     {mustBeNumericOrLogical} = true
+% options.plot (1,1) {mustBeNumericOrLogical} = true
+
 
 
 arguments
@@ -21,6 +23,7 @@ arguments
     options.baseWave (1,:)      {mustBeNumeric,mustBeGreaterThan(options.baseWave,580)} = 595
     options.zero (1,:)          {mustBeNumericOrLogical} = false
     options.extrapolate (1,:)   {mustBeNumericOrLogical} = true
+    options.plot (1,1) {mustBeNumericOrLogical} = true
 end
 mv=ver;
 stool=any(contains({mv(:).Name},'Statistics and Machine Learning'));
@@ -53,22 +56,23 @@ dataout=data;
 
 % The function creates a result figure. The dataset setting determines if
 % it's a uifigure (somewhat cleaner & simple) or figure (much faster)
-if data.toolboxdata.uifig
-    f=drEEMtoolbox.dreemuifig;
-else
-    f=drEEMtoolbox.dreemfig;
+if options.plot
+    if data.toolboxdata.uifig
+        f=drEEMtoolbox.dreemuifig;
+    else
+        f=drEEMtoolbox.dreemfig;
+    end
+    f.Name='drEEM: processabsorbance.m';
+    
+    % Show the original data
+    t=tiledlayout(f,"flow");
+    ax=nexttile(t);
+    plot(ax,data.absWave,data.abs,Color=[0 0 0 0.5])
+    yline(ax,0,LineStyle="-",Color='b')
+    xlabel(ax,'Wavelength (nm)')
+    ylabel(ax,'Absorbance')
+    title(ax,'Absorbance prior to any correction')
 end
-f.Name='drEEM: processabsorbance.m';
-
-% Show the original data
-t=tiledlayout(f,"flow");
-ax=nexttile(t);
-plot(ax,data.absWave,data.abs,Color=[0 0 0 0.5])
-yline(ax,0,LineStyle="-",Color='b')
-xlabel(ax,'Wavelength (nm)')
-ylabel(ax,'Absorbance')
-title(ax,'Absorbance prior to any correction')
-
 %% Scenario 1, no extrapolation needed
 if max([dataout.Ex;dataout.Em])<max(dataout.absWave)
     %% Baseline correction (if possible and wanted)

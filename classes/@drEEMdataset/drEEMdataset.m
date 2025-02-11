@@ -198,10 +198,10 @@ classdef drEEMdataset
                 end
             end
             
-            if not(isreal(data.abs))
-                e{cnt}='Some of the CDOM absorbance spectra contain complex numbers';
-                cnt=cnt+1;
-            end
+            % if not(isreal(data.abs))
+            %     e{cnt}='Some of the CDOM absorbance spectra contain complex numbers';
+            %     cnt=cnt+1;
+            % end
 
             if not(isreal(data.X))
                 e{cnt}='Some of the EEMs contain complex numbers';
