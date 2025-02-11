@@ -10,18 +10,8 @@ rtpath=matlabroot;
 doclocs = which('doc','-all');
 restoredoc_i=contains(doclocs,rtpath);
 
-if numel(doclocs)>2
-%     wanring(sprintf(['\n\n   Multiple versions of ''doc'' found. drEEM has it''s own function with this name.\n' ...
-%         '   Under the current conditions, doc.m would not stop running. If you are unsure what this means:\n\n' ... 
-%         '    1. Please <strong>delete your copy of drEEM from your hard disk.</strong> \n' ... 
-%         '    2. Download the latest verison from dreem.openfluor.org \n' ... 
-%         '    3. Install drEEM again.\n']))
-end
 % Database of published function docs
 try functionname=lower(functionname);end %#ok<TRYNC>
-
-% helpdatabase=retreivefileinfo;
-
 
 % Catch users that just want to see the start page of doc 
 if nargin==0
@@ -32,7 +22,7 @@ end
 
 % Search for existing documentation based on entries in "functiondirectory"
 try
-    web([char(functionname),'.html']);
+    web([char(functionname),'.html'],'-new','-browser');
     return
 catch
     % If nothing was found, just display the default MATLAB output
