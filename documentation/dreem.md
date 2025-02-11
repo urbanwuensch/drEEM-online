@@ -1,3 +1,5 @@
+<img src="top right corner logo.png" width="100" height="auto" align="right"/>
+
 # drEEM toolbox for MATLAB
 This toolbox that aids the multiway decomposition of fluorescence EEMs into underlying fluorescence components using PARAFAC.
 
@@ -8,7 +10,8 @@ Since the initial release of drEEM in 2013, Matlab has expanded considerably in 
 
 ## About the developers
 ### Urban Wünsch
-Urban is a researcher in the field of aquatic environmental chemistry. He has obtained his PhD at the Technical University of Denmark (DTU) in 2018 and since held postdoctoral positions at Chalmers University of Technology and DTU. Read more on his [personal website](https://ujwunsch.com).
+
+<img src="dev_urban.jpeg" width="100" height="auto" align="right"/>Urban is a researcher in the field of aquatic environmental chemistry. He has obtained his PhD at the Technical University of Denmark (DTU) in 2018 and since held postdoctoral positions at Chalmers University of Technology and DTU. He is a teacher in the reocuring online workshop [Parallel Factor Analysis for DOM fluorescence](https://dreem.gitlab.io/coursepage/). Read more on his [personal website](https://ujwunsch.com).
 
 Urban is the main developer of the toolbox.
 ### Ali Esmaeeli
