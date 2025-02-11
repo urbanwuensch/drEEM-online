@@ -5,9 +5,10 @@ function dataout = splitdataset(data,options)
 % data {drEEMdataset.validate(data)}
 % 
 % <strong>Inputs - Optional</strong>
-% options.bysort (1,:)    {drEEMdataset.mustBeMetadataColumn(data,options.bysort)} = []
+% options.splitType (1,:) {mustBeText,mustBeMember(options.splitType,["blind","byMetadata"])} = "blind"
+% options.blindType (1,:)     {mustBeMember(options.blindType,["alternating","random","contiguous"])} = "alternating"
+% options.metadataColumn (1,:)    {drEEMdataset.mustBeMetadataColumn(data,options.metadataColumn)} = []
 % options.numsplit (1,1)  {mustBePositive} = 2
-% options.stype (1,:)     {mustBeMember(options.stype,["alternating","random","contiguous","exact"])} = "alternating"
 
 arguments
     data {drEEMdataset.validate(data)}
