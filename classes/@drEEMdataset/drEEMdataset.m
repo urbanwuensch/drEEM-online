@@ -217,15 +217,15 @@ classdef drEEMdataset
                 for j=1:numel(e)
                     message=[message,'\n ',num2str(j),':  ',e{j}];
                 end
-                message=[message,'\n Type "help drEEM" or "help drEEMdataset" to learn more'];
-                error(sprintf(message))
+                message=[message,'\n Type "doc drEEM" or "doc drEEMdataset" to learn more'];
+                throwAsCaller(MException("drEEM:datasetInvalid",message))
             end
 
             stack=dbstack;
             % Only spit out the message if the drEEMtoolbox version was
             % involved (user-facing function). Internally, we use
             % drEEMdataset.validate to do the job.
-            if matches(stack(end).name,'drEEMtoolbox.validatedataset')
+            if matches(stack(end).name,{'drEEMtoolbox.validatedataset','drEEMdataset.validate'})
                 disp('<strong> drEEMdataset validation successful.</strong> Your dataset passed all checks.')
             end
         end
@@ -235,12 +235,12 @@ classdef drEEMdataset
                 return
             end
             if not(ismember(colname,data.metadata.Properties.VariableNames))
-                message=[colname,' is not a column in data.metadata. Your options are:\n'];
+                message=['\n\n<strong>"',char(colname),'"</strong> is not a column in data.metadata. Your options are:\n'];
                 flds=data.metadata.Properties.VariableNames;
                 for j=1:numel(flds)
-                    message=[' ',message,num2str(j),': ',flds{j},'\n'];
+                    message=[' ',message,num2str(j),': ',flds{j},', '];
                 end
-                error(sprintf(message))
+                 throwAsCaller(MException("drEEM:IncorrectInput",message))
             end
 
         end
@@ -248,7 +248,8 @@ classdef drEEMdataset
         function mustBeInRangeEm(data,emwave)
             for j=1:numel(emwave)
                 if data.Em(end)<emwave(j)||data.Em(1)>emwave(j)
-                    error(['Emission wavelength out of range for data. Range: ',num2str(data.Em(1)),' - ',num2str(data.Em(end)),' nm'])
+                    message=['Emission wavelength out of range for data. Range: ',num2str(data.Em(1)),' - ',num2str(data.Em(end)),' nm'];
+                    throwAsCaller(MException("drEEM:IncorrectInput",message))
                 end
             end
         end
@@ -256,7 +257,8 @@ classdef drEEMdataset
         function mustBeInRangeEx(data,exwave)
             for j=1:numel(exwave)
                 if data.Ex(end)<exwave(j)||data.Ex(1)>exwave(j)
-                    error(['Excitation wavelength out of range for data. Range: ',num2str(data.Ex(1)),' - ',num2str(data.Ex(end)),' nm'])
+                    message=['Excitation wavelength out of range for data. Range: ',num2str(data.Ex(1)),' - ',num2str(data.Ex(end)),' nm'];
+                    throwAsCaller(MException("drEEM:IncorrectInput",message))
                 end
             end
         end
@@ -264,7 +266,8 @@ classdef drEEMdataset
         function mustBeInRangeSamplei(data,i)
             for j=1:numel(i)
                 if not(ismember(i,data.i))
-                    error('sample identifier is not valid (not a member): ')
+                    message='sample identifier is not valid (not a member): ';
+                    throwAsCaller(MException("drEEM:IncorrectInput",message))
                 end
             end
         end
@@ -290,7 +293,7 @@ classdef drEEMdataset
                 end
             end
             if not(isempty(message))
-                error(sprintf(message))
+                throwAsCaller(MException("drEEM:IncorrectInput",message))
             end
         end
         
