@@ -5,17 +5,17 @@ function dataout = rmspikes(data,options)
 % data (1,1) {drEEMdataset.validate(data)}
 % 
 % <strong>Inputs - Optional</strong>
-% plot (1,:)            {mustBeNumericOrLogical} = true
-% details (1,:)         {mustBeNumericOrLogical} = false
 % thresholdFactor (1,1) {mustBeNumeric} = 10
-% interpolate (1,:)     {mustBeNumericOrLogical} = false
+% interpolate (1,:) {mustBeNumericOrLogical} = false
+% details (1,:) {mustBeNumericOrLogical} = false
+% plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
 
 arguments
     data (1,1) {drEEMdataset.validate(data)}
-    options.plot (1,:) {mustBeNumericOrLogical} = true
-    options.details (1,:) {mustBeNumericOrLogical} = false
     options.thresholdFactor (1,1) {mustBeNumeric} = 10
     options.interpolate (1,:) {mustBeNumericOrLogical} = false
+    options.details (1,:) {mustBeNumericOrLogical} = false
+    options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
 end
 % Experimental feature; overwrite workspace variable, needs no outputarg check
 if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
