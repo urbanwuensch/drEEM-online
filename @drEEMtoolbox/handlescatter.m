@@ -174,7 +174,7 @@ dataout.status=...
 %% Plotting
 
 if options.plot
-    if data.toolboxdata.uifig
+    if data.toolboxOptions.uifig
         fh=drEEMtoolbox.dreemuifig;
     else
         fh=drEEMtoolbox.dreemfig;

@@ -11,6 +11,7 @@ function dataout = ramancalibration(samples,blanks,options)
 % ExWave (1,1) {mustBeNumeric} = 350
 % iStart (1,1) {mustBeNumeric} = 378
 % iEnd   (1,1) {mustBeNumeric} = 424
+% options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
 
 arguments
     % Required
@@ -24,6 +25,7 @@ arguments
     options.iStart (1,1) {mustBeNumeric} = 378
     options.iEnd   (1,1) {mustBeNumeric} = 424
     options.doAlignmentcheck (1,1) {mustBeNumericOrLogical} = false
+    options.plot (1,1) {mustBeNumericOrLogical} = samples.toolboxOptions.plotByDefault;
 end
 % Experimental feature; overwrite workspace variable, needs no outputarg check
 if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
@@ -87,7 +89,7 @@ dataout.X=dataout.X./RA;
 % Carry out an alignment check based on Raman peaks (if desired)
 if options.doAlignmentcheck
     warning('This is an undocumented, experimental feature. Don''t assume it will work.')
-    dataout.toolboxdata.alginmentcheck=alignmentcheck(blanks);
+    dataout.toolboxOptions.alginmentcheck=alignmentcheck(blanks);
 end
 
 % drEEMhistory entry
@@ -97,49 +99,49 @@ dataout.history(idx,1)=...
 
 % validate the dataset (should not be a problem, but best be sure)
 dataout.validate(dataout);
-
-% final plots
-if samples.toolboxdata.uifig
-    f=drEEMtoolbox.dreemuifig;
-else
-    f=drEEMtoolbox.dreemfig;
+if options.plot
+    % final plots
+    if samples.toolboxOptions.uifig
+        f=drEEMtoolbox.dreemuifig;
+    else
+        f=drEEMtoolbox.dreemfig;
+    end
+    f.Name='drEEM toolbox: Raman calibration overview';
+    movegui(f,'center')
+    t=tiledlayout(f,"flow");
+    
+    ax=nexttile(t);
+    plot(ax,blanks.Em,Rscan,'k',LineWidth=1.5)
+    title(ax,"Raman emission scans")
+    ylabel(ax,'Signal intensity'),xlabel(ax,'Wavelength (nm)')
+    
+    xline(ax,options.iStart,'r',LineWidth=2)
+    xline(ax,options.iEnd,'r',LineWidth=2)
+    iData=Rscan(:,blanks.Em>options.iStart&blanks.Em<options.iEnd);
+    iData=iData(:);
+    ylim(ax,[0 max(iData)*2])
+    xlim(ax,[options.iStart-20 options.iEnd+20])
+    
+    ax=nexttile(t);
+    plot(ax,dataout.i,SignalCalibration.area,'ko')
+    title(ax,'Raman area across dataset')
+    xlabel(ax,"sample #")
+    ylabel(ax,'Raman area')
+    axis(ax,'padded')
+    
+    ax=nexttile(t);
+    plot(ax,dataout.i,SignalCalibration.BaseAreaPerc,'ko')
+    title(ax,'Baseline area rel. to Raman area across dataset')
+    axis(ax,'padded')
+    xlabel(ax,"sample #")
+    ylabel(ax,' Baseline / Raman area * 100 (%)')
+    
+    ax=nexttile(t);
+    plot(ax,dataout.i,SignalCalibration.SNB,'ko')
+    title(ax,'Raman peak max / background signal (SNB)')
+    ylabel(ax,'Signal to baseline ratio')
+    xlabel(ax,"sample #")
 end
-f.Name='drEEM toolbox: Raman calibration overview';
-movegui(f,'center')
-t=tiledlayout(f,"flow");
-
-ax=nexttile(t);
-plot(ax,blanks.Em,Rscan,'k',LineWidth=1.5)
-title(ax,"Raman emission scans")
-ylabel(ax,'Signal intensity'),xlabel(ax,'Wavelength (nm)')
-
-xline(ax,options.iStart,'r',LineWidth=2)
-xline(ax,options.iEnd,'r',LineWidth=2)
-iData=Rscan(:,blanks.Em>options.iStart&blanks.Em<options.iEnd);
-iData=iData(:);
-ylim(ax,[0 max(iData)*2])
-xlim(ax,[options.iStart-20 options.iEnd+20])
-
-ax=nexttile(t);
-plot(ax,dataout.i,SignalCalibration.area,'ko')
-title(ax,'Raman area across dataset')
-xlabel(ax,"sample #")
-ylabel(ax,'Raman area')
-axis(ax,'padded')
-
-ax=nexttile(t);
-plot(ax,dataout.i,SignalCalibration.BaseAreaPerc,'ko')
-title(ax,'Baseline area rel. to Raman area across dataset')
-axis(ax,'padded')
-xlabel(ax,"sample #")
-ylabel(ax,' Baseline / Raman area * 100 (%)')
-
-ax=nexttile(t);
-plot(ax,dataout.i,SignalCalibration.SNB,'ko')
-title(ax,'Raman peak max / background signal (SNB)')
-ylabel(ax,'Signal to baseline ratio')
-xlabel(ax,"sample #")
-
 
 % Will only run if toolbox is set to overwrite workspace variable and user
 % didn't provide an output argument

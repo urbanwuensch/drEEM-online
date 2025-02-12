@@ -23,8 +23,9 @@ classdef drEEMdataset
         measurementInfo struct % currently unused (placeholder)
     end
 
-    properties (SetAccess = private)
+    properties (Hidden = true,SetAccess = public)
         toolboxdata
+        toolboxOptions=drEEMtoolbox.options;
     end
 
     properties (Hidden = true)
@@ -53,8 +54,6 @@ classdef drEEMdataset
             data.toolboxdata.host = strtrim(lower(name));
             data.toolboxdata.matlabVersion=version;
             data.toolboxdata.matlabToolboxes=ver;
-            data.toolboxdata.settings=struct;
-            data.toolboxdata.uifig=drEEMtoolbox.uifig;
             data.status=drEEMstatus;
         end
 

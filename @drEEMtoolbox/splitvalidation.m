@@ -117,7 +117,7 @@ end
 [compidx,~]=sortcomponents(cellOfModels{end},cellOfModels,fac);
 
 %% Step 5: Plot
-if data.toolboxdata.uifig
+if data.toolboxOptions.uifig
     hf=drEEMtoolbox.dreemuifig;
 else
     hf=drEEMtoolbox.dreemfig;

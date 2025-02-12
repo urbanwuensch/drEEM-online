@@ -3,11 +3,11 @@ function dataout = ifecorrection(data,options)
 %
 % <strong>Inputs - Required</strong>
 % data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),drEEMdataset.sanityCheckIFE(data)}
-% options.plot (1,1) {mustBeNumericOrLogical} = true
+% options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
 arguments
     data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),...
         drEEMdataset.sanityCheckIFE(data)}
-    options.plot (1,1) {mustBeNumericOrLogical} = true
+    options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
 end
 % Experimental feature; overwrite workspace variable, needs no outputarg check
 if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
@@ -53,7 +53,7 @@ disp(message)
 
 
 if options.plot
-    if data.toolboxdata.uifig
+    if data.toolboxOptions.uifig
         f=drEEMtoolbox.dreemuifig;
     else
         f=drEEMtoolbox.dreemfig;

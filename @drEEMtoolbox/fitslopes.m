@@ -7,7 +7,7 @@ function [dataout,slopes,metadata,model] = fitslopes(data,options)
 % <strong>Inputs - Optional</strong>
 % LongRange (1,2) {mustBeNumeric} = [300 600]
 % rsq (1,1)       {mustBeNumeric,mustBeLessThanOrEqual(options.rsq,1)} = 0.95
-% plot            {mustBeNumericOrLogical} = true
+% options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
 % details         {mustBeNumericOrLogical} = false
 
 
@@ -15,15 +15,16 @@ arguments
     data (1,1)              {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
     options.LongRange (1,2) {mustBeNumeric} = [300 600]
     options.rsq (1,1)       {mustBeNumeric,mustBeLessThanOrEqual(options.rsq,1)} = 0.95
-    options.plot            {mustBeNumericOrLogical} = true
+    options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
     options.details         {mustBeNumericOrLogical} = false
-    options.quiet           {mustBeNumericOrLogical} = false
+    options.quiet         {mustBeNumericOrLogical} = false
 end
 
 % Experimental feature; overwrite workspace variable, needs no outputarg check
 if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
     nargoutchk(1,4)
 end
+
 if options.quiet
     options.plot = false;
     options.details = false;
@@ -266,14 +267,17 @@ dataout.validate(dataout);
 %% Diagnosis plots if desired.
 switch diagn
     case true
-        close gcf
-        fig2=drEEMtoolbox.dreemfig;
+        if data.toolboxOptions.uifig
+            fig2=drEEMtoolbox.dreemuifig;
+        else
+            fig2=drEEMtoolbox.dreemfig;
+        end
         set(fig2,'units','normalized')
         set(fig2,'pos',[0.1365    0.2926    0.6490    0.2852])
-        movegui('center')
+        movegui(fig2,'center')
         disp('Showing raw, modeled, and residual data for selected samples. Press any key to continue or Ctrl + C to cancel.')
         for n=samples
-            set(gcf,'Name',['Slopefit.m: Data vs. modeled data. Spectrum ',num2str(n),' of ',num2str(data.nSample)])
+            set(fig2,'Name',['Slopefit.m: Data vs. modeled data. Spectrum ',num2str(n),' of ',num2str(data.nSample)])
             try
                 subplot(1,3,1)
                 yyaxis left
@@ -370,20 +374,24 @@ end
 %% Plotting of results
 switch plt
     case true
-
-    fig1=drEEMtoolbox.dreemfig;
+    if data.toolboxOptions.uifig
+        fig1=drEEMtoolbox.dreemuifig;
+    else
+        fig1=drEEMtoolbox.dreemfig;
+    end
     set(fig1,'units','normalized','Name','slopefit: CDOM spectral slopes','pos',[0.3542    0.3648    0.2917    0.2000])
-
-    plot(1:data.nSample,slopes.exp_slope_microm,'Color','k')
-    xlabel('# Sample'),ylabel(['S_{',num2str(LRange(1)),'-',num2str(LRange(2)),'}'])
-    yyaxis right
-    plot(1:data.nSample,slopes.S_275_295,'Color',lines(1)),hold on
-    plot(1:data.nSample,slopes.S_350_400,'Color','b','LineStyle','-','Marker','none')
-    xlabel('# Sample'),ylabel('S_{275-295} & S_{350-400}')
-    set(gca,'YColor','b')
-    title('CDOM spectral slopes')
-    xlim([0 data.nSample])
-    legend(['S_{',num2str(LRange(1)),'-',num2str(LRange(2)),'nm}'],'S_{275-295nm}','S_{350-400nm}','location','eastoutside')
+    ax=nexttile(tiledlayout(fig1));
+    plot(ax,1:data.nSample,slopes.exp_slope_microm,'Color','k')
+    xlabel(ax,'# Sample')
+    ylabel(ax,['S_{',num2str(LRange(1)),'-',num2str(LRange(2)),'}'])
+    yyaxis(ax,"right")
+    plot(ax,1:data.nSample,slopes.S_275_295,'Color',lines(1)),hold(ax,"on")
+    plot(ax,1:data.nSample,slopes.S_350_400,'Color','b','LineStyle','-','Marker','none')
+    xlabel(ax,'# Sample'),ylabel(ax,'S_{275-295} & S_{350-400}')
+    set(ax,'YColor','b')
+    title(ax,'CDOM spectral slopes')
+    xlim(ax,[0 data.nSample])
+    legend(ax,['S_{',num2str(LRange(1)),'-',num2str(LRange(2)),'nm}'],'S_{275-295nm}','S_{350-400nm}','location','eastoutside')
 end
 
 % Will only run if toolbox is set to overwrite workspace variable and user

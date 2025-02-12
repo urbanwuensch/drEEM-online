@@ -9,7 +9,7 @@ function dataout = processabsorbance(data,options)
 % baseWave (1,:)        {mustBeNumeric,mustBeGreaterThan(options.baseWave,580)} = 595
 % zero (1,:)            {mustBeNumericOrLogical} = false
 % extrapolate (1,:)     {mustBeNumericOrLogical} = true
-% options.plot (1,1) {mustBeNumericOrLogical} = true
+% options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
 
 
 
@@ -23,7 +23,7 @@ arguments
     options.baseWave (1,:)      {mustBeNumeric,mustBeGreaterThan(options.baseWave,580)} = 595
     options.zero (1,:)          {mustBeNumericOrLogical} = false
     options.extrapolate (1,:)   {mustBeNumericOrLogical} = true
-    options.plot (1,1) {mustBeNumericOrLogical} = true
+    options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
 end
 mv=ver;
 stool=any(contains({mv(:).Name},'Statistics and Machine Learning'));
@@ -57,7 +57,7 @@ dataout=data;
 % The function creates a result figure. The dataset setting determines if
 % it's a uifigure (somewhat cleaner & simple) or figure (much faster)
 if options.plot
-    if data.toolboxdata.uifig
+    if data.toolboxOptions.uifig
         f=drEEMtoolbox.dreemuifig;
     else
         f=drEEMtoolbox.dreemfig;
@@ -137,14 +137,16 @@ elseif max([dataout.Ex;dataout.Em])>max(dataout.absWave)
         new=new+off;
         
         % show intermediate results
-        ax=nexttile(t);
-        plot(ax,data.absWave,data.abs,Color=[0 0 0 0.5])
-        hold(ax,'on')
-        plot(ax,extrawave,new,Color=[1 0 0 0.5])
-        xlabel(ax,'Wavelength (nm)')
-        ylabel(ax,'Absorbance')
-        title(ax,'Given (black) and extrapl. data (red)')
-        yline(ax,0,LineStyle="-",Color='b')
+        if options.plot
+            ax=nexttile(t);
+            plot(ax,data.absWave,data.abs,Color=[0 0 0 0.5])
+            hold(ax,'on')
+            plot(ax,extrawave,new,Color=[1 0 0 0.5])
+            xlabel(ax,'Wavelength (nm)')
+            ylabel(ax,'Absorbance')
+            title(ax,'Given (black) and extrapl. data (red)')
+            yline(ax,0,LineStyle="-",Color='b')
+        end
         
         % Assign the extrapolated data to the output
         dataout.abs=horzcat(dataout.abs,new);
@@ -194,13 +196,14 @@ if any(dataout.abs(:)<0)&&options.zero
     dataout.abs(dataout.abs<0)=0;
 end
 % Show the final output
-ax=nexttile(t);
-plot(ax,dataout.absWave,dataout.abs,Color=[0 0 0 0.5])
-xlabel(ax,'Wavelength (nm)')
-ylabel(ax,'Absorbance')
-title(ax,'Final output')
-yline(ax,0,LineStyle="-",Color='b')
-
+if options.plot
+    ax=nexttile(t);
+    plot(ax,dataout.absWave,dataout.abs,Color=[0 0 0 0.5])
+    xlabel(ax,'Wavelength (nm)')
+    ylabel(ax,'Absorbance')
+    title(ax,'Final output')
+    yline(ax,0,LineStyle="-",Color='b')
+end
 
 %% drEEMhistory entry
 message=[...

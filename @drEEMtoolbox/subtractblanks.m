@@ -1,4 +1,4 @@
-function dataout = subtractblanks(samples,blanks)
+function dataout = subtractblanks(samples,blanks,options)
 % <a href = "matlab:doc subtractblanks">dataout = subtractblanks(samples,blanks) (click to access documentation)</a>
 %
 % <strong>Inputs - Required</strong>
@@ -6,12 +6,14 @@ function dataout = subtractblanks(samples,blanks)
 %     drEEMdataset.sanityCheckBlankSubtraction(samples)}
 % blanks (1,1)  {mustBeNonempty,drEEMdataset.validate(blanks),...
 %     drEEMdataset.sanityCheckBlankSubtraction(blanks)}
+% plot (1,1) {mustBeNumericOrLogical} = samples.toolboxOptions.plotByDefault;
 
 arguments
     samples (1,1) {mustBeNonempty,drEEMdataset.validate(samples),...
         drEEMdataset.sanityCheckBlankSubtraction(samples)}
     blanks (1,1) {mustBeNonempty,drEEMdataset.validate(blanks),...
         drEEMdataset.sanityCheckBlankSubtraction(blanks)}
+    options.plot (1,1) {mustBeNumericOrLogical} = samples.toolboxOptions.plotByDefault;
 end
 
 % First off: Let's make sure the blank and sample datasets cover the same
@@ -108,55 +110,57 @@ end
 % Finally let's make some plots to allow the user to see if blanks were
 % clean and how well the subtraction worked for the elimitation of scatter.
 mindist=@(vec,val) find(ismember(abs(vec-val),min(abs(vec-val))));
-if samples.toolboxdata.uifig
-    f=drEEMtoolbox.dreemuifig;
-else
-    f=drEEMtoolbox.dreemfig;
+if options.plot
+    if samples.toolboxOptions.uifig
+        f=drEEMtoolbox.dreemuifig;
+    else
+        f=drEEMtoolbox.dreemfig;
+    end
+    f.Name='drEEM: subtractblanks.m';
+    t=tiledlayout(f,"flow");
+    
+    sam = inputname(1); % Show base workspace variable names in the plots
+    bla = inputname(2); % Show base workspace variable names in the plots
+    % Excitation 275 (for protein + humic fl).
+    ex=samples.Ex(mindist(samples.Ex,275));
+    ram1=1*10^7*((1*10^7)/(ex)-3382)^-1; % predicted raman 1st order
+    ram2=(1*10^7*((1*10^7)/(ex)-3382)^-1)*2;  % predicted raman 2nd order
+    ray1=ex;  % predicted rayleigh 1st order
+    ray2=ex*2;  % predicted rayleigh 2nd order
+    
+    % Plot everything
+    ax=nexttile(t);
+    plot(ax,samples.Em,squeeze(samples.X(:,:,mindist(samples.Ex,275))))
+    xline(ax,ray1,'Color','r')
+    xline(ax,ray2,'Color','r')
+    xline(ax,ram1,'Color','b')
+    xline(ax,ram2,'Color','b')
+    
+    title(ax,{sam})
+    xlabel(ax,'Emission (nm)')
+    ylabel(ax,'Fluorescence intensity')
+    
+    
+    ax=nexttile(t);
+    plot(ax,blanks.Em,squeeze(blanks.X(:,:,mindist(blanks.Ex,275))))
+    xline(ax,ray1,'Color','r')
+    xline(ax,ray2,'Color','r')
+    xline(ax,ram1,'Color','b')
+    xline(ax,ram2,'Color','b')
+    
+    title(ax,{bla})
+    xlabel(ax,'Emission (nm)')
+    ylabel(ax,'Fluorescence intensity')
+    
+    ax=nexttile(t);
+    plot(ax,dataout.Em,squeeze(dataout.X(:,:,mindist(dataout.Ex,275))))
+    xline(ax,ray1,'Color','r')
+    xline(ax,ray2,'Color','r')
+    xline(ax,ram1,'Color','b')
+    xline(ax,ram2,'Color','b')
+    title(ax,{[sam,' - ',bla]})
+    xlabel(ax,'Emission (nm)')
+    ylabel(ax,'Fluorescence intensity')
+    title(t,'Emission spectra closest to Ex = 275 nm')
 end
-f.Name='drEEM: subtractblanks.m';
-t=tiledlayout(f,"flow");
-
-sam = inputname(1); % Show base workspace variable names in the plots
-bla = inputname(2); % Show base workspace variable names in the plots
-% Excitation 275 (for protein + humic fl).
-ex=samples.Ex(mindist(samples.Ex,275));
-ram1=1*10^7*((1*10^7)/(ex)-3382)^-1; % predicted raman 1st order
-ram2=(1*10^7*((1*10^7)/(ex)-3382)^-1)*2;  % predicted raman 2nd order
-ray1=ex;  % predicted rayleigh 1st order
-ray2=ex*2;  % predicted rayleigh 2nd order
-
-% Plot everything
-ax=nexttile(t);
-plot(ax,samples.Em,squeeze(samples.X(:,:,mindist(samples.Ex,275))))
-xline(ax,ray1,'Color','r')
-xline(ax,ray2,'Color','r')
-xline(ax,ram1,'Color','b')
-xline(ax,ram2,'Color','b')
-
-title(ax,{sam})
-xlabel(ax,'Emission (nm)')
-ylabel(ax,'Fluorescence intensity')
-
-
-ax=nexttile(t);
-plot(ax,blanks.Em,squeeze(blanks.X(:,:,mindist(blanks.Ex,275))))
-xline(ax,ray1,'Color','r')
-xline(ax,ray2,'Color','r')
-xline(ax,ram1,'Color','b')
-xline(ax,ram2,'Color','b')
-
-title(ax,{bla})
-xlabel(ax,'Emission (nm)')
-ylabel(ax,'Fluorescence intensity')
-
-ax=nexttile(t);
-plot(ax,dataout.Em,squeeze(dataout.X(:,:,mindist(dataout.Ex,275))))
-xline(ax,ray1,'Color','r')
-xline(ax,ray2,'Color','r')
-xline(ax,ram1,'Color','b')
-xline(ax,ram2,'Color','b')
-title(ax,{[sam,' - ',bla]})
-xlabel(ax,'Emission (nm)')
-ylabel(ax,'Fluorescence intensity')
-title(t,'Emission spectra closest to Ex = 275 nm')
 end

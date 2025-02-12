@@ -1,24 +1,27 @@
 classdef drEEMtoolbox < handle
     properties (Constant = true, Hidden = false)
         version = "2.0.0"
-        url = "https://gitlab.com/dreem/dreem-2.0"
-        rootfolder = drEEMtoolbox.tbxpath;
-    end
-    properties (Constant = true, Hidden = true)
-        uifig = true % Should uifigure be used instead of figures?
-        OvrWrteUnless = false % If true and no output is given, the input variable will be overwritten (non-transparent behavior)
+        url = "GitLab URL for release goes here"
         requiredVersion = 'R2022a'
+        rootfolder = drEEMtoolbox.tbxpath;
+        options=drEEMtoolbox.defaultOptions;
     end
-    
+
     % These are not meant for the general public, Origin Pro is required.
     methods (Hidden = true,Static = true)
         Xout = aqualogimport(workingpath,selector,deselector)
         dataout = sampleQimport(workingpath,data)
         [DS,DSb] = processHJYdata(Xin,opt)
     end
-    
+
     % This is hidden because it's only ever used for install
     methods (Hidden = true,Static = true)
+        function out=defaultOptions
+            out.plotByDefault = true;
+            out.OvrWrteUnless = false;
+            out.uifig = true;
+
+        end
         function versionRequires
             if isMATLABReleaseOlderThan(drEEMtoolbox.requiredVersion)
                 error(['You need Matlab ',drEEMtoolbox.requiredVersion,' or newer to use this version of drEEM.'])
@@ -70,22 +73,23 @@ classdef drEEMtoolbox < handle
         end
 
         function scenario=outputscenario(n_in)
-        if n_in ~= 0 && not(drEEMtoolbox.OvrWrteUnless)
-            % User wants explicit assignments & toolbox agrees
-            scenario=categorical({'explicitOut'});
-        end
-        if drEEMtoolbox.OvrWrteUnless && n_in==0
-            % User wants workspace variable to be overwritten  & toolbox agrees
-            scenario=categorical({'implicitOut'});
-        end
-        if drEEMtoolbox.OvrWrteUnless && n_in~=0
-            % User wants explicit assignments but toolbox disagrees
-            scenario=categorical({'explicitOut'});
-        end
-        if not(drEEMtoolbox.OvrWrteUnless) && n_in==0
-            % Toolbox is set to make explicit assignments, but user didn't give output args
-            scenario=categorical({'explicitOut'});
-        end
+
+            if n_in ~= 0 && not(drEEMtoolbox.options.OvrWrteUnless)
+                % User wants explicit assignments & toolbox agrees
+                scenario=categorical({'explicitOut'});
+            end
+            if drEEMtoolbox.options.OvrWrteUnless && n_in==0
+                % User wants workspace variable to be overwritten  & toolbox agrees
+                scenario=categorical({'implicitOut'});
+            end
+            if drEEMtoolbox.options.OvrWrteUnless && n_in~=0
+                % User wants explicit assignments but toolbox disagrees
+                scenario=categorical({'explicitOut'});
+            end
+            if not(drEEMtoolbox.options.OvrWrteUnless) && n_in==0
+                % Toolbox is set to make explicit assignments, but user didn't give output args
+                scenario=categorical({'explicitOut'});
+            end
         end
     end
 
@@ -115,12 +119,12 @@ classdef drEEMtoolbox < handle
         %     if n==1
         %         error('Nothing to undo')
         %     end
-        % 
+        %
         %     temp=data.history(n-1).backup;
         %     temp=drEEMbackup.convert2dataset(temp);
         %     temp.history=data.history(1:n-1);
         %     %temp.toolboxdata=data.toolboxdata;
-        % 
+        %
         %     if nargout==0
         %         assignin("base",inputname(1),temp);
         %         disp(['<strong> Last step (',num2str(n-1),') in dataset "',inputname(1), '" undone. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
@@ -128,7 +132,7 @@ classdef drEEMtoolbox < handle
         %     else
         %         dataout=temp;
         %     end
-        % 
+        %
         % end
         % function restore(data,whichone)
         %     drEEMhistory.restore(data,whichone)
@@ -136,7 +140,7 @@ classdef drEEMtoolbox < handle
         function displayhistory(data)
             drEEMdataset.displayhistory(data)
         end
-        
+
         % Benchmark the system performance
         [singlescore,multiscore]=benchmark
 

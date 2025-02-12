@@ -5,12 +5,12 @@ function [ dataout,picklist,metadata ] = pickpeaks( data,options)
 % data (1,1)    {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
 % 
 % <strong>Inputs - Optional</strong>
-% plot          {mustBeNumericOrLogical} = true
+% options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
 % details       {mustBeNumericOrLogical} = false
 
 arguments
     data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
-    options.plot {mustBeNumericOrLogical} = true
+    options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
     options.details  {mustBeNumericOrLogical} = false
     options.quiet {mustBeNumericOrLogical} = false
 end
@@ -159,7 +159,11 @@ FrI=nan(1,data.nSample);
 BIX=nan(1,data.nSample);
 HIX=nan(1,data.nSample);
 if diagn
-    dfig=drEEMtoolbox.dreemfig;
+    if data.toolboxOptions.uifig
+        dfig=drEEMtoolbox.dreemuifig;
+    else
+        dfig=drEEMtoolbox.dreemfig;
+    end
     set(dfig,'units','normalized','pos',[0.1344    0.2537    0.7625    0.3194])
     set(dfig,'name','pickPeaks.m - raw vs. smoothed fluorescence for indicies')
 end
@@ -302,7 +306,7 @@ else
 end
 
 if plt
-    if data.toolboxdata.uifig
+    if data.toolboxOptions.uifig
         f=drEEMtoolbox.dreemuifig;
     else
         f=drEEMtoolbox.dreemfig;

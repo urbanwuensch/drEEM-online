@@ -216,7 +216,7 @@ end
 % strength=scaling(strength)*100;
 strength=[1 nthrootspec];
 
-if data.toolboxdata.uifig
+if data.toolboxOptions.uifig
     f=drEEMtoolbox.dreemuifig;
 else
     f=drEEMtoolbox.dreemfig;
