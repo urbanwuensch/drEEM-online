@@ -22,7 +22,7 @@ end
 
 % Search for existing documentation based on entries in "functiondirectory"
 try
-    web([char(functionname),'.html'],'-new','-browser');
+    web([char(functionname),'.html']);
     return
 catch
     % If nothing was found, just display the default MATLAB output
