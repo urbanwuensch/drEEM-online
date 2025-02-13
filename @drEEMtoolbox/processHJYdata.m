@@ -113,7 +113,7 @@ for j=1:DS.nSample
 
     DS.X(j,:,:)=S1c_R1c_s;
     DS.metadata.R1integral(j,1)=sum(R1c_s);
-    DS.metadata.R1_350(j,1)=R1c_s(mindist(DS.Ex,350));
+    DS.metadata.R1_350(j,1)=R1c_s(drEEMtoolbox.mindist(DS.Ex,350));
 
     % Absorbance
     I1_s=Xin.AbsI1Sample(j,:);

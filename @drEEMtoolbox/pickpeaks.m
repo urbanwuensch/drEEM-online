@@ -311,8 +311,6 @@ if plt
     else
         f=drEEMtoolbox.dreemfig;
     end
-    f.Name='drEEM: processabsorbance.m';
-
     set(f,'units','normalized','Name','pickPeaks: Extracted intensities of predefined fluorescence peaks','pos',[0.2594    0.2296    0.4448    0.5130])
     t=tiledlayout(f);
     ax=nexttile(t);
