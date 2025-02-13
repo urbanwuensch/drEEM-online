@@ -1,0 +1,27 @@
+INSTRUCTIONS FOR INSTALLING drEEM 0.1.0 
+
+The toolbox was published in conjuction with the following reference:
+% Murphy K.R., Stedmon C.A., Graeber D. and R. Bro, Fluorescence
+%     spectroscopy and multi-way techniques. PARAFAC, Anal. Methods, (yr), 
+%     DOI:10.1039/c3ay41160e. 
+%     Appendix A contains the drEEM 0.1.0 tutorial
+
+INSTRUCTIONS:
+ (1) Install the drEEM toolbox 
+      (i)  download the drEEM toolbox (drEEM_xxx.zip) from here: http://www.models.life.ku.dk/drEEM
+     (ii)  copy the files to your computer, e.g. at C:/Program Files/MATLAB/extra_toolboxes/drEEM
+	 (ii)  in MATLAB, add drEEM to your MATLAB path like this:
+	       Select [File] menu then click [Set path…] (in later versions of MATLAB, the Set Path icon is located in the environment tab). 
+		   Click [Add] and navigate to the drEEM folder you created in Step 1 above. 
+		   Click [Add] again and locate the N-way folder inside drEEM. 
+		   This associates the drEEM and N-way toolboxes with MATLAB so that their functions can be called from within MATLAB. 
+		   Click [Close] and [Save].
+
+Steps (2) and (3) are needed for the EEM CORRECTION DEMO (Section 3) and PARAFAC DEMO (Section 4) of Appendix A in the reference above. 	   
+ (2) Install the raw EEMs for the EEM correction demo
+	  (i)  download the demo subfolder (drEEM_demofiles.zip) from here: http://www.models.life.ku.dk/drEEM
+     (ii)  unzip the files to the "/drEEM/demo" subfolder, e.g. at C:/Program Files/MATLAB/extra_toolboxes/drEEM/demo/
+
+ (3) Install the PARAFAC-ready (corrected) demonstration dataset 
+      (i)  download the dataset (drEEM_dataset.zip) from here: http://www.models.life.ku.dk/drEEM
+     (ii)  unzip the files to the "Corrected_EEMs/Backup/" subfolder, e.g. at C:/Program Files/MATLAB/extra_toolboxes/drEEM/demo/Corrected_EEMs/Backup/
