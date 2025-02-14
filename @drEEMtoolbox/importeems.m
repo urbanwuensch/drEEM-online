@@ -157,14 +157,15 @@ for j=1:numel(files)
     data.X(cnt,:,:)=x;
     filelist{cnt,1}=strtrim(erase(files(j).name,erase(filePattern,'*')));
     data.i(cnt,1)=j;
-    cnt=cnt+1; % +1 on the counter for a successful import.
+    
 
     % message (nice to have, could be deleted).
     tc=toc(tc);
     ttl=num2str(numel(files));
     remain=num2str(round(tc.*(numel(files)-j),2));
-    disp([num2str(j),'/',ttl,': ',filelist{j,1},...
+    disp([num2str(j),'/',ttl,': ',filelist{cnt,1},...
         ' (',remain,' sec. remaining)'])
+    cnt=cnt+1; % +1 on the counter for a successful import.
 end
 
 % move filelist into the dataset
