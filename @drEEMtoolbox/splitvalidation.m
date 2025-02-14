@@ -228,7 +228,7 @@ elseif checkedoverall&&passed
     
 idx=height(dataout.history)+1;
 dataout.history(idx,1)=...
-    drEEMhistory.addEntry(mfilename,'Successful validation!',[],dataout);
+    drEEMhistory.addEntry(mfilename,'Successful validation of a ',num2str(fac),'-component model',[],dataout);
 
 
 end

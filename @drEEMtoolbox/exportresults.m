@@ -107,7 +107,7 @@ else
             details.(varNames{k})=num2str(details.(varNames{k}));
         end
         
-        writetable(details,filename,"FileType","spreadsheet",...
+        writetable(details,'dataset_scatterRemovalParameters.xlsx',"FileType","spreadsheet",...
             "WriteMode","inplace","Sheet",'scatter treatment',...
             "Range",['A',num2str(start(j))],"PreserveFormat",true)
 
@@ -160,10 +160,14 @@ split_i=drEEMhistory.searchhistory(data.history,'splitdataset','all');
 if not(isempty(split_i))
     splitH=data.history(split_i(1));
     splittable=struct2table(splitH.details);
-    splittable.Properties.VariableNames={'Split by Variable','Number of splits','Assignment into splits'};
-    if isempty(splittable.("Split by Variable"))
-        splittable.("Split by Variable")='option not used.';
+    splittable.Properties.VariableNames={'Split approach','Split assignment','Metadata column used','Number of splits'};
+    if isempty(splittable.("Metadata column used"))
+        splittable.("Metadata column used")='not used.';
     end
+    if matches(splittable.('Split approach'),"byMetadata")
+        splittable.('Split assignment')='Metadata used.';
+    end
+    
     splittable.('Date / time created')=splitH.timestamp;
     splittable.('Dataset history entry #')=split_i(1);
     if numel(split_i)>1
