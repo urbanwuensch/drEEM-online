@@ -109,7 +109,6 @@ end
 
 % Finally let's make some plots to allow the user to see if blanks were
 % clean and how well the subtraction worked for the elimitation of scatter.
-mindist=@(vec,val) find(ismember(abs(vec-val),min(abs(vec-val))));
 if options.plot
     if samples.toolboxOptions.uifig
         f=drEEMtoolbox.dreemuifig;
@@ -122,7 +121,7 @@ if options.plot
     sam = inputname(1); % Show base workspace variable names in the plots
     bla = inputname(2); % Show base workspace variable names in the plots
     % Excitation 275 (for protein + humic fl).
-    ex=samples.Ex(mindist(samples.Ex,275));
+    ex=samples.Ex(drEEMtoolbox.mindist(samples.Ex,275));
     ram1=1*10^7*((1*10^7)/(ex)-3382)^-1; % predicted raman 1st order
     ram2=(1*10^7*((1*10^7)/(ex)-3382)^-1)*2;  % predicted raman 2nd order
     ray1=ex;  % predicted rayleigh 1st order
@@ -130,7 +129,7 @@ if options.plot
     
     % Plot everything
     ax=nexttile(t);
-    plot(ax,samples.Em,squeeze(samples.X(:,:,mindist(samples.Ex,275))))
+    plot(ax,samples.Em,squeeze(samples.X(:,:,drEEMtoolbox.mindist(samples.Ex,275))))
     xline(ax,ray1,'Color','r')
     xline(ax,ray2,'Color','r')
     xline(ax,ram1,'Color','b')

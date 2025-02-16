@@ -56,7 +56,7 @@ for j=1:numel(varargin)
     if delP==1
         error(['The call to this function would delete all samples for dataset "<strong>',char(name(j)),'"</strong> Exiting...'])
     elseif delP>0.1
-        error(['Deleted more than 10% of the samples for dataset "<strong>',char(name(j)),'"</strong> You might want to investigate what''s wrong...'])
+        warning(['Deleted more than 10% of the samples for dataset "<strong>',char(name(j)),'"</strong> You might want to investigate what''s wrong...'])
     end
 
     % Now delete the sample information in all fields of interest.
