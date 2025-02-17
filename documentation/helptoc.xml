@@ -29,9 +29,9 @@
             </tocitem>
             <tocitem target="tips_tricks.html">Tips and Tricks
             </tocitem>
-            <tocitem target="import_tutorial_01.html">Simple data import
+            <tocitem target="import_tutorial_01.html">Simple data import (recommended)
             </tocitem>
-            <tocitem target="import_tutorial_02.html">Complex data import
+            <tocitem target="import_tutorial_02.html">Complex data import (not recommended)
             </tocitem>
             <tocitem target="processing_tutorial_01.html">Data processing
             </tocitem>

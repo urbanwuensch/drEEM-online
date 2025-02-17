@@ -192,7 +192,7 @@ classdef drEEMtoolbox < handle
             viewhistory(data)
         end
         function explorevariability(data)
-            explorevariability(data)
+            explorevariability_std(data)
         end
         function viewscatter(data)
             viewscatter(data)
