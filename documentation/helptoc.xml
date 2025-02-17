@@ -23,12 +23,15 @@
         <tocitem target="drEEMdataset.html">The drEEM dataset object
         </tocitem>
         <!-- User Guide comes next -->
-        <tocitem target="tutorials.html" 
-            image="HelpIcon.USER_GUIDE">Tutorials
+        <tocitem target="tutorials_01.html" 
+            image="HelpIcon.USER_GUIDE">Tutorials (Toolbox and Matlab)
             <tocitem target="dreem_workflow.html">Working with the toolbox
             </tocitem>
             <tocitem target="tips_tricks.html">Tips and Tricks
             </tocitem>
+		</tocitem>
+		<tocitem target="tutorials_02.html" 
+            image="HelpIcon.USER_GUIDE">Tutorials (Toolbox and CDOM analysis)
             <tocitem target="import_tutorial_01.html">Simple data import (recommended)
             </tocitem>
             <tocitem target="import_tutorial_02.html">Complex data import (not recommended)
