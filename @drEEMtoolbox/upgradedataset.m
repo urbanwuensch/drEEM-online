@@ -17,7 +17,7 @@ dataout=drEEMdataset.create;
 
 flds=[{'X','Ex','Em','nEm','nEx','filelist','i','nSample','Abs_wave','Abs'},atypicalFieldnames(:,1)'];
 newflds=[{'X','Ex','Em','nEm','nEx','filelist','i','nSample','absWave','abs'},atypicalFieldnames(:,2)'];
-
+dataout.metadata.i=data.i;
 for j=1:numel(flds)
     if not(isfield(data,flds{j}))
         warning(['field "',flds{j},'" does not exist in old dataset' ...
@@ -25,15 +25,23 @@ for j=1:numel(flds)
             ' structure before executing this function (e.g. create' ...
             ' the variable / field beforehand).'])
     else
-        try
-            dataout.(newflds{j})=data.(flds{j});
-        catch
-            warning(['field "',flds{j},'" could not be transferred.'])
-        end
+            if isprop(drEEMdataset,newflds{j})
+                dataout.(newflds{j})=data.(flds{j});
+            elseif not(isprop(drEEMdataset,newflds{j}))
+                warning([newflds{j},' is not a property of drEEMdataset and ' ...
+                    'cannot be added like specified. atypicalFieldnames should ' ...
+                    'only point at variables that were named unexpectedly in "data".' ...
+                    ' If your variable size has as many columns as the dataset ' ...
+                    'has samples, the variable will be transferred to metadata automatically in the next step.'])
+            else
+                error(['field "',flds{j},'" could not be transferred since ' ...
+                    'it is not a property of drEEMdataset or could be added' ...
+                    ' to the metadata table.'])
+            end
     end
 end
 
-dataout.metadata.i=dataout.i;
+
 dataout.validate(dataout);
 
 ssz=dataout.nSample;
@@ -133,8 +141,8 @@ function mdnew = metadataconverter(metadata)
         here=metadata.Properties.VariableNames{j};
         md=metadata.(here);
         try
-            if numel(unique(md))==1
-                continue
+            if isscalar(unique(md))
+                %continue
             end
         catch
             % different data types (nogo)
