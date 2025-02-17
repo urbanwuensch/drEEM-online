@@ -97,6 +97,7 @@ if stool
 end
 if not(quiet)
     wb=waitbar(0,'Fitting spectral slopes...','CreateCancelBtn','setappdata(gcbf,''canceling'',1)');cnt=0;
+    cleanup = onCleanup(@()closeWaitbar(wb));
     setappdata(wb,'canceling',0);
 end
 for n=1:3
@@ -495,4 +496,8 @@ results.Coefficients.Estimate(2)=out(1);
 results.Rsquared=Rsquared;
 results.fit=out; % store that stuff for later polyval
 
+end
+
+function closeWaitbar(h)
+delete(h)
 end
