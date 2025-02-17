@@ -192,7 +192,7 @@ classdef drEEMtoolbox < handle
             viewhistory(data)
         end
         function explorevariability(data)
-            explorevariability_std(data)
+            spectralvariance(data)
         end
         function viewscatter(data)
             viewscatter(data)

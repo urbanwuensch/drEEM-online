@@ -1,4 +1,4 @@
-function explorevariability_std(data)
+function spectralvariance(data)
 %
 %
 %
@@ -48,11 +48,11 @@ end
 set(hf,'unit','normalized');
 pos=get(hf,'Position');
 set(hf,'Position',[pos(1:2) 0.5 0.3]);
-movegui('center');
+movegui(hf,'center');
 pos=[0.13,0.44,0.28,0.48;0.45,0.44,0.12,0.48;0.62,0.44,0.28,0.48;0.62,0.13,0.28,0.17];
 ax = gobjects(size(pos,1),1);
 for n=1:size(pos,1)
-    ax(n)=axes('pos',pos(n,:));
+    ax(n)=axes(hf,'pos',pos(n,:));
 end
 ax([3 2])=ax(2:3);
 
@@ -64,9 +64,9 @@ end
 if pltcase==1||pltcase==3
     yyaxis(ax(1),'left'),set(ax(1),'YColor',[1 .2 .2 0.5])
     ylabel(ax(1),'Unit scaled absorbance')
-    h1=plot(ax(1),data.Abs_wave,Y,'Color',[1 .2 .2 0.5],'LineWidth',1,'LineStyle','-','Marker','none');%./sum(Y,2)
+    h1=plot(ax(1),data.absWave,Y,'Color',[1 .2 .2 0.5],'LineWidth',1,'LineStyle','-','Marker','none');%./sum(Y,2)
     yyaxis(ax(1),'right'),set(ax(1),'YColor',[0 0 0 0.8])
-    h2=plot(ax(1),data.Abs_wave,cdom,'Color',[0 0 0 0.8],'LineWidth',2,'LineStyle','-','Marker','none');
+    h2=plot(ax(1),data.absWave,cdom,'Color',[0 0 0 0.8],'LineWidth',2,'LineStyle','-','Marker','none');
     legend(ax(1),[h1(1), h2],{'All spectra (unit scaled)','Standard deviation'})
 end
 axis(ax(1),'tight')
@@ -78,8 +78,7 @@ title(ax(1),'CDOM absorbance')
 if pltcase==1||pltcase==2
     pltdata=squeeze(fdom);%./squeeze(mfdom);
     pltdata(pltdata==0)=nan;
-    contourf(ax(2),data.Ex,data.Em,pltdata,100,'LineStyle','none')
-    contour(ax(2),data.Ex,data.Em,pltdata,15,'Color','k')
+    ploteem(ax(2),pltdata,data.Ex,data.Em)
 end
 c=colorbar(ax(2));
 ylabel(c,'Std. dev. fluorescence')
@@ -91,13 +90,13 @@ refxlim=get(ax(2),'XLim');
 
 if pltcase==1||pltcase==2
     pltvec=squeeze(sum(X,3,'omitnan'));
-    normvec=(mean(max(squeeze(nansum(X,3))))*2);
+    normvec=(mean(max(squeeze(sum(X,3,"omitmissing"))))*2);
     pltvec=pltvec./normvec;
     pltvec(pltvec==0)=nan;
     
     plot(ax(3),pltvec,data.Em,'Color',[1 .2 .2 0.5],'LineWidth',1)
     hold(ax(3),'on')
-    plot(ax(3),nansum(fdom,2)./max(nansum(fdom,2)),data.Em,'Color','k','LineWidth',2)
+    plot(ax(3),sum(fdom,2,"omitmissing")./max(sum(fdom,2,"omitmissing")),data.Em,'Color','k','LineWidth',2)
 end
 set(ax(3),'XDir','reverse')
 set(ax(3),'units','pixel')
@@ -112,12 +111,12 @@ ylabel(ax(3),'Emission (nm)')
 
 % ax4=subplot(4,5,[19 20]);
 if pltcase==1||pltcase==2
-    pltvec=squeeze(nansum(X,2))./(mean(max(squeeze(nansum(X,2))))*2);
+    pltvec=squeeze(sum(X,2,"omitmissing"))./(mean(max(squeeze(sum(X,2,"omitmissing"))))*2);
     pltvec(pltvec==0)=nan;
     
     plot(ax(4),data.Ex,pltvec,'Color',[1 .2 .2 0.5],'LineWidth',1)
     hold(ax(4),'on')
-    plot(ax(4),data.Ex,nansum(fdom)./max(nansum(fdom)),'Color','k','LineWidth',2)
+    plot(ax(4),data.Ex,sum(fdom,"omitmissing")./max(sum(fdom,"omitmissing")),'Color','k','LineWidth',2)
 end
 set(ax(4),'units','pixel')
 xlim(ax(4),refxlim)
@@ -143,7 +142,6 @@ end
 linkaxes([ax(2),ax(3)],'y')
 linkaxes([ax(2),ax(4)],'x')
 
-dreemfig(hf);
 end
 
 
@@ -161,4 +159,17 @@ if not(isempty(data.X))
 else
     result=false;
 end
+end
+
+function ploteem(ax,mat,x,y)
+sc = surfc(ax,x,y,mat,...
+    'EdgeColor','none','FaceColor','flat');
+view(ax,[19 44.5])
+sc(2).ZLocation = 'zmax';
+sc(2).LineColor='k';
+sc(2).LineWidth = 0.5;
+sc(2).LevelList=linspace(min(mat(~isnan(mat))),max(mat(~isnan(mat))),20);
+zlim(ax,[min(mat(~isnan(mat))),max(mat(~isnan(mat)))])
+clim(ax,[min(mat(~isnan(mat))),max(mat(~isnan(mat)))])
+
 end
