@@ -6,8 +6,11 @@ function dataout = splitvalidation(data,fac)
 % fac (1,1)  {mustBeNumeric}
 
 arguments
-    data (1,1) {mustBeNonempty,drEEMdataset.validate(data)}
+    data (1,1) {mustBeA(data,'drEEMdataset'),drEEMdataset.validate(data)}
     fac (1,1) {mustBeNumeric}
+end
+if isempty(data.split)
+    error('data.split is empty. Can''t validate if no models are present.')
 end
 drEEMdataset.mustBeModel(data,fac)
 
