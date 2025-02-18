@@ -137,15 +137,15 @@ for n=1:3
                     lastwarn('')
                 end
                 model(i,:)=CDOMexp_K(beta,waveSel{n});
-                fit=sum(model(i,:).^2)/sum(absSel{n}(:,i).^2);
+                fit=sum(model(i,:).^2)./sum(absSel{n}(:,i).^2,"omitmissing");
                 Coef1(:,i)=[beta; fit];
                 if not(quiet)
                     if ~getappdata(wb,'canceling')
-                        
                         cnt=cnt+1;waitbar(cnt./(data.nSample*2),wb,'Fitting spectral slopes... (long-range S)');
                     else
                         delete(wb)
-                        error('Operation terminated by user during slopefit.m')
+                        disp('Operation terminated by user during slopefit.m')
+                        return
                     end
                 end
             end
@@ -161,11 +161,18 @@ for n=1:3
                 if ~all(isnan(absSel{n}(i,:)))
                     warning off
                     try
-                        %shortfit{i}= fitlm(waveSel{n},absSel{n}(i,:)','robustopts','off');
-                        shortfit{i} = customlmfit(waveSel{n}',absSel{n}(i,:)');
+                        if all(isreal(absSel{n}(i,:)'))
+                            shortfit{i} = customlmfit(waveSel{n}',absSel{n}(i,:)');
+                        else
+                            shortfit{i}= customlmfit(waveSel{n}',real(absSel{n}(i,:)'));
+                        end
                     catch
-                        %shortfit{i}= fitlm(waveSel{n},real(absSel{n}(i,:)'),'robustopts','off');
-                        shortfit{i}= customlmfit(waveSel{n}',real(absSel{n}(i,:)'));
+                        shortfit{i}=struct;
+                        shortfit{i}.Rsquared=nan;
+                        shortfit{i}.fit=[nan nan];
+                        shortfit{i}.Coefficients=table;
+                        shortfit{i}.Coefficients.Estimate=[nan;nan];
+
                     end
                     warning on
                     if strcmp(lastwarn,'Iteration limit reached.')
@@ -202,9 +209,17 @@ for n=1:3
                 if ~all(isnan(absSel{n}(i,:)))
                     warning off
                     try
-                        longfit{i} = customlmfit(waveSel{n}',absSel{n}(i,:)');
+                        if all(isreal(absSel{n}(i,:)'))
+                            longfit{i} = customlmfit(waveSel{n}',absSel{n}(i,:)');
+                        else
+                            longfit{i} = customlmfit(waveSel{n}',real(absSel{n}(i,:)'));
+                        end
                     catch
-                        longfit{i} = customlmfit(waveSel{n}',real(absSel{n}(i,:)'));
+                        longfit{i}=struct;
+                        longfit{i}.Rsquared=nan;
+                        longfit{i}.fit=[nan nan];
+                        longfit{i}.Coefficients=table;
+                        longfit{i}.Coefficients.Estimate=[nan;nan];
                     end
                     warning on
                     if strcmp(lastwarn,'Iteration limit reached.')
@@ -235,11 +250,9 @@ Sr=Coef2(1,:)./Coef3(1,:);
 
 %% Transfer results into table
 if ~isreal(Coef1)
-    %warning(' Exponential fit terms contained complex numbers. Output converted to real()')
     Coef1=real(Coef1);
 end
 if any([~isreal(Coef2),~isreal(Coef3),~isreal(Sr)])
-    %warning(' log-transformed linear fit terms contained complex numbers. Output converted to real()')
     Coef2=real(Coef2);
     Coef3=real(Coef3);
     Sr=real(Sr);
@@ -380,19 +393,29 @@ switch plt
     else
         fig1=drEEMtoolbox.dreemfig;
     end
-    set(fig1,'units','normalized','Name','slopefit: CDOM spectral slopes','pos',[0.3542    0.3648    0.2917    0.2000])
+    set(fig1,'units','normalized','Name','slopefit: CDOM spectral slopes','pos',[0.35 0.35 0.30 0.25])
     ax=nexttile(tiledlayout(fig1));
-    plot(ax,1:data.nSample,slopes.exp_slope_microm,'Color','k')
+
+    [~,idx]=sort(data.i);
+
+    plot(ax,data.i(idx),slopes.exp_slope_microm(idx), ...
+        'Color','k',LineStyle='-',Marker='o',LineWidth=0.5,MarkerFaceColor='k')
     xlabel(ax,'# Sample')
-    ylabel(ax,['S_{',num2str(LRange(1)),'-',num2str(LRange(2)),'}'])
+    ylabel(ax,['S_{',num2str(LRange(1)),'-',num2str(LRange(2)),'} (µm^{-1})'])
     yyaxis(ax,"right")
-    plot(ax,1:data.nSample,slopes.S_275_295,'Color',lines(1)),hold(ax,"on")
-    plot(ax,1:data.nSample,slopes.S_350_400,'Color','b','LineStyle','-','Marker','none')
-    xlabel(ax,'# Sample'),ylabel(ax,'S_{275-295} & S_{350-400}')
+    plot(ax,data.i(idx),slopes.S_275_295(idx), ...
+        'Color',lines(1),LineStyle='-',Marker='o',LineWidth=0.5,MarkerFaceColor=lines(1))
+    hold(ax,"on")
+    plot(ax,data.i(idx),slopes.S_350_400(idx), ...
+        'Color','b',LineStyle='-',Marker='o',LineWidth=0.5,MarkerFaceColor=lines(1))
+    xlabel(ax,'Sample identifier (.i)'),
+    ylabel(ax,'S_{275-295} & S_{350-400} (µm^{-1})')
     set(ax,'YColor','b')
-    title(ax,'CDOM spectral slopes')
-    xlim(ax,[0 data.nSample])
-    legend(ax,['S_{',num2str(LRange(1)),'-',num2str(LRange(2)),'nm}'],'S_{275-295nm}','S_{350-400nm}','location','eastoutside')
+    title(ax,'CDOM spectral slopes (µm^{-1})')
+    xlim(ax,[0 max(data.i)])
+    legend(ax, ...
+        ['S_{',num2str(LRange(1)),'-',num2str(LRange(2)),'nm}'], ...
+        'S_{275-295nm}','S_{350-400nm}','location','northoutside',NumColumns=3)
 end
 
 % Will only run if toolbox is set to overwrite workspace variable and user
