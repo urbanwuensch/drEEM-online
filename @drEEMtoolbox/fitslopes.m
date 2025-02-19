@@ -1,4 +1,4 @@
-function [dataout,slopes,metadata,exponentialModel] = fitslopes(data,options)
+function [dataout,slopes] = fitslopes(data,options)
 % <a href = "matlab:doc fitslopes">[dataout,slopes,metadata,model] = fitslopes(data,options) (click to access documentation)</a>
 %
 % <strong>Inputs - Required</strong>
@@ -61,12 +61,6 @@ end
 
 %% Fitting
 
-Coef1=nan(4,data.nSample);
-exponentialModel=nan(data.nSample,numel(fitSpecs(1).indices));
-Coef2=nan(2,data.nSample);
-Coef3=nan(2,data.nSample);
-shortfit=cell(data.nSample,1);
-longfit=cell(data.nSample,1);
 if stool
     opts=statset;
     opts.MaxIter=2500;
@@ -85,28 +79,19 @@ for j=1:3%numel(fitSpecs)
             for i=1:data.nSample
                 x=fitSpecs(j).absWave;
                 y=fitSpecs(j).abs(i,:);
-                if sum(isnan(y))>0.7*numel(y)
-                    disp(['Sample ',num2str(j),' contains more than 70% NaNs in the range of the <strong>',fitSpecs(j).ident,'</strong> fit range.'])
-                    continue
-                end
-                results(j,i) = customexpofit(x,y,options);
+                results(j,i) = customexpofit(x,y,options); %#ok<*AGROW>
+                warning on
                 switch results(j,i).outcome
                     case 'error'
-                        warning([fitSpecs(j).ident,' fit error for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
+                        warning([fitSpecs(j).ident,' fit <strong>error</strong> for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
                     case 'poor fit'
-                        warning([fitSpecs(j).ident,' poor fit for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
+                        warning([fitSpecs(j).ident,' <strong>poor fit</strong> for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
                 end
                 cnt=cnt+1;waitbar(cnt./(data.nSample),wb,'Fitting spectral slopes... (exponential S)');    
             end
         case {'S275','S350'}
             for i=1:data.nSample
                 y=fitSpecs(j).abs(i,:);
-                
-                if sum(isnan(y))>0.7*numel(y)
-                    disp(['Sample ',num2str(i),' contains more than 70% NaNs'])
-                    shortfit{i}.Rsquared=nan;
-                    continue
-                end
                 y=log(y);
                 x=fitSpecs(j).absWave;
                 results(j,i) = customlmfit(x,real(y'),options);
@@ -140,7 +125,7 @@ slopes.S_350_400=abs(slopes.S_350_400)*1e3;
 
 
 dataout=data;
-[C,ia,ib]=intersect(dataout.opticalMetadata.Properties.VariableNames, ...
+[~,ia,~]=intersect(dataout.opticalMetadata.Properties.VariableNames, ...
     slopes.Properties.VariableNames);
 dataout.opticalMetadata(:,ia)=[];
 
@@ -363,10 +348,13 @@ results=struct;
 results.Coefficients=table;
 try
     [out,S] = polyfit(x,y,1);
-    sum_of_squares = sum((y-mean(y)).^2);
-    sum_of_squares_of_residuals = sum((y-polyval(out,x)).^2);
+    idx=not(isnan(y));
+    if sum(~idx)>ceil(0.7*numel(y))
+        error('Too many missing observations')
+    end
+    sum_of_squares = sum((y-mean(y,"omitmissing")).^2,"omitmissing");
+    sum_of_squares_of_residuals = sum((y(idx)-polyval(out,x(idx))).^2);
     Rsquared = 1 - sum_of_squares_of_residuals/sum_of_squares;
-
     results=struct;
     results.Coefficients=table;
     results.Coefficients.Estimate(1)=out(2);
@@ -407,10 +395,14 @@ try
     opts=statset;
     opts.MaxIter=10000;
     warning off
-    beta=nlinfit(x,y',@CDOMexp_K,[(mean(y')); 18; 0],opts);
+    beta=nlinfit(x,y',@CDOMexp_K,[mean(y,"omitmissing"); 18; 0],opts);
     warning on
+    idx=not(isnan(y));
+    if sum(~idx)>ceil(0.7*numel(y))
+        error('Too many missing observations')
+    end
     modelled=CDOMexp_K(beta,x)';
-    fit=sum(modelled.^2)./sum(y'.^2,"omitmissing");
+    fit=sum(modelled(idx).^2)./sum(y(idx)'.^2,"omitmissing");
     
     results.Coefficients.Estimate(1)=beta(3);
     results.Coefficients.Estimate(2)=beta(2);
