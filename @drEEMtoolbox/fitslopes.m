@@ -1,4 +1,4 @@
-function [dataout,slopes,metadata,model] = fitslopes(data,options)
+function [dataout,slopes,metadata,exponentialModel] = fitslopes(data,options)
 % <a href = "matlab:doc fitslopes">[dataout,slopes,metadata,model] = fitslopes(data,options) (click to access documentation)</a>
 %
 % <strong>Inputs - Required</strong>
@@ -34,7 +34,6 @@ LRange  = options.LongRange;
 Rsq = options.rsq;
 diagn   = options.details ;
 plt   = options.plot;
-samples   = 1:data.nSample;
 quiet   = options.quiet;
 
 
@@ -43,50 +42,33 @@ stool=any(contains({mv(:).Name},'Statistics and Machine Learning'));
 if ~stool
     warning('Statistics and Machine Learning Toolbox not installed. No exponential slopes will be calculated.')
 end
-
-%% Extract data
-
 if isempty(data.abs)
     error('fitslopes fits CDOM absorbance slopes and requires data to do so. data.abs is empty.')
 end
 
-a=data.abs;
-w=data.absWave;
-
-w=rcvec(w,'row');
-
 %% Extract data for fits
 % Find indcies
-if not(isempty(LRange)) 
-    wlr(1,:)=LRange;
-else
-    wlr(1,:)=[nan nan];
-end
-wlr(2,:)=[275 295];
-wlr(3,:)=[350 400];
+fitSpecs=struct;
+fitSpecs(1).ident='exponential';
+fitSpecs(2).ident='S275';
+fitSpecs(3).ident='S350';
 
-idx=nan(size(wlr,1),2);
-absSel=cell(1,size(wlr,1));
-waveSel=cell(1,size(wlr,1));
+fitSpecs(1).range=options.LongRange;
+fitSpecs(2).range=[275 295];
+fitSpecs(3).range=[350 400];
 
-for n=1:size(wlr,1)
-    for i=1:2
-        [val,idx(n,i)]=min(abs(w-wlr(n,i)));
-        if val~=0
-            if ~strcmp(lastwarn,'Wavelength missmatch.')
-                warning('Wavelength missmatch.');
-            end
-            
-            disp([num2str(wlr(n,i)),'nm, picked for fitting slopes: ',num2str(w(idx(n,i)))]);
-        end
-    end
-    absSel{n}=a(:,idx(n,1):idx(n,2));
-    waveSel{n}=w(:,idx(n,1):idx(n,2));
+for j=1:numel(fitSpecs)
+    fitSpecs(j).indices=drEEMtoolbox.mindist(data.absWave,fitSpecs(j).range(1)):...
+        drEEMtoolbox.mindist(data.absWave,fitSpecs(j).range(2));
+    fitSpecs(j).absWave=data.absWave(fitSpecs(j).indices);
+    fitSpecs(j).abs=data.abs(:,fitSpecs(j).indices);
 end
+
+
 %% Fitting
 
 Coef1=nan(4,data.nSample);
-model=nan(data.nSample,numel(waveSel{1}));
+exponentialModel=nan(data.nSample,numel(fitSpecs(1).indices));
 Coef2=nan(2,data.nSample);
 Coef3=nan(2,data.nSample);
 shortfit=cell(data.nSample,1);
@@ -100,30 +82,22 @@ if not(quiet)
     cleanup = onCleanup(@()closeWaitbar(wb));
     setappdata(wb,'canceling',0);
 end
-for n=1:3
-    switch n
-        case 1 % Long range exponential slope
-            if isempty(LRange)
+for j=1:3%numel(fitSpecs)
+    switch fitSpecs(j).ident
+        case 'exponential'
+            if not(stool)
                 continue
             end
-            absSel{n}=absSel{n}';
-            if ~iscolumn(waveSel{n})
-                waveSel{n}=waveSel{n}';
-            end
             for i=1:data.nSample
-                if all(isnan(absSel{n}(:,i)'))
-                    disp(['Sample ',num2str(i),' only contains nans'])
-                    continue
-                end
-                if sum(isnan(absSel{n}(:,i)))>0.7*numel(absSel{n}(:,i))
-                    disp(['Sample ',num2str(i),' contains more than 70% NaNs'])
+                x=fitSpecs(j).absWave;
+                y=fitSpecs(j).abs(i,:);
+                if sum(isnan(y))>0.7*numel(y)
+                    disp(['Sample ',num2str(j),' contains more than 70% NaNs in the range of the <strong>',fitSpecs(j).ident,'</strong> fit range.'])
                     continue
                 end
                 try
                     if stool
-                    warning off
-                    beta = nlinfit(waveSel{n},absSel{n}(:,i),@CDOMexp_K,[(mean(absSel{n}(1,i))); 18; 0],opts);
-                    warning on
+                        results(j,i) = customexpofit(x,y);
                     else
                         beta=[nan nan nan]';
                     end
@@ -132,139 +106,43 @@ for n=1:3
                     warning(['Could not calculate the exponential slope for sample',num2str(i)])
                     beta=[nan nan nan]';
                 end
-                if strcmp(lastwarn,'Iteration limit exceeded.  Returning results from final iteration.')
-                    disp(['Sample ',num2str(i),': Limit of fitting iterations reached (exponential slope)'])
-                    lastwarn('')
-                end
-                model(i,:)=CDOMexp_K(beta,waveSel{n});
-                fit=sum(model(i,:).^2)./sum(absSel{n}(:,i).^2,"omitmissing");
-                Coef1(:,i)=[beta; fit];
-                if not(quiet)
-                    if ~getappdata(wb,'canceling')
-                        cnt=cnt+1;waitbar(cnt./(data.nSample*2),wb,'Fitting spectral slopes... (long-range S)');
-                    else
-                        delete(wb)
-                        disp('Operation terminated by user during slopefit.m')
-                        return
-                    end
-                end
+                cnt=cnt+1;waitbar(cnt./(data.nSample),wb,'Fitting spectral slopes... (exponential S)');    
             end
-        case 2 % S275-295
+        case {'S275','S350'}
             for i=1:data.nSample
-                absSel{n}(i,:)=log(absSel{n}(i,:));
+                y=fitSpecs(j).abs(i,:);
                 
-                if sum(isnan(absSel{n}(i,:)))>0.7*numel(absSel{n}(i,:))
+                if sum(isnan(y))>0.7*numel(y)
                     disp(['Sample ',num2str(i),' contains more than 70% NaNs'])
-                    continue
-                end
-                
-                if ~all(isnan(absSel{n}(i,:)))
-                    warning off
-                    try
-                        if all(isreal(absSel{n}(i,:)'))
-                            shortfit{i} = customlmfit(waveSel{n}',absSel{n}(i,:)');
-                        else
-                            shortfit{i}= customlmfit(waveSel{n}',real(absSel{n}(i,:)'));
-                        end
-                    catch
-                        shortfit{i}=struct;
-                        shortfit{i}.Rsquared=nan;
-                        shortfit{i}.fit=[nan nan];
-                        shortfit{i}.Coefficients=table;
-                        shortfit{i}.Coefficients.Estimate=[nan;nan];
-
-                    end
-                    warning on
-                    if strcmp(lastwarn,'Iteration limit reached.')
-                        disp(['Sample ',num2str(i),': Limit of fitting iterations reached (S275-295)'])
-                        lastwarn('')
-                    end
-                    if shortfit{i}.Rsquared>Rsq
-                        p_short=shortfit{i}.Coefficients{2,1};
-                    else
-                        p_short=NaN;
-                    end
-                else
                     shortfit{i}.Rsquared=nan;
-                end
-                Coef2([1 2],i)=[p_short.*-1E3;shortfit{i}.Rsquared];
-                if not(quiet)
-                    if ~getappdata(wb,'canceling')
-                        cnt=cnt+1;waitbar(cnt./(data.nSample*2),wb,'Fitting spectral slopes... (short-range S)');
-                    else
-                        delete(wb)
-                        error('Operation terminated by user during slopefit.m')
-                    end
-                end
-            end
-        case 3 % S350-400
-            for i=1:data.nSample
-                absSel{n}(i,:)=log(absSel{n}(i,:));
-                
-                if sum(isnan(absSel{n}(i,:)))>0.7*numel(absSel{n}(i,:))
-                    disp(['Sample ',num2str(i),' contains more than 70% NaNs'])
                     continue
                 end
-                
-                if ~all(isnan(absSel{n}(i,:)))
-                    warning off
-                    try
-                        if all(isreal(absSel{n}(i,:)'))
-                            longfit{i} = customlmfit(waveSel{n}',absSel{n}(i,:)');
-                        else
-                            longfit{i} = customlmfit(waveSel{n}',real(absSel{n}(i,:)'));
-                        end
-                    catch
-                        longfit{i}=struct;
-                        longfit{i}.Rsquared=nan;
-                        longfit{i}.fit=[nan nan];
-                        longfit{i}.Coefficients=table;
-                        longfit{i}.Coefficients.Estimate=[nan;nan];
-                    end
-                    warning on
-                    if strcmp(lastwarn,'Iteration limit reached.')
-                        disp(['Sample ',num2str(i),': Limit of fitting iterations reached (S350-400)'])
-                        lastwarn('')
-                    end
-                    if longfit{i}.Rsquared>Rsq
-                        p_long=longfit{i}.Coefficients{2,1};
-                    else
-                        p_long=NaN;
-                    end
-                else
-                    longfit{i}.Rsquared=nan;
-                end
-                Coef3([1 2],i)=[p_long*-1E3;longfit{i}.Rsquared];
-                if not(quiet)
-                    if ~getappdata(wb,'canceling')
-                        cnt=cnt+1;waitbar(cnt./(data.nSample*2),wb,'Fitting spectral slopes... (short-range S)');
-                    else
-                        delete(wb)
-                        error('Operation terminated by user during slopefit.m')
-                    end
-                end
+
+                y=log(y);
+                x=fitSpecs(j).absWave;
+                results(j,i) = customlmfit(x,real(y'));
+                cnt=cnt+1;waitbar(cnt./(data.nSample*2),wb,'Fitting spectral slopes... (short-range S)');    
             end
     end
 end
-Sr=Coef2(1,:)./Coef3(1,:);
-
-%% Transfer results into table
-if ~isreal(Coef1)
-    Coef1=real(Coef1);
-end
-if any([~isreal(Coef2),~isreal(Coef3),~isreal(Sr)])
-    Coef2=real(Coef2);
-    Coef3=real(Coef3);
-    Sr=real(Sr);
-end
-slopes=table(Coef1(2,:)',Coef2(1,:)',Coef3(1,:)',Sr','VariableNames',{'exp_slope_microm','S_275_295','S_350_400','Sr'});
-metadata=table(Coef1(4,:)',Coef1(1,:)',Coef1(3,:)',Coef2(2,:)',Coef3(2,:)','VariableNames',{'Exp_rsq','Exp_a350_model','Exp_offset','log_275_Rsq','log_350_Rsq'});
 if not(quiet)
     delete(wb)
 end
+%% Results extraction from the tables
+slopes=nan(data.nSample,3);
+for j=1:3
+    for k=1:data.nSample
+        slopes(k,j)=results(j,k).Coefficients.Estimate(2);
+    end
+end
+slopes=array2table(slopes,"VariableNames",{'exp_slope_microm','S_275_295','S_350_400'});
+slopes.Sr=slopes.S_275_295./slopes.S_350_400;
+slopes.S_275_295=abs(slopes.S_275_295)*1e3;
+slopes.S_350_400=abs(slopes.S_350_400)*1e3;
+
+
 
 dataout=data;
-
 [C,ia,ib]=intersect(dataout.opticalMetadata.Properties.VariableNames, ...
     slopes.Properties.VariableNames);
 dataout.opticalMetadata(:,ia)=[];
@@ -283,106 +161,129 @@ switch diagn
     case true
         if data.toolboxOptions.uifig
             fig2=drEEMtoolbox.dreemuifig;
+            uialert(fig2,['Showing raw, modeled, and residual data for' ...
+                ' selected samples. Press "next" button (bottom left) to continue; closing the' ...
+                ' figure will conclude the function.'], ...
+                'fitslopes diagnosis','Icon','info')
         else
             fig2=drEEMtoolbox.dreemfig;
+            disp(['Showing raw, modeled, and residual data for' ...
+                ' selected samples. Press "next" button (bottom left) to continue; closing the' ...
+                ' figure will conclude the function.'])
         end
         set(fig2,'units','normalized')
         set(fig2,'pos',[0.1365    0.2926    0.6490    0.2852])
+        huic = uicontrol(fig2,'Style', 'pushbutton','String','Next',...
+            'Units','normalized','Position', [0.9323 0.0240 0.0604 0.0500],...
+            'Callback',{@pltnext});
+        set(huic,Units='pixel')
+        pos=get(huic,'Position');
+        pos(4)=30;
+        set(huic,"Position",pos)
+        t=tiledlayout(fig2);
         movegui(fig2,'center')
-        disp('Showing raw, modeled, and residual data for selected samples. Press any key to continue or Ctrl + C to cancel.')
-        for n=samples
+        
+        for j=1:3
+            ax(j)=nexttile(t);
+        end
+        for n=1:data.nSample
             set(fig2,'Name',['Slopefit.m: Data vs. modeled data. Spectrum ',num2str(n),' of ',num2str(data.nSample)])
             try
-                subplot(1,3,1)
-                yyaxis left
-                cla
-                set(gca,'YColor','k')
-                plot(data.absWave,data.abs(n,:),'LineWidth',0.5,'Color',[0.5 0.5 0.5]),hold on
-                plot(waveSel{1},absSel{1}(:,n),'Color','k','LineStyle','-','LineWidth',1.5)
-                plot(waveSel{1},model(n,:),'Color',lines(1),'LineStyle','-')
-                ylabel('Absorbance'),xlabel('Wavelength (nm)')
-                xlim([LRange(1)-20 LRange(2)+20])
-                yyaxis right
-                cla
-                set(gca,'YColor', [1       0.663       0.094] )
-                plot(waveSel{1},(absSel{1}(:,n)-model(n,:)')./max(absSel{1}(:,n),"omitmissing"),'Color', [1       0.663       0.094] ,'Marker','none','LineStyle','-')
-                ylabel('Relative residual'),xlabel('Wavelength (nm)')
-                hold off
-                title(['S_{',num2str(LRange(1)),'-',num2str(LRange(2)),'} exp. model vs. fitted & residuals'])
+                yyaxis(ax(1),'left')
+                cla(ax(1))
+                set(ax(1),'YColor','k')
+                plot(ax(1),data.absWave,data.abs(n,:),'LineWidth',0.5,'Color',[0.5 0.5 0.5]),
+                hold(ax(1),"on")
+                plot(ax(1),fitSpecs(1).absWave,fitSpecs(1).abs(n,:),'Color','k','LineStyle','-','LineWidth',1.5)
+                plot(ax(1),fitSpecs(1).absWave,results(1,n).modelled,'Color',lines(1),'LineStyle','-')
+                ylabel(ax(1),'Absorbance')
+                xlabel(ax(1),'Wavelength (nm)')
+                xlim(ax(1),[LRange(1)-20 LRange(2)+20])
+                yyaxis(ax(1),'right')
+                cla(ax(1))
+                set(ax(1),'YColor', [1       0.663       0.094] )
+                plot(ax(1),fitSpecs(1).absWave,results(1,n).residuals,'Color', [1       0.663       0.094] ,'Marker','none','LineStyle','-')
+                ylabel(ax(1),'fit residual')
+                xlabel(ax(1),'Wavelength (nm)')
+                hold(ax(1),'off')
+                title(ax(1),['S_{',num2str(LRange(1)),'-',num2str(LRange(2)),'} exp. model vs. fitted & residuals'])
             catch
-                subplot(1,3,1)
-                yyaxis right
-                cla
-                yyaxis left
-                cla
-                line(nan,nan)
-                legend('No fit possible')
+                yyaxis(ax(1),'right')
+                cla(ax(1))
+                yyaxis(ax(1),'left')
+                cla(ax(1))
+                line(ax(1),nan,nan)
+                legend(ax(1),'No fit possible')
             end
 
             try
-                subplot(1,3,2)
-                yyaxis left
-                cla
-                set(gca,'YColor','k')
-                plot(data.absWave,data.abs(n,:),'LineWidth',0.5,'Color',[0.5 0.5 0.5]),hold on
-                plot(waveSel{2},exp(absSel{2}(n,:)),'Color','k','LineStyle','-','LineWidth',1.5),hold on
-                plot(waveSel{2},exp(polyval(shortfit{n}.fit,waveSel{2})),'Color',lines(1),'Marker','none','LineStyle','-')
-                xlim([250 320])
-                ylabel('Absorbance'),xlabel('Wavelength (nm)')
+                yyaxis(ax(2),'left')
+                cla(ax(2))
+                set(ax(2),'YColor','k')
+                plot(ax(2),data.absWave,data.abs(n,:),'LineWidth',0.5,'Color',[0.5 0.5 0.5])
+                hold(ax(2),"on")
+                plot(ax(2),fitSpecs(2).absWave,fitSpecs(2).abs(n,:),'Color','k','LineStyle','-','LineWidth',1.5)
+                plot(ax(2),fitSpecs(2).absWave,results(2,n).modelled,'Color',lines(1),'Marker','none','LineStyle','-')
+                xlim(ax(2),[250 320])
+                ylabel(ax(2),'Absorbance')
+                xlabel(ax(2),'Wavelength (nm)')
 
-                yyaxis right
-                cla
-                set(gca,'YColor',[1       0.663       0.094])
-                plot(waveSel{2},(exp(absSel{2}(n,:))-exp(polyval(shortfit{n}.fit,waveSel{2})))./max(exp(absSel{2}(n,:))),'Color',[1       0.663       0.094],'Marker','none','LineStyle','-')
-                hold off
-                title('S_{275-295} model vs. fitted & residuals')
-                ylabel('Relative residual'),xlabel('Wavelength (nm)')
+                yyaxis(ax(2),'right')
+                cla(ax(2))
+                set(ax(2),'YColor',[1       0.663       0.094])
+                plot(ax(2),fitSpecs(2).absWave,results(2,n).residuals,'Color',[1       0.663       0.094],'Marker','none','LineStyle','-')
+                hold(ax(2),"off")
+                title(ax(2),'S_{275-295} model vs. fitted & residuals')
+                ylabel(ax(2),'Relative residual')
+                xlabel(ax(2),'Wavelength (nm)')
             catch
-                subplot(1,3,2)
-                yyaxis right
-                cla
-                yyaxis left
-                cla
-                line(nan,nan)
-                legend('No fit possible')
+                yyaxis(ax(2),"right")
+                cla(ax(2))
+                yyaxis(ax(2),'left')
+                cla(ax(2))
+                line(ax(2),nan,nan)
+                legend(ax(2),'No fit possible')
             end
 
             try
-                subplot(1,3,3)
-                yyaxis left
-                cla
-                set(gca,'YColor','k')
-                plot(data.absWave,data.abs(n,:),'LineWidth',0.5,'Color',[0.5 0.5 0.5]);hold on
-                plot(waveSel{3},exp(absSel{3}(n,:)),'Color','k','LineStyle','-','LineWidth',1.5);hold on
-                plot(waveSel{3},exp(polyval(longfit{n}.fit,waveSel{3})),'Color',lines(1),'Marker','none','LineStyle','-');
-                xlim([310 450])
-                ylabel('Absorbance'),xlabel('Wavelength (nm)')
-                yyaxis right
-                cla
-                set(gca,'YColor',[1       0.663       0.094])
-                plot(waveSel{3},(exp(absSel{3}(n,:))-exp(polyval(longfit{n}.fit,waveSel{3})))./max(exp(absSel{3}(n,:))),'Color',[1       0.663       0.094],'Marker','none','LineStyle','-');
-                ylabel('Relative residual'),xlabel('Wavelength (nm)')
-                hold off
-                title('S_{350-400} model vs. fitted & residuals')
-                [ h ] = leg(4,[0.5 0.5 0.5;0 0 0;lines(1);1 0.663 0.094],gca);
-                legend1=legend(h,{'Raw','selected','fitted','residual'},'location','eastoutside');
-                legend1.Position=[0.9104    0.4407    0.0746    0.1867];
-                try
-                    disp(['Spectrum ',num2str(n),' of ',num2str(numel(samples)),':  ',data.filelist{samples(n)}])
-                catch
-                    disp(['Spectrum ',num2str(n),' of ',num2str(numel(samples)),'. Sample no.=',samples(n)])
-                end
+                yyaxis(ax(3),"left")
+                cla(ax(3))
+                set(ax(3),'YColor','k')
+                plot(ax(3),data.absWave,data.abs(n,:), ...
+                    'LineWidth',0.5,'Color',[0.5 0.5 0.5]);
+                hold(ax(3),"on")
+                plot(ax(3),fitSpecs(3).absWave,fitSpecs(3).abs(n,:), ...
+                    'Color','k','LineStyle','-','LineWidth',1.5);
+                plot(ax(3),fitSpecs(3).absWave,results(3,n).modelled, ...
+                    'Color',lines(1),'Marker','none','LineStyle','-');
+                xlim(ax(3),[310 450])
+                ylabel(ax(3),'Absorbance')
+                xlabel(ax(3),'Wavelength (nm)')
+                yyaxis(ax(3),"right")
+                cla(ax(3))
+                set(ax(3),'YColor',[1       0.663       0.094])
+                plot(ax(3),fitSpecs(3).absWave,results(3,n).residuals, ...
+                    'Color',[1       0.663       0.094],'Marker','none','LineStyle','-');
+                ylabel(ax(3),'fit residual')
+                xlabel(ax(3),'Wavelength (nm)')
+                hold(ax(3),"off")
+                title(ax(3),'S_{350-400} model vs. fitted & residuals')
+                [ h ] = leg(4,[0.5 0.5 0.5;0 0 0;lines(1);1 0.663 0.094],ax(3));
+                legend1=legend(h,{'Raw','selected','fitted','residual'},NumColumns=4);
+                legend1.Layout.Tile="north";
             catch
-                subplot(1,3,3)
-                yyaxis right
-                cla
-                yyaxis left
-                cla
-                line(nan,nan)
-                legend('No fit possible')
+                yyaxis(ax(3),"right")
+                cla(ax(3))
+                yyaxis(ax(3),"left")
+                cla(ax(3))
+                line(ax(3),nan,nan)
+                legend(ax(3),'No fit possible')
             end
             
-            pause
+            uicontrol(huic)
+            uiwait(fig2)
+            if ~ishandle(fig2); return; end % Ends function when plot is closed by user
+
         end
 end
 %% Plotting of results
@@ -452,75 +353,80 @@ yhat = b1*exp(b2/1000*(350-x))+b3;
 end
 
 
-
-function [vout] = rcvec(v,rc)
-% (c) Urban Wuensch. Produce row or colum vector, regardless of input
-% Make row or column vector
-% v: vector
-% rc: either 'row' ([1:5])or 'column' ([1:5]')
-sz=size(v);
-if ~any(sz==1)&&numel(sz)>2
-    error('Input is not a vector')
-end
-
-switch rc
-    case 'row'
-        if ~(sz(1)<sz(2))
-            vout=v';
-        else
-            vout=v;
-        end
-    case 'column'
-        if ~(sz(1)>sz(2))
-            vout=v';
-        else
-            vout=v;
-        end
-    otherwise
-            error('Input ''rc'' not recognized. Options are: ''row'' and ''column''.')
-end
-
-
-end
-
 function [ h ] = leg( numPlots,col,ax)
 h = gobjects(numPlots, 1);
 for n=1:numPlots
-    hold on;
+    hold(ax,"on");
     h(n) = line(ax,NaN,NaN,'Marker','o','MarkerSize',5,'MarkerFaceColor',col(n,:),'MarkerEdgeColor','k','LineStyle','none');
 end
 end
 
 function results = customlmfit(x,y)
-% out=fit(x,y,'poly1');
-% 
-% sum_of_squares = sum((y-mean(y)).^2);
-% sum_of_squares_of_residuals = sum((y-feval(out,x)).^2);
-% Rsquared = 1 - sum_of_squares_of_residuals/sum_of_squares;
-% 
-% results=struct;
-% results.Coefficients=table;
-% results.Coefficients.Estimate(1)=out.p2;
-% results.Coefficients.Estimate(2)=out.p1;
-% results.Rsquared=Rsquared;
-% results.fit=out; % store that stuff for later feval
+try
+    [out,S] = polyfit(x,y,1);
+    sum_of_squares = sum((y-mean(y)).^2);
+    sum_of_squares_of_residuals = sum((y-polyval(out,x)).^2);
+    Rsquared = 1 - sum_of_squares_of_residuals/sum_of_squares;
 
-% results=fitlm(x,y,RobustOpts='off');
+    results=struct;
+    results.Coefficients=table;
+    results.Coefficients.Estimate(1)=out(2);
+    results.Coefficients.Estimate(2)=out(1);
+    results.Coefficients.Properties.RowNames={'Intercept','Slope'};
 
-[out,S] = polyfit(x,y,1);
-sum_of_squares = sum((y-mean(y)).^2);
-sum_of_squares_of_residuals = sum((y-polyval(out,x)).^2);
-Rsquared = 1 - sum_of_squares_of_residuals/sum_of_squares;
-
-results=struct;
-results.Coefficients=table;
-results.Coefficients.Estimate(1)=out(2);
-results.Coefficients.Estimate(2)=out(1);
-results.Rsquared=Rsquared;
-results.fit=out; % store that stuff for later polyval
-
+    results.Rsquared=Rsquared;
+    results.fit=out; % store that stuff for later polyval
+    results.modelled=exp(polyval(out,x));
+    results.residuals=y-polyval(out,x);
+catch
+    results=struct;
+    results.Coefficients=table;
+    results.Coefficients.Estimate(1)=nan;
+    results.Coefficients.Estimate(2)=nan;
+    results.Coefficients.Properties.RowNames={'Intercept','Slope'};
+    results.Rsquared=nan;
+    results.fit=nan; % store that stuff for later polyval
+    results.modelled=nan(size(y));
+    results.residuals=nan(size(y));
+end
 end
 
+function results=customexpofit(x,y)
+try
+    opts=statset;
+    opts.MaxIter=10000;
+    warning off
+    beta=nlinfit(x,y',@CDOMexp_K,[(mean(y')); 18; 0],opts);
+    warning on
+    modelled=CDOMexp_K(beta,x)';
+    fit=sum(modelled.^2)./sum(y'.^2,"omitmissing");
+    results=struct;
+    results.Coefficients=table;
+    results.Coefficients.Estimate(1)=beta(3);
+    results.Coefficients.Estimate(2)=beta(2);
+    results.Coefficients.Estimate(3)=beta(1);
+    results.Coefficients.Properties.RowNames={'K (Intercept)','Slope (S)','center (a350)'};
+    results.Rsquared=fit;
+    results.fit=beta;% store that stuff for later CDOMexp_K
+    results.modelled=modelled;
+    results.residuals=y-modelled;
+catch
+    results=struct;
+    results.Coefficients=table;
+    results.Coefficients.Estimate(1)=nan;
+    results.Coefficients.Estimate(2)=nan;
+    results.Coefficients.Estimate(3)=nan;
+    results.Coefficients.Properties.RowNames={'K (Intercept)','Slope (S)','center (a350)'};
+    results.Rsquared=nan;
+    results.fit=[nan nan nan]'; % store that stuff for later polyval
+    results.modelled=nan(size(y));
+    results.residuals=nan(size(y));
+end
+
+end
+function pltnext(sosurce,event) %#ok<INUSD>
+uiresume(sosurce.Parent)
+end
 function closeWaitbar(h)
 delete(h)
 end
