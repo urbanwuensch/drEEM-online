@@ -30,12 +30,6 @@ if options.quiet
     options.details = false;
 end
 
-LRange  = options.LongRange;
-Rsq = options.rsq;
-diagn   = options.details ;
-plt   = options.plot;
-quiet   = options.quiet;
-
 
 mv=ver;
 stool=any(contains({mv(:).Name},'Statistics and Machine Learning'));
@@ -77,7 +71,7 @@ if stool
     opts=statset;
     opts.MaxIter=2500;
 end
-if not(quiet)
+if not(options.quiet)
     wb=waitbar(0,'Fitting spectral slopes...','CreateCancelBtn','setappdata(gcbf,''canceling'',1)');cnt=0;
     cleanup = onCleanup(@()closeWaitbar(wb));
     setappdata(wb,'canceling',0);
@@ -95,16 +89,12 @@ for j=1:3%numel(fitSpecs)
                     disp(['Sample ',num2str(j),' contains more than 70% NaNs in the range of the <strong>',fitSpecs(j).ident,'</strong> fit range.'])
                     continue
                 end
-                try
-                    if stool
-                        results(j,i) = customexpofit(x,y);
-                    else
-                        beta=[nan nan nan]';
-                    end
-
-                catch
-                    warning(['Could not calculate the exponential slope for sample',num2str(i)])
-                    beta=[nan nan nan]';
+                results(j,i) = customexpofit(x,y,options);
+                switch results(j,i).outcome
+                    case 'error'
+                        warning([fitSpecs(j).ident,' fit error for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
+                    case 'poor fit'
+                        warning([fitSpecs(j).ident,' poor fit for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
                 end
                 cnt=cnt+1;waitbar(cnt./(data.nSample),wb,'Fitting spectral slopes... (exponential S)');    
             end
@@ -117,15 +107,22 @@ for j=1:3%numel(fitSpecs)
                     shortfit{i}.Rsquared=nan;
                     continue
                 end
-
                 y=log(y);
                 x=fitSpecs(j).absWave;
-                results(j,i) = customlmfit(x,real(y'));
+                results(j,i) = customlmfit(x,real(y'),options);
+
+                switch results(j,i).outcome
+                    case 'error'
+                        warning([fitSpecs(j).ident,' fit error for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
+                    case 'poor fit'
+                        warning([fitSpecs(j).ident,' poor fit for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
+                end
+
                 cnt=cnt+1;waitbar(cnt./(data.nSample*2),wb,'Fitting spectral slopes... (short-range S)');    
             end
     end
 end
-if not(quiet)
+if not(options.quiet)
     delete(wb)
 end
 %% Results extraction from the tables
@@ -157,7 +154,7 @@ dataout.validate(dataout);
 
 
 %% Diagnosis plots if desired.
-switch diagn
+switch options.details
     case true
         if data.toolboxOptions.uifig
             fig2=drEEMtoolbox.dreemuifig;
@@ -180,7 +177,7 @@ switch diagn
         pos=get(huic,'Position');
         pos(4)=30;
         set(huic,"Position",pos)
-        t=tiledlayout(fig2);
+        t=tiledlayout(fig2,1,3);
         movegui(fig2,'center')
         
         for j=1:3
@@ -198,7 +195,7 @@ switch diagn
                 plot(ax(1),fitSpecs(1).absWave,results(1,n).modelled,'Color',lines(1),'LineStyle','-')
                 ylabel(ax(1),'Absorbance')
                 xlabel(ax(1),'Wavelength (nm)')
-                xlim(ax(1),[LRange(1)-20 LRange(2)+20])
+                xlim(ax(1),[options.LongRange(1)-20 options.LongRange(end)+20])
                 yyaxis(ax(1),'right')
                 cla(ax(1))
                 set(ax(1),'YColor', [1       0.663       0.094] )
@@ -206,7 +203,7 @@ switch diagn
                 ylabel(ax(1),'fit residual')
                 xlabel(ax(1),'Wavelength (nm)')
                 hold(ax(1),'off')
-                title(ax(1),['S_{',num2str(LRange(1)),'-',num2str(LRange(2)),'} exp. model vs. fitted & residuals'])
+                title(ax(1),['S_{',num2str(options.LongRange(1)),'-',num2str(options.LongRange(end)),'} exp. model vs. fitted & residuals'])
             catch
                 yyaxis(ax(1),'right')
                 cla(ax(1))
@@ -287,7 +284,7 @@ switch diagn
         end
 end
 %% Plotting of results
-switch plt
+switch options.plot
     case true
     if data.toolboxOptions.uifig
         fig1=drEEMtoolbox.dreemuifig;
@@ -302,7 +299,7 @@ switch plt
     plot(ax,data.i(idx),slopes.exp_slope_microm(idx), ...
         'Color','k',LineStyle='-',Marker='o',LineWidth=0.5,MarkerFaceColor='k')
     xlabel(ax,'# Sample')
-    ylabel(ax,['S_{',num2str(LRange(1)),'-',num2str(LRange(2)),'} (µm^{-1})'])
+    ylabel(ax,['S_{',num2str(options.LongRange(1)),'-',num2str(options.LongRange(end)),'} (µm^{-1})'])
     yyaxis(ax,"right")
     plot(ax,data.i(idx),slopes.S_275_295(idx), ...
         'Color',lines(1),LineStyle='-',Marker='o',LineWidth=0.5,MarkerFaceColor=lines(1))
@@ -315,7 +312,7 @@ switch plt
     title(ax,'CDOM spectral slopes (µm^{-1})')
     xlim(ax,[0 max(data.i)])
     legend(ax, ...
-        ['S_{',num2str(LRange(1)),'-',num2str(LRange(2)),'nm}'], ...
+        ['S_{',num2str(options.LongRange(1)),'-',num2str(options.LongRange(end)),'nm}'], ...
         'S_{275-295nm}','S_{350-400nm}','location','northoutside',NumColumns=3)
 end
 
@@ -361,7 +358,9 @@ for n=1:numPlots
 end
 end
 
-function results = customlmfit(x,y)
+function results = customlmfit(x,y,options)
+results=struct;
+results.Coefficients=table;
 try
     [out,S] = polyfit(x,y,1);
     sum_of_squares = sum((y-mean(y)).^2);
@@ -378,6 +377,7 @@ try
     results.fit=out; % store that stuff for later polyval
     results.modelled=exp(polyval(out,x));
     results.residuals=y-polyval(out,x);
+    results.outcome='success';
 catch
     results=struct;
     results.Coefficients=table;
@@ -388,10 +388,21 @@ catch
     results.fit=nan; % store that stuff for later polyval
     results.modelled=nan(size(y));
     results.residuals=nan(size(y));
+    results.outcome='error';
+end
+if results.Rsquared<options.rsq
+    results.Coefficients.Estimate=nan(2,1);
+    results.Rsquared=nan;
+    results.fit=nan; % store that stuff for later polyval
+    results.modelled=nan(size(y));
+    results.residuals=nan(size(y));
+    results.outcome='poor fit';
 end
 end
 
-function results=customexpofit(x,y)
+function results=customexpofit(x,y,options)
+results=struct;
+results.Coefficients=table;
 try
     opts=statset;
     opts.MaxIter=10000;
@@ -400,8 +411,7 @@ try
     warning on
     modelled=CDOMexp_K(beta,x)';
     fit=sum(modelled.^2)./sum(y'.^2,"omitmissing");
-    results=struct;
-    results.Coefficients=table;
+    
     results.Coefficients.Estimate(1)=beta(3);
     results.Coefficients.Estimate(2)=beta(2);
     results.Coefficients.Estimate(3)=beta(1);
@@ -410,9 +420,8 @@ try
     results.fit=beta;% store that stuff for later CDOMexp_K
     results.modelled=modelled;
     results.residuals=y-modelled;
+    results.outcome='success';
 catch
-    results=struct;
-    results.Coefficients=table;
     results.Coefficients.Estimate(1)=nan;
     results.Coefficients.Estimate(2)=nan;
     results.Coefficients.Estimate(3)=nan;
@@ -421,6 +430,16 @@ catch
     results.fit=[nan nan nan]'; % store that stuff for later polyval
     results.modelled=nan(size(y));
     results.residuals=nan(size(y));
+    results.outcome='error';
+end
+
+if results.Rsquared<options.rsq
+    results.Coefficients.Estimate=nan(3,1);
+    results.Rsquared=nan;
+    results.fit=[nan nan nan]'; % store that stuff for later polyval
+    results.modelled=nan(size(y));
+    results.residuals=nan(size(y));
+    results.outcome='poor fit';
 end
 
 end
