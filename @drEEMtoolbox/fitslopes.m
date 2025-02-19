@@ -83,9 +83,11 @@ for j=1:3%numel(fitSpecs)
                 warning on
                 switch results(j,i).outcome
                     case 'error'
-                        warning([fitSpecs(j).ident,' fit <strong>error</strong> for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
+                        warning([fitSpecs(j).ident,' fit: <strong>error</strong> for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
                     case 'poor fit'
-                        warning([fitSpecs(j).ident,' <strong>poor fit</strong> for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
+                        warning([fitSpecs(j).ident,' fit: <strong> poor fit</strong> for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
+                    case 'missing data'
+                        warning([fitSpecs(j).ident,' fit: <strong>Too much missing data</strong> for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
                 end
                 cnt=cnt+1;waitbar(cnt./(data.nSample),wb,'Fitting spectral slopes... (exponential S)');    
             end
@@ -101,6 +103,8 @@ for j=1:3%numel(fitSpecs)
                         warning([fitSpecs(j).ident,' fit error for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
                     case 'poor fit'
                         warning([fitSpecs(j).ident,' poor fit for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
+                    case 'missing data'
+                        warning([fitSpecs(j).ident,' fit: <strong>Too much missing data</strong> for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
                 end
 
                 cnt=cnt+1;waitbar(cnt./(data.nSample*2),wb,'Fitting spectral slopes... (short-range S)');    
@@ -114,7 +118,10 @@ end
 slopes=nan(data.nSample,3);
 for j=1:3
     for k=1:data.nSample
-        slopes(k,j)=results(j,k).Coefficients.Estimate(2);
+        % If statement catches slopes that could not be calculted (empty structure)
+        if not(isempty(results(j,k).Coefficients))
+            slopes(k,j)=results(j,k).Coefficients.Estimate(2);
+        end
     end
 end
 slopes=array2table(slopes,"VariableNames",{'exp_slope_microm','S_275_295','S_350_400'});
@@ -355,8 +362,6 @@ try
     sum_of_squares = sum((y-mean(y,"omitmissing")).^2,"omitmissing");
     sum_of_squares_of_residuals = sum((y(idx)-polyval(out,x(idx))).^2);
     Rsquared = 1 - sum_of_squares_of_residuals/sum_of_squares;
-    results=struct;
-    results.Coefficients=table;
     results.Coefficients.Estimate(1)=out(2);
     results.Coefficients.Estimate(2)=out(1);
     results.Coefficients.Properties.RowNames={'Intercept','Slope'};
@@ -376,7 +381,11 @@ catch
     results.fit=nan; % store that stuff for later polyval
     results.modelled=nan(size(y));
     results.residuals=nan(size(y));
-    results.outcome='error';
+    if contains(lasterr,'Too many missing')
+        results.outcome='missing data';
+    else
+        results.outcome='error';
+    end
 end
 if results.Rsquared<options.rsq
     results.Coefficients.Estimate=nan(2,1);
@@ -422,7 +431,11 @@ catch
     results.fit=[nan nan nan]'; % store that stuff for later polyval
     results.modelled=nan(size(y));
     results.residuals=nan(size(y));
-    results.outcome='error';
+    if contains(lasterr,'Too many missing')
+        results.outcome='missing data';
+    else
+        results.outcome='error';
+    end
 end
 
 if results.Rsquared<options.rsq
