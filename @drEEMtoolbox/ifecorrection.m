@@ -34,6 +34,7 @@ dataout=drEEMtoolbox.subdataset(dataout,outEm=emout,outEx=exout);
 
 % Calculate the IFE correction factors based on ABA
 IFCmat=ABAife(dataout.Ex,dataout.Em,[rcvec(dataout.absWave,'row');dataout.abs]);  %or use Abs.Aug here
+IFCmat=real(IFCmat);
 if any(data.abs(:)>2)
     message=[message,'Some samples had very high absorbance (>2). These areas were NaN''ed. '];
     warning('Some samples had very high absorbance (>2). This function produces NaN correction factors and thus deletes the affected data.')

@@ -51,6 +51,9 @@ if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
     nargoutchk(1,1)
 end
 
+% If there are any strange imaginary numbers, fix it here by converting.
+data.abs=real(data.abs);
+
 % Assign the output variable
 dataout=data;
 
