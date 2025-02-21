@@ -67,13 +67,14 @@ classdef drEEMdataset
 
         function validate(data)
             if isMATLABReleaseOlderThan("R2022a")
-                warning('With Matlab older than R2022a, you might encounter errors. Continue at your own risk.')
+                warning('With Matlab older than R2022a, you might encounter errors. Continue at your own risk.',mode='verbose')
             end
             flds=fieldnames(drEEMdataset);
             C=intersect(flds,fieldnames(data));
             if numel(C)~=numel(flds)
                 if not(matches(class(data),'drEEMdataset'))
-                    error('Object is not of the class "drEEMdataset".')
+                    message='Object is not of the class "drEEMdataset".';
+                    throwAsCaller(MException("drEEM:invalid",message))
                 end
             end
 
@@ -81,7 +82,8 @@ classdef drEEMdataset
             if not(isempty(data.X))
                 sz=size(data.X);
                 if ndims(data.X)~=3
-                    error(['EEMs field (',inputname(1),'.X) must have 3 dimensions. Validation function exited prematurely. Fix the issue and rerun the validation'])
+                    message=['EEMs field (',inputname(1),'.X) must have 3 dimensions. Validation function exited prematurely. Fix the issue and rerun the validation'];
+                    throwAsCaller(MException("drEEM:Invalid",message))
                 end
                 if not(sz(1)==data.nSample)
                     e{cnt}='size of EEM dimension 1 not consistent with data.nSample';
@@ -172,7 +174,8 @@ classdef drEEMdataset
             if not(isempty(data.abs))
                 sz=size(data.abs);
                 if not(ismatrix(data.abs))
-                    error(['Absorbance field (',inputname(1),'.abs) must have 2 dimensions. Validation function exited prematurely. Fix the issue and rerun the validation'])
+                    message=['Absorbance field (',inputname(1),'.abs) must have 2 dimensions. Validation function exited prematurely. Fix the issue and rerun the validation'];
+                    throwAsCaller(MException("drEEM:Invalid",message))
                 end
                 if not(sz(1)==data.nSample)
                     e{cnt}='size of absorbance dimension 1 not consistent with data.nSample';
@@ -328,7 +331,7 @@ classdef drEEMdataset
             end
 
             if not(isempty(message))
-                error(sprintf(message))
+                throwAsCaller(MException("drEEM:Insane",message))
             end
         end
 
@@ -359,7 +362,7 @@ classdef drEEMdataset
             end
 
             if not(isempty(message))
-                error(sprintf(message))
+                throwAsCaller(MException("drEEM:Insane",message))
             end
         end
         
@@ -376,7 +379,7 @@ classdef drEEMdataset
                     ' if blanks were subtracted elsewhere (e.g. instrument software).\n'];
             end
             if not(isempty(message))
-                warning(sprintf(message))
+                warning(sprintf(message),mode='verbose')
             end
         end
         
@@ -391,7 +394,7 @@ classdef drEEMdataset
                     ' \n A repeated blank subtraction would lead to undesired results.\n'];
             end
             if not(isempty(message))
-                error(sprintf(message))
+                throwAsCaller(MException("drEEM:Insane",message))
             end
         end
 
@@ -415,7 +418,7 @@ classdef drEEMdataset
                     ' if absorbance was negligible (< 0.05 per cm at most).\n'];
             end
             if not(isempty(message))
-                error(sprintf(message))
+                throwAsCaller(MException("drEEM:Insane",message))
             end
         end
 
@@ -430,7 +433,7 @@ classdef drEEMdataset
                     ' A signal calibration to e.g. Raman units should be performed on uncalibrated data.\n'];
             end
             if not(isempty(message))
-                error(sprintf(message))
+                throwAsCaller(MException("drEEM:Insane",message))
             end
         end
 
