@@ -234,6 +234,17 @@ idx=1;
 DSb.history(idx,1)=...
     drEEMhistory.addEntry(mfilename,'created dataset',[],DSb);
 
+stat=drEEMstatus;
+stat=drEEMstatus.change(stat,"spectralCorrection","applied by instrument software");
+stat=drEEMstatus.change(stat,"IFEcorrection","not applied");
+stat=drEEMstatus.change(stat,"blankSubtraction","not applied");
+stat=drEEMstatus.change(stat,"signalCalibration","not applied");
+stat=drEEMstatus.change(stat,"scatterTreatment","not applied");
+stat=drEEMstatus.change(stat,"signalScaling","not applied");
+stat=drEEMstatus.change(stat,"absorbanceUnit","absorbance per cm");
+
+DS.status=stat;
+DSb.status=stat;
 end
 % %% Blank modification
 % [~,ia,ic] = unique(Xin.S1DarkBlank,'rows','stable');
