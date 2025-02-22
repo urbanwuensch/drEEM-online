@@ -2,7 +2,7 @@ function dataout = rmspikes(data,options)
 % <a href = "matlab:doc rmspikes">dataout = rmspikes(data,options) (click to access documentation)</a>
 %
 % <strong>INPUTS - Required</strong>
-% data (1,1) {drEEMdataset.validate(data)}
+% data (1,1) {drEEMdataset.validate}
 % 
 % <strong>INPUTS - Optional</strong>
 % thresholdFactor (1,1) {mustBeNumeric} = 10

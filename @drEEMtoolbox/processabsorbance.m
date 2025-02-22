@@ -2,11 +2,11 @@ function dataout = processabsorbance(data,options)
 % <a href = "matlab:doc processabsorbance">dataout = processabsorbance(data,options) (click to access documentation)</a>
 %
 % <strong>Inputs - Required</strong>
-% data (1,:) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),drEEMdataset.sanityCheckAbsorbance(data)}%
+% data (1,:) {mustBeA("drEEMdataset"),drEEMdataset.validate,drEEMdataset.sanityCheckAbsorbance}
 %
 % <strong>Inputs - Optional</strong>
 % correctBase (1,:)     {mustBeNumericOrLogical} = true
-% baseWave (1,:)        {mustBeNumeric,mustBeGreaterThan(options.baseWave,580)} = 595
+% baseWave (1,:)        {mustBeNumeric,mustBeGreaterThan(580)} = 595
 % zero (1,:)            {mustBeNumericOrLogical} = false
 % extrapolate (1,:)     {mustBeNumericOrLogical} = true
 % options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;

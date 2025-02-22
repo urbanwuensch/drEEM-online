@@ -2,11 +2,11 @@ function [dataout,slopes] = fitslopes(data,options)
 % <a href = "matlab:doc fitslopes">[dataout,slopes,metadata,model] = fitslopes(data,options) (click to access documentation)</a>
 %
 % <strong>Inputs - Required</strong>
-% data (1,1)              {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+% data (1,1)              {mustBeA("drEEMdataset"),drEEMdataset.validate}
 %
 % <strong>Inputs - Optional</strong>
 % LongRange (1,2) {mustBeNumeric} = [300 600]
-% rsq (1,1)       {mustBeNumeric,mustBeLessThanOrEqual(options.rsq,1)} = 0.95
+% rsq (1,1)       {mustBeNumeric,mustBeLessThanOrEqual(1)} = 0.95
 % options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
 % details         {mustBeNumericOrLogical} = false
 %

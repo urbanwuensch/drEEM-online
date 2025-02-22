@@ -2,7 +2,7 @@ function dataout = changestatus(data)
 % <a href = "matlab:doc changestatus">dataout = changestatus(data) (click to access documentation)</a>
 %
 % <strong>INPUTS - Required</strong>
-% data (1,1)  {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+% data (1,1)  {mustBeA("drEEMdataset"),drEEMdataset.validate}
 %
 % <strong>EXAMPLE(S)</strong>
 %   samples = tbx.changestatus(samples); (follow the GUI advice)

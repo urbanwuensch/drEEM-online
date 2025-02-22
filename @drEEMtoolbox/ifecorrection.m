@@ -2,7 +2,7 @@ function dataout = ifecorrection(data,options)
 % <a href = "matlab:doc ifecorrection">dataout = ifecorrection(data) (click to access documentation)</a>
 %
 % <strong>Inputs - Required</strong>
-% data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),drEEMdataset.sanityCheckIFE(data)}
+% data (1,1) {mustBeA("drEEMdataset"),drEEMdataset.validate,drEEMdataset.sanityCheckIFE}
 % options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
 %
 % <strong>EXAMPLE(S)</strong>

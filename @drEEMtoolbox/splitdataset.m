@@ -2,12 +2,12 @@ function dataout = splitdataset(data,options)
 % <a href = "matlab:doc splitdataset">dataout = splitdataset(data,options) (click to access documentation)</a>
 %
 % <strong>Inputs - Required</strong>
-% data {drEEMdataset.validate(data)}
+% data {drEEMdataset.validate}
 % 
 % <strong>Inputs - Optional</strong>
-% options.splitType (1,:) {mustBeText,mustBeMember(options.splitType,["blind","byMetadata"])} = "blind"
-% options.blindType (1,:)     {mustBeMember(options.blindType,["alternating","random","contiguous"])} = "alternating"
-% options.metadataColumn (1,:)    {drEEMdataset.mustBeMetadataColumn(data,options.metadataColumn)} = []
+% options.splitType (1,:) {mustBeMember(["blind","byMetadata"])} = "blind"
+% options.blindType (1,:)     {mustBeMember(["alternating","random","contiguous"])} = "alternating"
+% options.metadataColumn (1,:)    {drEEMdataset.mustBeMetadataColumn} = []
 % options.numsplit (1,1)  {mustBePositive} = 2
 %
 % <strong>EXAMPLE(S)</strong>

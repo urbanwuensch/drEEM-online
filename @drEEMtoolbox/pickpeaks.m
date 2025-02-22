@@ -2,7 +2,7 @@ function [ dataout,picklist,metadata ] = pickpeaks( data,options)
 % <a href = "matlab:doc pickpeaks">[dataout,picklist,metadata] = pickpeaks( data,options) (click to access documentation)</a>
 %
 % <strong>Inputs - Required</strong>
-% data (1,1)    {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+% data (1,1)    {mustBeA("drEEMdataset"),drEEMdataset.validate}
 % 
 % <strong>Inputs - Optional</strong>
 % options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;

@@ -2,12 +2,12 @@ function dataout=subdataset(data,options)
 % <a href = "matlab:doc subdataset">dataout=subdataset(data,options) (click to access documentation)</a>
 %
 % <strong>Inputs - Required</strong>
-% data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+% data (1,1) {mustBeA("drEEMdataset"),drEEMdataset.validate}
 % 
 % <strong>Inputs - Optional</strong>
-% options.outSample (1,:)   {mustBeNumericOrLogical(options.outSample)} = false
-% options.outEm (1,:)       {mustBeA(options.outEm,'logical')} = false
-% options.outEx (1,:)       {mustBeA(options.outEx,'logical')} = false
+% options.outSample (1,:)   {mustBeNumericOrLogical} = false
+% options.outEm (1,:)       {mustBeA('logical')} = false
+% options.outEx (1,:)       {mustBeA('logical')} = false
 %
 % <strong>EXAMPLE(S)</strong>
 %   1. Delete sample based on name

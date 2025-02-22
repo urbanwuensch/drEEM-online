@@ -2,7 +2,7 @@ function export2zip(data,filename)
 % <a href = "matlab:doc export2zip">export2zip(data,filename) (click to access documentation)</a>
 %
 % <strong>INPUTS - Required</strong>
-% data (1,1)      {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+% data (1,1)      {mustBeA("drEEMdataset"),drEEMdataset.validate}
 % filename (1,:)  {mustBeText}
 %
 % <strong>EXAMPLE(S)</strong>

@@ -2,10 +2,10 @@ function dataout = zapnoise(data,sampleIdent,emRange,exRange)
 % <a href = "matlab:doc zapnoise">dataout = zapnoise(data,sampleIdent,emRange,exRange) (click to access documentation)</a>
 %
 % <strong>Inputs - Required</strong>
-% data (1,1)    {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
-% sampleIdent   {mustBeNonempty(sampleIdent),mustBeA(sampleIdent,'logical'),outSampleVal(data,sampleIdent)}
-% emRange (1,:) {mustBeNumeric,mustBeNonempty,drEEMdataset.mustBeInRangeEm(data,emRange)}
-% exRange (1,:) {mustBeNumeric,mustBeNonempty,drEEMdataset.mustBeInRangeEx(data,exRange)}
+% data (1,1)    {mustBeA("drEEMdataset"),drEEMdataset.validate}
+% sampleIdent   {mustBeNonempty(sampleIdent),mustBeA('logical'),outSampleVal(data,sampleIdent)}
+% emRange (1,:) {mustBeNumeric,mustBeNonempty,drEEMdataset.mustBeInRangeEm}
+% exRange (1,:) {mustBeNumeric,mustBeNonempty,drEEMdataset.mustBeInRangeEx}
 %
 % <strong>EXAMPLE(S)</strong>
 %   1. Zap noise at Ex 255 Em 450 in data.i==5

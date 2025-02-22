@@ -6,15 +6,15 @@ function dataout = fitparafac(data,options)
 % 
 % <strong>Inputs - Optional</strong> 
 % f (1,:)                 {mustBeNumeric,mustBeNonempty} = 2:7
-% mode (1,:)              {mustBeMember(options.mode,["overall","split"])} = 'overall'
-% constraints (1,:)       {mustBeMember(options.constraints,["unconstrained", "nonnegativity", "unimodnonneg"])} = 'nonnegativity'
+% mode (1,:)              {mustBeMember(["overall","split"])} = 'overall'
+% constraints (1,:)       {mustBeMember(["unconstrained", "nonnegativity", "unimodnonneg"])} = 'nonnegativity'
 % starts  (1,:)           {mustBeNumeric} = 40
-% convergence (1,:)       {mustBeLessThanOrEqual(options.convergence,1e-2)} = 1e-6
+% convergence (1,:)       {mustBeLessThanOrEqual(1e-2)} = 1e-6
 % maxIteration (1,1)      {mustBeNumeric} = 3000
-% initialization (1,:)    {mustBeMember(options.initialization,["svd", "random","multiplesmall"])} = 'random'
+% initialization (1,:)    {mustBeMember(["svd", "random","multiplesmall"])} = 'random'
 % parallelization (1,1)   {mustBeNumericOrLogical}= true
-% consoleoutput (1,:)     {mustBeMember(options.consoleoutput,["all", "minimum","none"])} = 'minimum'
-% toolbox (1,:)           {mustBeMember(options.toolbox,["parafac3w","nway", "pls"])} = 'parafac3w'
+% consoleoutput (1,:)     {mustBeMember(["all", "minimum","none"])} = 'minimum'
+% toolbox (1,:)           {mustBeMember(["parafac3w","nway", "pls"])} = 'parafac3w'
 %
 % <strong>EXAMPLE(S)</strong> (see documentation for assumed defaults!)
 %   1. Fit models similar to the previous <strong>outliertest</strong> 

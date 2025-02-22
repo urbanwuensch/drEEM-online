@@ -2,10 +2,10 @@ function dataout = ramancalibration(samples,blanks,options)
 % <a href = "matlab:doc ramancalibration">dataout = ramancalibration(samples,blanks,options) (click to access documentation)</a>
 %
 % <strong>Inputs - Required</strong>
-% samples (1,1) {mustBeA(samples,"drEEMdataset"),drEEMdataset.validate(samples),...
-%     drEEMdataset.sanityCheckSignalCalibration(samples)}
-% blanks  (1,1) {mustBeA(blanks,"drEEMdataset"),drEEMdataset.validate(blanks),...
-%     drEEMdataset.sanityCheckSignalCalibration(blanks)}
+% samples (1,1) {mustBeA(,"drEEMdataset"),drEEMdataset.validate,...
+%     drEEMdataset.sanityCheckSignalCalibration}
+% blanks  (1,1) {mustBeA("drEEMdataset"),drEEMdataset.validate,...
+%     drEEMdataset.sanityCheckSignalCalibration}
 % 
 % <strong>Inputs - Optional</strong>
 % ExWave (1,1) {mustBeNumeric} = 350

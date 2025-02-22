@@ -2,8 +2,8 @@ function fhandle = reportresidualanalysis(data,ftarget,mdfield)
 % <a href = ""matlab:doc reportresidualanalysis">fhandle = reportresidualanalysis(data,ftarget,mdfield) (click to access documentation)</a>
 %
 % <strong>INPUTS - Required</strong>
-% data      {mustBeA(data,"drEEMdataset")}
-% ftarget   {mustBeNumeric}
+% data      {mustBeA("drEEMdataset")}
+% ftarget   {mustBeNumeric,drEEMdataset.mustBeModel}
 % mdfield  
 %
 % <strong>EXAMPLE(S)</strong>
@@ -12,7 +12,7 @@ function fhandle = reportresidualanalysis(data,ftarget,mdfield)
 
 arguments
     data {mustBeA(data,"drEEMdataset")}
-    ftarget {mustBeNumeric}
+    ftarget {mustBeNumeric,drEEMdataset.mustBeModel(data,ftarget)}
     mdfield
 end
 %% Secondary validation of inputs.

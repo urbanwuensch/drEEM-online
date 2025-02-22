@@ -2,8 +2,8 @@ function dataout = scalesamples(data,option)
 % <a href = "matlab:doc scalesamples">dataout = scalesamples(data,option) (click to access documentation)</a>
 %
 % <strong>INPUTS - Required</strong>
-% data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
-% option (1,:) {mustBeNumeric OR mustBeMember(option,["reverse","help"])} = 2
+% data (1,1) {mustBeA("drEEMdataset"),drEEMdataset.validate}
+% option (1,:) {mustBeNumeric OR mustBeMember(["reverse","help"])} = 2
 %
 % <strong>EXAMPLE(S)</strong>
 %   1. <strong>normeem equivalent</strong> (unit variance scaling)

@@ -2,7 +2,7 @@ function exportresults(data,f,filename)
 % <a href = "matlab:doc exportresults">exportresults(data,filename,f) (click to access documentation)</a>
 %
 % <strong>Inputs - Required</strong>
-% data (1,1)      {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+% data (1,1)      {mustBeA("drEEMdataset"),drEEMdataset.validate}
 % f (1,1)         {mustBeNumeric}
 % filename (1,:)  {mustBeText}
 %

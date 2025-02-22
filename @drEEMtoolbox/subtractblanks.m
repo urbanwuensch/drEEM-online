@@ -2,10 +2,10 @@ function dataout = subtractblanks(samples,blanks,options)
 % <a href = "matlab:doc subtractblanks">dataout = subtractblanks(samples,blanks) (click to access documentation)</a>
 %
 % <strong>Inputs - Required</strong>
-% samples (1,1) {mustBeNonempty,drEEMdataset.validate(samples),...
-%     drEEMdataset.sanityCheckBlankSubtraction(samples)}
-% blanks (1,1)  {mustBeNonempty,drEEMdataset.validate(blanks),...
-%     drEEMdataset.sanityCheckBlankSubtraction(blanks)}
+% samples (1,1) {drEEMdataset.validate,...
+%     drEEMdataset.sanityCheckBlankSubtraction}
+% blanks (1,1)  {drEEMdataset.validate(blanks),...
+%     drEEMdataset.sanityCheckBlankSubtraction}
 % plot (1,1) {mustBeNumericOrLogical} = samples.toolboxOptions.plotByDefault;
 %
 % <strong>EXAMPLE(S)</strong>
