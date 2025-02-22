@@ -3,22 +3,22 @@ function dataout = zapnoise(data,sampleIdent,emRange,exRange)
 %
 % <strong>Inputs - Required</strong>
 % data (1,1)    {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
-% sampleIdent   {mustBeNonempty,mustBeNumeric}
+% sampleIdent   {mustBeNonempty(sampleIdent),mustBeA(sampleIdent,'logical'),outSampleVal(data,sampleIdent)}
 % emRange (1,:) {mustBeNumeric,mustBeNonempty,drEEMdataset.mustBeInRangeEm(data,emRange)}
 % exRange (1,:) {mustBeNumeric,mustBeNonempty,drEEMdataset.mustBeInRangeEx(data,exRange)}
 %
 % <strong>EXAMPLE(S)</strong>
 %   1. Zap noise at Ex 255 Em 450 in data.i==5
-%       samples = tbx.zapnoise(samples,5,450,255)
+%       samples = tbx.zapnoise(samples,data.i==5,450,255)
 %   2. Zap entire emission scan at Ex 255 in sample data.i==5
-%       samples = tbx.zapnoise(samples,5,[],255)
+%       samples = tbx.zapnoise(samples,data.i==5,[],255)
 %   1. Zap entire emission scans at Ex 255 and 300 in sample data.i==7
 %       like example 2., but in two calls since [255 300] would delete the
 %       entire block between both.
 
 arguments
     data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
-    sampleIdent {mustBeNonempty,mustBeNumeric,mustBeI(data,sampleIdent)}
+    sampleIdent  (1,:) {mustBeNonempty(sampleIdent),mustBeA(sampleIdent,'logical'),outSampleVal(data,sampleIdent)}
     emRange (1,:) {mustBeNumeric,drEEMdataset.mustBeInRangeEm(data,emRange)}
     exRange (1,:) {mustBeNumeric,drEEMdataset.mustBeInRangeEx(data,exRange)}
 
@@ -138,4 +138,10 @@ if isempty(idx)
     error('sampleIdent must point to a number that exists in data.i')
 end
 
+end
+
+function outSampleVal(data,outSample)
+if not(size(outSample,1)==data.nSample)
+    error(['outSample must be specified as logical array of the size [',num2str(data.nSample),' x 1]'])
+end
 end

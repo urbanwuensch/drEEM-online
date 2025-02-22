@@ -24,7 +24,7 @@ function dataout=subdataset(data,options)
 %       samples = tbx.subdataset(samples,outEm=tbx.isNearest(samples.Em,349));
 arguments
     data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
-    options.outSample (1,:) {mustBeNumericOrLogical(options.outSample)} = false
+    options.outSample (1,:) {mustBeA(options.outSample,'logical'),outSampleVal(data,options.outSample)} = false
     options.outEm (1,:) {mustBeA(options.outEm,'logical')} = false
     options.outEx (1,:) {mustBeA(options.outEx,'logical')} = false
 end
@@ -118,4 +118,10 @@ if drEEMtoolbox.outputscenario(nargout)=="implicitOut"
     return
 end
 
+end
+
+function outSampleVal(data,outSample)
+if not(size(outSample,1)==data.nSample)
+    error(['outSample must be specified as logical array of the size [',num2str(data.nSample),' x 1]'])
+end
 end

@@ -120,12 +120,11 @@ classdef drEEMtoolbox < handle
         data = importeems(filePattern,options)
         data = importabsorbance(filePattern,options)
         dataout = associatemetadata(data,pathtofile,metadatakey,datakey)
-
         dataout=upgradedataset(data,atypicalFieldnames)
 
 
         % Status-specific functions
-        changestatus(data)
+        dataout=changestatus(data)
 
         % History-specific functions
         data = addcomment(data,comment)
@@ -164,7 +163,7 @@ classdef drEEMtoolbox < handle
 
         % Benchmark the system performance
         [singlescore,multiscore]=benchmark
-
+        
         % Data processing
         varargout = alignsamples(varargin)
         dataout = processabsorbance(data,options)
@@ -181,7 +180,7 @@ classdef drEEMtoolbox < handle
         [dataout,slopes,metadata,model] = fitslopes(data,options)
         [dataout,picklist,metadata] = pickpeaks( data,options)
 
-        % PARAFAC stuff
+        % PARAFAC
         dataout = fitparafac(data,options)
         dataout = splitdataset(data,options)
         dataout = splitvalidation(data,fac)
