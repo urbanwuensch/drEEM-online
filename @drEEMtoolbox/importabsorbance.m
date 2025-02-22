@@ -8,6 +8,13 @@ function data = importabsorbance(filePattern,options)
 % waveColumn (1,:)      {mustBeNumeric} = 1
 % absColumn (1,:)       {mustBeNumeric} = 10
 % NumHeaderLines (1,1)  {mustBeNumeric}= 0
+%
+% <strong>EXAMPLE(S)</strong>
+%   1. <strong>Horiba AquaLog</strong>
+%       absorbance = tbx.importabsorbance(" - Abs Spectra Graphs.dat");
+%   2. <strong>csv-export of data from software</strong>
+%       absorbance = tbx.importabsorbance(".csv",waveColumn=1,absColumn=2);
+
 arguments
         % Required
         filePattern (1,:) {mustBeText}

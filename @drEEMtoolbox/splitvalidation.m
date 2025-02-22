@@ -4,18 +4,16 @@ function dataout = splitvalidation(data,fac)
 % <strong>Inputs - Required</strong>
 % data (1,1) {mustBeNonempty,drEEMdataset.validate(data)}
 % fac (1,1)  {mustBeNumeric}
+%
+% <strong>EXAMPLE(S)</strong>
+%       samples = splitvalidation(samples,5)
 
 arguments
     data (1,1) {mustBeA(data,'drEEMdataset'),drEEMdataset.validate(data)}
-    fac (1,1) {mustBeNumeric}
+    fac (1,1) {mustBeNumeric,drEEMdataset.mustBeModel(data,fac)}
 end
 if isempty(data.split)
-    error('data.split is empty. Can''t validate if no models are present.')
-end
-drEEMdataset.mustBeModel(data,fac)
-
-if isempty(data.split)
-    error('data.split is empty. Please read the documentation to followt the workflow of the toolbox.')
+    error('data.split is empty. Please read the documentation to follow the workflow of the toolbox.')
 end
 
 % Experimental feature; overwrite workspace variable, needs no outputarg check

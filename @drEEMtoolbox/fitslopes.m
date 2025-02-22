@@ -9,6 +9,12 @@ function [dataout,slopes] = fitslopes(data,options)
 % rsq (1,1)       {mustBeNumeric,mustBeLessThanOrEqual(options.rsq,1)} = 0.95
 % options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
 % details         {mustBeNumericOrLogical} = false
+%
+% <strong>EXAMPLE(S)</strong>
+%   1. fit slopes and get an idea how well the fit represents the data
+%       samples = tbx.fitslopes(samples,details=true);
+%   2. fit slopes but don't show final plots or fit details
+%       samples = tbx.fitslopes(samples,plot=false);
 
 
 arguments

@@ -1,10 +1,14 @@
 function fhandle = reportresidualanalysis(data,ftarget,mdfield)
 % <a href = ""matlab:doc reportresidualanalysis">fhandle = reportresidualanalysis(data,ftarget,mdfield) (click to access documentation)</a>
 %
-% <strong>Inputs - Required</strong>
+% <strong>INPUTS - Required</strong>
 % data      {mustBeA(data,"drEEMdataset")}
 % ftarget   {mustBeNumeric}
-% mdfield   
+% mdfield  
+%
+% <strong>EXAMPLE(S)</strong>
+%   1. Report residual analysis of a bad 3 component model
+%       fig = tbx.reportresidualanalysis(samples,3,'i');
 
 arguments
     data {mustBeA(data,"drEEMdataset")}

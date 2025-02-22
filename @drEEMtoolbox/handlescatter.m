@@ -6,7 +6,14 @@ function dataout = handlescatter(data,option)
 % 
 % <strong>Inputs - Optional</strong>
 % option    if supplied, must be a handlescatterOptions object or the string "gui"
-
+%
+% <strong>EXAMPLE(S)</strong>
+%   1. retreive options for handlescatter for manipulation
+%       scatteroptions = tbx.handlescatter('options');
+%   2. carry out treatment based on existing options
+%       samples = tbx.handlescatter(samples,scatteroptions);
+%   3. get interactive help with option defintion
+%       samples = tbx.handlescatter(samples,'gui');
 arguments
     data (1,:) {dataValidation(data)}
     option (1,:) {optionValidation(data,option)} = handlescatterOptions;

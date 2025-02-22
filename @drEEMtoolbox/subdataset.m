@@ -8,7 +8,20 @@ function dataout=subdataset(data,options)
 % options.outSample (1,:)   {mustBeNumericOrLogical(options.outSample)} = false
 % options.outEm (1,:)       {mustBeA(options.outEm,'logical')} = false
 % options.outEx (1,:)       {mustBeA(options.outEx,'logical')} = false
-
+%
+% <strong>EXAMPLE(S)</strong>
+%   1. Delete sample based on name
+%       samples = tbx.subdataset(samples,outSample=matches(samples.filelist,'LCEP23 (01)'));
+%   2. Delete sample based identifier
+%       samples = tbx.subdataset(samples,outSample=samples.i==2);
+%   3. Delete emission ranges
+%       samples = tbx.subdataset(samples,outEm=samples.Em<300|samples.Em>700);
+%   4. Delete excitation ranges
+%       samples = tbx.subdataset(samples,outEx=samples.Ex<240|samples.Ex>450);
+%   5. Delete specific excitation
+%       samples = tbx.subdataset(samples,outEx=samples.Ex==275);
+%   6. drEEM ships with a <strong>nearest neighbor function</strong>: isNearest, use it if wavelengths have many decimals
+%       samples = tbx.subdataset(samples,outEm=tbx.isNearest(samples.Em,349));
 arguments
     data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
     options.outSample (1,:) {mustBeNumericOrLogical(options.outSample)} = false

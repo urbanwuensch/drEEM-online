@@ -3,15 +3,24 @@ function dataout = zapnoise(data,sampleIdent,emRange,exRange)
 %
 % <strong>Inputs - Required</strong>
 % data (1,1)    {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
-% sampleIdent   {mustBeNonempty,mustBeNumericOrLogical}
+% sampleIdent   {mustBeNonempty,mustBeNumeric}
 % emRange (1,:) {mustBeNumeric,mustBeNonempty,drEEMdataset.mustBeInRangeEm(data,emRange)}
 % exRange (1,:) {mustBeNumeric,mustBeNonempty,drEEMdataset.mustBeInRangeEx(data,exRange)}
+%
+% <strong>EXAMPLE(S)</strong>
+%   1. Zap noise at Ex 255 Em 450 in data.i==5
+%       samples = tbx.zapnoise(samples,5,450,255)
+%   2. Zap entire emission scan at Ex 255 in sample data.i==5
+%       samples = tbx.zapnoise(samples,5,[],255)
+%   1. Zap entire emission scans at Ex 255 and 300 in sample data.i==7
+%       like example 2., but in two calls since [255 300] would delete the
+%       entire block between both.
 
 arguments
     data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
-    sampleIdent {mustBeNonempty,mustBeNumericOrLogical}
-    emRange (1,:) {mustBeNumeric,mustBeNonempty,drEEMdataset.mustBeInRangeEm(data,emRange)}
-    exRange (1,:) {mustBeNumeric,mustBeNonempty,drEEMdataset.mustBeInRangeEx(data,exRange)}
+    sampleIdent {mustBeNonempty,mustBeNumeric,mustBeI(data,sampleIdent)}
+    emRange (1,:) {mustBeNumeric,drEEMdataset.mustBeInRangeEm(data,emRange)}
+    exRange (1,:) {mustBeNumeric,drEEMdataset.mustBeInRangeEx(data,exRange)}
 
 end
 
@@ -30,7 +39,6 @@ end
 
 % Anonymous function, finds the clostest match to the provided wavelengths
 % Similar to knnsearch, but does not require any toolboxes.
-mindist=@(vec,val) find(ismember(abs(vec-val),min(abs(vec-val))));
 
 %% Function execution
 
@@ -50,23 +58,26 @@ dataout=data;
 
 % two equal blocks for em and ex. If one input, find the closest match, if
 % two make a vector of indices from start to end.
-if isnumeric(emRange)
+if isempty(emRange)
+    emRange=1:data.nEm;
+else
     for j=1:numel(emRange)
-        emRange(j)=mindist(data.Em,emRange(j));
+        emRange(j)=drEEMtoolbox.mindist(data.Em,emRange(j));
     end
     if numel(emRange)==2
         emRange=emRange(1):emRange(end);
     end
 end
-if isnumeric(exRange)
+if isempty(exRange)
+    exRange=1:data.nEx;
+else
     for j=1:numel(exRange)
-        exRange(j)=mindist(data.Ex,exRange(j));
+        exRange(j)=drEEMtoolbox.mindist(data.Ex,exRange(j));
     end
     if numel(exRange)==2
         exRange=exRange(1):exRange(end);
     end
 end
-
 
 % The actual zapping
 dataout.X(sampleIdent,emRange,exRange)=NaN;
@@ -118,5 +129,13 @@ switch rc
             error('Input ''rc'' not recognized. Options are: ''row'' and ''column''.')
 end
 
+
+end
+
+function mustBeI(data,sampleIdent)
+idx=find(data.i==sampleIdent); %#ok<EFIND>
+if isempty(idx)
+    error('sampleIdent must point to a number that exists in data.i')
+end
 
 end

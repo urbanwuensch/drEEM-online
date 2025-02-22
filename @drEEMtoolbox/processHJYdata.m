@@ -1,4 +1,5 @@
 function [DS,DSb] = processHJYdata(Xin,opt)
+% This function is part of undocumented drEEM and not intended for general use
 
 
 if strcmp(Xin,'options')

@@ -1,5 +1,5 @@
 function passed = silentvalidation(data,fac)
-
+% This is a toolbox-internal function and thus you won't get help here.
 arguments
     data (1,1) {mustBeNonempty,drEEMdataset.validate(data)}
     fac (1,1) {mustBeNumeric}

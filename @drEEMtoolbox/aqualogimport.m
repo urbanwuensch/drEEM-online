@@ -1,5 +1,10 @@
 function Xout = aqualogimport(workingpath,selector,deselector)
-
+% This function is part of undocumented drEEM and not intended for general use
+arguments
+    workingpath (1,:) {mustBeFolder} = pwd
+    selector = []
+    deselector = []
+end
 %% Establish a connection to Origin Pro
 try
     disp('   Establishing connection with Origin Pro (1st attempt)...')

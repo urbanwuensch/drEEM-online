@@ -1,8 +1,14 @@
 function varargout = alignsamples(varargin)
 % <a href = "matlab:doc alignsamples">varargout = alignsamples(varargin) (click to access documentation)</a>
 %
-% <strong>Inputs - Required</strong>
+% <strong>INPUTS - Required</strong>
 % varargin (1,1) {mustBeA(varargin,"drEEMdataset"),drEEMdataset.validate(varargin)}
+%
+% <strong>EXAMPLE(S)</strong>
+%   1. samples, blanks, and absorbance scans should only contain samples with the same names in identical sequence
+%       [samples,blanks,absorbance] = tbx.alignsamples(samples,blanks,absorbance);
+%   2. FDOM only
+%       [samples,blanks] = tbx.alignsamples(samples,blanks);
 
 arguments (Repeating)
     varargin {mustBeA(varargin,"drEEMdataset"),drEEMdataset.validate(varargin)}

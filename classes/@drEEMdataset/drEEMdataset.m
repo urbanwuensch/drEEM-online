@@ -1,4 +1,12 @@
 classdef drEEMdataset
+% <a href = "matlab:doc dreemdataset">Documentation of the drEEM toolbox</a>
+%
+% <strong>EXAMPLE(S)</strong>
+%   1. Make a new, empty dataset (highly recommended)
+%       samples = drEEMdataset.create;
+%   2. Validate if your dataset is formatted correctly
+%       drEEMdataset.validate(samples);
+
     properties
         history (:,1) drEEMhistory
         X (:,:,:) double {mustBeNumeric}
@@ -248,6 +256,9 @@ classdef drEEMdataset
         end
 
         function mustBeInRangeEm(data,emwave)
+            if isempty(emwave)
+                return
+            end
             for j=1:numel(emwave)
                 if data.Em(end)<emwave(j)||data.Em(1)>emwave(j)
                     message=['Emission wavelength out of range for data. Range: ',num2str(data.Em(1)),' - ',num2str(data.Em(end)),' nm'];
@@ -257,6 +268,9 @@ classdef drEEMdataset
         end
 
         function mustBeInRangeEx(data,exwave)
+            if isempty(exwave)
+                return
+            end
             for j=1:numel(exwave)
                 if data.Ex(end)<exwave(j)||data.Ex(1)>exwave(j)
                     message=['Excitation wavelength out of range for data. Range: ',num2str(data.Ex(1)),' - ',num2str(data.Ex(end)),' nm'];

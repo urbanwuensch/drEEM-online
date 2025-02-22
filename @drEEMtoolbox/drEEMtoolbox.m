@@ -1,4 +1,12 @@
 classdef drEEMtoolbox < handle
+% <a href = "matlab:doc dreem">Documentation of the drEEM toolbox</a>
+%
+% <strong>EXAMPLE(S)</strong>
+%   1. Make a class instance to call methods (highly recommended)
+%       tbx = drEEMtoolbox;
+%   2. Call a method from the class directly
+%       samples=drEEMtoolbox.processabsorbance(samples);
+%       
     properties (Constant = true, Hidden = false)
         version = "2.0.0"
         url = "GitLab URL for release goes here"
@@ -61,6 +69,19 @@ classdef drEEMtoolbox < handle
             end
 
         end
+
+        function out = isNearest(vec,value)
+            if isscalar(value)
+                [distance,idx]=min(abs(vec-value));
+            else
+                error('value must be scalar')
+            end
+            out=vec==vec(idx);
+            
+        end
+
+        f=dreemfig(fighandlein)
+        f=dreemuifig
 
     end
 
@@ -173,8 +194,6 @@ classdef drEEMtoolbox < handle
         %fhandle = reportresidualanalysis(data,ftarget,mdfield)
 
         % Visualization (incl. app workarounds)
-        f=dreemfig(fighandlein)
-        f=dreemuifig
         spectralvariance(data)
         function vieweems(data)
             vieweems(data)

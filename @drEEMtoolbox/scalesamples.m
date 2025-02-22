@@ -1,12 +1,25 @@
 function dataout = scalesamples(data,option)
 % <a href = "matlab:doc scalesamples">dataout = scalesamples(data,option) (click to access documentation)</a>
 %
-% <strong>Inputs - Required</strong>
+% <strong>INPUTS - Required</strong>
 % data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
-% option (1,:)
+% option (1,:) {mustBeNumeric OR mustBeMember(option,["reverse","help"])} = 2
+%
+% <strong>EXAMPLE(S)</strong>
+%   1. <strong>normeem equivalent</strong> (unit variance scaling)
+%       samples = tbx.scalesamples(samples,1);
+%   2. <strong>gentle scaling </strong> (Pareto scaling, sqrt of std)
+%       samples = tbx.scalesamples(samples);
+%   3. <strong>very gentle scaling </strong> (5th root of std)
+%       samples = tbx.scalesamples(samples,5);
+%   4. <strong>reverse scaling </strong> after it had been applied
+%       samples = tbx.scalesamples(samples,'reverse');
+%   5. <strong>Don't know what to do? </strong> Get decision help
+%       samples = tbx.scalesamples(samples,'help');
+
 arguments
     data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
-    option (1,:) 
+    option (1,:) {optionValidator(option)} = 2
 end
 
 % Experimental feature; overwrite workspace variable, needs no outputarg check
@@ -14,26 +27,12 @@ if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
     nargoutchk(1,1)
 end
 
+% Run optionValidator again to return the result opmode
+opmode=optionValidator(option);
 
 %% Define some functions and stuff.
 tens2mat=@(x,sz1,sz2,sz3) reshape(x,sz1,sz2*sz3);
 
-if isnumeric(option)
-    mustBePositive(option)
-    mustBeLessThanOrEqual(option,50)
-    opmode='apply';
-elseif ischar(option)|isstring(option)
-    mustBeMember(option,["reverse","help"])
-    if matches(option,'reverse')
-        opmode='reverse';
-    elseif matches(option,'help')
-        opmode='help';
-    else
-        error('Input to ''intensity'' (second input) must be a number, ''reverse'' or ''help''.')
-    end
-else
-    error('Input to ''intensity'' (second input) must be a number or ''reverse''.')
-end
 
 % If scaling operation is repeated (i.e. dataset was already scaled),
 % restore the backup and scale that version (it is up to date!).
@@ -128,10 +127,11 @@ switch opmode
             disp('Data appear to be scaled already. Performing diagnosis on the unscaled data.')
             temp=data;
             temp.X=temp.Xnotscaled;
-            scaleeemdiag(temp,[1 3])
+            scaleeemdiag(temp,[1 5])
         else
-            scaleeemdiag(data,[1 3])
+            scaleeemdiag(data,[1 5])
         end
+        dataout=data;
         return
     otherwise
         error('Input to ''intensity'' (second input) not understood.')
@@ -156,7 +156,7 @@ function scaleeemdiag(data,nthrootlim)
 mindist  = @(vec,val) find(ismember(abs(vec-val),min(abs(vec-val))),1,'first');
 tens2mat = @(x,sz1,sz2,sz3) reshape(x,sz1,sz2*sz3);
 
-nthrootspec=linspace(nthrootlim(1),nthrootlim(2),200);
+nthrootspec=linspace(nthrootlim(1),nthrootlim(2),50);
 ploc=[442.5 340;...
     510 390;...
     390 300;...
@@ -266,4 +266,21 @@ function rsq = rsquared(x,y)
 compare=not(ismissing(x))&not(ismissing(y));
 R=corrcoef(x(compare),y(compare));
 rsq=(R(2,1));
+end
+
+function opmode=optionValidator(option)
+mustBeA(option,{'char','string','double'})
+if isnumeric(option)
+    mustBeLessThanOrEqual(option,50)
+    mustBeGreaterThanOrEqual(option,1)
+    opmode='apply';
+else
+    mustBeMember(option,["reverse","help"])
+    if matches(option,'reverse')
+        opmode='reverse';
+    elseif matches(option,'help')
+        opmode='help';
+    end
+end
+
 end

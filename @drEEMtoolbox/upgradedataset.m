@@ -1,17 +1,49 @@
 function dataout = upgradedataset(data,atypicalFieldnames)
 % <a href = "matlab:doc subdataset">dataout=subdataset(data,options) (click to access documentation)</a>
 %
-% <strong>Inputs - Required</strong>
+% <strong>INPUTS - Required</strong>
 % data (1,1) {mustBeA(data,'struct')}
 %
-% <strong>Inputs - Optional</strong>
+% <strong>INPUTS - Optional</strong>
 % atypicalFieldnames (:,2) cell = {}
-
+%
+% <strong>EXAMPLE(S)</strong>
+%   1. Simple upgrade if dataset was constructed as advised in drEEM tutorials (>0.5.x)
+%       data = tbx.upgradedataset(Xin);
+%   2. Upgrade if dataset was constructed with alternative variable name for filelist
+%       data = tbx.upgradedataset(Xin,{'samplename';'filelist'});
+%   3. Upgrade if dataset was constructed with alternative variable name for the old notation Abs_wave
+%       data = tbx.upgradedataset(Xin,{'wave';'absWave'});
+%   4. Upgrade drEEM tutorial dataset from previous version (produces warning due to non-existent absorbance data)
+%       load(which('drEEM_tutorial_DS_old.mat')),
+%       samples = tbx.upgradedataset(dreemdata,{'longID','filelist'})
 arguments
     data (1,1) {mustBeA(data,'struct')}
     atypicalFieldnames (:,2) cell = {}
 end
-
+if not(isempty(atypicalFieldnames))
+    % Check input for existence in data
+    nms=fieldnames(data);
+    for j=1:height(atypicalFieldnames)
+        try
+            mustBeMember(atypicalFieldnames{j,1},nms);
+        catch
+            error(['Illigal name <strong>"',char(atypicalFieldnames{j,1}), ...
+                '"</strong>. Input in first row of atypicalFieldnames must point to one of the variables in data'])
+        end
+    end
+    
+    % Check input for existence in drEEMdataset
+    nms=properties(drEEMdataset);
+    for j=1:height(atypicalFieldnames)
+        try
+            mustBeMember(atypicalFieldnames{j,2},nms);
+        catch
+            error(['Illigal name <strong>"',char(atypicalFieldnames{j,2}), ...
+                '"</strong>. Input in second row of atypicalFieldnames must point to one of the properties of drEEMdataset'])
+        end
+    end
+end
 dataout=drEEMdataset.create;
 
 
@@ -20,10 +52,10 @@ newflds=[{'X','Ex','Em','nEm','nEx','filelist','i','nSample','absWave','abs'},at
 dataout.metadata.i=data.i;
 for j=1:numel(flds)
     if not(isfield(data,flds{j}))
-        warning(['field "',flds{j},'" does not exist in old dataset' ...
-            ' Consider using input "atypicalFieldnames" or modifying the' ...
-            ' structure before executing this function (e.g. create' ...
-            ' the variable / field beforehand).'])
+        if not(contains(atypicalFieldnames(:,2),flds{j}))
+            warning(['field "',flds{j},'" does not exist in old dataset' ...
+                ' Consider using input "atypicalFieldnames" if the data exists but has a different name. If it doesn''t exist, ignore this warning (with caution)'])
+        end
     else
             if isprop(drEEMdataset,newflds{j})
                 dataout.(newflds{j})=data.(flds{j});

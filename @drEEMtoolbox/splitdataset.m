@@ -9,6 +9,15 @@ function dataout = splitdataset(data,options)
 % options.blindType (1,:)     {mustBeMember(options.blindType,["alternating","random","contiguous"])} = "alternating"
 % options.metadataColumn (1,:)    {drEEMdataset.mustBeMetadataColumn(data,options.metadataColumn)} = []
 % options.numsplit (1,1)  {mustBePositive} = 2
+%
+% <strong>EXAMPLE(S)</strong>
+%   1. The <strong>DOMfluor-type</strong> split (two splits, alternating split assignment)
+%       samples = splitdataset(samples);
+%   2. Four splits with random sample assignment
+%       samples = splitdataset(samples,splitType='blind',blindType='random',numSplit=4);
+%   3. Split dataset according to metadata variable "origin" (must exist, needs to be adopted to your dataset)
+%       samples = splitdataset(samples,splitType='byMetadata',metadataColumn='origin');
+
 
 arguments
     data {drEEMdataset.validate(data)}

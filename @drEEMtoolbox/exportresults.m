@@ -5,7 +5,10 @@ function exportresults(data,f,filename)
 % data (1,1)      {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
 % f (1,1)         {mustBeNumeric}
 % filename (1,:)  {mustBeText}
-
+%
+% <strong>EXAMPLE(S)</strong>
+%   1. Export the details of the PARAFAC model incl. dataset status and history as well as optical indicies
+%       tbx.exportresults(samples,5,'PARAFAC_asPublished',char(datetime('today'))]);
 arguments
     % Required
     data (1,1)      {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}

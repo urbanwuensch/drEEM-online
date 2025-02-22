@@ -1,7 +1,11 @@
 function spectralvariance(data)
+% <a href = ""matlab:doc spectralvariance">spectralvariance(data) (click to access documentation)</a>
 %
+% <strong>INPUTS - Required</strong>
+% data      {mustBeA(data,"drEEMdataset")}
 %
-%
+% <strong>EXAMPLE(S)</strong>
+%   spectralvariance(data);
 
 arguments
     data (1,1)              {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}

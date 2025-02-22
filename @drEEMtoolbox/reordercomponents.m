@@ -1,6 +1,5 @@
 function [ modelout,neworder] = reordercomponents( model,varargin )
-% Order PARAFAC model components by their emission maximum
-% Doc to follow
+% Internal function, hence no documentation.
 %% Input parsing
 if nargin==1
     method='emmax';

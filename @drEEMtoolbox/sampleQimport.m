@@ -1,4 +1,6 @@
 function dataout = sampleQimport(workingpath,data)
+% This function is part of undocumented drEEM and not intended for general use
+
 %% Finding files
 disp('   Importing *.ogw samples...')
 oldpath=pwd;

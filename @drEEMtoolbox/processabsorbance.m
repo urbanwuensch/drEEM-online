@@ -10,8 +10,15 @@ function dataout = processabsorbance(data,options)
 % zero (1,:)            {mustBeNumericOrLogical} = false
 % extrapolate (1,:)     {mustBeNumericOrLogical} = true
 % options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
-
-
+%
+% <strong>EXAMPLE(S)</strong>
+%   1. correct CDOM baseline, extrapolate if EEM wavelength coverage is 
+%   different from CDOM, and plot outcomes
+%       samples = tbx.processabsorbance(samples);
+%   3. Just carry out a baseline correction
+%       samples = tbx.processabsorbance(samples,correctBase=true,extrapolate=false,zero=false);
+%   4. Do something, but please don't show that final plot
+%       samples = tbx.processabsorbance(samples,...,plot=false);
 
 arguments
     % Required

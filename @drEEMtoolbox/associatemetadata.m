@@ -1,15 +1,23 @@
 function dataout = associatemetadata(data,pathtofile,metadatakey,datakey)
 % <a href = "matlab:doc associatemetadata">dataout = associatemetadata(data,pathtofile,metadatakey,datakey) (click to access documentation)</a>
 %
-% <strong>Inputs - Required</strong>
+% <strong>INPUTS - Required</strong>
 % data(1,1)           {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
 % pathtofile          {mustBeFile OR mustBeTable}
 % metadatakey (1,:)   {mustBeText}
+%
+% <strong>INPUTS - Optional</strong>
 % datakey (1,:)       {mustBeText} = 'filelist';
+%
+% <strong>EXAMPLE(S)</strong>
+%   1. merge metadata from file directly into a dataset
+%       samples = tbx.associatemetadata(samples,"metadata.xls",'EEMfile');
+%   2. merge metadata from existing (already loaded) table into a dataset
+%       samples = tbx.associatemetadata(samples,someTable,'EEMfile');
 
 arguments
     data(1,1)           {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
-    pathtofile
+    pathtofile          {assocMetaValidator(pathtofile)}
     metadatakey (1,:)   {mustBeText}
     datakey (1,:)       {mustBeText} = 'filelist';
 end
@@ -281,4 +289,13 @@ function mdnew = metadataconverter(metadata)
         end
         mdnew.(here)=mdconv;
     end
+end
+
+function assocMetaValidator(input)
+mustBeA(input,{'table','char','string'})
+if istable(input)
+else 
+    mustBeText(input)
+    mustBeFile(input)
+end
 end

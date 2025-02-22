@@ -1,14 +1,21 @@
 function dataout = rmspikes(data,options)
 % <a href = "matlab:doc rmspikes">dataout = rmspikes(data,options) (click to access documentation)</a>
 %
-% <strong>Inputs - Required</strong>
+% <strong>INPUTS - Required</strong>
 % data (1,1) {drEEMdataset.validate(data)}
 % 
-% <strong>Inputs - Optional</strong>
+% <strong>INPUTS - Optional</strong>
 % thresholdFactor (1,1) {mustBeNumeric} = 10
 % interpolate (1,:) {mustBeNumericOrLogical} = false
 % details (1,:) {mustBeNumericOrLogical} = false
 % plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
+%
+% <strong>EXAMPLE(S)</strong>
+%   1. Delete signals 10x above the noise floor and don't interpolate
+%       samples = tbx.rmspikes(samples);
+%   3. Delete signals 20x above the noise floor and interpolate over deletions
+%       samples = tbx.rmspikes(samples,thresholdFactor=20,interpolate=true);
+
 
 arguments
     data (1,1) {drEEMdataset.validate(data)}

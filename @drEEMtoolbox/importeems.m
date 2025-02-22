@@ -10,22 +10,17 @@ function data = importeems(filePattern,options)
 % columnIsExcitation (1,:)  {mustBeNumericOrLogical}= true
 % NumHeaderLines (1,1)      {mustBeNumeric}= 0
 % waveDiffTollerance (1,1)  {mustBeNumeric} = 1
+%
+% <strong>EXAMPLE(S)</strong>
+%   1. <strong>Horiba AquaLog</strong>
+%       blanks = tbx.importeems(" - Waterfall Plot Blank.dat");
+%   2. <strong>Horiba FluoroMax</strong>
+%       blanks=tbx.importeems('*.dat','columnIsExcitation',true,'columnWave',240:10:450);
+%   2. <strong>Cary Eclipse</strong>
+%       samples=tbx.importeems("*.csv","columnIsExcitation",true);
+%   3. <strong>Jasco csv-files with large header</strong>
+%       Not supported due to complex file format. Contact dreem@openfluor.net 
 
-%% Description:
-%   Import excitation-emission-matrices
-%
-%   
-%% Syntax:
-%   data = importeems(filePattern,options)
-%
-%% Input:
-%   filePattern - string or character array [1 x :]
-%     specifies the name pattern for import (e.g. "*SEM.dat")
-%   options - Name,Value arguments
-%
-%% Output:
-%   drEEMdataset
-%
 
 arguments
         % Inputs - Required

@@ -4,6 +4,11 @@ function dataout = ifecorrection(data,options)
 % <strong>Inputs - Required</strong>
 % data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),drEEMdataset.sanityCheckIFE(data)}
 % options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
+%
+% <strong>EXAMPLE(S)</strong>
+%   1. samples = ifecorrection(samples)
+%   1. samples = ifecorrection(samples,plot=false) (no final overview over IFE)
+
 arguments
     data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),...
         drEEMdataset.sanityCheckIFE(data)}

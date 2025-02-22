@@ -1,9 +1,12 @@
 function dataout = changestatus(data)
 % <a href = "matlab:doc changestatus">dataout = changestatus(data) (click to access documentation)</a>
 %
-% <strong>Inputs - Required</strong>
+% <strong>INPUTS - Required</strong>
 % data (1,1)  {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
-% 
+%
+% <strong>EXAMPLE(S)</strong>
+%   samples = tbx.changestatus(samples); (follow the GUI advice)
+
 
 arguments
     data (1,1)  {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
@@ -20,6 +23,6 @@ end
     catch
         error('setstatus closed before save & exit button was pushed.')
     end
-    assignin("base",x_name,dataout)
-    disp(['Data status of ',char(x_name),' changed (Workspace variable replaced with updated version).'])
+    % assignin("base",x_name,dataout)
+    % disp(['Data status of ',char(x_name),' changed (Workspace variable replaced with updated version).'])
 end

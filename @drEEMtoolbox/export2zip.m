@@ -1,4 +1,14 @@
 function export2zip(data,filename)
+% <a href = "matlab:doc export2zip">export2zip(data,filename) (click to access documentation)</a>
+%
+% <strong>INPUTS - Required</strong>
+% data (1,1)      {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+% filename (1,:)  {mustBeText}
+%
+% <strong>EXAMPLE(S)</strong>
+%   1. Export sample and blank EEMs, dataset status, history, and
+%   processing steps to a zip file including README.txt for upload to data  repository
+%       tbx.export2zip(samples,'project_XY_asPublished',char(datetime('today'))]);
 
 arguments
     data (1,1) {mustBeA(data,'drEEMdataset'),drEEMdataset.validate(data)}

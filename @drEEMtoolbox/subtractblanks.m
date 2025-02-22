@@ -7,7 +7,12 @@ function dataout = subtractblanks(samples,blanks,options)
 % blanks (1,1)  {mustBeNonempty,drEEMdataset.validate(blanks),...
 %     drEEMdataset.sanityCheckBlankSubtraction(blanks)}
 % plot (1,1) {mustBeNumericOrLogical} = samples.toolboxOptions.plotByDefault;
-
+%
+% <strong>EXAMPLE(S)</strong>
+%   1. Blank subtraction with visual output for inspection
+%       samples = tbx.subtractblanks(samples,blanks)
+%   2. Blank subtraction without visual output (not recommended)
+%       samples = tbx.subtractblanks(samples,blanks,plot=false)
 arguments
     samples (1,1) {mustBeNonempty,drEEMdataset.validate(samples),...
         drEEMdataset.sanityCheckBlankSubtraction(samples)}

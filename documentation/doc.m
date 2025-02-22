@@ -1,4 +1,7 @@
 function doc(functionname)
+arguments
+    functionname (1,:) {mustBeText(functionname)}
+end
 % drEEM-specific function for displaying custom formatted documentation
 % (c) Urban Wuensch, 2019
 %% Function init
@@ -19,6 +22,13 @@ if nargin==0
     help
     return
 end
+
+% Digest some of the automated attempts for documentation calls and
+% redirect them
+if matches(functionname,'dreemtoolbox')
+    functionname='dreem';
+end
+
 
 % Search for existing documentation based on entries in "functiondirectory"
 try

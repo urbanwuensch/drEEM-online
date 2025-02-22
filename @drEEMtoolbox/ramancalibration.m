@@ -12,6 +12,16 @@ function dataout = ramancalibration(samples,blanks,options)
 % iStart (1,1) {mustBeNumeric} = 378
 % iEnd   (1,1) {mustBeNumeric} = 424
 % options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
+% <strong>EXAMPLE(S)</strong>
+%   1. Trust us, but verify(!)
+%       samples = tbx.ramancalibration(samples,blanks);
+%   2. Trust us, and fly blind (only recommended if you have verified defaults!)
+%       samples = tbx.ramancalibration(samples,blanks,plot=false);
+%   3. Longer integration times, wider peak
+%       samples = tbx.ramancalibration(samples,blanks,iStart=375,iEnd=430);
+%   4. Different Raman peak (you decide start and end wavelength of peaks visually please)
+%       samples = tbx.ramancalibration(samples,blanks,ExWave=275,iStart=...,iEnd=...);
+
 
 arguments
     % Required
