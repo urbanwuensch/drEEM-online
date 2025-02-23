@@ -25,8 +25,8 @@ function dataout=subdataset(data,options)
 arguments
     data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
     options.outSample (1,:) {mustBeA(options.outSample,'logical'),outSampleVal(data,options.outSample)} = false
-    options.outEm (1,:) {mustBeA(options.outEm,'logical')} = false
-    options.outEx (1,:) {mustBeA(options.outEx,'logical')} = false
+    options.outEm (1,:) {mustBeA(options.outEm,'logical'),outEmVal(data,options.outEm)} = false
+    options.outEx (1,:) {mustBeA(options.outEx,'logical'),outExVal(data,options.outEx)} = false
 end
 % Experimental feature; overwrite workspace variable, needs no outputarg check
 if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
@@ -121,7 +121,46 @@ end
 end
 
 function outSampleVal(data,outSample)
-if not(size(outSample,1)==data.nSample)
-    error(['outSample must be specified as logical array of the size [',num2str(data.nSample),' x 1]'])
+if isscalar(outSample)&&not(outSample)
+    return
+end
+if not(size(outSample,2)==data.nSample)
+    message=['<strong>outSample must be specified as logical array of the size [', ...
+        num2str(data.nSample),' x 1].</strong> Why? ' ...
+        'subdataset works with results of comparisons. E.g. ' ...
+        'outSample=matches(data.filelist,''sample01''), ' ...
+        'outSample=contains(data.metadata.location,''siteA''), ' ...
+        'or outSample=data.i==1. '];
+    throwAsCaller(MException("drEEM:invalid",message))
+end
+end
+
+function outEmVal(data,outEm)
+if isscalar(outEm)&&not(outEm)
+    return
+end
+if not(size(outEm,2)==data.nEm)
+    message=['<strong>outEm must be specified as logical array of the size [', ...
+        num2str(data.nEm),' x 1].</strong> Why? ' ...
+        'subdataset works with results of comparisons. E.g. ' ...
+        'outEm=data.Em<300, ' ...
+        'outEm=data.Em<300|data.Em>700, ' ...
+        'or outEm=tbx.isNearest(data.Em,350). '];
+    throwAsCaller(MException("drEEM:invalid",message))
+end
+end
+
+function outExVal(data,outEx)
+if isscalar(outEx)&&not(outEx)
+    return
+end
+if not(size(outEx,2)==data.nEx)
+    message=['<strong>outEx must be specified as logical array of the size [', ...
+        num2str(data.nEx),' x 1].</strong> Why? ' ...
+        'subdataset works with results of comparisons. E.g. ' ...
+        'outEx=data.Ex<240, ' ...
+        'outEx=data.Ex<240|data.Ex>450, ' ...
+        'or outEx=tbx.isNearest(data.Ex,255). '];
+    throwAsCaller(MException("drEEM:invalid",message))
 end
 end

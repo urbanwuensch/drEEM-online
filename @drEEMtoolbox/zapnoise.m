@@ -132,16 +132,14 @@ end
 
 end
 
-function mustBeI(data,sampleIdent)
-idx=find(data.i==sampleIdent); %#ok<EFIND>
-if isempty(idx)
-    error('sampleIdent must point to a number that exists in data.i')
-end
-
-end
-
 function outSampleVal(data,outSample)
-if not(size(outSample,1)==data.nSample)
-    error(['outSample must be specified as logical array of the size [',num2str(data.nSample),' x 1]'])
+if not(size(outSample,2)==data.nSample)
+message=['<strong>sampleIdent must be specified as logical array of the size [', ...
+    num2str(data.nSample),' x 1].</strong> Why? ' ...
+    'zapnoise works with results of comparisons. E.g. ' ...
+    'sampleIdent=matches(data.filelist,''sample01''),' ...
+    ' sampleIdent=contains(data.metadata.location,''siteA''),' ...
+    ' or sampleIdent=data.i==1.'];
+throwAsCaller(MException("drEEM:invalid",message))
 end
 end
