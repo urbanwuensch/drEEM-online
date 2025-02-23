@@ -215,10 +215,10 @@ classdef drEEMtoolbox < handle
         function viewscatter(data)
             viewscatter(data)
         end
-
         function viewabsorbance(data)
             viewabsorbance(data)
         end
+        [summary,M]  =  viewopenfluormatches(filename)
 
     end
 
