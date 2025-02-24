@@ -146,7 +146,7 @@ if options.plot
     
     
     ax=nexttile(t);
-    plot(ax,blanks.Em,squeeze(blanks.X(:,:,mindist(blanks.Ex,275))))
+    plot(ax,blanks.Em,squeeze(blanks.X(:,:,drEEMtoolbox.mindist(blanks.Ex,275))))
     xline(ax,ray1,'Color','r')
     xline(ax,ray2,'Color','r')
     xline(ax,ram1,'Color','b')
@@ -157,7 +157,7 @@ if options.plot
     ylabel(ax,'Fluorescence intensity')
     
     ax=nexttile(t);
-    plot(ax,dataout.Em,squeeze(dataout.X(:,:,mindist(dataout.Ex,275))))
+    plot(ax,dataout.Em,squeeze(dataout.X(:,:,drEEMtoolbox.mindist(dataout.Ex,275))))
     xline(ax,ray1,'Color','r')
     xline(ax,ray2,'Color','r')
     xline(ax,ram1,'Color','b')

@@ -66,10 +66,11 @@ if options.plot
     end
     f.Name='drEEM: ifecorrection.m';
     t=tiledlayout(f);
-    mesh(nexttile(t),dataout.Ex,dataout.Em,squeeze(mean(IFCmat,1,"omitmissing")))
-    title('Average Inner-filter effect correction matrix')
-    xlabel('Excitation (nm)')
-    ylabel('Emission (nm)')
+    ax=nexttile(t);
+    mesh(ax,dataout.Ex,dataout.Em,squeeze(mean(IFCmat,1,"omitmissing")))
+    title(ax,'Average Inner-filter effect correction matrix')
+    xlabel(ax,'Excitation (nm)')
+    ylabel(ax,'Emission (nm)')
 end
 
 % Will only run if toolbox is set to overwrite workspace variable and user
