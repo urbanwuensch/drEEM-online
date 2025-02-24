@@ -184,7 +184,7 @@ classdef drEEMtoolbox < handle
         dataout = fitparafac(data,options)
         dataout = splitdataset(data,options)
         dataout = splitvalidation(data,fac)
-        function fmax = scores2fmax(data,f)
+        fmax = scores2fmax(data,f)
 
         % Data export
         export2openfluor(data, f, filename)
