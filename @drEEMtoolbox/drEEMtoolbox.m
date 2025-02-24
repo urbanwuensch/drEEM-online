@@ -191,7 +191,7 @@ classdef drEEMtoolbox < handle
         export2zip(data,filename)
         %export2netcdf(data,filename)
         exportresults(data,filename,f,name_value)
-        %fhandle = reportresidualanalysis(data,ftarget,mdfield)
+        % fhandle = reportresidualanalysis(data,ftarget,mdfield)
 
         % Visualization (incl. app workarounds)
         spectralvariance(data)
@@ -210,9 +210,9 @@ classdef drEEMtoolbox < handle
         function viewhistory(data)
             viewhistory(data)
         end
-        function explorevariability(data)
-            spectralvariance(data)
-        end
+        % function explorevariability(data)
+        %     explorevariability(data)
+        % end
         function viewscatter(data)
             viewscatter(data)
         end

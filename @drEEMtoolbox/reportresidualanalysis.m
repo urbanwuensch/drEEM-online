@@ -34,9 +34,9 @@ for j=1:numel(f)
 end
 
 if data.toolboxdata.uifig
-    fh=dreemuifig;
+    fh=drEEMtoolbox.dreemuifig;
 else
-    fh=dreemfig;
+    fh=drEEMtoolbox.dreemfig;
 end
 fh.Name='drEEM: reportresidualanalysis.m';
 t=tiledlayout(fh,"flow");
@@ -136,8 +136,8 @@ end
 title(t,{'Report: PCA analysis of PARAFAC residuals:',...
     ['Overview and in-depth plots for ',num2str(ftarget),'-component PARAFAC model']})
 warning off
-scifig('width',18,'height',12,'font','Arial','FontSize',9);
-labelplots(-0.05,0.07,'^');
+scifig('width',18,'height',12,'font','Arial','FontSize',9,axes=ax,figure=fh);
+% labelplots(-0.05,0.07,'^',ax);
 warning on
 fhandle=fh;
 
@@ -176,7 +176,8 @@ params.addParameter('width', 8, @isnumeric);
 params.addParameter('height', 7, @isnumeric);
 params.addParameter('font', 'Source Sans Pro', @ischar);
 params.addParameter('fontsize', 8, @isnumeric);
-params.addParameter('axes', 'nocreate', @ischar);
+params.addParameter('axes', 'nocreate', @isgraphics);
+params.addParameter('figure', 'nocreate');
 
 params.parse(varargin{:});
 
@@ -186,16 +187,15 @@ font  = params.Results.font;
 fontsz = params.Results.fontsize;
 axcreate = params.Results.axes;
 
-fhandle=gcf;
+fhandle=params.Results.figure;
 
 %% Configure the figure
-set(fhandle,'InvertHardcopy','off','Color',[1 1 1]);
+% set(fhandle,'InvertHardcopy','off','Color',[1 1 1]);
 set(fhandle, 'units', 'centimeters');
 % fhandle.Renderer='Painters';
 Cpos=get(fhandle,'pos');
 set(fhandle,'pos', [Cpos(1) Cpos(2) width height]);
 movegui(fhandle,'center');
-drawnow
 
 %% Configure the axes
 ax = (findobj(fhandle, 'type', 'axes'));
@@ -283,6 +283,8 @@ switch class(c)
             cats(isnan(cats)) = []; % remove all nans
             cats(end+1) = NaN; % add the unique one.
         end
+    otherwise
+        error(['unknown class: ',char(class(c))])
 end
 
 ncats = numel(cats);
