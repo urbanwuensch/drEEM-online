@@ -95,7 +95,9 @@ for j=1:3%numel(fitSpecs)
                     case 'missing data'
                         warning([fitSpecs(j).ident,' fit: <strong>Too much missing data</strong> for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
                 end
-                cnt=cnt+1;waitbar(cnt./(data.nSample),wb,'Fitting spectral slopes... (exponential S)');    
+                if not(options.quiet)
+                    cnt=cnt+1;waitbar(cnt./(data.nSample),wb,'Fitting spectral slopes... (exponential S)');
+                end
             end
         case {'S275','S350'}
             for i=1:data.nSample
@@ -112,8 +114,9 @@ for j=1:3%numel(fitSpecs)
                     case 'missing data'
                         warning([fitSpecs(j).ident,' fit: <strong>Too much missing data</strong> for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
                 end
-
-                cnt=cnt+1;waitbar(cnt./(data.nSample*2),wb,'Fitting spectral slopes... (short-range S)');    
+                if not(options.quiet)
+                    cnt=cnt+1;waitbar(cnt./(data.nSample*2),wb,'Fitting spectral slopes... (short-range S)');
+                end
             end
     end
 end
