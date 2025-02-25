@@ -87,13 +87,15 @@ for j=1:3%numel(fitSpecs)
                 y=fitSpecs(j).abs(i,:);
                 results(j,i) = customexpofit(x,y,options); %#ok<*AGROW>
                 warning on
-                switch results(j,i).outcome
-                    case 'error'
-                        warning([fitSpecs(j).ident,' fit: <strong>error</strong> for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
-                    case 'poor fit'
-                        warning([fitSpecs(j).ident,' fit: <strong> poor fit</strong> for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
-                    case 'missing data'
-                        warning([fitSpecs(j).ident,' fit: <strong>Too much missing data</strong> for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
+                if not(options.quiet)
+                    switch results(j,i).outcome
+                        case 'error'
+                            warning([fitSpecs(j).ident,' fit: <strong>error</strong> for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
+                        case 'poor fit'
+                            warning([fitSpecs(j).ident,' fit: <strong> poor fit</strong> for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
+                        case 'missing data'
+                            warning([fitSpecs(j).ident,' fit: <strong>Too much missing data</strong> for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
+                    end
                 end
                 if not(options.quiet)
                     cnt=cnt+1;waitbar(cnt./(data.nSample),wb,'Fitting spectral slopes... (exponential S)');
@@ -105,14 +107,15 @@ for j=1:3%numel(fitSpecs)
                 y=log(y);
                 x=fitSpecs(j).absWave;
                 results(j,i) = customlmfit(x,real(y'),options);
-
-                switch results(j,i).outcome
-                    case 'error'
-                        warning([fitSpecs(j).ident,' fit error for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
-                    case 'poor fit'
-                        warning([fitSpecs(j).ident,' poor fit for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
-                    case 'missing data'
-                        warning([fitSpecs(j).ident,' fit: <strong>Too much missing data</strong> for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
+                if not(options.quiet)
+                    switch results(j,i).outcome
+                        case 'error'
+                            warning([fitSpecs(j).ident,' fit error for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
+                        case 'poor fit'
+                            warning([fitSpecs(j).ident,' poor fit for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
+                        case 'missing data'
+                            warning([fitSpecs(j).ident,' fit: <strong>Too much missing data</strong> for sample ',data.filelist{i}, '; data.i=',num2str(data.i(i))])
+                    end
                 end
                 if not(options.quiet)
                     cnt=cnt+1;waitbar(cnt./(data.nSample*2),wb,'Fitting spectral slopes... (short-range S)');
