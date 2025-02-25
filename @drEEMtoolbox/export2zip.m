@@ -29,6 +29,11 @@ data.history(idx,1)=...
 % Digest filename
 filename=[char(erase(filename,'.zip')),'.zip'];
 
+% delete file if already exists
+if exist(filename,"file")
+    delete(filename)
+end
+
 % Prepare temp folder for the export
 tempfolder='drEEMexportTemporary';
 mkdir(tempfolder)
@@ -37,15 +42,8 @@ cd(tempfolder)
 
 % Export dataset history
 % disp(['<strong> Writing to file: ',filename,'</strong>'])
-t=drEEMhistory.convert2table(data.history);
-t.backup=[];t.previous=[];
-
-t.Properties.VariableNames={'Date / time','Method name','Function message','details','Comment by analyst'};
-
-t=t(:,[1 2 5 3]);
-
-writetable(t,'dataset_history.csv',...
-    "WriteMode","overwrite")
+t=historyConverter(data);
+writetable(t,'dataset_history.xlsx',"FileType",'spreadsheet')
 
 % Export dataset status
 flds=fieldnames(data.status);
@@ -62,6 +60,8 @@ stat.Step={'Spectral correction';...
     'Scatter treatment';...
     'Fluorescence signal scaling';...
     'Absorbance unit'};
+stat.Aspect=[];
+stat=stat(:,[2 1]);
 warning on
 writetable(stat,'dataset_status.csv',...
     "WriteMode","overwrite")
@@ -174,13 +174,17 @@ fclose(fid);                  % Close the file (important)
 % export dataset as mat file.
 warning off
 temp=struct(data);
-temp2=rmfield(temp,{'history','models'});
+temp2=rmfield(temp,{'history','models','split','status'});
 for j=1:numel(temp.history)
     temp2.history(j,1)=struct(temp.history(j));
 end
 for j=1:numel(temp.models)
     temp2.models(j,1)=struct(temp.models(j));
 end
+for j=1:numel(temp.split)
+    temp2.split(j,1)=struct(temp.split(j));
+end
+temp2.status=struct(temp.status);
 warning on
 dataExported=temp2;
 clearvars temp temp2
@@ -220,10 +224,88 @@ if not(isempty(data.abs))
         absData=array2table(absData,"VariableNames",{'wavelength',data.status.absorbanceUnit});
         writetable(absData,[data.filelist{j},'.csv'],"Delimiter",',','WriteMode','overwrite')
     end
+end
 cd ..
-zip(filename,{'absorbance spectra','EEMs','*.csv','*.mat','*.txt'});
+zip(filename,{'absorbance spectra','EEMs','*.csv','*.mat','*.txt','*.xlsx'});
 movefile([pwd,filesep,filename],[rootdir,filesep,filename])
 cd(rootdir)
 rmdir("drEEMexportTemporary",'s')
+
+end
+
+
+function tbl=historyConverter(data)
+arguments
+    data {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+end
+
+t=drEEMhistory.convert2table(data.history);
+
+tno=table((1:height(t))',VariableNames={'#'});
+t=[tno,t];
+history=t;
+%history=struct2table(history);
+%{'timestamp','fname','fmessage','details','backup','previous','usercomment'}
+history=history(:,[1:4 8]);
+
+% Work in progress for multiple entries
+tbl=history;
+count=1;
+while count<=height(tbl)
+    % store the comments separately
+    cmts=string(tbl.usercomment{count});
+    nCmts=numel(cmts);
+    cnt=1;
+    if nCmts==1
+        %tbl.usercomment(count)=cmts;
+    elseif nCmts>1
+        % If multiple comments split the table
+        t1=tbl(1:count,:);
+        t2=tbl(count+1:end,:);
+        % First table get's first comment
+        t1.usercomment{count}=cmts(1);
+        % First comment get's deleted
+        cmts(1)=[];
+        % interjected table gets created
+        ti=t1; % Make it based on the 1st half
+        ti=ti(count,:); % delete all but one row
+        ti.usercomment={""};
+        ti.timestamp=missing;
+        ti.fname=""; % Just keeping the fname here for the moment.
+        ti.fmessage="";
+        hno=ti.("#");
+        warning off
+        while numel(cmts)>0
+            ti.usercomment(cnt)={cmts(1)};
+            % These things need to be repeated if more than one
+            % additional comment is there
+            ti.timestamp(cnt)=missing;
+            ti.fname(cnt)=""; % Just keeping the fname here for the moment.
+            ti.fmessage(cnt)="";
+            ti.("#")(cnt)=hno;
+            % delete the comment and increase the count
+            cmts(1)=[];
+            cnt = cnt + 1;
+        end
+        warning on
+        tbl=[t1;ti;t2];
+    end
+    count=count+cnt;
+end
+tbl.timestamp=[];
+tbl.Properties.VariableNames={'#','Function','Function message','User comment'};
+tbl=tbl(:,[1 2 4 3]);
+
+% Old (no multiple entry support)
+% t.details=[];
+% t.backup=[];
+% t.previous=[];
+% t.Properties.VariableNames={'Date/time','Function','Function message','User comment'};
+% t.Function=categorical(t.Function);
+% t.('Function message')=categorical(t.('Function message'));
+% t.('#')=(1:height(t))';
+% t=t(:,[end 1 2 4 3]);
+% disp(t)
+
 
 end

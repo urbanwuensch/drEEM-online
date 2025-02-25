@@ -42,13 +42,7 @@ end
 
 % Export dataset history
 disp(['<strong> Writing to file: ',filename,'</strong>'])
-t=drEEMhistory.convert2table(data.history);
-t.backup=[];t.previous=[];
-
-t.Properties.VariableNames={'Date / time','Method name','Function message','details','Comment by analyst'};
-
-t=t(:,[1 2 5 3]);
-
+t=historyConverter(data);
 writetable(t,filename,"FileType","spreadsheet",...
     "WriteMode","replacefile","Sheet",'dataset history')
 disp('    Finished spreadsheet: dataset history')
@@ -227,6 +221,82 @@ writetable(load,filename,"FileType","spreadsheet",...
 disp('    Finished spreadsheets for selected PARAFAC model (scores and loadings)')
 disp('<strong> Success! Done with result export.</strong>')
 
+
+
+end
+
+function tbl=historyConverter(data)
+arguments
+    data {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+end
+
+t=drEEMhistory.convert2table(data.history);
+
+tno=table((1:height(t))',VariableNames={'#'});
+t=[tno,t];
+history=t;
+%history=struct2table(history);
+%{'timestamp','fname','fmessage','details','backup','previous','usercomment'}
+history=history(:,[1:4 8]);
+
+% Work in progress for multiple entries
+tbl=history;
+count=1;
+while count<=height(tbl)
+    % store the comments separately
+    cmts=string(tbl.usercomment{count});
+    nCmts=numel(cmts);
+    cnt=1;
+    if nCmts==1
+        %tbl.usercomment(count)=cmts;
+    elseif nCmts>1
+        % If multiple comments split the table
+        t1=tbl(1:count,:);
+        t2=tbl(count+1:end,:);
+        % First table get's first comment
+        t1.usercomment{count}=cmts(1);
+        % First comment get's deleted
+        cmts(1)=[];
+        % interjected table gets created
+        ti=t1; % Make it based on the 1st half
+        ti=ti(count,:); % delete all but one row
+        ti.usercomment={""};
+        ti.timestamp=missing;
+        ti.fname=""; % Just keeping the fname here for the moment.
+        ti.fmessage="";
+        hno=ti.("#");
+        warning off
+        while numel(cmts)>0
+            ti.usercomment(cnt)={cmts(1)};
+            % These things need to be repeated if more than one
+            % additional comment is there
+            ti.timestamp(cnt)=missing;
+            ti.fname(cnt)=""; % Just keeping the fname here for the moment.
+            ti.fmessage(cnt)="";
+            ti.("#")(cnt)=hno;
+            % delete the comment and increase the count
+            cmts(1)=[];
+            cnt = cnt + 1;
+        end
+        warning on
+        tbl=[t1;ti;t2];
+    end
+    count=count+cnt;
+end
+tbl.timestamp=[];
+tbl.Properties.VariableNames={'#','Function','Function message','User comment'};
+tbl=tbl(:,[1 2 4 3]);
+
+% Old (no multiple entry support)
+% t.details=[];
+% t.backup=[];
+% t.previous=[];
+% t.Properties.VariableNames={'Date/time','Function','Function message','User comment'};
+% t.Function=categorical(t.Function);
+% t.('Function message')=categorical(t.('Function message'));
+% t.('#')=(1:height(t))';
+% t=t(:,[end 1 2 4 3]);
+% disp(t)
 
 
 end

@@ -60,7 +60,6 @@ tbl.timestamp=[];
 tbl.Properties.VariableNames={'#','Function','Function message','User comment'};
 tbl=tbl(:,[1 2 4 3]);
 disp(tbl);
-
 % Old (no multiple entry support)
 % t.details=[];
 % t.backup=[];

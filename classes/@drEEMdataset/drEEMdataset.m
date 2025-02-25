@@ -48,7 +48,7 @@ classdef drEEMdataset
     methods (Static=true)
         function data = create
             data=drEEMdataset;
-            data.toolboxdata.version = "1.0.0";
+            data.toolboxdata.version = drEEMtoolbox.version;
 
             % https://www.mathworks.com/matlabcentral/fileexchange/16450-get-computer-name-hostname
             [ret, name] = system('hostname');   
