@@ -1,13 +1,13 @@
 function dataout = ifecorrection(data,options)
 % <a href = "matlab:doc ifecorrection">dataout = ifecorrection(data) (click to access documentation)</a>
 %
-% <strong>Inputs - Required</strong>
+% <strong>INPUTS - Required</strong>
 % data (1,1) {mustBeA("drEEMdataset"),drEEMdataset.validate,drEEMdataset.sanityCheckIFE}
 % options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
 %
 % <strong>EXAMPLE(S)</strong>
 %   1. samples = ifecorrection(samples)
-%   1. samples = ifecorrection(samples,plot=false) (no final overview over IFE)
+%   2. samples = ifecorrection(samples,plot=false) (no final overview over IFE)
 
 arguments
     data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),...
