@@ -1,17 +1,13 @@
-function Xout = aqualogimport(workingpath,selector,deselector)
+function Xout = aqualogimport(workingpath,file,selector,deselector)
 % This function is part of undocumented drEEM and not intended for general use
-arguments
-    workingpath (1,:) {mustBeFolder} = pwd
-    selector = []
-    deselector = []
-end
+
 %% Establish a connection to Origin Pro
 try
     disp('   Establishing connection with Origin Pro (1st attempt)...')
     originObj = actxserver('Origin.ApplicationSI');
     invoke(originObj, 'Execute', 'Save');
     invoke(originObj, 'IsModified', 'false');
-    disp('   1st attempt worked. That'' great.')
+    disp('   1st attempt worked. That''s great.')
 catch
     disp('   1st attempt failed. Establishing connection with Origin Pro by jumpstarting the software from within Matlab (2nd attempt)...')
     try
@@ -51,31 +47,39 @@ catch
 end
 %% Finding files
 disp('   Importing samples...')
-disp('   Idefify projects/samples to import (*.ogw first)')
-oldpath=pwd;
-patt='*.ogw';
-if not(contains(workingpath,patt(2:end)))
-    cd(workingpath)
-    pattern=patt;
-else
-    cd(fileparts(workingpath))
-    pattern=erase(workingpath,{fileparts(workingpath),filesep});
-end    
-
-
-clearvars DS
-files=dir(pattern);
-
-if numel(files)==0
-    disp(['   No ',pattern,' files found.'])
-    if matches(pattern,'*.ogw')
-        pattern='*.opj';
+if isempty(file)
+    disp('   Idefify projects/samples to import (*.ogw first)')
+    oldpath=pwd;
+    patt='*.ogw';
+    if not(contains(workingpath,patt(2:end)))
+        cd(workingpath)
+        pattern=patt;
     else
-        pattern='*.ogw';
-    end
-    disp(['   Trying to find',pattern,' files instead.'])
+        cd(fileparts(workingpath))
+        pattern=erase(workingpath,{fileparts(workingpath),filesep});
+    end    
+    
+    
+    clearvars DS
     files=dir(pattern);
-
+    
+    if numel(files)==0
+        disp(['   No ',pattern,' files found.'])
+        if matches(pattern,'*.ogw')
+            pattern='*.opj';
+        else
+            pattern='*.ogw';
+        end
+        disp(['   Trying to find',pattern,' files instead.'])
+        files=dir(pattern);
+    
+    end
+else
+    [filepath,name,ext]=fileparts(file);
+    files.folder=filepath;
+    files.name=[char(name),char(ext)];
+    pattern=char(ext);
+    oldpath=pwd;
 end
 
 
