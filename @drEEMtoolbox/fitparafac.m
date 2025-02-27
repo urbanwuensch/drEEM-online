@@ -290,14 +290,16 @@ try
     poolsize=feature('NumCores');
     p = gcp('nocreate'); % If no pool, do not create new one.
     if isempty(p)
-        parpool('local',poolsize);
+        parpool;
     elseif p.NumWorkers~=poolsize
-        if ~strcmp(consoleoutput,'none')
-            disp('Found existing parpool with wrong number of workers.')
-            disp(['Will now create pool with ',num2str(poolsize),' Workers.'])
-        end
-        delete(p);
-        parpool('local',poolsize);
+        warning(['Found existing parpool, but features("NumCores") is not the ' ...
+            'same as the number of workers. You might want to take a look at your configuration'])
+        % if ~strcmp(consoleoutput,'none')
+        %     disp('Found existing parpool with wrong number of workers.')
+        %     disp(['Will now create pool with ',num2str(poolsize),' Workers.'])
+        % end
+        % delete(p);
+        % parpool('local',poolsize);
     else
         if ~strcmp(consoleoutput,'none')
             disp(['Existing parallel pool of ',num2str(p.NumWorkers),' workers found and used...'])
