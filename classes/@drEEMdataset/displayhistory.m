@@ -59,6 +59,8 @@ end
 tbl.timestamp=[];
 tbl.Properties.VariableNames={'#','Function','Function message','User comment'};
 tbl=tbl(:,[1 2 4 3]);
+tbl.Function=categorical(tbl.Function);
+tbl.("Function message")=categorical(tbl.("Function message"));
 disp(tbl);
 % Old (no multiple entry support)
 % t.details=[];
