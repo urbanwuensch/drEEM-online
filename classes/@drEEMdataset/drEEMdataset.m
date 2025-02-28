@@ -451,6 +451,21 @@ classdef drEEMdataset
             end
         end
 
+        function sanityCheckSpectralCorrection(data)
+            varname = inputname(1);
+            if not(isempty(varname))
+                varname=[varname,': '];
+            end
+            message=[];
+            if not(matches(data.status.spectralCorrection,"not applied"))
+                message=[message,'\n<strong>',varname,'Spectral correction can is only possible dataset status is "not applied".</strong>\n' ...
+                    'Status is "',char(data.status.spectralCorrection),'"\n'];
+            end
+            if not(isempty(message))
+                throwAsCaller(MException("drEEM:Insane",message))
+            end
+        end
+
         function simi=calculateSampleSimilarities(data)
             tens2mat=@(x,sz1,sz2,sz3) reshape(x,sz1,sz2*sz3);
             tcc=@(l1,l2) l1'*l2/(sqrt(l1'*l1)*sqrt(l2'*l2)); % Tucker's congruence coefficient

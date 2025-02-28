@@ -169,6 +169,7 @@ classdef drEEMtoolbox < handle
         dataout = processabsorbance(data,options)
         [dataout,emout,exout] = ifecorrection(data)
         dataout = subtractblanks(samples,blanks)
+        dataout = spectralcorrection(data,options)
         dataout = ramancalibration(samples,blanks,options)
         dataout = handlescatter(data,varargin)
         dataout = subdataset(data,options)
