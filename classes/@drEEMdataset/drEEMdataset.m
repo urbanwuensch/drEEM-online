@@ -458,7 +458,7 @@ classdef drEEMdataset
             end
             message=[];
             if not(matches(data.status.spectralCorrection,"not applied"))
-                message=[message,'\n<strong>',varname,'Spectral correction can is only possible dataset status is "not applied".</strong>\n' ...
+                message=[message,'\n<strong>',varname,'Spectral correction  is only possible if dataset status is "not applied".</strong>\n' ...
                     'Status is "',char(data.status.spectralCorrection),'"\n'];
             end
             if not(isempty(message))
