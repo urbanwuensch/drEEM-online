@@ -51,7 +51,7 @@ dataout.history(idx,1)=...
 
 if options.plot
     % final plots
-    if samples.toolboxOptions.uifig
+    if dataout.toolboxOptions.uifig
         f=drEEMtoolbox.dreemuifig;
     else
         f=drEEMtoolbox.dreemfig;
