@@ -1,6 +1,8 @@
 function export2zip(data,filename)
 % <a href = "matlab:doc export2zip">export2zip(data,filename) (click to access documentation)</a>
 %
+% <strong>Export entire dataset</strong> in accordance to FAIR principles
+%
 % <strong>INPUTS - Required</strong>
 % data (1,1)      {mustBeA("drEEMdataset"),drEEMdataset.validate}
 % filename (1,:)  {mustBeText}

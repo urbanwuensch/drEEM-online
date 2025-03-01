@@ -1,10 +1,12 @@
 function data = importeems(filePattern,options)
 % <a href = "matlab:doc importeems">data = importeems(filePattern,options) (click to access documentation)</a>
 %
-% <strong>Inputs - Required</strong>
+% <strong>Import fluorescence EEMs</strong> and create drEEMdataset
+%
+% <strong>INPUTS - Required</strong>
 % filePattern (1,:)                 {mustBeText}
 % 
-% <strong>Inputs - Optional</strong>
+% <strong>INPUTS - Optional</strong>
 % columnWave (1,:)          {mustBeNumericOrLogical} = true
 % rowWave (1,:)             {mustBeNumericOrLogical} = true
 % columnIsExcitation (1,:)  {mustBeNumericOrLogical}= true

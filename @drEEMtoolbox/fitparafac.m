@@ -1,10 +1,12 @@
 function dataout = fitparafac(data,options)
 % <a href = "matlab:doc fitparafac">dataout = fitparafac(data,options) (click to access documentation)</a>
 %
-% <strong>Inputs - Required</strong>
+% <strong>Fit PARAFAC models to fluorescence data</strong>
+%
+% <strong>INPUTS - Required</strong>
 % data (1,:) {drEEMdataset.sanityCheckPARAFAC(data)}
 % 
-% <strong>Inputs - Optional</strong> 
+% <strong>INPUTS - Optional</strong> 
 % f (1,:)                 {mustBeNumeric,mustBeNonempty} = 2:7
 % mode (1,:)              {mustBeMember(["overall","split"])} = 'overall'
 % constraints (1,:)       {mustBeMember(["unconstrained", "nonnegativity", "unimodnonneg"])} = 'nonnegativity'

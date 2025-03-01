@@ -1,6 +1,8 @@
 function dataout = addcomment(data,comment)
 % <a href = "matlab:doc addcomment">dataout = addcomment(data,comment) (click to access documentation)</a>
 %
+% <strong>Add a comment to a drEEMdataset object</strong> to document your analysis process
+%
 % <strong>INPUTS - Required</strong>
 %   data (1,1)    {mustBeA("drEEMdataset"),drEEMdataset.validate}
 %   comment (1,:) {mustBeText}

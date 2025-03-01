@@ -1,6 +1,8 @@
 function export2openfluor(data, f, filename)
 % <a href = "matlab:doc export2openfluor">export2openfluor(data,f,filename) (click to access documentation)</a>
 %
+% <strong>Export PARAFAC model for OpenFluor comparisons</strong>
+%
 % <strong>INPUTS - Required</strong>
 % data (1,1)      {mustBeA("drEEMdataset"),drEEMdataset.validate}
 % f   (1,1)       {mustBeInteger,drEEMdataset.mustBeModel}

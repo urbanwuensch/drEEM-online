@@ -1,6 +1,8 @@
 function spectralvariance(data)
 % <a href = ""matlab:doc spectralvariance">spectralvariance(data) (click to access documentation)</a>
 %
+% <strong>Inspect the spectral variability</strong> of a drEEMdataset
+%
 % <strong>INPUTS - Required</strong>
 % data      {mustBeA("drEEMdataset")}
 %

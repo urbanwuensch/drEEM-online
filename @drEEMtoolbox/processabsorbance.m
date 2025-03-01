@@ -1,10 +1,12 @@
 function dataout = processabsorbance(data,options)
 % <a href = "matlab:doc processabsorbance">dataout = processabsorbance(data,options) (click to access documentation)</a>
 %
-% <strong>Inputs - Required</strong>
+% <strong>Process CDOM absorbance measurements</strong>
+%
+% <strong>INPUTS - Required</strong>
 % data (1,:) {mustBeA("drEEMdataset"),drEEMdataset.validate,drEEMdataset.sanityCheckAbsorbance}
 %
-% <strong>Inputs - Optional</strong>
+% <strong>INPUTS - Optional</strong>
 % correctBase           {mustBeNumericOrLogical} = true
 % baseWave              {mustBeNumeric,mustBeGreaterThan(580)} = 595
 % zero                  {mustBeNumericOrLogical} = false

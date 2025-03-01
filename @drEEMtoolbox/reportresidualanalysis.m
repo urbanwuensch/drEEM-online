@@ -1,6 +1,8 @@
 function fhandle = reportresidualanalysis(data,ftarget,mdfield)
 % <a href = ""matlab:doc reportresidualanalysis">fhandle = reportresidualanalysis(data,ftarget,mdfield) (click to access documentation)</a>
 %
+% <strong>Perform and export residual analysis</strong>
+%
 % <strong>INPUTS - Required</strong>
 % data      {mustBeA("drEEMdataset")}
 % ftarget   {mustBeNumeric,drEEMdataset.mustBeModel}

@@ -1,6 +1,8 @@
 function varargout = alignsamples(varargin)
 % <a href = "matlab:doc alignsamples">varargout = alignsamples(varargin) (click to access documentation)</a>
 %
+% <strong>Compare filelists between datasets</strong>, align filelists, and delete non-ubiquitous samples
+%
 % <strong>INPUTS - Required</strong>
 % varargin (1,1) {mustBeA("drEEMdataset"),drEEMdataset.validate}
 %

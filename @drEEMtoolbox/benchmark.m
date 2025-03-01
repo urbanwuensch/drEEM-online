@@ -1,6 +1,8 @@
 function  varargout=benchmark
 % <a href = "matlab:doc benchmark">[singlescore,multiscore,tsinglecore] = benchmark (click to access documentation)</a>
-
+%
+% <strong>Perform CPU benchmark</strong> using a PARAFAC problem.
+%
 funmode=parallelcomp;
 
 fpath=[drEEMtoolbox.tbxpath,'documentation',filesep,'benchmarkDataset.mat'];

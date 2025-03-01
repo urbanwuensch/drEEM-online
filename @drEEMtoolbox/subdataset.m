@@ -1,7 +1,9 @@
 function dataout=subdataset(data,options)
 % <a href = "matlab:doc subdataset">dataout=subdataset(data,options) (click to access documentation)</a>
 %
-% <strong>Inputs - Required</strong>
+% <strong>Delete samples or parts of EEMs</strong> from a drEEMdataset
+%
+% <strong>INPUTS - Required</strong>
 % data (1,1) {mustBeA("drEEMdataset"),drEEMdataset.validate}
 % 
 % <strong>Inputs - Optional</strong>

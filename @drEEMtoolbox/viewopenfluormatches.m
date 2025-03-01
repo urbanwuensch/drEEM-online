@@ -1,6 +1,8 @@
 function [summary,M]  =  viewopenfluormatches(filename)
 % <a href = "matlab:doc viewopenfluormatches">[summary,M] = viewopenfluormatches(filename) (click to access documentation)</a>
 %
+% <strong>Import results from OpenFluor</strong> for analysis
+%
 % <strong>Inputs - Required</strong>
 % filename (1,:) {mustBeFile}
 %

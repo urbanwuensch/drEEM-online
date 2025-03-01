@@ -1,10 +1,12 @@
 function dataout = handlescatter(data,option)
 % <a href = "matlab:doc handlescatter">dataout = handlescatter(data,option) (click to access documentation)</a>
 %
-% <strong>Inputs - Required</strong>
+% <strong>Remove Rayleigh and Raman scatter</strong> from fluorescence data
+%
+% <strong>INPUTS - Required</strong>
 % data      must be a drEEMdataset or the string "options"
 % 
-% <strong>Inputs - Optional</strong>
+% <strong>INPUTS - Optional</strong>
 % option    if supplied, must be a handlescatterOptions object or the string "gui"
 %
 % <strong>EXAMPLE(S)</strong>

@@ -1,6 +1,8 @@
 function dataout = scalesamples(data,option)
 % <a href = "matlab:doc scalesamples">dataout = scalesamples(data,option) (click to access documentation)</a>
 %
+% <strong>Scale samples</strong> of a dataset by the nth root of the standard deviation
+%
 % <strong>INPUTS - Required</strong>
 % data (1,1) {mustBeA("drEEMdataset"),drEEMdataset.validate}
 % option (1,:) {mustBeNumeric OR mustBeMember(["reverse","help"])} = 2

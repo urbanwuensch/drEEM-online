@@ -1,7 +1,9 @@
 function dataout = splitvalidation(data,fac)
 % <a href = "matlab:doc splitvalidation">dataout = splitvalidation(data,fac) (click to access documentation)</a>
 %
-% <strong>Inputs - Required</strong>
+% <strong>Compare PARAFAC models</strong> of a dataset to validate a model
+%
+% <strong>INPUTS - Required</strong>
 % data (1,1) {mustBeNonempty,drEEMdataset.validate}
 % fac (1,1)  {mustBeInteger,drEEMdataset.mustBeModel}
 %

@@ -1,10 +1,12 @@
 function data = importabsorbance(filePattern,options)
 % <a href = "matlab:doc importabsorbance">data = importabsorbance(filePattern,options) (click to access documentation)</a>
 %
-% <strong>Inputs - Required</strong>
+% <strong>Import absorbance measurements</strong> and create drEEMdataset
+%
+% <strong>INPUTS - Required</strong>
 % filePattern (1,:)     {mustBeText}
 % 
-% <strong>Inputs - Optional</strong>
+% <strong>INPUTS - Optional</strong>
 % waveColumn (1,:)      {mustBeNumeric} = 1
 % absColumn (1,:)       {mustBeNumeric} = 10
 % NumHeaderLines (1,1)  {mustBeNumeric}= 0

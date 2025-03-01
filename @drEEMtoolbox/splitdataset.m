@@ -1,10 +1,12 @@
 function dataout = splitdataset(data,options)
 % <a href = "matlab:doc splitdataset">dataout = splitdataset(data,options) (click to access documentation)</a>
 %
-% <strong>Inputs - Required</strong>
+% <strong>Split dataset into subsets</strong> for split-validation of PARAFAC models
+%
+% <strong>INPUTS - Required</strong>
 % data {drEEMdataset.validate}
 % 
-% <strong>Inputs - Optional</strong>
+% <strong>INPUTS - Optional</strong>
 % options.splitType (1,:) {mustBeMember(["blind","byMetadata"])} = "blind"
 % options.blindType (1,:)     {mustBeMember(["alternating","random","contiguous"])} = "alternating"
 % options.metadataColumn (1,:)    {drEEMdataset.mustBeMetadataColumn} = []

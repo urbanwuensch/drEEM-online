@@ -1,6 +1,8 @@
 function dataout = ifecorrection(data,options)
 % <a href = "matlab:doc ifecorrection">dataout = ifecorrection(data) (click to access documentation)</a>
 %
+% <strong>Correct inner-filter effects</strong> with the absorbance-based approach
+%
 % <strong>INPUTS - Required</strong>
 % data (1,1) {mustBeA("drEEMdataset"),drEEMdataset.validate,drEEMdataset.sanityCheckIFE}
 % options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;

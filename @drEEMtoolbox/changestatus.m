@@ -1,6 +1,8 @@
 function dataout = changestatus(data)
 % <a href = "matlab:doc changestatus">dataout = changestatus(data) (click to access documentation)</a>
 %
+% <strong>Manually change the processing status</strong> of a drEEMdataset
+%
 % <strong>INPUTS - Required</strong>
 % data (1,1)  {mustBeA("drEEMdataset"),drEEMdataset.validate}
 %

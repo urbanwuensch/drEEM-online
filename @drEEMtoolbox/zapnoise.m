@@ -1,6 +1,8 @@
 function dataout = zapnoise(data,sampleIdent,emRange,exRange)
 % <a href = "matlab:doc zapnoise">dataout = zapnoise(data,sampleIdent,emRange,exRange) (click to access documentation)</a>
 %
+% NaN ("zap") parts of individual EEMs to treat outliers.
+%
 % <strong>Inputs - Required</strong>
 % data (1,1)    {mustBeA("drEEMdataset"),drEEMdataset.validate}
 % sampleIdent   {mustBeNonempty(sampleIdent),mustBeA('logical'),outSampleVal(data,sampleIdent)}

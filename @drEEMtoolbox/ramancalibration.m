@@ -1,17 +1,20 @@
 function dataout = ramancalibration(samples,blanks,options)
 % <a href = "matlab:doc ramancalibration">dataout = ramancalibration(samples,blanks,options) (click to access documentation)</a>
 %
-% <strong>Inputs - Required</strong>
+% <strong>Calibrate fluorescence signals</strong> and convert from arbitrary to Raman Units
+%
+% <strong>INPUTS - Required</strong>
 % samples (1,1) {mustBeA(,"drEEMdataset"),drEEMdataset.validate,...
 %     drEEMdataset.sanityCheckSignalCalibration}
 % blanks  (1,1) {mustBeA("drEEMdataset"),drEEMdataset.validate,...
 %     drEEMdataset.sanityCheckSignalCalibration}
 % 
-% <strong>Inputs - Optional</strong>
+% <strong>INPUTS - Optional</strong>
 % ExWave (1,1) {mustBeNumeric} = 350
 % iStart (1,1) {mustBeNumeric} = 378
 % iEnd   (1,1) {mustBeNumeric} = 424
-% options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
+% plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
+%
 % <strong>EXAMPLE(S)</strong>
 %   1. Trust us, but verify(!)
 %       samples = tbx.ramancalibration(samples,blanks);

@@ -1,6 +1,8 @@
 function dataout = associatemetadata(data,pathtofile,metadatakey,datakey)
 % <a href = "matlab:doc associatemetadata">dataout = associatemetadata(data,pathtofile,metadatakey,datakey) (click to access documentation)</a>
 %
+% <strong>Integrate metadata</strong> into drEEMdataset
+%
 % <strong>INPUTS - Required</strong>
 % data(1,1)           {mustBeA("drEEMdataset"),drEEMdataset.validate}
 % pathtofile          {mustBeFile OR mustBeTable}

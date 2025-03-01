@@ -1,7 +1,9 @@
 function dataout = subtractblanks(samples,blanks,options)
 % <a href = "matlab:doc subtractblanks">dataout = subtractblanks(samples,blanks) (click to access documentation)</a>
 %
-% <strong>Inputs - Required</strong>
+% <strong>Subtract blank dataset from sample dataset</strong>
+%
+% <strong>INPUTS - Required</strong>
 % samples (1,1) {drEEMdataset.validate,...
 %     drEEMdataset.sanityCheckBlankSubtraction}
 % blanks (1,1)  {drEEMdataset.validate(blanks),...
