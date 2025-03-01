@@ -171,6 +171,77 @@ if not(isempty(remEm))
 end
 
 
+
+%% Finishing up
+dataout=data;
+% Final interpolation replaced all NaN's (even scatter diagonals)
+Xi(isnan(data.(Xname)))=nan;
+
+dataout.(Xname)=Xi;
+
+
+
+%% Plot the results for trouble shooting
+vec=@(x) x(:);
+if diagn
+    if diagn
+        if data.toolboxOptions.uifig
+            fig=drEEMtoolbox.dreemuifig;
+        else
+            fig=drEEMtoolbox.dreemfig;
+        end
+        set(fig,Units='normalized',Position=[.1 .1 .6 .6])
+        movegui(fig,'center')
+        huic = uicontrol(fig,'Style', 'pushbutton','String','Next',...
+            'Units','normalized','Position', [0.9323 0.0240 0.0604 0.0500],...
+            'Callback',{@pltnext});
+
+        t=tiledlayout(fig,'flow');
+        for k=1:4
+            ax(k)=nexttile(t);
+        end
+    end
+    ax=ax([1 4 3 2]);
+    uialert(fig,['Click next to jump to the next sample. ' ...
+        'Closing the figure will stop the plotting and complete' ...
+        ' the function execution'],'Information',Icon='info')
+    for j=1:nSample
+        mesh(ax(1),data.Ex,data.Em,squeeze(Xorg(j,:,:)))
+        mesh(ax(2),data.Ex,data.Em,squeeze(xreint(j,:,:)),'FaceColor','k','EdgeColor',[0.6         0.6           1])
+        hold(ax(2),'on')
+        mesh(ax(2),data.Ex,data.Em,cuttoff,'FaceColor','r','EdgeColor','none','FaceAlpha',0.7)
+        hold(ax(2),'off')   
+        mesh(ax(3),data.Ex,data.Em,squeeze(Xorg(j,:,:))) % Old: XorgNaN(j,:,:))
+
+        hold(ax(3),'on')
+        [X,Y] = meshgrid(data.Ex,data.Em);
+        scatter3(ax(3),vec(X),vec(Y),vec(squeeze(Xmarked1(j,:,:))),'filled','r')
+        hold(ax(3),'off')
+
+          
+
+
+        mesh(ax(4),data.Ex,data.Em,squeeze(Xi(j,:,:)))
+        
+        title(t,[num2str(j),' of ',num2str(data.nSample),'. data.i=',num2str(data.i(j)),' filename: ',data.filelist{j}])
+        title(ax(1),'original data')
+        title(ax(2),'| data - smoothed data| & threshold plane (red)')
+        title(ax(3),'original data (removals marked)')
+        title(ax(4),'final output')
+        colormap(fig,turbo)
+        xlabel(t,'Exication (nm)')
+        ylabel(t,'Emission (nm)')
+        for k=1:numel(ax)
+            view(ax(k),78,64)
+        end
+%         view(ax(1),[90 10.7])
+%         view(ax(4),[90 10.7])
+        uicontrol(huic)
+        uiwait(fig)
+        if ~ishandle(fig); return; end % Ends function when plot is closed by user
+    end
+end
+%% Plot the final results
 if plt
 
     f=uifigure;
@@ -192,68 +263,7 @@ if plt
     title(t,'Removal overview: %-age removed per sample')
 
 end
-
-%% Finishing up
-dataout=data;
-% Final interpolation replaced all NaN's (even scatter diagonals)
-Xi(isnan(data.(Xname)))=nan;
-
-dataout.(Xname)=Xi;
-
-
-
-%% Plot the results for trouble shooting
-vec=@(x) x(:);
-if diagn
-    if diagn
-        fig=drEEMtoolbox.dreemfig;
-        try
-            WinOnTop
-        catch
-        end
-
-
-        t=tiledlayout('flow');
-        for k=1:4
-            ax(k)=nexttile(t);
-        end
-    end
-    ax=ax([1 4 3 2]);
-    for j=1:nSample
-        mesh(ax(1),data.Ex,data.Em,squeeze(Xorg(j,:,:)))
-        mesh(ax(2),data.Ex,data.Em,squeeze(xreint(j,:,:)),'FaceColor','k','EdgeColor',[0.6         0.6           1])
-        hold(ax(2),'on')
-        mesh(ax(2),data.Ex,data.Em,cuttoff,'FaceColor','r','EdgeColor','none','FaceAlpha',0.7)
-        hold(ax(2),'off')   
-        mesh(ax(3),data.Ex,data.Em,squeeze(Xorg(j,:,:))) % Old: XorgNaN(j,:,:))
-
-        hold(ax(3),'on')
-        [X,Y] = meshgrid(data.Ex,data.Em);
-        scatter3(ax(3),vec(X),vec(Y),vec(squeeze(Xmarked1(j,:,:))),'filled','r')
-        hold(ax(3),'off')
-
-          
-
-
-        mesh(ax(4),data.Ex,data.Em,squeeze(Xi(j,:,:)))
-        
-        title(t,j)
-        title(ax(1),'original data')
-        title(ax(2),'| data - smoothed data| & threshold plane (red)')
-        title(ax(3),'original data (removals marked)')
-        title(ax(4),'final output')
-        colormap(fig,turbo)
-        xlabel(t,'Exication (nm)')
-        ylabel(t,'Emission (nm)')
-        for k=1:numel(ax)
-            view(ax(k),78,64)
-        end
-%         view(ax(1),[90 10.7])
-%         view(ax(4),[90 10.7])
-        pause
-    end
-end
-
+% Make the history entry
 idx=height(dataout.history)+1;
 dataout.history(idx,1)=...
     drEEMhistory.addEntry(mfilename,...
@@ -268,7 +278,13 @@ if drEEMtoolbox.outputscenario(nargout)=="implicitOut"
 end
 
 end
-
+function pltnext(sosurce,event) %#ok<INUSD>
+uiresume(sosurce.Parent)
+end
+%%
+function endfunc(~,~,hfig) 
+close(hfig)
+end
 function B=inpaint_nans(A,method)
 % INPAINT_NANS: in-paints over nans in an array
 % usage: B=INPAINT_NANS(A)          % default method
