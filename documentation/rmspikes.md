@@ -8,10 +8,11 @@ Removes spikes from fluorescence excitation-emission matrix (EEM) data by identi
 
 ## Syntax
 ### [dataout = rmspikes(data)](#syntax1) ###
+Run the noise removal function with default settings.
 ### [dataout = rmspikes( ___ , Name,Value)](#syntax1) ###
-
-
-
+Run the noise removal function with custom settings.
+### [rmspikes( ___ , Name,Value)](#syntax1) ###
+Run the noise removal function in diagnostics mode to finetune settings. Pairs well with `details=true`. Here, no output will be assigned since testing is the purpose.
 
 
 ## Description ##

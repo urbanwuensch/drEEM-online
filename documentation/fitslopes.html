@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>fitslopes</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
 <style type="text/css">
 /* CSS stylesheet for drEEM toolbox documentatio */
 /* Author: Urban Wünsch */
@@ -204,7 +209,9 @@ code, tt {
   padding: 0px 0px;
   white-space: nowrap;
   border: 1px solid #fcfcfc;
-  background-color: #fcfcfc;
+  background-color: #f8f8ff;
+  border:1px solid #dedede;
+  color:#444;
   border-radius: 3px;
 }
 
@@ -308,54 +315,100 @@ img {
   max-width: 100%
 }
 </style>
+
+
 </head>
+
 <body>
-<img src="top right corner logo.png" width="100" height="auto" align="right"/>
-<h1>fitslopes</h1>
+
+<p><img src="top right corner logo.png" width="100" height="auto" align="right"/></p>
+
+<h1 id="toc_0">fitslopes</h1>
+
 <p>Fit slopes to the CDOM absorbance data in a drEEMdataset object.</p>
-<h2>Syntax</h2>
-<h3><a href="#syntax1">dataout, slopes, metadata, model = fitslopes(data)</a></h3>
-<h3><a href="#syntax1">dataout, slopes, metadata, model = fitslopes( ___ , Name,Value)</a></h3>
-<h2>Description</h2>
-<h3><a href="#varargout">dataout, slopes, metadata, model</a> = fitslopes(<a href="#varargin">data</a>) <a name="syntax1"></a></h3>
+
+<h2 id="toc_1">Syntax</h2>
+
+<h3 id="toc_2"><a href="#syntax1">dataout, slopes, metadata, model = fitslopes(data)</a></h3>
+
+<h3 id="toc_3"><a href="#syntax1">dataout, slopes, metadata, model = fitslopes( ___ , Name,Value)</a></h3>
+
+<h3 id="toc_4"><a href="#syntax2">fitslopes( ___ , Name,Value)</a></h3>
+
+<h2 id="toc_5">Description</h2>
+
+<h3 id="toc_6"><a href="#varargout">dataout, slopes, metadata, model</a> = fitslopes(<a href="#varargin">data</a>) <a name="syntax1"></a></h3>
+
 <p>The function <code>fitslopes</code> fits slopes to the CDOM absorbance data in <code>data</code>. The function returns the processed <code>data</code>, <code>slopes</code>, <code>metadata</code>, and <code>model</code> fitting information. The function uses default values of input arguments (see Input arguments section) when options are not specified. <br>
 An entry will be added to the <code>history</code> field of the <code>dataout</code>, detailing the  options used for <code>fitslopes</code>. If no output argument is specified, the function will overwrite the original <code>data</code> in the workspace.</p>
+
 <blockquote>
+<h3 id="toc_7"><a href="#varargout">dataout, slopes, metadata, model</a> = fitslopes(<a href="#varargin"> ___ , Name,Value</a>) <a name="syntax1"></a></h3>
 </blockquote>
-<h3><a href="#varargout">dataout, slopes, metadata, model</a> = fitslopes(<a href="#varargin"> ___ , Name,Value</a>) <a name="syntax1"></a></h3>
+
 <p>Specifies additional options using one or more name-value pair arguments. For example, you can specify the Wavelength range for long-range exponential slope fitting using <code>LongRange</code> or turn plotting options on or off. <br>
-Example: <code>fitslopes(data,  'plot',false, LongRange=[300 700], rsq=0.9)</code> to fit slopes using the specified options.</p>
-<h2>Input arguments</h2>
-<h4>data - drEEMdataset containing absorbance data  <a name="varargin"></a> <br> Type: drEEMdataset class object</h4>
+Example: <code>fitslopes(data,  &#39;plot&#39;,false, LongRange=[300 700], rsq=0.9)</code> to fit slopes using the specified options.</p>
+
+<blockquote>
+<h3 id="toc_8">fitslopes(<a href="#varargin"> ___ , Name,Value</a>) <a name="syntax2"></a></h3>
+</blockquote>
+
+<p>Runs the function in diagnostic mode, e.g. when you want to use <code>details=true</code> to inspect fits and adjust the default value of <code>rsq</code> or the wavelength range for the exponential slope before obtaining the slopes.</p>
+
+<h2 id="toc_9">Input arguments</h2>
+
+<h4 id="toc_10">data - drEEMdataset containing absorbance data  <a name="varargin"></a> <br> Type: drEEMdataset class object</h4>
+
 <p>Dataset of the class <code>drEEMdataset</code>, with standardized contents and automated validation methods that contains absorbance data.</p>
-<h5>Name-Value Arguments  <a name="data"></a></h5>
+
+<h5 id="toc_11">Name-Value Arguments  <a name="data"></a></h5>
+
 <p>Specify optional pairs of arguments as <code>Name1=Value1,...,NameN=ValueN</code>, where <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. Name-value arguments must appear after other arguments, <code>data</code> in this case, but the order of the pairs does not matter. </p>
-<h4>LongRange - specify the range to use for extrapolation   <a name="varargin"></a> <br> Type:  (1,2) numeric</h4>
+
+<h4 id="toc_12">LongRange - specify the range to use for extrapolation   <a name="varargin"></a> <br> Type:  (1,2) numeric</h4>
+
 <p>Numeric array specifying Wavelength range for long-range exponential slope fitting. Default is <code>[300 600]</code>.</p>
-<h4>rsq - specify R-squared threshold   <a name="varargin"></a> <br> Type: numeric</h4>
+
+<h4 id="toc_13">rsq - specify R-squared threshold   <a name="varargin"></a> <br> Type: numeric</h4>
+
 <p>A scalar numeric specifying R-squared threshold for linear fits. <code>rsq</code> must be numeric and less than or equal to <code>1</code>.
 Default is <code>0.95</code>.</p>
-<h4>plot - Flag to plot the results <a name="varargin"></a> <br> Type: numeric | logical</h4>
+
+<h4 id="toc_14">plot - Flag to plot the results <a name="varargin"></a> <br> Type: numeric | logical</h4>
+
 <p>Logical or numeric value to specify if a plot showing the results should be generated. The plot shows an overview of slopes for all sample in <code>data</code>.
 Default is <code>true</code>.</p>
-<h4>details - specify if diagnostics plots should be shown<a name="varargin"></a> <br> Type: numeric | logical</h4>
+
+<h4 id="toc_15">details - specify if diagnostics plots should be shown<a name="varargin"></a> <br> Type: numeric | logical</h4>
+
 <p>Logical or numeric value to specify if detailed diagnostic plots should be shown for each sample. Each plot will show the raw, modeled, and residual data if a fit was possible.<br>
 Default is <code>false</code>.</p>
-<h4>quiet - suppress the command window output <a name="varargin"></a> <br> Type: numeric | logical</h4>
+
+<h4 id="toc_16">quiet - suppress the command window output <a name="varargin"></a> <br> Type: numeric | logical</h4>
+
 <p>Flag to suppress command window outputs. Default is <code>false</code>.</p>
-<h2>Output arguments (optional)</h2>
-<h4>dataout - drEEMdataset   <a name="varargin"></a> <br> Type: drEEMdataset class object</h4>
+
+<h2 id="toc_17">Output arguments (optional)</h2>
+
+<h4 id="toc_18">dataout - drEEMdataset   <a name="varargin"></a> <br> Type: drEEMdataset class object</h4>
+
 <p>A drEEMdataset object with updated metadata including the fitted slopes. If no output argument is specified, the function overwrites the original object, <code>data</code>, in the workspace.<br> </p>
-<h4>slopes - a table with the slopes for each sample   <a name="varargin"></a> <br> Type: table</h4>
+
+<h4 id="toc_19">slopes - a table with the slopes for each sample   <a name="varargin"></a> <br> Type: table</h4>
+
 <p>Table containing the slope fitting results with the following columns:</p>
+
 <ul>
 <li><code>exp_slope_microm</code>: Long-range exponential slope.</li>
 <li><code>S_275_295</code>: Slope for the range <code>275</code>-<code>295</code> nm.</li>
 <li><code>S_350_400</code>: Slope for the range <code>350</code>-<code>400</code> nm.</li>
 <li><code>Sr</code>: Ratio of slopes <code>S_275_295</code> to <code>S_350_400</code>.</li>
 </ul>
-<h4>slopes - a table with fitting details   <a name="varargin"></a> <br> Type: table</h4>
+
+<h4 id="toc_20">slopes - a table with fitting details   <a name="varargin"></a> <br> Type: table</h4>
+
 <p>Table containing metadata with fitting details, including:</p>
+
 <ul>
 <li><code>Exp_rsq</code>: R-squared of exponential fit.</li>
 <li><code>Exp_a350_model</code>: Modeled absorbance at <code>350</code> nm.</li>
@@ -363,20 +416,30 @@ Default is <code>false</code>.</p>
 <li><code>log_275_Rsq</code>: R-squared of linear fit for <code>275</code>-<code>295</code> nm.</li>
 <li><code>log_350_Rsq</code>: R-squared of linear fit for <code>350</code>-<code>400</code> nm.</li>
 </ul>
-<h4>model - absorbance modeled data   <a name="varargin"></a> <br> Type: matrix</h4>
+
+<h4 id="toc_21">model - absorbance modeled data   <a name="varargin"></a> <br> Type: matrix</h4>
+
 <p>Matrix containing the modeled absorbance data for each sample.</p>
-<h2>Fitting algorithm</h2>
+
+<h2 id="toc_22">Fitting algorithm</h2>
+
 <p>The function fits slopes to the data using three ranges:<br>
 1. Long range exponential slope fitting (specified by <code>options.LongRange</code>).<br>
 2.  Linear slope fitting for the wavelength range <code>275</code>-<code>295</code> nm.<br>
 3.  Linear slope fitting for the wavelength range <code>350</code>-<code>400</code> nm.<br>
 The fitting process includes handling of NaN values, ensuring robust fits, and logging any fitting issues.</p>
-<h2>See Also</h2>
+
+<h2 id="toc_23">See Also</h2>
+
 <p><a href="link.com">Link1</a> | 
 <a href="link.com"> Link2 </a> |
 <a href="link.com"> Link3 </a> |</p>
-<h2>Topics</h2>
+
+<h2 id="toc_24">Topics</h2>
+
+
+
 
 </body>
+
 </html>
-<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

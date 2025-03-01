@@ -7,8 +7,9 @@ Correct the inner filter effects.
 
 ## Syntax
 ### [dataout = ifecorrection(data)](#syntax1) ###
-
-
+Applies the absorbance based inner filter effect correction
+### [ifecorrection(data)](#syntax1) ###
+Runs the function in diagnosis mode without output argument. Use this to see how much on average the IFE correction would affect your fluorescence at each wavelength in the EEM.
 
 ## Description ##
 ### [dataout](#varargout) = ifecorrection([data](#varargin)) <a name="syntax1"></a>

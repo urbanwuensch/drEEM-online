@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>associatemetadata</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
 <style type="text/css">
 /* CSS stylesheet for drEEM toolbox documentatio */
 /* Author: Urban Wünsch */
@@ -204,7 +209,9 @@ code, tt {
   padding: 0px 0px;
   white-space: nowrap;
   border: 1px solid #fcfcfc;
-  background-color: #fcfcfc;
+  background-color: #f8f8ff;
+  border:1px solid #dedede;
+  color:#444;
   border-radius: 3px;
 }
 
@@ -308,47 +315,90 @@ img {
   max-width: 100%
 }
 </style>
+
+
 </head>
+
 <body>
-<img src="top right corner logo.png" width="100" height="auto" align="right"/>
-<h1>associatemetadata</h1>
+
+<p><img src="top right corner logo.png" width="100" height="auto" align="right"/></p>
+
+<h1 id="toc_0">associatemetadata</h1>
+
 <p>Associate a metadata file with a <code>drEEMdataset</code></p>
-<h2>Syntax</h2>
-<h3><a href="#syntax1">dataout = associatemetadata(data, filename, metadatakey)</a></h3>
-<h3><a href="#syntax1">dataout = associatemetadata(data, filename, metadatakey, datakey)</a></h3>
-<h2>Description</h2>
-<h3><a href="#varargout">[dataout, md]</a> = associatemetadata(<a href="#varargin">data, filename, metadatakey</a>) <a name="syntax1"></a></h3>
+
+<h2 id="toc_1">Syntax</h2>
+
+<h3 id="toc_2"><a href="#syntax1">dataout = associatemetadata(data, filename, metadatakey)</a></h3>
+
+<h3 id="toc_3"><a href="#syntax1">dataout = associatemetadata(data, filename, metadatakey, datakey)</a></h3>
+
+<h3 id="toc_4"><a href="#syntax2">associatemetadata(data, filename, metadatakey, datakey)</a></h3>
+
+<h2 id="toc_5">Description</h2>
+
+<h3 id="toc_6"><a href="#varargout">[dataout, md]</a> = associatemetadata(<a href="#varargin">data, filename, metadatakey</a>) <a name="syntax1"></a></h3>
+
 <p>The <code>associatemetadata</code> function reads metadata information from a  file or table specified by <code>filename</code> and associates it with <code>data</code> based on specified key in metadata using <code>metadatakey</code> . The function by default uses <code>filelist</code> field in <code>data</code> as identifier key for <code>drEEMdataset</code>. 
  The function ensures that the identifiers in both the <code>data</code> and the metadata exist, are of the same class and are unique, then performs necessary type conversions to limit the associated data to be of type <code>char</code> or <code>double</code>. The <code>metadata</code> field entries for the unmatched samples  are filled with <code>missing</code> or <code>NaN</code> values.
 If no output argument is specified, the function overwrites the original object in the workspace.</p>
-<p>Example: <code>data = associatemetadata(samples,tbl,'sampleID')</code> read metadata from the loaded <code>tbl</code> and use sampleID column in the <code>tbl</code>as the <code>metadatakey</code>. <br></p>
-<p>Example: <code>data = associatemetadata(samples,&quot;c:\data\metadata.xlsx&quot;,'sampleID')</code> read metadata from the path specified in <code>filename</code> and  use sampleID column in the metadata file as the <code>metadatakey</code>. <br></p>
+
+<p>Example: <code>data = associatemetadata(samples,tbl,&#39;sampleID&#39;)</code> read metadata from the loaded <code>tbl</code> and use sampleID column in the <code>tbl</code>as the <code>metadatakey</code>. <br></p>
+
+<p>Example: <code>data = associatemetadata(samples,&quot;c:\data\metadata.xlsx&quot;,&#39;sampleID&#39;)</code> read metadata from the path specified in <code>filename</code> and  use sampleID column in the metadata file as the <code>metadatakey</code>. <br></p>
+
 <blockquote>
+<h3 id="toc_7"><a href="#varargout">[dataout, md]</a> = associatemetadata(<a href="#varargin">data, filename, metadatakey, datakey</a>) <a name="syntax1"></a></h3>
 </blockquote>
-<h3><a href="#varargout">[dataout, md]</a> = associatemetadata(<a href="#varargin">data, filename, metadatakey, datakey</a>) <a name="syntax1"></a></h3>
+
 <p>Change the default identifier key (<code>filelist</code>) in the <code>data</code> to a new key using <code>datakey</code>.</p>
-<p>Example: <code>data = associatemetadata(samples,&quot;c:\data\metadata.xlsx&quot;,'sampleID','i')</code> to use <code>i</code> field in the <code>data</code> as the <code>datakey</code></p>
-<h2>Input arguments</h2>
-<h4>data - drEEMdataset for association  <a name="varargin"></a> <br> Type: drEEMdataset class object</h4>
+
+<p>Example: <code>data = associatemetadata(samples,&quot;c:\data\metadata.xlsx&quot;,&#39;sampleID&#39;,&#39;i&#39;)</code> to use <code>i</code> field in the <code>data</code> as the <code>datakey</code></p>
+
+<blockquote>
+<h3 id="toc_8">associatemetadata(data, filename, metadatakey, datakey) <a name="syntax2"></a></h3>
+</blockquote>
+
+<p>Runs the function in diagnostic mode. Without output arguments, the function will run as always, but no output arguments are assigned. Use this notation for testing. This gives the chance to fix issues with sample names.</p>
+
+<h2 id="toc_9">Input arguments</h2>
+
+<h4 id="toc_10">data - drEEMdataset for association  <a name="varargin"></a> <br> Type: drEEMdataset class object</h4>
+
 <p>Dataset of the class <code>drEEMdataset</code>, with standardized contents and automated validation methods, to which the associated metadata will be added.</p>
-<h4>filename - metadata file name  <a name="varargin"></a> <br> Type: table | char | string</h4>
+
+<h4 id="toc_11">filename - metadata file name  <a name="varargin"></a> <br> Type: table | char | string</h4>
+
 <p>If a <code>table</code>, it should be a metadata table already loaded into MATLAB workspace. The <code>table</code> should contain a column header as specified by <code>metadatakey</code>.<br>
 If a <code>string</code> or <code>character array</code>, it should be a path to a file containing the metadata. For local files, <code>filename</code> can be a full path that contains a filename and file extension. FILENAME can also be a relative path to the current folder, or to a folder on the MATLAB path.
 The following extensions are supported: <code>.txt</code>, <code>.dat</code>, <code>.csv</code>, <code>.log</code>,<code>.text</code>, <code>.dlm</code>, <code>.xls</code>, <code>.xlsx</code>, <code>.xlsb</code>, <code>.xlsm</code>, <code>.xltm</code>, <code>.xltx</code>, <code>.ods</code>.</p>
-<h4>metadatakey - identifier key in metadata   <a name="varargin"></a> <br> Type: char | string</h4>
+
+<h4 id="toc_12">metadatakey - identifier key in metadata   <a name="varargin"></a> <br> Type: char | string</h4>
+
 <p>The name of the column in the metadata file that contains the identifiers to match with the <code>data</code>.</p>
-<h4>datakey - identifier key in data (optional)   <a name="varargin"></a> <br> Type: char | string</h4>
+
+<h4 id="toc_13">datakey - identifier key in data (optional)   <a name="varargin"></a> <br> Type: char | string</h4>
+
 <p>The name of the field in the <code>data</code> object that contains the identifiers to match with the metadata.
 Default is <code>filelist</code></p>
-<h2>Output arguments (optional)</h2>
-<h4>dataout - drEEMdataset   <a name="varargin"></a> <br> Type: drEEMdataset class object</h4>
+
+<h2 id="toc_14">Output arguments (optional)</h2>
+
+<h4 id="toc_15">dataout - drEEMdataset   <a name="varargin"></a> <br> Type: drEEMdataset class object</h4>
+
 <p>Dataset of the class <code>drEEMdataset</code>, with standardized contents and automated validation methods, in which the <code>metadata</code> field is updated with the associated data from the metadata. Unmatched samples in the <code>data</code> are filled with <code>missing</code> or <code>NaN</code> values in the <code>metadata</code> field. If no output argument is specified, the function overwrites the original object in the workspace.</p>
-<h2>See Also</h2>
+
+<h2 id="toc_16">See Also</h2>
+
 <p><a href="link.com">readtable</a> | 
 <a href="link.com"> drEEMdataset </a> |
 <a href="link.com"> Link3 </a> |</p>
-<h2>Topics</h2>
+
+<h2 id="toc_17">Topics</h2>
+
+
+
 
 </body>
+
 </html>
-<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

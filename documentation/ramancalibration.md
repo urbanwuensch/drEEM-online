@@ -7,8 +7,11 @@ Calibrate fluorescence signal by the division of Raman scatter peak area.
 
 ## Syntax
 ### [dataout = ramancalibration(data, blanksdataset)](#syntax1) ###
+Apply the Raman signal calibration with the default settings.
 ### [dataout = ramancalibration( ___ , Name,Value)](#syntax1) ###
-
+Apply the Raman signal calibration with the custom settings.
+### [ramancalibration( ___ , Name,Value)](#syntax1) ###
+Run the function in diagnostic mode to diagnose how the function would apply the signal calibration.
 
 ## Description ##
 ### [dataout](#varargout) = ramancalibration([data, blanksdataset](#varargin)) <a name="syntax1"></a>

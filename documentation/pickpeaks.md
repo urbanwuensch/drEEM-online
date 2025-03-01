@@ -8,10 +8,11 @@ Extract common fluorescence peaks (Cobel) and indices from a drEEMdataset object
 
 ## Syntax
 ### [dataout, picklist, metadata = pickpeaks(data)](#syntax1) ###
+Pickes predefined peaks and fluorescence indices in the EEM and stores the results in `dataout.opticalMetadata`.
 ### [dataout, picklist, metadata = pickpeaks( ___ , Name,Value)](#syntax1) ###
 
-
-
+### [pickpeaks( ___ , Name,Value)](#syntax1) ###
+Runs the function in diagnostics mode and does not assign an output variable. Use this to check the results or if you'd like to use the function with `details=true` before assigning the output at a later time.
 
 
 ## Description ##
@@ -51,7 +52,7 @@ Default is `false`.
 
 ## Output arguments (optional)##
 #### dataout - drEEMdataset with peaks and indices in metadata <a name="varargin"></a> <br> Type: drEEMdataset class object
-A drEEMdataset object with updated metadata including the extracted peaks and indices. If no output argument is specified, the function overwrites the original object, `data`, in the workspace.
+A drEEMdataset object with updated table `opticalMetadata` including the extracted peaks and indices. If no output argument is specified, the function overwrites the original object, `data`, in the workspace.
 
 #### picklist  - table containing peaks and indices for each sample <a name="varargin"></a> <br> Type: Table
 A table containing the extracted peak values and calculated indices for each sample.

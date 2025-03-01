@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>f_alignsamples</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>alignsamples</title>
+
+
 <style type="text/css">
 /* CSS stylesheet for drEEM toolbox documentatio */
 /* Author: Urban Wünsch */
@@ -204,7 +209,9 @@ code, tt {
   padding: 0px 0px;
   white-space: nowrap;
   border: 1px solid #fcfcfc;
-  background-color: #fcfcfc;
+  background-color: #f8f8ff;
+  border:1px solid #dedede;
+  color:#444;
   border-radius: 3px;
 }
 
@@ -308,24 +315,63 @@ img {
   max-width: 100%
 }
 </style>
+
+
 </head>
+
 <body>
-<img src="top right corner logo.png" width="100" height="auto" align="right"/>
-<h1>alignsamples</h1>
-<p>Compare sample names between datasets and reduce to overlapping samples</p>
-<h2>Syntax</h2>
-<h3><a href="#syntax1">varargout=alignsamples(varargin)</a></h3>
-<h2>Description</h2>
-<h3><a href="#varargout">varargout</a> = alignsamples(<a href="#varargin">varargin</a>) <a name="syntax1"></a></h3>
-<p>Match sample names between multiple datasets to ensure that the output structures contain the same samples in the same sequence.</p>
-<h2>Input arguments</h2>
-<h4>varargin  - drEEMdataset   <a name="varargin"></a></h4>
-<h3>drEEMdataset</h3>
+
+<p><img src="top right corner logo.png" width="100" height="auto" align="right"/></p>
+
+<h1 id="toc_0">alignsamples</h1>
+
+<p>Compare sample names across <code>drEEMdataset</code> class objects and remove the unmatched samples</p>
+
+<h2 id="toc_1">Syntax</h2>
+
+<h3 id="toc_2"><a href="#syntax1">dsout1, __, dsoutN = alignsamples(dsin1, __, dsinN)</a></h3>
+
+<h3 id="toc_3"><a href="#syntax2">alignsamples(dsin1, __, dsinN)</a></h3>
+
+<h2 id="toc_4">Description</h2>
+
+<blockquote>
+<h3 id="toc_5"><a href="#varargout">dsout1, __, dsoutN</a> = alignsamples(<a href="#varargin">dsin1, __, dsinN</a>) <a name="syntax1"></a></h3>
+</blockquote>
+
+<p>Match sample names across multiple datasets (<code>N≥2</code>) and remove the unmatched samples to ensure that the output datasets contain only the same samples in the same sequence. Number and order of the output should match the input.</p>
+
+<blockquote>
+<h3 id="toc_6">alignsamples(<a href="#varargin">dsin1, __, dsinN</a>) <a name="syntax2"></a></h3>
+</blockquote>
+
+<p>Runs the function in diagnostic mode. Without output arguments, the function will run as always, but no output arguments are assigned. Use this notation for testing. This gives the chance to fix issues with filenames.</p>
+
+<h2 id="toc_7">Input arguments</h2>
+
+<h4 id="toc_8">dsin1, __, dsinN  - drEEMdatasets   <a name="varargin"></a> <br> Type: drEEMdataset class object</h4>
+
 <p>Datasets of the class <code>drEEMdataset</code> with standardized contents and automated validation methods. <code>alignsamples</code> will use the <code>filelist</code> field in each dataset to compare sample names between all provided datasets. The function will then align sample names and delete any samples that did not occur in all provided datasets.</p>
-<h2>Output arguments</h2>
-<h4>varargout  - drEEMdataset <a name="varargout"></a></h4>
-<p>Datasets of the class <code>drEEMdataset</code> with standardized contents and automated validation methods.</p>
+
+<p>Example: <code>(samples, blanks, absorbance)</code><br></p>
+
+<h2 id="toc_9">Output arguments</h2>
+
+<h4 id="toc_10">dsout1, __, dsoutN  - drEEMdatasets <a name="varargout"></a> <br> Type: drEEMdataset class object</h4>
+
+<p>Datasets of the class <code>drEEMdataset</code> with matching <code>filelist</code> field and standardized contents and automated validation methods.</p>
+
+<h2 id="toc_11">See Also</h2>
+
+<p><a href="link.com">importeems</a> | 
+<a href="link.com"> importabsorbance </a> |
+<a href="link.com"> Link3 </a> |</p>
+
+<h2 id="toc_12">Topics</h2>
+
+
+
 
 </body>
+
 </html>
-<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

@@ -8,6 +8,7 @@ Fit slopes to the CDOM absorbance data in a drEEMdataset object.
 ## Syntax
 ### [dataout, slopes, metadata, model = fitslopes(data)](#syntax1) ###
 ### [dataout, slopes, metadata, model = fitslopes( ___ , Name,Value)](#syntax1) ###
+### [fitslopes( ___ , Name,Value)](#syntax2) ###
 
 
 ## Description ##
@@ -22,6 +23,11 @@ An entry will be added to the `history` field of the `dataout`, detailing the  o
 
 Specifies additional options using one or more name-value pair arguments. For example, you can specify the Wavelength range for long-range exponential slope fitting using `LongRange` or turn plotting options on or off. <br>
 Example: `fitslopes(data,  'plot',false, LongRange=[300 700], rsq=0.9)` to fit slopes using the specified options.
+
+>
+### fitslopes([ ___ , Name,Value](#varargin)) <a name="syntax2"></a>
+
+Runs the function in diagnostic mode, e.g. when you want to use `details=true` to inspect fits and adjust the default value of `rsq` or the wavelength range for the exponential slope before obtaining the slopes.
 
 ## Input arguments ##
 #### data - drEEMdataset containing absorbance data  <a name="varargin"></a> <br> Type: drEEMdataset class object

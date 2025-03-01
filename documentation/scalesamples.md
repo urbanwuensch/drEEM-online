@@ -9,10 +9,12 @@ Scale the samples in a dataset.
 
 ### [dataout = scalesamples(data, option)](#syntax1) ###
 
+
 ## Description ##
+>
 ### [dataout](#varargout) = scalesamples([data, option](#varargin)) <a name="syntax1"></a>
 The `scalesamples` function is used for scaling or revert-scaling the samples in `data` based on the provided `option`. This function performs scaling if `option` is a number between `1` and `50`, carries out reverse scaling if `option` is `'reverse'`, and provides help information for the scaling process if the `option` is set to`'help'`.
->
+
 
 ## Input arguments ##
 #### data - drEEMdataset for scaling  <a name="varargin"></a> <br> Type: drEEMdataset class object

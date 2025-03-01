@@ -7,8 +7,11 @@ Correct baseline drift in absorbance data, extrapolate to longer wavelength, zer
 
 ## Syntax
 ### [dataout = processabsorbance(data)](#syntax1) ###
+Applies corrections for absorbance data with default options.
 ### [dataout = processabsorbance( ___ , Name,Value)](#syntax1) ###
-
+Applies corrections for absorbance data with custom options
+### [processabsorbance( ___ , Name,Value)](#syntax1) ###
+Runs the absorbance corrections without assigning an output. Use this to check what the correction would do to your data before committing to it.
 
 ## Description ##
 ### [dataout](#varargout) = processabsorbance([data](#varargin)) <a name="syntax1"></a>

@@ -7,11 +7,16 @@ Excise and treat Excitation-Emission Matrix (EEM) scatter and optionally interpo
 
 ## Syntax
 ### [dataout = handlescatter(data)](#syntax1) ###
+Applies default scatter treatment options to data. Warning, the default settings will most likely not work well for any dataset.
 ### [dataout = handlescatter(data, 'gui')](#syntax1) ###
+Provides GUI-based decision support for scatter treatment settings.
 ### [dataout = handlescatter(data, options)](#syntax1) ###
+Applies scatter removal to dataset.
 ### [opts = handlescatter('options')](#syntax1)###
+Retreives default options to the structure opts for modification.
 
-
+### [handlescatter(data,options)](#syntax2)###
+Runs the function in diagnostic mode without function output. Can be used in conjunction with `options.plot=true` 
 
 ## Description ##
 ### [dataout](#varargout) = handlescatter([data](#varargin)) <a name="syntax1"></a>

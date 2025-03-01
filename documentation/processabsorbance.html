@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>processabsorbance</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
 <style type="text/css">
 /* CSS stylesheet for drEEM toolbox documentatio */
 /* Author: Urban Wünsch */
@@ -204,7 +209,9 @@ code, tt {
   padding: 0px 0px;
   white-space: nowrap;
   border: 1px solid #fcfcfc;
-  background-color: #fcfcfc;
+  background-color: #f8f8ff;
+  border:1px solid #dedede;
+  color:#444;
   border-radius: 3px;
 }
 
@@ -308,50 +315,95 @@ img {
   max-width: 100%
 }
 </style>
+
+
 </head>
+
 <body>
-<img src="top right corner logo.png" width="100" height="auto" align="right"/>
-<h1>processabsorbance</h1>
+
+<p><img src="top right corner logo.png" width="100" height="auto" align="right"/></p>
+
+<h1 id="toc_0">processabsorbance</h1>
+
 <p>Correct baseline drift in absorbance data, extrapolate to longer wavelength, zero out the negative values and plot the results.</p>
-<h2>Syntax</h2>
-<h3><a href="#syntax1">dataout = processabsorbance(data)</a></h3>
-<h3><a href="#syntax1">dataout = processabsorbance( ___ , Name,Value)</a></h3>
-<h2>Description</h2>
-<h3><a href="#varargout">dataout</a> = processabsorbance(<a href="#varargin">data</a>) <a name="syntax1"></a></h3>
+
+<h2 id="toc_1">Syntax</h2>
+
+<h3 id="toc_2"><a href="#syntax1">dataout = processabsorbance(data)</a></h3>
+
+<p>Applies corrections for absorbance data with default options.</p>
+
+<h3 id="toc_3"><a href="#syntax1">dataout = processabsorbance( ___ , Name,Value)</a></h3>
+
+<p>Applies corrections for absorbance data with custom options</p>
+
+<h3 id="toc_4"><a href="#syntax1">processabsorbance( ___ , Name,Value)</a></h3>
+
+<p>Runs the absorbance corrections without assigning an output. Use this to check what the correction would do to your data before committing to it.</p>
+
+<h2 id="toc_5">Description</h2>
+
+<h3 id="toc_6"><a href="#varargout">dataout</a> = processabsorbance(<a href="#varargin">data</a>) <a name="syntax1"></a></h3>
+
 <p>The <code>processabsorbance</code> function reads <code>absorbance</code> values from <code>data</code> and performs multiple processes on the data, e.g. baseline drift correction, extrapolating the longer wavelength (needed for inner filter effects correction) and setting out the negative values to zeroes, in the stated order. If extrapolation is requested, baseline correction will be carried out both prior and after the extrapolation to ensure data quality. 
 If no option is specified, the function will use the default values for processing. When the processing is finished, the function will plot the original absorbance data, the extrapolated data, and the final processed data in one figure.<br>
 An entry will be added to the <code>history</code> field of the <code>data</code>, detailing the processing options used. If no output argument is specified, the function will overwrite the original <code>data</code> in the workspace.</p>
+
 <blockquote>
+<h3 id="toc_7"><a href="#varargout">dataout</a> = processabsorbance(<a href="#varargin"> ___ , Name,Value</a>) <a name="syntax1"></a></h3>
 </blockquote>
-<h3><a href="#varargout">dataout</a> = processabsorbance(<a href="#varargin"> ___ , Name,Value</a>) <a name="syntax1"></a></h3>
+
 <p>specifies additional options using one or more name-value pair arguments. For example, you can specify if a baseline correction must be performed, and whether the absorbance data must be extrapolate or not. <br>
-Example: <code>data = processabsorbance(data,'correctBase',false)</code> to skip the baseline correction step. </p>
-<h2>Input arguments</h2>
-<h4>data - drEEMdataset for absorbance treatment  <a name="varargin"></a> <br> Type: drEEMdataset class object</h4>
+Example: <code>data = processabsorbance(data,&#39;correctBase&#39;,false)</code> to skip the baseline correction step. </p>
+
+<h2 id="toc_8">Input arguments</h2>
+
+<h4 id="toc_9">data - drEEMdataset for absorbance treatment  <a name="varargin"></a> <br> Type: drEEMdataset class object</h4>
+
 <p>Dataset of the class <code>drEEMdataset</code>, with standardized contents and automated validation methods that contain the absorbance data. If the absorbance data does not exist or consists only of missing numbers an error will be generated.</p>
-<h5>Name-Value Arguments  <a name="data"></a></h5>
+
+<h5 id="toc_10">Name-Value Arguments  <a name="data"></a></h5>
+
 <p>Specify optional pairs of arguments as <code>Name1=Value1,...,NameN=ValueN</code>, where <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. Name-value arguments must appear after other arguments, <code>data</code> in this case, but the order of the pairs does not matter. </p>
-<p>Example: <code>'correctBase', true, 'baseWave', 650, 'zero', true, 'extrapolate', false</code> specifies that function is expected to perform baseline correction using the wavelengths greater than <code>650</code> for its calculations, to set out negative values to zero and finally, extrapolate the data to longer wavelengths that are needed for inner filter effects correction.</p>
-<h4>correctBase - specify if baseline correction is needed  <a name="varargin"></a> <br> Type:  numeric | logical</h4>
+
+<p>Example: <code>&#39;correctBase&#39;, true, &#39;baseWave&#39;, 650, &#39;zero&#39;, true, &#39;extrapolate&#39;, false</code> specifies that function is expected to perform baseline correction using the wavelengths greater than <code>650</code> for its calculations, to set out negative values to zero and finally, extrapolate the data to longer wavelengths that are needed for inner filter effects correction.</p>
+
+<h4 id="toc_11">correctBase - specify if baseline correction is needed  <a name="varargin"></a> <br> Type:  numeric | logical</h4>
+
 <p>Indicates if the baseline correction should be performed. Default value is <code>true</code>.
 The baseline correction is applied using the mean absorbance beyond the specified or default <code>baseWave</code></p>
-<h4>baseWave - Wavelength value   <a name="varargin"></a> <br> Type: numeric</h4>
+
+<h4 id="toc_12">baseWave - Wavelength value   <a name="varargin"></a> <br> Type: numeric</h4>
+
 <p>Specify the wavelength from which the absorbance data is used for baseline correction. Default value is <code>590</code>.</p>
-<h4>zero - specify if negative values should be set to zero   <a name="varargin"></a> <br> Type: numeric | logical</h4>
+
+<h4 id="toc_13">zero - specify if negative values should be set to zero   <a name="varargin"></a> <br> Type: numeric | logical</h4>
+
 <p>If <code>true</code> the negative values will be set to zeroes.
 Default is <code>false</code></p>
-<h4>extrapolate - specify if data should be extrapolated to longer wavelengths <a name="varargin"></a> <br> Type: numeric | logical</h4>
+
+<h4 id="toc_14">extrapolate - specify if data should be extrapolated to longer wavelengths <a name="varargin"></a> <br> Type: numeric | logical</h4>
+
 <p>If <code>true</code>, the function performs a non-linear fit of the absorbance data (<code>b1*exp(b2/1000*(350-lambda))+b3</code>) to model the exponential absorbance spectra, based on (c) Stedmon 2001, and extrapolate it to cover the wavelength range needed for EEM data.
 Default is <code>true</code></p>
-<h2>Output arguments (optional)</h2>
-<h4>dataout - drEEMdataset   <a name="varargin"></a> <br> Type: drEEMdataset class object</h4>
+
+<h2 id="toc_15">Output arguments (optional)</h2>
+
+<h4 id="toc_16">dataout - drEEMdataset   <a name="varargin"></a> <br> Type: drEEMdataset class object</h4>
+
 <p>Dataset of the class <code>drEEMdataset</code>, with standardized contents and automated validation methods, in which the absorbance data is updated with the new data processed according to the specified options (these <code>options</code> are stored in the <code>history</code> field of the <code>data</code>). If no output argument is specified, the function overwrites the original object in the workspace.</p>
-<h2>See Also</h2>
+
+<h2 id="toc_17">See Also</h2>
+
 <p><a href="link.com">importabsorbance</a> | 
 <a href="link.com"> drEEMdataset </a> |
 <a href="link.com"> Link3 </a> |</p>
-<h2>Topics</h2>
+
+<h2 id="toc_18">Topics</h2>
+
+
+
 
 </body>
+
 </html>
-<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

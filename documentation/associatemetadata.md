@@ -8,6 +8,7 @@ Associate a metadata file with a `drEEMdataset`
 ## Syntax
 ### [dataout = associatemetadata(data, filename, metadatakey)](#syntax1) ###
 ### [dataout = associatemetadata(data, filename, metadatakey, datakey)](#syntax1) ###
+### [associatemetadata(data, filename, metadatakey, datakey)](#syntax2) ###
 
 
 ## Description ##
@@ -28,6 +29,10 @@ Change the default identifier key (`filelist`) in the `data` to a new key using 
 
 Example: `data = associatemetadata(samples,"c:\data\metadata.xlsx",'sampleID','i')` to use `i` field in the `data` as the `datakey`
 
+>
+### associatemetadata(data, filename, metadatakey, datakey) <a name="syntax2"></a>
+
+Runs the function in diagnostic mode. Without output arguments, the function will run as always, but no output arguments are assigned. Use this notation for testing. This gives the chance to fix issues with sample names.
 
 ## Input arguments ##
 #### data - drEEMdataset for association  <a name="varargin"></a> <br> Type: drEEMdataset class object

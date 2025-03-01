@@ -15,9 +15,14 @@ arguments (Repeating)
 end
 % Optional feature; overwrite workspace variable, needs no outputarg check
 if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
-    nargoutchk(numel(varargin),numel(varargin))
+    if nargout>0
+        nargoutchk(numel(varargin),numel(varargin))
+    else
+        disp('<strong>Diagnostic mode</strong>, no output will be assigned (no variable was specified)')
+    end
 end
 % Get the dataset names for messages
+name=strings(nargin,1);
 for j=1:numel(varargin)
     name(j,1)=string(inputname(j));
 end
@@ -122,4 +127,10 @@ if drEEMtoolbox.outputscenario(nargout)=="implicitOut"
         disp(['<strong> "',char(name(j)), '" processed. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
     end
     return
+else
+    if nargout==0
+        clearvars varargout
+    end
+end
+
 end

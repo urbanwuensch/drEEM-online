@@ -39,7 +39,11 @@ arguments
 end
 % Experimental feature; overwrite workspace variable, needs no outputarg check
 if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
-    nargoutchk(1,1)
+    if nargout>0
+        nargoutchk(1,1)
+    else
+        disp('<strong>Diagnostic mode</strong>, no output will be assigned (no variable was specified).')
+    end
 end
 % assign output variable
 dataout=samples;
@@ -159,7 +163,12 @@ if drEEMtoolbox.outputscenario(nargout)=="implicitOut"
     assignin("base",inputname(1),dataout);
     disp(['<strong> "',inputname(1), '" processed. </strong> Since no output argument was provided, the workspace variable was overwritten.'])
     return
+else
+    if nargout==0
+        clearvars dataout
+    end
 end
+
 
 end
 
