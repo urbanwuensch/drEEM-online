@@ -76,13 +76,13 @@ Xi=zeros(data.nSample,size(Em_i,1),size(Ex_i,2));
 
 if mean(diff(data.Ex))>5
     if not(options.quiet)
-        warning('Excitation increment>5nm. The performed interpolation might introduce significant biases!')
+        disp('<strong>Excitation increment>5nm</strong>. The performed interpolation might introduce significant biases!')
         pause(2)
     end
 end
 if mean(diff(data.Em))>10
     if not(options.quiet)
-        warning('Emission increment>10nm. The performed interpolation might introduce significant biases!')
+        disp('<strong>Emission increment>10nm</strong>. The performed interpolation might introduce significant biases!')
         pause(2)
     end
 end
@@ -103,7 +103,7 @@ data.Em=Em_i;
 
 if ~any(data.Ex==254)
     if not(options.quiet)
-        warning('Humification index cannot be calculated due to dataset limitations')
+        disp('<strong>Cannot calculate HIX</strong> due to limted spectral coverage.')
     end
     HIX_excl=true;
 else
@@ -119,12 +119,12 @@ end
 
 if any(distEx>=5)
     if not(options.quiet)
-        warning('Distance between some peak definitions and Dataset-wavelengths >=5nm: Excitation');
+        disp('<strong>Excessive distance</strong> between peak definitions & measured data (>=5nm: excitation)');
     end
 end
 if any(distEm>=5)
     if not(options.quiet)
-        warning('Distance between some peak definitions and Dataset-wavelengths >=10nm: Emission');
+        disp('<strong>Excessive distance</strong> between peak definitions & measured data (>=5nm: emission)');
     end
 end
 
