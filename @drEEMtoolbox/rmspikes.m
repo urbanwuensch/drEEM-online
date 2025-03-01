@@ -1,6 +1,8 @@
 function dataout = rmspikes(data,options)
 % <a href = "matlab:doc rmspikes">dataout = rmspikes(data,options) (click to access documentation)</a>
 %
+% <strong>Remove noisy data from fluorescence EEMs</strong>
+%
 % <strong>INPUTS - Required</strong>
 % data (1,1) {drEEMdataset.validate}
 % 
