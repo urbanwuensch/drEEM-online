@@ -21,6 +21,13 @@ arguments
     options.plot (1,1) {mustBeNumericOrLogical} = samples.toolboxOptions.plotByDefault;
 end
 
+if nargout>0
+    nargoutchk(1,1)
+else
+    disp('<strong>Diagnostic mode</strong>, no output will be assigned (no variable was specified).')
+    options.plot=true;
+end
+
 % First off: Let's make sure the blank and sample datasets cover the same
 % wavelengths. Differences can come easily duing the IFEcorrection method
 % when some parts are deleted due to lacking CDOM coverage. This bit makes
@@ -107,6 +114,10 @@ if all(size(samples_mod.X)==size(blanks_mod.X))
     dataout.history(idx,1)=...
         drEEMhistory.addEntry(mfilename,'Blanks successfully subtracted',[],dataout);
     dataout.validate(dataout);
+    
+    if nargout==0
+        clearvars dataout
+    end
 
 else
     error('subtractblanks: Dimension missmatch. Cannot perform blank subtraction.')
@@ -167,4 +178,7 @@ if options.plot
     ylabel(ax,'Fluorescence intensity')
     title(t,'Emission spectra closest to Ex = 275 nm')
 end
+
+
+
 end

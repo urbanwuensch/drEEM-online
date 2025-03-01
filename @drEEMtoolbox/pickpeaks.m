@@ -20,6 +20,8 @@ if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
         nargoutchk(1,3)
     else
         disp('<strong>Diagnostic mode</strong>, no output will be assigned (no variable was specified).')
+        options.plot=true;
+        options.details=true;
     end
 end
 Xname = 'X';
@@ -170,6 +172,15 @@ if diagn
     end
     set(dfig,'units','normalized','pos',[0.1344    0.2537    0.7625    0.3194])
     set(dfig,'name','pickPeaks.m - raw vs. smoothed fluorescence for indicies')
+    huic = uicontrol(dfig,'Style', 'pushbutton','String','Next',...
+    'Units','normalized','Position', [0.9323 0.0240 0.0604 0.0500],...
+    'Callback',{@pltnext});
+    uialert(dfig,'Press "next" button (bottom right) to see the next sample. Closing the figure continues the function without detail plots.', ...
+        'Information',Icon='Info')
+end
+t=tiledlayout(dfig);
+for j=1:3
+    ax(j)=nexttile(t);
 end
 for i=1:data.nSample
     try
@@ -180,52 +191,51 @@ for i=1:data.nSample
         end
         EmScan370=naninterp(EmScan370,'PCHIP');
         if diagn
-            subplot(1,3,1)
-            hold on
-            h1=plot(data.Em,EmScan370,'LineStyle','none','Marker','+','Color','k');hold on;
-            h2=plot(data.Em,smoothdata(EmScan370,21,'sgolay',2),'LineWidth',1.7);
-            axis tight
-            cylim=get(gca,'YLim');
-            ylim([0 cylim(2)])
-            cylim=get(gca,'YLim');
-            plot([470 470],cylim,'r','LineStyle','--')
-            plot([520 520],cylim,'r','LineStyle','--')
-            title('em at ex = 370 (Fl.index)')
+            cla(ax(1))
+            hold(ax(1),"on")
+            h1=plot(ax(1),data.Em,EmScan370,'LineStyle','none','Marker','+','Color','k');
+            h2=plot(ax(1),data.Em,smoothdata(EmScan370,21,'sgolay',2),'LineWidth',1.7);
+            axis(ax(1),"tight")
+            cylim=get(ax(1),'YLim');
+            ylim(ax(1),[0 cylim(2)])
+            cylim=get(ax(1),'YLim');
+            plot(ax(1),[470 470],cylim,'r','LineStyle','--')
+            plot(ax(1),[520 520],cylim,'r','LineStyle','--')
+            title(ax(1),'em at ex = 370 (Fl.index)')
             legend([h1 h2],{'raw','smoothed'},'location','best')
-            box on
+            box(ax(1),"on")
         end
         EmScan370 = smoothdata(EmScan370,21,'sgolay',2);
     
-        Val1=EmScan370(mindist(data.Em,470));
-        Val2=EmScan370(mindist(data.Em,520));
+        Val1=EmScan370(drEEMtoolbox.mindist(data.Em,470));
+        Val2=EmScan370(drEEMtoolbox.mindist(data.Em,520));
         FI(i)=Val1/Val2;
     catch
          FI(i)=nan;
     end
     try
         % Freshness index
-        EmScan310=data.(Xname)(i,:,mindist(data.Ex,310));
+        EmScan310=data.(Xname)(i,:,drEEMtoolbox.mindist(data.Ex,310));
         if all(isnan(EmScan310))
             error('Nothing there')
         end
         
         EmScan310=naninterp(EmScan310,'PCHIP');
         if diagn
-            subplot(1,3,2)
-            hold on
-            plot(data.Em,EmScan310,'LineStyle','none','Marker','+','Color','k');
-            hold on
-            plot(data.Em,smoothdata(EmScan310,21,'sgolay',2),'LineWidth',1.7)
-            axis tight
-            cylim=get(gca,'YLim');
-            ylim([0 cylim(2)])
-            cylim=get(gca,'YLim');
-            plot([380 380],cylim,'r','LineStyle','--')
+            cla(ax(2))
+            hold(ax(2),"on")
+            plot(ax(2),data.Em,EmScan310,'LineStyle','none','Marker','+','Color','k');
+            plot(ax(2),data.Em,smoothdata(EmScan310,21,'sgolay',2),'LineWidth',1.7)
+            axis(ax(2),"tight")
+            cylim=get(ax(2),'YLim');
+            ylim(ax(2),[0 cylim(2)])
+            cylim=get(ax(2),'YLim');
+            plot(ax(2),[380 380],cylim,'r','LineStyle','--')
             y = [cylim(1) cylim(2) cylim(2) cylim(1)];
             x = [420 420 435 435];
-            patch(x,y,'red','FaceAlpha',0.5)
-            title('em at ex = 310 (Freshness index)')
-            box on
+            patch(ax(2),x,y,'red','FaceAlpha',0.5)
+            title(ax(2),'em at ex = 310 (Freshness index)')
+            box(ax(2),"on")
         end
         EmScan310 = smoothdata(EmScan310,21,'sgolay',2);
         
@@ -245,25 +255,24 @@ for i=1:data.nSample
             
             EmScan254=naninterp(EmScan254,'PCHIP');
             if diagn
-                subplot(1,3,3)
-                hold on
-                plot(data.Em,EmScan254,'LineStyle','none','Marker','+','Color','k');
-                hold on
-                plot(data.Em,smoothdata(EmScan254,21,'sgolay',2),'LineWidth',1.7)
-                axis tight
-                cylim=get(gca,'YLim');
-                ylim([0 cylim(2)])
-                cylim=get(gca,'YLim');
+                cla(ax(3))
+                hold(ax(3),"on")
+                plot(ax(3),data.Em,EmScan254,'LineStyle','none','Marker','+','Color','k');
+                plot(ax(3),data.Em,smoothdata(EmScan254,21,'sgolay',2),'LineWidth',1.7)
+                axis(ax(3),"tight")
+                cylim=get(ax(3),'YLim');
+                ylim(ax(3),[0 cylim(2)])
+                cylim=get(ax(3),'YLim');
                 y = [cylim(1) cylim(2) cylim(2) cylim(1)];
                 x = [435 435 480 480];
-                patch(x,y,'red','FaceAlpha',0.5)
+                patch(ax(3),x,y,'red','FaceAlpha',0.5)
                 
                 y = [cylim(1) cylim(2) cylim(2) cylim(1)];
                 x = [300 300 345 345];
-                patch(x,y,'red','FaceAlpha',0.5)
+                patch(ax(3),x,y,'red','FaceAlpha',0.5)
 
-                title('em at ex = 254 (HIX)')
-                box on
+                title(ax(3),'em at ex = 254 (HIX)')
+                box(ax(3),"on")
             end
             EmScan254 = smoothdata(EmScan254,21,'sgolay',2);
             Val1=sum(EmScan254(mindist(data.Em,435):mindist(data.Em,480)),'omitnan');
@@ -277,10 +286,10 @@ for i=1:data.nSample
     end
     
         if diagn
-            disp(['Spectrum ',num2str(i),' of ',num2str(data.nSample),...
-                '. Press any key to continue or Ctrl + C to cancel.'])
-            pause
-            subplot(1,3,1),cla,subplot(1,3,2),cla,subplot(1,3,3),cla,box on
+            title(t,['Spectrum ',num2str(i),' of ',num2str(data.nSample)])
+            uicontrol(huic)
+            uiwait(dfig)
+            if ~ishandle(dfig); diagn=false; end % disables diagnosis option when plot is closed by user
         end
         try
             
@@ -379,4 +388,14 @@ end
 function X = naninterp(X,method)
 % Interpolate over NaNs
 X(isnan(X)) = interp1(find(~isnan(X)), X(~isnan(X)), find(isnan(X)),method);
+end
+
+%%
+function pltnext(sosurce,event) %#ok<INUSD>
+uiresume(sosurce.Parent)
+end
+
+%%
+function endfunc(~,~,hfig) 
+close(hfig)
 end

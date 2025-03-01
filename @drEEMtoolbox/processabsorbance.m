@@ -5,11 +5,11 @@ function dataout = processabsorbance(data,options)
 % data (1,:) {mustBeA("drEEMdataset"),drEEMdataset.validate,drEEMdataset.sanityCheckAbsorbance}
 %
 % <strong>Inputs - Optional</strong>
-% correctBase (1,:)     {mustBeNumericOrLogical} = true
-% baseWave (1,:)        {mustBeNumeric,mustBeGreaterThan(580)} = 595
-% zero (1,:)            {mustBeNumericOrLogical} = false
-% extrapolate (1,:)     {mustBeNumericOrLogical} = true
-% options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
+% correctBase           {mustBeNumericOrLogical} = true
+% baseWave              {mustBeNumeric,mustBeGreaterThan(580)} = 595
+% zero                  {mustBeNumericOrLogical} = false
+% extrapolate           {mustBeNumericOrLogical} = true
+% plot                  {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
 %
 % <strong>EXAMPLE(S)</strong>
 %   1. correct CDOM baseline, extrapolate if EEM wavelength coverage is 
@@ -59,6 +59,7 @@ if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
         nargoutchk(1,1)
     else
         disp('<strong>Diagnostic mode</strong>, no output will be assigned (no variable was specified).')
+        options.plot=true;
     end
 end
 

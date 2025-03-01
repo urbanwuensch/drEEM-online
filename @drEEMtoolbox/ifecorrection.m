@@ -20,6 +20,7 @@ if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
         nargoutchk(1,1)
     else
         disp('<strong>Diagnostic mode</strong>, no output will be assigned (no variable was specified).')
+        options.plot=true;
     end
 end
 % Assign the final output variable based on input
