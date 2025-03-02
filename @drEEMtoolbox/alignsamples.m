@@ -19,8 +19,10 @@ end
 if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
     if nargout>0
         nargoutchk(numel(varargin),numel(varargin))
+        diagnostic=false;
     else
         disp('<strong>Diagnostic mode</strong>, no output will be assigned (no variable was specified)')
+        diagnostic=true;
     end
 end
 % Get the dataset names for messages
@@ -66,6 +68,9 @@ for j=1:numel(varargin)
     % Convert that into the ones that should be deleted
     deleted=setdiff(1:numel(varargin{j}.filelist),idx);
     delP=numel(deleted)/varargin{j}.nSample;
+    if diagnostic
+        deleted_diag{j}=deleted;
+    end
     if delP==1
         error(['The call to this function would delete all samples for dataset "<strong>',char(name(j)),'"</strong> Exiting...'])
     elseif delP>0.1
@@ -87,19 +92,20 @@ for j=1:numel(varargin)
     end
     % Subset the fieldnames for those that are marked for sample deletion
     flds=flds(sel);
-    
+
+    % Assign the dataset to be modified as an output argument
+    varargout{j}=varargin{j};
+
     % Execute the deletion
     for k=1:numel(flds)
         % This try-catch solution is not pretty, but for now it works.
         try % 3 way tensors
-            varargin{j}.(flds{k})=varargin{j}.(flds{k})(idx,:,:);
+            varargout{j}.(flds{k})=varargout{j}.(flds{k})(idx,:,:);
         catch % tables & matrices
-            varargin{j}.(flds{k})=varargin{j}.(flds{k})(idx,:);
+            varargout{j}.(flds{k})=varargout{j}.(flds{k})(idx,:);
         end
     end
     
-    % Now assign the modified dataset as an output argument
-    varargout{j}=varargin{j};
     varargout{j}.nSample=varargout{j}.nSample-numel(deleted);
 
  
@@ -134,5 +140,34 @@ else
         clearvars varargout
     end
 end
+
+if diagnostic
+    diagnosis(varargin,deleted_diag,name)
+end
+
+end
+
+
+function diagnosis(varargin,deleted_diag,name)
+
+fnms=cellfun(@(x) x.filelist,varargin,UniformOutput=false);
+fnms_all=unique(vertcat(fnms{:}));
+
+results=table;
+results.('Unique filenames')=fnms_all;
+
+for j=1:numel(varargin)
+    results.(name(j))=matches(results.('Unique filenames'),varargin{j}.filelist);
+end
+
+fig=drEEMtoolbox.dreemuifig;
+
+uit=uitable(fig,"Units","normalized",Position=[0.01 0.01 0.98 0.98]);
+uit.Data=results;
+s  = uistyle(BackgroundColor=[.8 0 0]);
+idx=table2array(not(uit.Data(:,2:end)));
+idx=any(idx,2);
+
+addStyle(uit,s,'row',find(idx));
 
 end
