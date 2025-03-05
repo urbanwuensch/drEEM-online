@@ -20,13 +20,13 @@ function dataout = fitparafac(data,options)
 %
 % <strong>EXAMPLE(S)</strong> (see documentation for assumed defaults!)
 %   1. Fit models similar to the previous <strong>outliertest</strong> 
-%       tbx.fitparafac(samples,f=2:7,convergence=1e-4,starts=2);
+%       samples = tbx.fitparafac(samples,f=2:7,convergence=1e-4,starts=2);
 %   2. Find the <strong>global minimum</strong> for a dataset
-%       tbx.fitparafac(samples,f=4:6,convergence=1e-8,starts=50,maxIteration=5000);
+%       samples = tbx.fitparafac(samples,f=4:6,convergence=1e-8,starts=50,maxIteration=5000);
 %   3. Explore what happens with <strong>no constraints</strong>
-%       tbx.fitparafac(samples,f=2:7,constraints="unconstrained",convergence=1e-6,starts=10,maxIteration=5000);
+%       samples = tbx.fitparafac(samples,f=2:7,constraints="unconstrained",convergence=1e-6,starts=10,maxIteration=5000);
 %   4. Equivalent to the former <strong>splitanalysis</strong>
-%       tbx.fitparafac(samples,f=2:7,mode="split",convergence=1e-8,starts=50,maxIteration=5000);
+%       samples = tbx.fitparafac(samples,f=2:7,mode="split",convergence=1e-8,starts=50,maxIteration=5000);
 
 arguments
     % Required
@@ -39,7 +39,7 @@ arguments
     % Optional
     options.constraints (1,:)       {mustBeMember(options.constraints,["unconstrained", "nonnegativity", "unimodnonneg"])} = 'nonnegativity'
     options.starts  (1,:)           {mustBeNumeric} = 40
-    options.convergence (1,:)       {mustBeLessThanOrEqual(options.convergence,1e-2)}= 1e-6
+    options.convergence (1,:)       {mustBeLessThanOrEqual(options.convergence,1e-2)}= 1e-8
     options.maxIteration (1,1)      {mustBeNumeric}= 3000
 
     % Very optional
