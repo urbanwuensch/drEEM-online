@@ -195,7 +195,7 @@ classdef drEEMtoolbox < handle
         % fhandle = reportresidualanalysis(data,ftarget,mdfield)
 
         % Visualization (incl. app workarounds)
-        spectralvariance(data)
+        viewspectralvariance(data)
         function vieweems(data)
             vieweems(data)
         end

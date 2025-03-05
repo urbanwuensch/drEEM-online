@@ -1,4 +1,4 @@
-function spectralvariance(data)
+function viewspectralvariance(data)
 % <a href = ""matlab:doc spectralvariance">spectralvariance(data) (click to access documentation)</a>
 %
 % <strong>Inspect the spectral variability</strong> of a drEEMdataset
@@ -68,12 +68,13 @@ for n=1:numel(ax)
     hold(ax(n),'on')
 end
 if pltcase==1||pltcase==3
-    yyaxis(ax(1),'left'),set(ax(1),'YColor',[1 .2 .2 0.5])
+    %yyaxis(ax(1),'left'),set(ax(1),'YColor',[1 .2 .2 0.5])
     ylabel(ax(1),'Unit scaled absorbance')
-    h1=plot(ax(1),data.absWave,Y,'Color',[1 .2 .2 0.5],'LineWidth',1,'LineStyle','-','Marker','none');%./sum(Y,2)
-    yyaxis(ax(1),'right'),set(ax(1),'YColor',[0 0 0 0.8])
+    %h1=plot(ax(1),data.absWave,Y,'Color',[1 .2 .2 0.5],'LineWidth',1,'LineStyle','-','Marker','none');%./sum(Y,2)
+    %yyaxis(ax(1),'right'),set(ax(1),'YColor',[0 0 0 0.8])
     h2=plot(ax(1),data.absWave,cdom,'Color',[0 0 0 0.8],'LineWidth',2,'LineStyle','-','Marker','none');
-    legend(ax(1),[h1(1), h2],{'All spectra (unit scaled)','Standard deviation'})
+    %legend(ax(1),[h1(1), h2],{'All spectra (unit scaled)','Standard deviation'})
+    legend(ax(1),h2,{'Standard deviation'})
 end
 axis(ax(1),'tight')
 xlabel(ax(1),'Absorbance wavelength (nm)')
