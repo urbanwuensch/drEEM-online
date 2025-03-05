@@ -78,6 +78,7 @@ if options.plot
     title(ax,'Average Inner-filter effect correction matrix')
     xlabel(ax,'Excitation (nm)')
     ylabel(ax,'Emission (nm)')
+    zlabel(ax,'Inner-filter effect correction factor')
 end
 
 % Will only run if toolbox is set to overwrite workspace variable and user
