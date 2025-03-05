@@ -121,10 +121,17 @@ end
 xdiff(Xorg==0)=nan; 
 cuttoff = squeeze(median(median(abs(xdiff),1,"omitnan"),2,"omitnan"));
 
+if any(isnan(cuttoff))
+    error(['The estimate of the noise floor contains NaNs. Cannot continue.' ...
+        ' Most likely, you need to trim your dataset since it appears to include' ...
+        'wavelengths without any information (exclusively NaN or zeros) '])
+end
+
 % Option to apply a shallower curve than the median noise otherwise would
 % if sqrt or other transformation is applied here.
 c2=sqrt(cuttoff);
-c2=c2.*(cuttoff(end)./c2(end));
+
+c2=c2.*(cuttoff./c2(end));
 cuttoff = repmat(c2,1,data.nEm)';
 
 cuttoff=cuttoff.*constOpts.medianDiff_fac;
