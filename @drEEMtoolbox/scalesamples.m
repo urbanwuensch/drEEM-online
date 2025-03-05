@@ -24,14 +24,19 @@ arguments
     option (1,:) {optionValidator(option)} = 2
 end
 
-% Experimental feature; overwrite workspace variable, needs no outputarg check
-if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
-    nargoutchk(1,1)
-end
+
 
 % Run optionValidator again to return the result opmode
 opmode=optionValidator(option);
+% Experimental feature; overwrite workspace variable, needs no outputarg check
+if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
+    if matches(opmode,{'apply','reverse'})
+        nargoutchk(1,1)
+    else
+        nargoutchk(0,0)
+    end
 
+end
 %% Define some functions and stuff.
 tens2mat=@(x,sz1,sz2,sz3) reshape(x,sz1,sz2*sz3);
 
@@ -133,7 +138,6 @@ switch opmode
         else
             scaleeemdiag(data,[1 5])
         end
-        dataout=data;
         return
     otherwise
         error('Input to ''intensity'' (second input) not understood.')
