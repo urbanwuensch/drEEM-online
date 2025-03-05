@@ -1,4 +1,4 @@
-function [dataout,slopes] = fitslopes(data,options)
+function dataout = fitslopes(data,options)
 % <a href = "matlab:doc fitslopes">[dataout,slopes,metadata,model] = fitslopes(data,options) (click to access documentation)</a>
 %
 % <strong>Fit slopes to CDOM absorbance data</strong>
