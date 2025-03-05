@@ -178,8 +178,8 @@ classdef drEEMtoolbox < handle
         dataout = rmspikes(data,name_value)
 
         % Slopes, peaks, indicies
-        [dataout,slopes,metadata,model] = fitslopes(data,options)
-        [dataout,picklist,metadata] = pickpeaks( data,options)
+        dataout = fitslopes(data,options)
+        dataout = pickpeaks( data,options)
 
         % PARAFAC
         dataout = fitparafac(data,options)
