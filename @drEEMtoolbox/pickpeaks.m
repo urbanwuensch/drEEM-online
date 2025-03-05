@@ -1,4 +1,4 @@
-function [ dataout,picklist,metadata ] = pickpeaks( data,options)
+function dataout = pickpeaks( data,options)
 % <a href = "matlab:doc pickpeaks">[dataout,picklist,metadata] = pickpeaks( data,options) (click to access documentation)</a>
 %
 % <strong>Extract peak intensities</strong> and indices from fluorescence EEMs
