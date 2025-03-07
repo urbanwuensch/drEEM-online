@@ -74,18 +74,10 @@ classdef drEEMdataset
         end
 
         function validate(data)
-            if isMATLABReleaseOlderThan("R2022a")
-                warning('With Matlab older than R2022a, you might encounter errors. Continue at your own risk.',mode='verbose')
+            arguments
+                data (1,1) {mustBeA(data,'drEEMdataset')}
             end
-            flds=fieldnames(drEEMdataset);
-            C=intersect(flds,fieldnames(data));
-            if numel(C)~=numel(flds)
-                if not(matches(class(data),'drEEMdataset'))
-                    message='Object is not of the class "drEEMdataset".';
-                    throwAsCaller(MException("drEEM:invalid",message))
-                end
-            end
-
+            
             cnt=1;
             if not(isempty(data.X))
                 sz=size(data.X);
