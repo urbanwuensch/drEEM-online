@@ -1,47 +1,105 @@
 <img src="top right corner logo.png" width="100" height="auto" align="right"/>
-
-# fitparafac #
-Create PARAFAC models for fluorescence data (works with MATLAB 2022a or newer)
-
-
+# dataout
+Fit PARAFAC models to fluorescence data.
 
 ## Syntax
-### [dataout = fitparafac(data)](#syntax1) ###
-### [dataout = fitparafac( ___ , Name,Value)](#syntax1) ###
+
+[`dataout = dataout(data)`](#syntax1)
+
+[`dataout = fitparafac(___ , Name,Value)`](#syntax2)
 
 
-## Description ##
-### [dataout](#varargout) = fitparafac([data](#varargin)) <a name="syntax1"></a>
+## Description
 
 The `fitparafac` function performs Parallel Factor Analysis (PARAFAC) on the provided `data`. The models are saved in `data.models`. The function supports various configurations, including different constraints, convergence criteria, initialization methods, and etc.
-The function can also run in parallel for improved performance on multi-core systems. The function uses default values of input arguments (see Input arguments section) when options are not specified. <br>
-An entry will be added to the `history` field of the `data`, detailing the  options used for `fitparafac`. If no output argument is specified, the function will overwrite the original `data` in the workspace.
+The function supports parallelization performance-optimization, but the parallel computing toolbox is required. The function uses default values of input arguments (see Input arguments section) when options are not specified.
+An entry will be added to the `history` field of the `data`, detailing the  options used for `fitparafac`. 
+
+<details open>
+    <summary><b>`dataout = fitparafac(data)` - default options</b></summary>
+    <a name="syntax1"></a>
+        
 
 
->
-### [dataout](#varargout) = fitparafac([ ___ , Name,Value](#varargin)) <a name="syntax1"></a>
 
-specifies additional options using one or more name-value pair arguments. For example, you can specify the number of components for models, constraints, initialization and parallelization options. <br>
-Example: `fitparafac(data,f=2:6, starts=2, convergence=1e-4,  parallelization=false)` to fit parafac models with `2` to `6` components using with `2` random starts and a convergence criteria of `0.0001`, and turning off the parallelization option.
+The function supports fitting models with default options. However, these are conservative in nature with low convergence and many consecutive starts with random numbers. The defaults are:
 
-## Input arguments ##
-#### data - drEEMdataset containing fluorescence data  <a name="varargin"></a> <br> Type: drEEMdataset class object
-Dataset of the class `drEEMdataset`, with standardized contents and automated validation methods. If `"split"` is used as `mode` option, `data.split` should be non-empty (see `splitdataset`).
-If `data` already contains models, the old models will be deleted, keeping only the new models. 
+* fitting 2-7 component models
+* nonnegativity constraints in all modes
+* 40 starts (5*40 = 200 model initializations with one call)
+* convergence when relative change between iterations is smaller or equal to 1e-8
+* Model initialization with random numbers
+* Parallelization is active and console output is kept to a minimum
+* The default PARAFAC engine is "parafac3w", an optimization of PARAFAC that is approx. 5x faster than N-way toolbox PARAFAC, but only supports nonnegative models.
 
-##### Name-Value Arguments  <a name="data"></a>
-Specify optional pairs of arguments as `Name1=Value1,...,NameN=ValueN`, where `Name` is the argument name and `Value` is the corresponding value. Name-value arguments must appear after other arguments, `data` in this case, but the order of the pairs does not matter. 
+You might like some of these settings, and want to change others. Do so by using the Name,Value notation for options (see below).
+
+</details>
+
+<details open>
+    <summary><b>`dataout = fitparafac( ___ , Name,Value)` - [Name,Value](#NameValue) arguments</b></summary>
+    <a name="syntax2"></a>
+
+Most often, the default options will not suffice or do the trick. Custom options can be speficied using one or more [Name,Value](#NameValue) pair arguments. For example, you can specify the number of components for models, constraints, initialization and parallelization options. For example, `f=2:6` specifies that only 2-6 component models should be fit, `starts=2` that only two initializations should be initiated per model. See [Name,Value](#NameValue) for all options.
+
+</details>
+
+> Even with parallelization and optimized algorithms, the function might take a long time to finish. If you wish to abort, please use the "cancel" button next to the waitbar for each model. The function will attempt to finish, but might return an error if no usable models have been found. Note that this option is only available when `parallelization=true`. For conventional execution, `Ctrl+c` will abort the execution.
+> <img src="blockbar.png" width="auto" height="auto" align="justify"/>
+
+## Examples
+
+`samples=tbx.fitparafac(samples,f=2:7,convergence=1e-4,starts=2);`
+Fit models similar to the previous **outliertest**
 
 
-#### f - specify the number of components  <a name="varargin"></a> <br> Type:  numeric
-Numeric array specifying the number of components to use in the PARAFAC  models. Default is `[2, 3, 4, 5, 6, 7]`.
+
+`samples=tbx.fitparafac(samples,f=4:6,convergence=1e-8,starts=50,maxIteration=5000);  `
+Find the **global minimum** for a dataset
 
 
-#### mode - specify if data should be treated as whole or splits   <a name="varargin"></a> <br> Type: string | character
-A text specifying the mode of operation. Can be set to `"overall"` for analyzing the whole dataset in `data` or `"split"` for analyzing subsets of the data obtained from `data.splits`. Subsets of `data` should be previously created using `splitdataset` function. Default is "overall"
+`samples=tbx.fitparafac(samples,f=2:7,constraints="unconstrained",convergence=1e-6,starts=10,maxIteration=5000);`
+Explore what happens with **no constraints**
 
 
-#### constraints - specify the constraints for PARAFAC   <a name="varargin"></a> <br> Type: string | character
+`samples=tbx.fitparafac(samples,f=2:7,mode="split",convergence=1e-8,starts=50,maxIteration=5000);`
+Equivalent to the **former splitanalysis**
+   
+
+## Input arguments
+<details>
+    <summary><b>`data`- contains EEMs to fit models to</b></summary>
+    <i>drEEMdataset</i>
+        
+A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+</details>
+
+
+
+## Name-Value arguments
+Specify pairs of arguments as `Name1=Value1,...,NameN=ValueN`, where `Name` is the argument name and `Value` is the corresponding value. The notation `"Name",Value` is also supported. Name-value arguments must appear after other arguments, `data` in this case, but the order of the pairs does not matter. 
+<a name="NameValue"></a>
+
+<details open>
+    <summary><b>`f`- the number of components</b></summary>
+    <i>numeric</i>
+
+Numeric array specifying the number of components to use in the PARAFAC  models. Default is `[2, 3, 4, 5, 6, 7]`. Can be specified as array, e.g. `2:6` for simplicity.
+
+</details>
+
+<details open>
+    <summary><b>`mode` - fit models to the overall dataset or splits</b></summary>
+    <i>string | char</i>
+
+A text specifying the mode of operation. Can be set to `"overall"` for analyzing the whole dataset in `data` (default) or `"split"` for analyzing subsets of the data obtained from `data.splits`. Subsets of `data` should be previously created using `splitdataset` function. Default is `"overall"`.
+
+</details>
+
+<details open>
+    <summary><b>`constraints` - force PARAFAC to adhere to rules</b></summary>
+    <i>string | char</i>
+
 Specify the constraints to apply to the models. You can choose from: <br>
 
 
@@ -53,23 +111,39 @@ This option can sometimes make it harder to achieve the best possible fit to the
  
 Default constraint is `"nonnegativity"`.
 
+</details>
 
+<details open>
+    <summary><b>`starts` - number of initializations per model</b></summary>
+    <i>numeric</i>
 
-#### starts - specify the number of random starts<a name="varargin"></a> <br> Type: numeric
 Number of random starts for the algorithm refers to initializing the factor matrices with random values and running the algorithm multiple times. Default is `40`.
 
+</details>
 
-#### convergence - specify the convergence criteria for models<a name="varargin"></a> <br> Type: numeric
-Convergence criterion. If the change in errors falls below a `convergence` threshold, the algorithm is considered to have converged and will stop running. Default is `1e-6`.
+<details open>
+    <summary><b>`convergence` - stop criterion</b></summary>
+    <i>numeric</i>
 
+If the relative change in model fit between iterations falls below a `convergence` threshold, the algorithm is considered to have converged and will stop running. Default is `1e-8`. Preliminary models can be run with `1e-6` or `1e-4`.
 
-#### MaxIteration - specify the maximum number of iteration if convergence criteria is not met <a name="varargin"></a> <br> Type: numeric
+</details>
+
+<details open>
+    <summary><b>`maxIteration` - stop criterion</b></summary>
+    <i>numeric</i>
+
 Specify the maximum number of iterations for the algorithm. If the convergence criteria, `convergence`, is not met before the specified maximum number of iteration the algorithm will stop running.
-Default is `3000` iterations.
+Default is `3000` iterations. The lower `convergence`, the higher `maxIteration` should be set.
+
+</details>
 
 
-#### initialization - specify the initialization method<a name="varargin"></a> <br> Type: string | character
-Specify the method used to set the starting values for the factor matrices. you can choose from:
+<details open>
+    <summary><b>`initialization` - first guess method</b></summary>
+    <i>string | char</i>
+
+Specify the method used to set the starting values for the factor matrices. You can choose from:
 
 - `"random"`: Factor matrices are initialized with random values.
 - `"svd"`: Factor matrices are initialized using Singular Value Decomposition (SVD) often leading to faster convergence compared to random initialization. SVD computation can be expensive for very large datasets.
@@ -78,12 +152,24 @@ Specify the method used to set the starting values for the factor matrices. you 
 Default initialization method is `"random"`.
 
 
+</details>
 
-#### parallelization - turn on/off parallel computing<a name="varargin"></a> <br> Type: numeric | Logical
+
+<details open>
+    <summary><b>`parallelization` - explicitly control parallelization</b></summary>
+    <i>logical</i>
+
 Enable or disable parallelization. If enabled can dramatically decrease the time required for the analysis. Default is `true`.
 
+Use the option for explicit control of parallelization. Some installations have persistent issues with pool initialization and it might be easier to turn off the feature even if it is theoretically available.
 
-#### consoleoutput - specify the level of details displayed in the console output<a name="varargin"></a> <br> Type: string | character
+
+</details>
+
+<details open>
+    <summary><b>`consoleoutput` - level of console output</b></summary>
+    <i> string  | char</i>
+
 Specify the level of console output during execution. You can choose from:
 
 - `"all"`: displays all the information during the process. 
@@ -93,34 +179,21 @@ Specify the level of console output during execution. You can choose from:
 Default is `"minimum"`.
 
 
+</details>
 
-#### toolbox - specify which toolbox to use for creating PARAFAC models<a name="varargin"></a> <br> Type: string | character
+</details>
+<details open>
+    <summary><b>`toolbox` - PARAFAC algorithm</b></summary>
+    <i> string  | char</i>
 
 Specify the toolbox to use for the PARAFAC algorithm. You can choose from:
 
 - `"parafac3w"`
 - `"nway"`
-- `"pls"`: Note:  `PLS_toolbox` should be installed. 
+- `"pls"`: Note:  PLS_toolbox must be installed. Warning, recent versions of this software have not been tested for functionality with drEEM.
  
  
 Default is `"parafac3w"`.
 
 
-
-
-## Output arguments (optional)##
-#### dataout - drEEMdataset   <a name="varargin"></a> <br> Type: drEEMdataset class object
-Dataset of the class `drEEMdataset`, with standardized contents and automated validation methods, in which the parafac models are stored in `dataout.models`. To visualize and analyze the models use one of the following functions: `viewmodels`, `viewcomcorr`.<br> 
-If no output argument is specified, the function overwrites the original object in the workspace.
-
-
-
-
-## See Also ##
-
-<a href="link.com">splitdataset</a> | 
-<a href="link.com"> drEEMdataset </a> |
-<a href="link.com"> Link3 </a> |
-
-
-## Topics ##
+</details>

@@ -1,47 +1,49 @@
 <img src="top right corner logo.png" width="100" height="auto" align="right"/>
-
-# changestatus #
-Change one or more fields of status in data to keep a record of the changes.
-
-
+# changestatus
+Manually change the status of a `drEEMdataset` to reflect its current state
 
 ## Syntax
-### [changestatus(data)](#syntax1) ###
+
+`data=changestatus(data)`
+
+## Description
+The `changestatus` function opens up a user interface that allows to change the status of the data in one or more of the available fields. The fields describe:
+
+- spectral correction
+- inner filter effect correction
+- blank subtraction
+- signal calibration
+- scatter treatment
+- signal scaling
+- absorbance unit
+
+> The property `status` of `drEEMdataset` is a read-only property that can only be changed by methods of the toolbox. This includes `changestatus`, but also all other processing functions, such as `subtractblanks`.
+
+The function offers guidance on each aspect of the status. This can be accessed by pressing the "?" button next to the name of the status in the interface.
 
 
 
+## Examples
 
-## Description ##
-### changestatus([data](#varargin)) <a name="syntax1"></a>
-The `changestatus` function opens up the `setstatus` user interface app that allows user to see or change the status of the data in one or more of the available fields.
-The fields consist of:
+`data=changestatus(data)`
 
-- `spectral correction`
-- `inner filter effect correction`
-- `blank subtraction`
-- `signal calibration`
-- `scatter treatment`
-- `signal scaling`
+`changestatus` is a GUI tool. Calling the function will result in a uifigure and Matlab waits for the GUI to close. This is done by hitting the button "save & exit".
 
-<br>
-Note: The toolbox automatically updates the status fields when relevant function are run, e.g, `subtractblanks`, `ifecorrection`, so that the user does not need to manually update the status. However, in cases when user desires to change a status field manually, the app provides the opportunity. 
-<br>
-Note: The `setstatus` app is called automatically every time functions `importeems` and `importabsorbance` are run, to set the initial status of the data.
+The function offers guidance on each aspect of the status. This can be accessed by pressing the "?" button next to the name of the status in the interface.
 
-## Input arguments ##
-#### data - drEEMdataset <a name="varargin"></a> <br> Type: drEEMdataset class object
-Dataset of the class `drEEMdataset`, with standardized contents and automated validation methods.
-<br>
-Note: the function does not accept any output arguments. 
+<img src="changestatus_example.png" width="auto" height="auto" align="justify"/>
+
+
+## Input arguments
+<details>
+    <summary><b>`data` - dataset in need of status update</b></summary>
+    <i>drEEMdataset</i>
+        
+A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+</details>
 
 
 
-## See Also ##
-
-<a href="link.com"> importeems</a> | 
-<a href="link.com"> Link2 </a> |
-<a href="link.com"> Link3 </a> |
-
-
-## Topics ##
-
+<!---
+## Name-Value arguments
+-->

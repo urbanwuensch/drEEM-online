@@ -5,7 +5,7 @@
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>pickpeaks</title>
+<title>viewsplitvalidation</title>
 
 
 <style type="text/css">
@@ -340,205 +340,49 @@ kbd {
 
 <p><img src="top right corner logo.png" width="100" height="auto" align="right"/></p>
 
-<h1 id="toc_0">pickpeaks</h1>
+<h1 id="toc_0">viewsplitvalidation</h1>
 
-<p>Extract common fluorescence peaks and indices from a drEEMdataset object.</p>
+<p>Visualize a split validation on a specific model present in data.</p>
 
 <h2 id="toc_1">Syntax</h2>
 
-<p><a href="#syntax1"><code>dataout = pickpeaks(data)</code></a></p>
-
-<p><a href="#syntax2"><code>dataout = pickpeaks( ___ , Name,Value)</code></a></p>
-
-<p><a href="#syntax3"><code>pickpeaks( ___ , Name,Value)</code></a></p>
+<p><a href="#syntax1"><code>dataout = viewsplitvalidation(data, fac)</code></a></p>
 
 <h2 id="toc_2">Description</h2>
 
-<p>The function returns fluorescence intensities and ratios at predefined points in the EEM for every sample.</p>
+<p>The <code>viewsplitvalidation</code> function visualizes the split validation on a provided dataset by checking the similarities of excitation and emission spectral loading between different subsets. Two spectra are sufficiently similar if the Tucker congruence coefficient is greater than <code>0.95</code>.</p>
 
 <blockquote>
-<p><strong><em>Data coverage differs between datasets. If a peak or index is out of the range covered by the measurements, NaNs will be returned. If the distance between the peak definition and the measurements is equal to or greater than 5nm, a message will be displayed to disclose this. The function does not and cannot perform interpolations to solve the issue.</em></strong></p>
+<p><strong><em>The actual split validation is already performed after a call to <code>fitparafac</code> with the option <code>mode=&#39;split&#39;</code>. There, the results are shown as console output but no plots are shown. Use this function to find out how well the validation worked or where it did not succeed.</em></strong></p>
 </blockquote>
 
-<ol>
-<li><strong>Peak Extraction:</strong><br>
+<p>The function checks if the model specified by the number of components <code>fac</code> is validated across different splits and the model obtained from all of the data, <code>&quot;overall&quot;</code> (see <code>fitparafac</code> function for options <code>&quot;overall&quot;</code> and <code>&quot;split&quot;</code>).</p>
 
-<ol>
-<li>Single Point: The peak value is taken directly from the specified Em/Ex pair.</li>
-<li>Max over Range: The peak value is the maximum fluorescence intensity within the specified Em and/or Ex range.</li>
-</ol></li>
-<li><strong>Fluorescence Indices:</strong><br>
+<p>If validation check is passes, the function plots the validated models, displaying their loadings and contours, and provides diagnostic plots if validation fails. </p>
 
-<ol>
-<li>Fluorescence Index (FluI): Ratio of fluorescence intensities at <code>Em=470</code> nm and <code>Em=520</code> nm for <code>Ex=370</code> nm.</li>
-<li>Freshness Index (FrI): Ratio of fluorescence intensities at <code>Em=380</code> nm and the maximum intensity between <code>Em=420</code> nm and <code>Em=435</code> nm for <code>Ex=310</code> nm.</li>
-<li>Biological Index (BIX): Ratio of fluorescence intensities at <code>Em=380</code> nm and <code>Em=430</code> nm for <code>Ex=310</code> nm.</li>
-<li>Humification Index (HIX): Ratio of the sum of fluorescence intensities between <code>Em=435</code> nm and <code>Em=480</code> nm to the sum of intensities between <code>Em=300</code> nm and <code>Em=345</code> nm plus <code>Em=435</code> nm and <code>Em=480</code> nm for <code>Ex=254</code> nm.</li>
-</ol></li>
-</ol>
+<p>The function includes detailed error messages to help diagnose why a validation might have failed.</p>
 
-<blockquote>
-<p><strong><em>For fluorescence indices, the emission scans in question are smoothed using <code>smoothdata(___,&#39;sgolay&#39;,2)</code>. Verify with <code>pickpeaks(data,details=true)</code> if this represents <em>your</em> data well in <em>your</em> case.</em></strong></p>
-</blockquote>
-
-<table border="1">
-    <tr>
-        <th>Peak Name/ Fluorescence Indices</th>
-        <th>Emission Wavelengths (nm)</th>
-        <th>Excitation Wavelengths (nm)</th>
-        <th>Type</th>
-
-    </tr>
-    <tr>
-        <td>B</td>
-        <td>305</td>
-        <td>275</td>
-        <td>Single Point</td>
-    </tr>
-    <tr>
-        <td>T</td>
-        <td>340</td>
-        <td>275</td>
-        <td>Single Point</td>
-    </tr>
-    <tr>
-        <td>A</td>
-        <td>400-460</td>
-        <td>260</td>
-        <td>Max over Range</td>
-    </tr>
-    <tr>
-        <td>M</td>
-        <td>370-410</td>
-        <td>290-310</td>
-        <td>Max over Range</td>
-
-    </tr>
-    <tr>
-        <td>C</td>
-        <td>420-460</td>
-        <td>320-360</td>
-        <td>Max over Range</td>
-
-    </tr>
-    <tr>
-        <td>D</td>
-        <td>509</td>
-        <td>390</td>
-        <td>Single Point</td>
-
-    </tr>
-    <tr>
-        <td>N</td>
-        <td>370</td>
-        <td>280</td>
-        <td>Single Point</td>
-
-    </tr>
-    <tr>
-        <td>Fluorescence Index (FluI)</td>
-        <td>470, 520</td>
-        <td>370</td>
-        <td>Ratio</td>
-
-    </tr>
-    <tr>
-        <td>Freshness Index (FrI)</td>
-        <td>380, 420-435</td>
-        <td>310</td>
-        <td>Ratio</td>
-
-    </tr>
-    <tr>
-        <td>Biological Index (BIX)</td>
-        <td>380, 430</td>
-        <td>310</td>
-        <td>Ratio</td>
-
-    </tr>
-    <tr>
-        <td>Humification Index (HIX)</td>
-        <td>300-345, 435-480</td>
-        <td>254</td>
-        <td>Ratio</td>
-
-    </tr>
-</table>
-
-<p>Pickes predefined peaks and fluorescence indices in the EEM and stores the results in <code>dataout.opticalMetadata</code>.</p>
-
-<p><details open>
-<summary>
-<b><code>dataout = pickpeaks(data)</code> - extract peaks and indices from dataset</b>
-</summary>
- <a name="syntax1"></a>
-Th function <code>pickpeaks</code> extracts predefined fluorescence peaks, including Peak B, T, A, M, C, D, and N, and computes several fluorescence indices, including Fluorescence index (FluI), Freshness Index (FrI), Biological Index (BIX) and Humification Index (HIX), from <code>data</code>. The peaks and indices will be plotted for all the samples in <code>data</code>.</p>
-
-<p></details></p>
-
-<p><details open>
-<summary>
-<b><code>dataout = pickpeaks( ___ , Name,Value)</code> - control visual output with arguments </b>
-</summary>
-<a name="syntax2"></a></p>
-
-<p>specifies additional options using one or more <a href="#NameValue">name-value</a> pair arguments. For example, you can specify if the overview plot should be generated by using <code>&#39;plot&#39;,&#39;true&#39;</code> and specify if indices diagnostic plots should be displayed for each sample by using <code>&#39;details&#39;,&#39;true&#39;</code>. </p>
-
-<p></details></p>
-
-<p><details open>
-<summary>
-<b><code>pickpeaks(data)</code> - run the function in diagnostic mode</b>
-</summary>
-<a name="syntax3"></a></p>
-
-<p>If no output argument is provided, the function will automatically set <code>plot=true</code> and <code>details=true</code> to provide diagnostic plots that describe the peack picking process in more detail.</p>
-
-<p></details></p>
+<p><code>viewsplitvalidation</code> checks for the presence of the <code>&quot;overall&quot;</code> model and splits. If <code>&quot;overall</code>&quot; does not exist the validation will only be performed across splits. But if the <code>splits</code> is empty, the function won&#39;t be able to perform any validation test and will cause an error.</p>
 
 <h2 id="toc_3">Input arguments</h2>
 
 <p><details>
-    <summary><b><code>data</code> - contains sample fluorescence</b></summary>
+    <summary><b><code>data</code> - dataset with PARAFAC models</b></summary>
     <i>drEEMdataset</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>.</p>
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. </p>
 
-<p></details></p>
-
-<h2 id="toc_4">Name-Value arguments</h2>
-
-<p>Specify pairs of arguments as <code>Name1=Value1,...,NameN=ValueN</code>, where <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. The notation <code>&quot;Name&quot;,Value</code> is also supported. Name-value arguments must appear after other arguments, <code>data</code> in this case, but the order of the pairs does not matter. 
-<a name="NameValue"></a></p>
-
-<p><details open>
-    <summary><b><code>plot</code>- switch to plot the results</b></summary>
-    <i>logical</i></p>
-
-<p>Logical or numeric value to specify if a plot showing the results should be generated. The plot shows an overview of peak intensities and indices for all sample in <code>data</code>. If no output argument is supplied, plotting is enabled automatically.</p>
-
-<p>Default is <code>true</code>.</p>
-
-<p></details></p>
+<p>PARAFAC models should be present in the overall dataset and all splits for full functionality.</p>
 
 <p></details></p>
 
 <p><details open>
-    <summary><b><code>details</code>- switch to plot diagnostics</b></summary>
-    <i>logical</i></p>
+    <summary><b><code>fac</code> - number of PARAFAC compoents in the validated model</b></summary>
+    <i>numeric</i></p>
 
-<p>Logical or numeric value to specify if detailed diagnostic plots should be shown for each sample. This mainly concerns the indices as some smoothing of the data is done in an attempt to obtain more robust results. Use this option to verify that this smoothing works well.</p>
+<p>Specifies the number of components in the model you wish to validate.</p>
 
-<p>Default is <code>false</code>.</p>
-
-<h2 id="toc_5">Output arguments</h2>
-
-<p><details open>
-    <summary><b><code>data</code> - contains results</b></summary>
-    <i>drEEMdataset</i></p>
-
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. The output contains the results in the table <code>.opticalMetadata</code>
-</details></p>
+<p></details></p>
 
 
 

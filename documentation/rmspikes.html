@@ -9,310 +9,327 @@
 
 
 <style type="text/css">
-/* CSS stylesheet for drEEM toolbox documentatio */
-/* Author: Urban Wünsch */
-
-/* RESET
-=============================================================================*/
-
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-/* BODY
-=============================================================================*/
-
 body {
-  font-family: Tahoma,sans-serif, Helvetica, arial, freesans, clean;
-  font-size: 14px;
+  font-family: Helvetica, arial, sans-serif;
+  font-size: 12px;
+  color:#393939;
   line-height: 1.6;
-  color: #404040;
-  background-color: #fff;
-  padding: 20px;
-  max-width: 960px;
-  margin: 0 auto;
-}
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: white;
+  padding: 30px; }
 
-body>*:first-child {
-  margin-top: 0 !important;
-}
+body > *:first-child {
+  margin-top: 0 !important; }
+body > *:last-child {
+  margin-bottom: 0 !important; }
 
-body>*:last-child {
-  margin-bottom: 0 !important;
-}
-
-/* BLOCKS
-=============================================================================*/
-
-p, blockquote, ul, ol, dl, table, pre {
-  margin: 15px 0;
-}
-
-/* HEADERS
-=============================================================================*/
+a {
+  color: #4183C4; }
+a.absent {
+  color: #cc0000; }
+a.anchor {
+  display: block;
+  padding-left: 30px;
+  margin-left: -30px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0; }
 
 h1, h2, h3, h4, h5, h6 {
   margin: 20px 0 10px;
   padding: 0;
+  font-size: 14px;
+  color: #393939;
   font-weight: bold;
   -webkit-font-smoothing: antialiased;
-}
+  cursor: text;
+  position: relative; }
 
-h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
-  font-size: inherit;
-}
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA09pVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoMTMuMCAyMDEyMDMwNS5tLjQxNSAyMDEyLzAzLzA1OjIxOjAwOjAwKSAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUM2NjlDQjI4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUM2NjlDQjM4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5QzY2OUNCMDg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5QzY2OUNCMTg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsQhXeAAAABfSURBVHjaYvz//z8DJYCRUgMYQAbAMBQIAvEqkBQWXI6sHqwHiwG70TTBxGaiWwjCTGgOUgJiF1J8wMRAIUA34B4Q76HUBelAfJYSA0CuMIEaRP8wGIkGMA54bgQIMACAmkXJi0hKJQAAAABJRU5ErkJggg==) no-repeat 10px center;
+  text-decoration: none; }
+
+h1 tt, h1 code {
+  font-size: inherit; }
+
+h2 tt, h2 code {
+  font-size: inherit; }
+
+h3 tt, h3 code {
+  font-size: inherit; }
+
+h4 tt, h4 code {
+  font-size: inherit; }
+
+h5 tt, h5 code {
+  font-size: inherit; }
+
+h6 tt, h6 code {
+  font-size: inherit; }
 
 h1 {
-  font-family: Tahoma;
-  font-size: 28px;
-  border-bottom: 1px solid #ccc;
-  color: #c05708;
-}
+  font-size: 18px;
+  color: #c05708; }
 
 h2 {
-  font-size: 24px;
-  color: #404040;
-  border-bottom: 1px solid #ccc;
-}
+  font-size: 16px;
+  border-bottom: 1px solid #cccccc;
+  color: #393939; }
 
 h3 {
-  font-size: 16px;
-  font-family: Consolas, "Liberation Mono", Courier, monospace;
-  color: #404040;
-  font-weight: bold;
-  margin: 0 0px;
-  padding: 0px 0px;
-  white-space: nowrap;
-  border: 1px solid #fcfcfc;
-  background-color: #fcfcfc;
-  border-radius: 3px;
-}
+  font-size: 15px;
+  color: #c05708;}
 
 h4 {
   font-size: 16px;
-  white-space: nowrap;
-  border: 1px solid #ececec;
-  background-color: #f9f9f9;
-  border-radius: 4px;
-  margin: 20px 0 10px;
-}
+  color: #c05708;}
 
 h5 {
-  font-size: 20px;
-  color: #c05708;
-}
+  font-size: 14px;
+  color: #c05708;}
 
 h6 {
-  color: #777;
-  font-size: 14px;
+  color: #777777;
+  font-size: 14px; }
+
+p, blockquote, ul, ol, dl, li, table, pre {
+  margin: 15px 0; }
+
+hr {
+  background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;
+  border: 0 none;
+  color: #cccccc;
+  height: 4px;
+  padding: 0;
 }
 
-body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+body > h2:first-child {
   margin-top: 0;
-  padding-top: 0;
-}
+  padding-top: 0; }
+body > h1:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+  body > h1:first-child + h2 {
+    margin-top: 0;
+    padding-top: 0; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+  margin-top: 0;
+  padding-top: 0; }
 
 a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
   margin-top: 0;
-  padding-top: 0;
-}
+  padding-top: 0; }
 
-h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
-  margin-top: 10px;
-}
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
+  margin-top: 0; }
 
-/* LINKS
-=============================================================================*/
-
-a {
-  font-familiy: Verdana;
-  color: #0076a8;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-/* LISTS
-=============================================================================*/
-
+li p.first {
+  display: inline-block; }
+li {
+  margin: 0; }
 ul, ol {
-  padding-left: 30px;
-}
+  padding-left: 30px; }
 
-ul li > :first-child, 
-ol li > :first-child, 
-ul li ul:first-of-type, 
-ol li ol:first-of-type, 
-ul li ol:first-of-type, 
-ol li ul:first-of-type {
-  margin-top: 0px;
-}
-
-ul ul, ul ol, ol ol, ol ul {
-  margin-bottom: 0;
-}
+ul :first-child, ol :first-child {
+  margin-top: 0; }
 
 dl {
-  padding: 0;
-}
+  padding: 0; }
+  dl dt {
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
+    padding: 0;
+    margin: 15px 0 5px; }
+    dl dt:first-child {
+      padding: 0; }
+    dl dt > :first-child {
+      margin-top: 0; }
+    dl dt > :last-child {
+      margin-bottom: 0; }
+  dl dd {
+    margin: 0 0 15px;
+    padding: 0 15px; }
+    dl dd > :first-child {
+      margin-top: 0; }
+    dl dd > :last-child {
+      margin-bottom: 0; }
 
-dl dt {
-  font-size: 14px;
-  font-weight: bold;
-  font-style: italic;
-  padding: 0;
-  margin: 15px 0 5px;
-}
-
-dl dt:first-child {
-  padding: 0;
-}
-
-dl dt>:first-child {
-  margin-top: 0px;
-}
-
-dl dt>:last-child {
-  margin-bottom: 0px;
-}
-
-dl dd {
-  margin: 0 0 15px;
+blockquote {
+  border-left: 4px solid #dddddd;
   padding: 0 15px;
-}
+  color: #777777; }
+  blockquote > :first-child {
+    margin-top: 0; }
+  blockquote > :last-child {
+    margin-bottom: 0; }
 
-dl dd>:first-child {
-  margin-top: 0px;
-}
+table {
+  padding: 0;border-collapse: collapse; }
+  table tr {
+    border-top: 1px solid #cccccc;
+    background-color: white;
+    margin: 0;
+    padding: 0; }
+    table tr:nth-child(2n) {
+      background-color: #f8f8f8; }
+    table tr th {
+      font-weight: bold;
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr td {
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr th :first-child, table tr td :first-child {
+      margin-top: 0; }
+    table tr th :last-child, table tr td :last-child {
+      margin-bottom: 0; }
 
-dl dd>:last-child {
-  margin-bottom: 0px;
-}
+img {
+  max-width: 100%; }
 
-/* CODE
-=============================================================================*/
-
-pre, code, tt {
-  font-size: 16px;
-  font-family: Consolas, "Liberation Mono", Courier, monospace;
-  color: #404040;
-  font-weight: bold;
-}
+span.frame {
+  display: block;
+  overflow: hidden; }
+  span.frame > span {
+    border: 1px solid #dddddd;
+    display: block;
+    float: left;
+    overflow: hidden;
+    margin: 13px 0 0;
+    padding: 7px;
+    width: auto; }
+  span.frame span img {
+    display: block;
+    float: left; }
+  span.frame span span {
+    clear: both;
+    color: #333333;
+    display: block;
+    padding: 5px 0 0; }
+span.align-center {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-center > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: center; }
+  span.align-center span img {
+    margin: 0 auto;
+    text-align: center; }
+span.align-right {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px 0 0;
+    text-align: right; }
+  span.align-right span img {
+    margin: 0;
+    text-align: right; }
+span.float-left {
+  display: block;
+  margin-right: 13px;
+  overflow: hidden;
+  float: left; }
+  span.float-left span {
+    margin: 13px 0 0; }
+span.float-right {
+  display: block;
+  margin-left: 13px;
+  overflow: hidden;
+  float: right; }
+  span.float-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: right; }
 
 code, tt {
-  margin: 0 0px;
-  padding: 0px 0px;
+  margin: 0 2px;
+  padding: 5px 5px;
+  color: #006bcc;
   white-space: nowrap;
-  border: 1px solid #fcfcfc;
-  background-color: #f8f8ff;
-  border:1px solid #dedede;
-  color:#444;
-  border-radius: 3px;
-}
+  border: 1px solid #f9f9f9;
+  background-color: #f9f9f9;
+  border-radius: 5px; }
 
-pre>code {
+pre code {
   margin: 0;
   padding: 0;
   white-space: pre;
   border: none;
-  background: transparent;
-}
+  background: transparent; }
 
-pre {
-  background-color: #fcfcfc;
-  border: 1px solid #fcfcfc;
+.highlight pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
   font-size: 13px;
   line-height: 19px;
   overflow: auto;
   padding: 6px 10px;
-  border-radius: 3px;
-}
+  border-radius: 3px; }
 
-pre code, pre tt {
-  background-color: transparent;
-  border: none;
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+  pre code, pre tt {
+    background-color: transparent;
+    border: none; }
+
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
 }
 
 kbd {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    background-color: #DDDDDD;
-    background-image: linear-gradient(#F1F1F1, #DDDDDD);
-    background-repeat: repeat-x;
-    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
-    border-image: none;
-    border-radius: 2px 2px 2px 2px;
-    border-style: solid;
-    border-width: 1px;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    line-height: 10px;
-    padding: 1px 4px;
+  display: inline-block;
+  padding: 3px 5px;
+  font-size: 11px;
+  line-height: 10px;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fcfcfc;
+  border: solid 1px #ccc;
+  border-bottom-color: #bbb;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #bbb
 }
 
-/* QUOTES
-=============================================================================*/
-
-blockquote {
-  border-left: 4px solid #DDD;
-  padding: 0 15px;
-  color: #777;
+* {
+	-webkit-print-color-adjust: exact;
 }
-
-blockquote>:first-child {
-  margin-top: 0px;
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
 }
-
-blockquote>:last-child {
-  margin-bottom: 0px;
-}
-
-/* HORIZONTAL RULES
-=============================================================================*/
-
-hr {
-  clear: both;
-  margin: 15px 0;
-  height: 0px;
-  overflow: hidden;
-  border: none;
-  background: transparent;
-  border-bottom: 4px solid #ddd;
-  padding: 0;
-}
-
-/* TABLES
-=============================================================================*/
-
-table th {
-  font-weight: bold;
-}
-
-table th, table td {
-  border: 1px solid #ccc;
-  padding: 6px 13px;
-}
-
-table tr {
-  border-top: 1px solid #ccc;
-  background-color: #fff;
-}
-
-table tr:nth-child(2n) {
-  background-color: #f8f8f8;
-}
-
-/* IMAGES
-=============================================================================*/
-
-img {
-  max-width: 100%
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+  body {
+    padding: 2cm; 
+  }
 }
 </style>
 
@@ -329,81 +346,156 @@ img {
 
 <h2 id="toc_1">Syntax</h2>
 
-<h3 id="toc_2"><a href="#syntax1">dataout = rmspikes(data)</a></h3>
+<p><a href="#syntax1"><code>dataout = rmspikes(data)</code></a></p>
 
-<p>Run the noise removal function with default settings.</p>
+<p><a href="#syntax2"><code>dataout = rmspikes( ___ , Name,Value)</code></a></p>
 
-<h3 id="toc_3"><a href="#syntax1">dataout = rmspikes( ___ , Name,Value)</a></h3>
+<p><a href="#syntax3"><code>rmspikes( ___ , Name,Value)</code></a></p>
 
-<p>Run the noise removal function with custom settings.</p>
+<h2 id="toc_2">Description</h2>
 
-<h3 id="toc_4"><a href="#syntax1">rmspikes( ___ , Name,Value)</a></h3>
-
-<p>Run the noise removal function in diagnostics mode to finetune settings. Pairs well with <code>details=true</code>. Here, no output will be assigned since testing is the purpose.</p>
-
-<h2 id="toc_5">Description</h2>
-
-<h3 id="toc_6"><a href="#varargout">dataout</a> = rmspikes(<a href="#varargin">data</a>) <a name="syntax1"></a></h3>
-
-<p>The function  <code>rmspikes</code> automatically extracts the EEM  from <code>data</code> and alternatingly deletes parts of the excitation and emission scans. The function then interpolates over the alternatingly-deleted data using <code>&#39;inpaint&#39;</code> method. Then calculates differences between the original and interpolated data to identify spikes and according to the default <code>threshold</code> removes spikes by setting the corresponding data points to NaN. The function provides warnings if a significant portion of the data is identified as noisy.
-<code>rsmpikes</code> can optionally interpolate over the removed spikes.</p>
+<p>In large datasets, the quality inspection of every EEM can take a long time. <code>rmspikes</code> offers an automated method to delete signal spikes from fluorescence EEMs. It is designed to take out very bad cases of signals that stick out from otherwise smooth EEMs.</p>
 
 <blockquote>
-<h3 id="toc_7"><a href="#varargout">dataout</a> = rmspikes(<a href="#varargin"> ___ , Name,Value</a>) <a name="syntax1"></a></h3>
-
-<p>specifies additional options using one or more name-value pair arguments. For example, you can specify if <code>interpoaltion</code> should be performed or adjust the <code>thresholdFactor</code>. <br>
-Example: <code>rmspikes(data, &quot;interpolate&quot;,1, &quot;thresholdFactor&quot;,100, &quot;details&quot;,true, &quot;plot&quot;,false)</code> to remove the spikes using a threshold of <code>100</code>, interpolate the removed data, and only plot the <code>details</code>. </p>
+<p><strong><em>The function only works reliably with EEMs that don&#39;t contain Rayleigh or Raman Scatter! If scatter is present, the default threshold factor is most likely unusable.</em></strong></p>
 </blockquote>
 
-<h2 id="toc_8">Input arguments</h2>
+<p><code>rmspikes</code> performs an analysis that estimates the baseline noise level across the dataset. The analysis sequence is as follows:</p>
 
-<h4 id="toc_9">data - drEEMdataset to remove the spikes from  <a name="varargin"></a> <br> Type: drEEMdataset class object</h4>
+<ul>
+<li>The dataset is replicated four times. In each copy, every 2nd excitation or emission scan is NaN&#39;ed. Once starting at the first, then at the second scan.</li>
+<li>The missing data in each copy is replaced with a 2D-inpaiting algorithm (<a href="https://www.mathworks.com/matlabcentral/fileexchange/4551-inpaint_nans"><code>inpaint_nans</code></a>).</li>
+<li>The difference between the original and interpolated EEMs is calculated for each copy. The differences are accumulated in one 3D array.</li>
+<li>A threshold matrix is calculated based on the median difference between observed and interpolated. Since data tends to get noisier toward the UV in the excitation direction, the noise floor estimate is transformed into a vector along the excitation direction (noise along the emission is thus assumed to not change with wavelength). The vector is transformed by multiplication with the square root to make the method more sensitive in the UV. The vector is then transformed back into a matrix with <code>repmat</code>. <code>thresholdFactor</code> is multiplied onto this matrix to saveguard against excessive flagging.</li>
+<li>For points in the EEM where the difference between interpolated and observed data exceeds the threshold matrix, the data is NaN&#39;ed</li>
+<li>If interpolation is enabled, the removed data is finally replaced with a 2D interpolation guess.</li>
+</ul>
 
-<p>Dataset of the class <code>drEEMdataset</code>, with standardized contents and automated validation methods that will be fed to <code>rmspikes</code>.</p>
+<blockquote>
+<p>The function works best for wide peaks in the visible range. In testing, the function has shown to have a tendency toward removing parts of narrow peak data in the UV if highly dynamic peaks are present. If this is observed, raise the <code>thresholdFactor</code> option or consider refraining from using the function.</p>
+</blockquote>
 
-<h5 id="toc_10">Name-Value Arguments  <a name="data"></a></h5>
+<p>Another warning:</p>
 
-<p>Specify optional pairs of arguments as <code>Name1=Value1,...,NameN=ValueN</code>, where <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. Name-value arguments must appear after other arguments, <code>data</code> in this case, but the order of the pairs does not matter. </p>
+<blockquote>
+<p>If the dataset contains EEM parts that contain only missing data or zeros, the estimation of the noise floor will fail and the function will return an error. Please use subdataset to trim your dataset to a sensible spectral range in this case!</p>
+</blockquote>
 
-<p>Example: <code>___,&quot;interpolate&quot;,false, &quot;thresholdFactor&quot;,40, &quot;details&quot;,true</code> specifies that function is expected to remove spikes with a threshhold factor of <code>40</code> without doing an interpolation over the missing values and then plot the <code>details</code>. Other arguments will use their default values.</p>
+<p>The function provides warnings if a significant portion of the data is identified as noisy.</p>
 
-<h4 id="toc_11">thresholdFactor - specify the sensitivity of the function to spikes  <a name="varargin"></a> <br> Type:  numeric</h4>
+<p>Copyright notice:</p>
 
-<p>Adjust the sensitivity of the spike detection. A lower values means more sensitivity. Default is <code>10</code>. </p>
+<blockquote>
+<p><strong>&#39;inpaint&#39;</strong> John D&#39;Errico (2025). <code>inpaint_nans</code> (https://www.mathworks.com/matlabcentral/fileexchange/4551-inpaint_nans), MATLAB Central File Exchange. Retrieved March 5, 2025. </p>
+</blockquote>
 
-<h4 id="toc_12">interpolate - specify if the removed values should be interpolated  <a name="varargin"></a> <br> Type:  numeric | logical</h4>
+<p><details open>
+    <summary><b><code>dataout = rmspikes(data)</code> - default options</b></summary>
+<a name="syntax1"></a></p>
 
-<p>Logical or numeric value to specify if interpolation over removed data points should be performed. Default is <code>false</code>.</p>
+<p>Applies the default settings with a threshold factor of 10 and disabled interpolation.</p>
 
-<h4 id="toc_13">plot - specify if the removal overview plot should be displayed  <a name="varargin"></a> <br> Type:  numeric | logical</h4>
+<p></details></p>
 
-<p>Logical or numeric value to specify if a plot showing the results should be generated. The plot shows noise threshold profile along excitation mode and the percentage removal of data in excitation and emission modes.
-Default is <code>true</code>.</p>
+<p><details open>
+    <summary><b><code>dataout = rmspikes( ___ , Name,Value)</code> - custom options</b></summary>
+<a name="syntax2"></a></p>
 
-<h4 id="toc_14">details - specify if detailed plots should be displayed  <a name="varargin"></a> <br> Type:  numeric | logical</h4>
+<p>specifies additional options using one or more <a href="#NameValue">name-value</a> pair arguments. For example, you can specify if <code>interpoaltion</code> should be performed or adjust the <code>thresholdFactor</code>.</p>
 
-<p>Logical or numeric value to specify if detailed diagnostic plots should be shown for each sample. This plot depicts original and final EEMs, original EEM with marked removal points and, finally, the difference between original data and smoothed data.
-Default is <code>false</code>.</p>
+<p></details></p>
 
-<h2 id="toc_15">Output arguments (optional)</h2>
+<p></details></p>
 
-<h4 id="toc_16">dataout - drEEMdataset with removed spikes  <a name="varargin"></a> <br> Type: drEEMdataset class object</h4>
+<p><details open>
+    <summary><b><code>rmspikes(data,Name,Value)</code> - diagnostics mode</b></summary>
+<a name="syntax3"></a></p>
 
-<p>Dataset of the class <code>drEEMdataset</code>, with standardized contents and automated validation methods, in which the spikes are removed according to the specified options (these <code>options</code> are stored in the <code>history</code> field of the <code>dataout</code>). If no output argument is specified, the function overwrites the original object, <code>data</code>, in the workspace.</p>
+<p>When no output argument is supplied, the function automatically switches to diagnostics mode. This automatically sets <code>plot=true</code> and <code>details=true</code> and facilitates finetuning of <code>thresholdFactor</code>.</p>
 
-<h2 id="toc_17">Algorithms</h2>
+<p><img src="rmspikes_diagnostics.png" width="auto" height="auto" align="center"/></p>
+
+<p>This example figures show the diagnostic plot (<code>details=true</code>) that can help to decide on the most appropriate <code>thresholdFactor</code></p>
+
+<p></details></p>
+
+<h2 id="toc_3">Examples</h2>
 
 <ol>
-<li><strong>&#39;inpaint&#39;</strong> interpolation method applies del^2 over the entire array, then drops those parts of the array which do not have any contact with NaNs. &#39;<code>inpaint&#39;</code> uses a least squares approach, but it does not modify known values. In the case of small arrays, this method is quite fast as it does very little extra work. Extrapolation behavior is linear. See inpaint: Copyright (c) 2017, Damien Garcia.</li>
+<li><p>Delete signals 10x above the noise floor and don&#39;t interpolate
+<code>samples = tbx.rmspikes(samples);</code></p></li>
+<li><p>Finetune thresholdFactor through visual inspection
+<code>tbx.rmspikes(samples,thresholdFactor=15);</code></p></li>
+<li><p>Delete signals 20x above the noise floor and interpolate over deletions
+<code>samples = tbx.rmspikes(samples,thresholdFactor=20,interpolate=true);</code></p></li>
 </ol>
 
-<h2 id="toc_18">See Also</h2>
+<h2 id="toc_4">Input arguments</h2>
 
-<p><a href="link.com">handlescatter</a> | 
-<a href="link.com"> Link2 </a> |
-<a href="link.com"> Link3 </a> |</p>
+<p><details>
+    <summary><b><code>data</code> - dataset with fluorescence data.</b></summary>
+    <i>drEEMdataset</i></p>
 
-<h2 id="toc_19">Topics</h2>
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. </p>
+
+<p></details></p>
+
+<h2 id="toc_5">Name-Value arguments</h2>
+
+<p>Specify pairs of arguments as <code>Name1=Value1,...,NameN=ValueN</code>, where <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. The notation <code>&quot;Name&quot;,Value</code> is also supported. Name-value arguments must appear after other arguments, <code>data</code> in this case, but the order of the pairs does not matter. 
+<a name="NameValue"></a></p>
+
+<p><details open>
+    <summary><b><code>thresholdFactor</code>- sensitivity to excessive noise (sample by sample)</b></summary>
+    <i>numeric</i></p>
+
+<p>Adjust the sensitivity of the spike detection. A lower values means more sensitivity. </p>
+
+<p>Default is <code>10</code>. </p>
+
+<p></details></p>
+
+<p><details open>
+    <summary><b><code>interpolate</code>- switch to enable interpolation</b></summary>
+    <i>logical</i></p>
+
+<p>Logical or numeric value to specify if interpolation over removed data points should be performed. </p>
+
+<p>Default is <code>false</code>.</p>
+
+<p></details></p>
+
+<p><details open>
+    <summary><b><code>plot</code>- switch to plot the results</b></summary>
+    <i>logical</i></p>
+
+<p>Logical or numeric value to specify if a plot showing the results should be generated. The plot shows noise threshold profile along excitation mode and the percentage removal of data in excitation and emission modes.</p>
+
+<p>Default is <code>true</code>.</p>
+
+<p></details></p>
+
+<p><details open>
+    <summary><b><code>details</code>- switch to enable diangostics plots (sample by sample)</b></summary>
+    <i>logical</i></p>
+
+<p>detailed diagnostic plots each sample. This plot depicts original and final EEMs, original EEM with marked removal points and, finally, the difference between original data and smoothed data.</p>
+
+<p>Use this option to finetune <code>thresholdFactor</code></p>
+
+<p>Default is <code>false</code>.</p>
+
+<p></details></p>
+
+<h2 id="toc_6">Output arguments</h2>
+
+<p><details>
+    <summary><b><code>dataout</code> - despiked fluorescence data</b></summary>
+    <i>drEEMdataset</i></p>
+
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>.</p>
+
+<p></details></p>
 
 
 

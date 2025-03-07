@@ -1,76 +1,137 @@
 <img src="top right corner logo.png" width="100" height="auto" align="right"/>
 
-# processabsorbance #
-Correct baseline drift in absorbance data, extrapolate to longer wavelength, zero out the negative values and plot the results.
+# processabsorbance
+Perform basic corrections on absorbance data
 
 
 
 ## Syntax
-### [dataout = processabsorbance(data)](#syntax1) ###
-Applies corrections for absorbance data with default options.
-### [dataout = processabsorbance( ___ , Name,Value)](#syntax1) ###
-Applies corrections for absorbance data with custom options
-### [processabsorbance( ___ , Name,Value)](#syntax1) ###
-Runs the absorbance corrections without assigning an output. Use this to check what the correction would do to your data before committing to it.
-
-## Description ##
-### [dataout](#varargout) = processabsorbance([data](#varargin)) <a name="syntax1"></a>
-
-The `processabsorbance` function reads `absorbance` values from `data` and performs multiple processes on the data, e.g. baseline drift correction, extrapolating the longer wavelength (needed for inner filter effects correction) and setting out the negative values to zeroes, in the stated order. If extrapolation is requested, baseline correction will be carried out both prior and after the extrapolation to ensure data quality. 
-If no option is specified, the function will use the default values for processing. When the processing is finished, the function will plot the original absorbance data, the extrapolated data, and the final processed data in one figure.<br>
-An entry will be added to the `history` field of the `data`, detailing the processing options used. If no output argument is specified, the function will overwrite the original `data` in the workspace.
+[`dataout = processabsorbance(data)`](#syntax1)
 
 
->
-### [dataout](#varargout) = processabsorbance([ ___ , Name,Value](#varargin)) <a name="syntax1"></a>
+[`dataout = processabsorbance( ___ , Name,Value)`](#syntax2)
 
-specifies additional options using one or more name-value pair arguments. For example, you can specify if a baseline correction must be performed, and whether the absorbance data must be extrapolate or not. <br>
+[`processabsorbance( ___ , Name,Value)`](#syntax3) 
+
+## Description
+
+The `processabsorbance` function reads `absorbance` values from `data` and performs multiple corrections of the data. These are:
+
+* baseline correction. The average absorbance above the value [`baseWave`](#NameValue) are subtracted.
+* extrapolating the longer wavelength (needed for inner filter effects correction). This is done via the exponential slope that is fitted to the existing data and then extracted to the longest wavelength in the EEM (excitation or emission).
+* Replacing negative values with zeroes. This option is not intended to improve the quality of CDOM spectra but to avoid IFE correction artefacts.
+
+These processes are performed in the order specified above. If extrapolation is requested, baseline correction will be carried out both prior and after the extrapolation to ensure data quality. 
+
+<details open>
+<summary><b>`dataout = processabsorbance(data)` - perform default correction</b>
+</summary>
+<a name="syntax1"></a>
+If no option is specified, the function will perform a baseline correction and an extrapolation of CDOM data to wavelengths covered in the EEM if these exceed the absorbance. 
+
+When the processing is finished, the function will plot the original absorbance data, the extrapolated data, and the final processed data in one figure.
+
+</details>
+
+
+
+<details open>
+<summary><b>`dataout = processabsorbance(___ , Name,Value)` - perform corrections as specified with custom options</b>
+</summary>
+<a name="syntax2"></a>
+specifies additional options using one or more [name-value](#NameValue) pair arguments. For example, you can specify if a baseline correction must be performed, and whether the absorbance data must be extrapolate or not. <br>
 Example: `data = processabsorbance(data,'correctBase',false)` to skip the baseline correction step. 
 
+</details>
+
+<details open>
+<summary><b>`processabsorbance(___ , Name,Value)` - run the function in diagnostic mode</b>
+</summary>
+<a name="syntax3"></a>
+If no output is specified, the function will simply give a visual overview over the results that would be assigned an output. Use this to decide which corrections you want or need to apply.
+
+</details>
+
+
+## Examples
+
+1. correct CDOM baseline, extrapolate if EEM wavelength coverage is different from CDOM, and plot outcomes
+`samples = tbx.processabsorbance(samples);`
+
+2. Just carry out a baseline correction
+`samples = tbx.processabsorbance(samples,correctBase=true,extrapolate=false,zero=false);`
+
+3. Do something, but please don't show that final plot
+`samples = tbx.processabsorbance(samples,...,plot=false);`
+
 ## Input arguments ##
-#### data - drEEMdataset for absorbance treatment  <a name="varargin"></a> <br> Type: drEEMdataset class object
-Dataset of the class `drEEMdataset`, with standardized contents and automated validation methods that contain the absorbance data. If the absorbance data does not exist or consists only of missing numbers an error will be generated.
+<details>
+    <summary><b>`data` - contains CDOM spectra to correct</b></summary>
+    <i>drEEMdataset</i>
+        
+A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. If no absorbance is present, the function will return an error.
+</details>
 
-##### Name-Value Arguments  <a name="data"></a>
-Specify optional pairs of arguments as `Name1=Value1,...,NameN=ValueN`, where `Name` is the argument name and `Value` is the corresponding value. Name-value arguments must appear after other arguments, `data` in this case, but the order of the pairs does not matter. 
-
-Example: `'correctBase', true, 'baseWave', 650, 'zero', true, 'extrapolate', false` specifies that function is expected to perform baseline correction using the wavelengths greater than `650` for its calculations, to set out negative values to zero and finally, extrapolate the data to longer wavelengths that are needed for inner filter effects correction.
 
 
-#### correctBase - specify if baseline correction is needed  <a name="varargin"></a> <br> Type:  numeric | logical
+## Name-Value arguments
+Specify pairs of arguments as `Name1=Value1,...,NameN=ValueN`, where `Name` is the argument name and `Value` is the corresponding value. The notation `"Name",Value` is also supported. Name-value arguments must appear after other arguments, `data` in this case, but the order of the pairs does not matter. 
+<a name="NameValue"></a>
+
+
+<details open>
+    <summary><b>`correctBase `- switch for baseline correction</b></summary>
+    <i>logical</i>
+
 Indicates if the baseline correction should be performed. Default value is `true`.
 The baseline correction is applied using the mean absorbance beyond the specified or default `baseWave`
 
+Default is `true`.
 
+If no absorbance is measured past 580nm, the option is automatically disabled. However, if extrapolation is turned on, the baseline correction will be carried out regardless.
 
+</details>
 
-#### baseWave - Wavelength value   <a name="varargin"></a> <br> Type: numeric
-Specify the wavelength from which the absorbance data is used for baseline correction. Default value is `590`.
+<details open>
+    <summary><b>`baseWave `- wavelength range for baseline correction</b></summary>
+    <i>numeric scalar</i>
 
-#### zero - specify if negative values should be set to zero   <a name="varargin"></a> <br> Type: numeric | logical
+Specify the wavelength from which the absorbance data is used for baseline correction. The wavelength must be greater than 580 nm.
+
+Wavelengths above the specified value will be used to extract the average baseline absorbance to subtract.
+
+Default value is `595`.
+
+</details>
+
+<details open>
+    <summary><b>`zero `- switch for zeroing of negative absorbance</b></summary>
+    <i>logical</i>
+
 If `true` the negative values will be set to zeroes.
-Default is `false`
+Default is `false`.
+
+</details>
 
 
-#### extrapolate - specify if data should be extrapolated to longer wavelengths <a name="varargin"></a> <br> Type: numeric | logical
-If `true`, the function performs a non-linear fit of the absorbance data (`b1*exp(b2/1000*(350-lambda))+b3`) to model the exponential absorbance spectra, based on (c) Stedmon 2001, and extrapolate it to cover the wavelength range needed for EEM data.
-Default is `true`
+<details open>
+    <summary><b>`extrapolate `- switch for spectral extrapolation</b></summary>
+    <i>logical</i>
+
+If `true`, the function performs a non-linear fit of the absorbance data (`b1*exp(b2/1000*(350-lambda))+b3`) to model the exponential absorbance spectra, based on [Stedmon et al. (2000)](https://doi.org/10.1006/ecss.2000.0645), and extrapolate it to cover the wavelength range needed for EEM IFE corrections.
+
+Default is `true`.
+
+</details>
 
 
+<details open>
+    <summary><b>`plot`- switch to plot the results</b></summary>
+    <i>logical</i>
 
+Logical or numeric value to specify if a plot showing the results should be generated. The plot shows an overview of slopes for all sample in `data`. If no output argument is supplied, plotting is enabled automatically.
 
-## Output arguments (optional)##
-#### dataout - drEEMdataset   <a name="varargin"></a> <br> Type: drEEMdataset class object
-Dataset of the class `drEEMdataset`, with standardized contents and automated validation methods, in which the absorbance data is updated with the new data processed according to the specified options (these `options` are stored in the `history` field of the `data`). If no output argument is specified, the function overwrites the original object in the workspace.
+Default is `true`.
 
+</details>
 
-
-
-## See Also ##
-
-<a href="link.com">importabsorbance</a> | 
-<a href="link.com"> drEEMdataset </a> |
-<a href="link.com"> Link3 </a> |
-
-
-## Topics ##

@@ -1,4 +1,4 @@
-function dataout = splitvalidation(data,fac)
+function viewsplitvalidation(data,fac)
 % <a href = "matlab:doc splitvalidation">dataout = splitvalidation(data,fac) (click to access documentation)</a>
 %
 % <strong>Compare PARAFAC models</strong> of a dataset to validate a model
@@ -16,11 +16,6 @@ arguments
 end
 if isempty(data.split)
     error('data.split is empty. Please read the documentation to follow the workflow of the toolbox.')
-end
-
-% Experimental feature; overwrite workspace variable, needs no outputarg check
-if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
-    nargoutchk(1,1)
 end
 
 %% Input argument parsing and initial checks

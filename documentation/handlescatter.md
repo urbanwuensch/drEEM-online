@@ -1,83 +1,50 @@
 <img src="top right corner logo.png" width="100" height="auto" align="right"/>
 
-# handlescatter #
+# handlescatter
 Excise and treat Excitation-Emission Matrix (EEM) scatter and optionally interpolate between missing values.
 
 
 
 ## Syntax
-### [dataout = handlescatter(data)](#syntax1) ###
-Applies default scatter treatment options to data. Warning, the default settings will most likely not work well for any dataset.
-### [dataout = handlescatter(data, 'gui')](#syntax1) ###
-Provides GUI-based decision support for scatter treatment settings.
-### [dataout = handlescatter(data, options)](#syntax1) ###
-Applies scatter removal to dataset.
-### [opts = handlescatter('options')](#syntax1)###
-Retreives default options to the structure opts for modification.
+[`dataout = handlescatter(data)`](#syntax1)
 
-### [handlescatter(data,options)](#syntax2)###
-Runs the function in diagnostic mode without function output. Can be used in conjunction with `options.plot=true` 
+[`dataout = handlescatter(data, 'gui')`](#syntax2)
+
+[`dataout = handlescatter(data, options`)](#syntax3)
+
+[`scatteroptions = handlescatter('options')`](#syntax4)
 
 ## Description ##
-### [dataout](#varargout) = handlescatter([data](#varargin)) <a name="syntax1"></a>
 The function `handlescatter` handles primary and secondary Rayleigh and Raman scatter, by either replacing the values around the scatter with NaNs or interpolation. Additionally, it can set values to `zero` at a specified distance below the 1st order Rayleigh scatter line (where Emission wavelength equals Excitation wavelength). The function also offers optional plotting to compare the raw, cut and final EEMs for quality check. When no `options` is provided as input, the function will use the default `options` for its processing. That include cutting out all the four scatters from all samples and no interpolation. See Input arguments section for `options` default values.
 
+>***The status-property "scatterTreatment" must be "not applied". Otherwise, the function returns a validation error. Upon completion, the status of the dataset is changed to "applied by toolbox".***
 
->
-### [dataout](#varargout) = handlescatter([data, 'gui'](#varargin)) <a name="syntax1"></a>
-Running `handlescatter` with `gui` options opens up the `viewscatter`'s user interface app. The interface allows users to apply settings for treating 1st and 2nd order Rayleigh and Raman scatter and visualize the results in real-time.<br>
-Interface Components include:<br>
+The function uses a defined class `handlescatterOptions` for all settings. A copy of the default options can be made as follows:
 
-<strong>Control Panel:<br></strong>
+	>> handlescatterOptions
 
-- `Test On`: Select the sample to view the plots for. Use the arrow buttons to navigate through different samples in `data`.
-- `Apply`: Apply the current scatter treatment settings to the whole `data`.
-- `Save Settings`: Save the settings used for `handlescatter` in a variable called `scatteroptions` in the workspace.
-- `Apply & Close`: Apply the current settings and close the interface.
-- `Plot`: Toggle between `raw` and `treated` data visualization.
+	ans = handlescatterOptions with properties:
 
-<strong>Scatter Treatment Settings:<br></strong>
+            cutout: [1 1 1 1]
+       interpolate: [0 0 0 0]
+    negativetozero: 1
+              ray1: [10 10]
+              ram1: [15 15]
+              ray2: [5 5]
+              ram2: [5 5]
+            d2zero: 60
+           imethod: "inpaint"
+              iopt: "normal"
+              plot: 1
+          plottype: "mesh"
+           samples: 'all'
+       description: 'Options for handlescatter.m'
 
-- `Cut`: Enable or disable the cut option for the chosen scatter.
-- `Int.`: Enable or disable the interpolation option for the chosen scatter.
-- `Below`: Set the nm distance below the center of the chosen scatter for  scatter cut. Adjusting this value will automatically be reflected on the plots with red bars around the center of the scatter.
-- `Above`: Set the nm distance above the center of the chosen scatter for scatter cut. Adjusting this value will automatically be reflected on the plots with red bars around the center of the scatter.
+> ***NOTE: The default options contain settings and choices that would likely cause issues when PARAFACing. This is to ensure that users make concious choices for scatter removal as leftover scatter violates the trilinearity assumptions of PARAFAC.***
 
-
-<strong>Miscellaneous Settings:<br></strong>
-
-- `Set Negative Fluorescence Values to Zero`: Enable this option to set all negative fluorescence values to zero.
-- `nm Distance to Zero`: Specify the nm distance from the center of the 1st order Rayleigh scatter below which all values will be set to zero.
-- `Interpolation method`: Toggle between `vector` and `inpaint` interpolation for the scatter treatment.
-
-<strong>Visualization:<br></strong>
-
-
-- `Scatter-Centered Spectra`: this tab displays the scatter-centered spectra for 1st and 2nd order Rayleigh and Raman scatter. Red bars indicate the chosen settings using `below` and `above` in the `scatter treatment settings` panel.
-- `Excitation-Emission Matrix`: This tab visualizes the `raw` or `treated` excitation-emission matrix after applying the scatter removal settings.
-
->
-### [dataout](#varargout) = handlescatter([data, options](#varargin)) <a name="syntax1"></a>
-`handlescatter` can obtain and process the scatter handling using user customized `options` supplied as a single structure. Default values are obtained by calling `options = handlescatter('options')`. the fields in `options` can be modified and passed out to the function. See Input arguments section for the fields of `options`.<br>
-Example:<br> 
-`options = handlescatter('options')` to obtain the default options. <br> `options.ray1 = [25 15]` to change the lower and upper distance from the center for 1st order Rayleigh scatter cut, <br> `options.ram1 = [10 12]` to change the lower and upper distance from the center for 1st order Raman scatter cut, <br>
-`options.interpolate = [0 0 0 1]` to turn off interpolation for all scatters except the 2nd order Raman scatter, <br>
-`dataout = handlescatter(data, options)` to run the function using the above-modified `options`.
-
->
-### [opts](#varargout) = handlescatter(['options'](#varargin)) <a name="syntax1"></a>
-Obtains the default `options` of the function and save them in `opts`. These can be modified and later passed down to function by calling `handlescatter(data, opts)`.
-
-
-
-## Input arguments ##
-#### data - drEEMdataset for handling scatters  <a name="varargin"></a> <br> Type: drEEMdataset class object
-Dataset of the class `drEEMdataset`, with standardized contents and automated validation methods that the `handlescatter` will act on it.
-
-
-#### options - specify the options to be used for the scatter handling  <a name="varargin"></a> <br> Type: structure
-The default setting in the structure are obtained by calling `options = handlescatter('options')`. The `options` has various fields that can be modified based on the user's needs. The fields include:<br>
-
+<details open>
+<summary><b>`handlescatterOptions` explained in detail</b>
+</summary>
 
 - <strong>cutout:</strong> Specify which scatter to cut from the data in the following order: [Ray1 Ram1 Ray2 Ram2]. To cut choose `1` and to leave out choose `0`. Default values are `[1 1 1 1]` 
 <br>
@@ -117,25 +84,127 @@ The default setting in the structure are obtained by calling `options = handlesc
 <br>
 - <strong>plottype:</strong> Specifies the type of plot to display when plotting is enabled. Options are `'mesh'`, `'surface'`, or `'contourf'`. Default is `mesh`.
 
+</details>
+
+<details open>
+    <summary><b>`dataout = handlescatter(data)` - default options (for quick visualization)</b></summary>
+    <a name="syntax1"></a>
+<a name="syntax1"></a>
+
+This syntax will automatically apply some default settings for scatter removal. This can be useful to take a quick look at EEMs without scatter having a dominant visual effect in the graphs. However, the settings *will not work well for PARAFAC*.
+
+</details>
+
+
+<details open>
+    <summary><b>`dataout = handlescatter(data, 'gui')` - GUI decision support</b></summary>
+    <a name="syntax1"></a>
+<a name="syntax2"></a>
+
+Running `handlescatter` with `gui` options opens up the `viewscatter` user interface app. The interface allows users to apply settings for treating 1st and 2nd order Rayleigh and Raman scatter and visualize the results in real-time.
+Interface Components include:
 
 
 
 
 
+<strong>Control Panel:<br></strong>
+
+- `Test On`: Select the sample to view the plots for. Use the arrow buttons to navigate through different samples in `data`.
+- `Apply`: Apply the current scatter treatment settings to the whole `data`.
+- `Save Settings`: Save the settings used for `handlescatter` in a variable called `scatteroptions` in the workspace.
+- `Apply & Close`: Apply the current settings and close the interface.
+- `Plot`: Toggle between `raw` and `treated` data visualization.
+
+<strong>Scatter Treatment Settings:<br></strong>
+
+- `Cut`: Enable or disable the cut option for the chosen scatter.
+- `Int.`: Enable or disable the interpolation option for the chosen scatter.
+- `Below`: Set the nm distance below the center of the chosen scatter for  scatter cut. Adjusting this value will automatically be reflected on the plots with red bars around the center of the scatter.
+- `Above`: Set the nm distance above the center of the chosen scatter for scatter cut. Adjusting this value will automatically be reflected on the plots with red bars around the center of the scatter.
 
 
-## Output arguments (optional)##
-#### dataout - drEEMdataset with handled scatters  <a name="varargin"></a> <br> Type: drEEMdataset class object
-Dataset of the class `drEEMdataset`, with standardized contents and automated validation methods, in which the scatters are treated according to the specified options (these `options` are stored in the `history` field of the `dataout`). If no output argument is specified, the function overwrites the original object, `data`, in the workspace.
+<strong>Miscellaneous Settings:<br></strong>
+
+- `Set Negative Fluorescence Values to Zero`: Enable this option to set all negative fluorescence values to zero.
+- `nm Distance to Zero`: Specify the nm distance from the center of the 1st order Rayleigh scatter below which all values will be set to zero.
+- `Interpolation method`: Toggle between `vector` and `inpaint` interpolation for the scatter treatment.
+
+<strong>Visualization:<br></strong>
 
 
+- `Scatter-Centered Spectra`: this tab displays the scatter-centered spectra for 1st and 2nd order Rayleigh and Raman scatter. Red bars indicate the chosen settings using `below` and `above` in the `scatter treatment settings` panel.
+- `Excitation-Emission Matrix`: This tab visualizes the `raw` or `treated` excitation-emission matrix after applying the scatter removal settings.
+
+</details>
+
+<details open>
+    <summary><b>`dataout= handlescatter(data, options)` - apply scatter treatment with options structure from workspace</b></summary>
+    <a name="syntax3"></a>
+
+`handlescatter` can obtain and process the scatter handling using user customized `options` supplied as a single structure. Default values are obtained by calling `scatteroptions = handlescatter('options')`. the fields in `options` can be modified and passed out to the function. See Input arguments section for the fields of `options`.
+
+</details>
+
+<details open>
+    <summary><b>`scatteroptions = handlescatter('options')` - Retreive option structure for modification</b></summary>
+    <a name="syntax4"></a>
+
+Obtains the default `options` of the function and save them in `scatteroptions `. These can be modified and later passed down to function by calling `data = handlescatter(data, scatteroptions)`.
+
+</details>
+
+## Examples
+
+Retreive and modify options to apply them:
 
 
-## See Also ##
+	scatteroptions = handlescatter('options');
+	scatteroptions.ray1 = [25 15];
+	scatteroptions.ram1 = [10 12];
+	scatteroptions.interpolate = [0 0 0 1];
+	dataout = handlescatter(data, scatteroptions);
+	
+ In this example, we obtain the default options to change the lower and upper distance from the center for 1st order Rayleigh scatter,  to change the lower and upper distance from the center for 1st order Raman scatter cut, and
+ to turn off interpolation for all scatters except the 2nd order Raman scatter.  Finally, we apply the settings.
 
-<a href="link.com">Link1</a> | 
-<a href="link.com"> Link2 </a> |
-<a href="link.com"> Link3 </a> |
+## Input arguments
+
+<details>
+    <summary><b>`data` - dataset with scatter for removal</b></summary>
+    <i>drEEMdataset</i>
+        
+A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+
+> The property `data.status.scatterTreatment` must be `"not applied"`. Otherwise, the function returns a validation error.
+
+</details>
+
+<details open>
+<summary><b>`options` - function mode switch (apply or retreive options or start GUI)</b></summary>
+    <i>char | handlescatterOptions</i>
+    </summary>
+
+This variable serves multiple purposes and is thus best described as a mode switch.
+
+If **text ("gui")** is supplied, the app starts a GUI to allow you to define scatter treatment settings interactively.
+
+If **text ("options")** is supplied, the app returns the default options to the workspace
+
+If a **structure of the type handlescatterOptions** is supplied, the app applies these settings and returns a treated dataset.
 
 
-## Topics ##
+</details>
+
+
+## Output arguments
+<details>
+    <summary><b>`dataout` - contains EEMs of samples, hopefully without scatter</b></summary>
+    <i>drEEMdataset</i>
+        
+A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`.
+
+
+The status of the dataset is changed to reflect the fact that the scatter excision has been performed by the drEEM toolbox
+
+</details>

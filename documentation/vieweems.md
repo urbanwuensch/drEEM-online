@@ -6,13 +6,12 @@ Visualize and analyze Excitation Emission Matrices (EEMs) and modeled data.
 
 
 ## Syntax
-### [vieweems(data)](#syntax1) ###
+[`vieweems(data)`](#syntax1)
 
 
 
 
 ## Description ##
-### vieweems([data](#varargin)) <a name="syntax1"></a>
 
 Opens up the `vieweems`'s user interface app. The app allows users to visualize contour or 3D plots of EEMs and 2D spectra of excitation, emission and absorbance data, using adjustable settings, e.g. number of contours, colormap, colorlimits, showing Coble peaks, etc.<br>
 Note: The app does not accept any output arguments!
@@ -56,17 +55,10 @@ Note: Vertical lines represent the positions of Raman and Rayleigh scatter peaks
 
 
 ## Input arguments ##
-#### data - drEEMdataset containing samples or models  <a name="varargin"></a> <br> Type: drEEMdataset class object
-Dataset of the class `drEEMdataset`, with standardized contents and automated validation methods.
+<details>
+    <summary><b>`dataout` - dataset containing fluorescence and absorbance data</b></summary>
+    <i>drEEMdataset</i>
+        
+A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`.
 
-
-
-
-## See Also ##
-
-<a href="link.com">Link1</a> | 
-<a href="link.com"> Link2 </a> |
-<a href="link.com"> Link3 </a> |
-
-
-## Topics ##
+</details>

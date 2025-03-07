@@ -3,7 +3,7 @@ function dataout = zapnoise(data,sampleIdent,emRange,exRange)
 %
 % NaN ("zap") parts of individual EEMs to treat outliers.
 %
-% <strong>Inputs - Required</strong>
+% <strong>INPUTS - Required</strong>
 % data (1,1)    {mustBeA("drEEMdataset"),drEEMdataset.validate}
 % sampleIdent   {mustBeNonempty(sampleIdent),mustBeA('logical'),outSampleVal(data,sampleIdent)}
 % emRange (1,:) {mustBeNumeric,mustBeNonempty,drEEMdataset.mustBeInRangeEm}

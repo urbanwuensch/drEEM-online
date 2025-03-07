@@ -1,49 +1,33 @@
 <img src="top right corner logo.png" width="100" height="auto" align="right"/>
-
-# addcomment #
-Add a comment to the history field of a `drEEMdataset` object.
-
-
+# addcomment
+Document an analysis process through comments.
 
 ## Syntax
-### [dataout = addcomment(data, comment)](#syntax1) ###
-### [addcomment(data, comment)](#syntax1) ###
 
+[`dataout = addcomments(data,comment)`](#s1)
 
-## Description ##
-[comment]: <> (The description gives an explanation on different function syntax versions above)
-### [dataout](#varargout) = addcomment([data, comment](#varargin)) <a name="syntax1"></a>
+## Description
+`dataout = addcomments(data)` <a name="s1"></a> adds a comment to a drEEMdataset that describes an observation, justifies a decision, or documents any other kind of process. The comment field will be stored in the document's history and can be retreived with [`viewistory`](viewhistory.hmtl) and [`displayhistory`](displayhistory.hmtl) and will be exported with [`exportresults`](exportresults.hmtl) and [`export2zip`](export2zip.hmtl)
 
-The `addcomment` function adds a `comment` to the `history` field of a `drEEMdataset` object. The function returns the modified object as `dataout`. If the latest `history` entry in `data` already has a `usercomment`, the new `comment` is appended to `usercomment` as a string.
+## Examples
+	samples=tbx.addcomment(samples,'Smart thing to say here.')
 
+## Input arguments
+<details>
+    <summary><b>`data` - dataset to add comment to</b></summary>
+    <i>drEEMdataset class</i>
+        
+A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+</details>
 
+<details open>
+    <summary><b>`comment` - descriptive text</b></summary>
+    <i>text of the class string or char</i>
+        
+A text that describes some observation, a concern, a result, a course of action or anything else worthy of documenting.
 
-<br>
-### addcomment([data, comment](#varargin)) <a name="syntax1"></a>
+</details>
 
-If no output argument is specified, the function overwrites the original object in the workspace.
-
-
-
-## Input arguments ##
-#### data - drEEMdataset   <a name="varargin"></a> <br> Type: drEEMdataset class object
-Dataset of the class `drEEMdataset`, with standardized contents and automated validation methods, to which the comment will be added.
-
-#### comment - text to add as comment   <a name="varargin"></a> <br> Type: char | string
-A text comment to be added to the the `history` field of the specified `drEEMdataset`
-
-
-## Output arguments (optional)##
-#### dataout - drEEMdataset   <a name="varargin"></a> <br> Type: drEEMdataset class object
-Dataset of the class `drEEMdataset`, with standardized contents and automated validation methods, to which the comment is added.
-
-
-
-## See Also ##
-
-<a href="link.com">Link1</a> | 
-<a href="link.com"> Link2 </a> |
-<a href="link.com"> Link3 </a> |
-
-
-## Topics ##
+<!---
+## Name-Value arguments
+-->

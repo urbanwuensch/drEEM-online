@@ -1,106 +1,117 @@
 <img src="top right corner logo.png" width="100" height="auto" align="right"/>
 
-# fitslopes #
+# fitslopes
 Fit slopes to the CDOM absorbance data in a drEEMdataset object.
 
 
 
 ## Syntax
-### [dataout, slopes, metadata, model = fitslopes(data)](#syntax1) ###
-### [dataout, slopes, metadata, model = fitslopes( ___ , Name,Value)](#syntax1) ###
-### [fitslopes( ___ , Name,Value)](#syntax2) ###
+[`dataout = fitslopes(data)`](#syntax1)
 
+[`dataout = fitslopes( ___ , Name,Value)`](#syntax1)
+
+[`fitslopes( ___ , Name,Value)`](#syntax2)
 
 ## Description ##
-### [dataout, slopes, metadata, model](#varargout) = fitslopes([data](#varargin)) <a name="syntax1"></a>
 
-The function `fitslopes` fits slopes to the CDOM absorbance data in `data`. The function returns the processed `data`, `slopes`, `metadata`, and `model` fitting information. The function uses default values of input arguments (see Input arguments section) when options are not specified. <br>
-An entry will be added to the `history` field of the `dataout`, detailing the  options used for `fitslopes`. If no output argument is specified, the function will overwrite the original `data` in the workspace.
+The function `fitslopes` fits slopes to the CDOM absorbance data in `data`. The function returns the processed `data` with CDOM slopes stored in the table `data.opticalMetadata`. 
 
+> ***Results are reported in the unit per µm and expressed as positive values (though CDOM absorbance is decreasing with increasing wavelength)***
 
->
-### [dataout, slopes, metadata, model](#varargout) = fitslopes([ ___ , Name,Value](#varargin)) <a name="syntax1"></a>
+When reporting slopes in publications, please refer to the original studies that presented the methodolog (see "Fitting methods")
+
+> ***`fitslopes` is automatically called in `viewabsorbance`, `export2zip`, and `exportresults` to present CDOM slopes for futher analysis.***
+
+<details open>
+<summary><b><i>Fitting methods</b></i>
+</summary>
+
+The function fits slopes to the data using three ranges:
+
+* Long range exponential slope fitting (specified by `options.LongRange`) according to [Stedmon et al. (2000)](https://doi.org/10.1006/ecss.2000.0645)
+
+* Linear slope fitting of log-transformed data in the wavelength range `275`-`295` nm according to [Helms et al. (2008)](https://doi.org/10.4319/lo.2008.53.3.0955)
+
+* Linear slope fitting of log-transformed data in the wavelength range `350`-`400` nm according to [Helms et al. (2008)](https://doi.org/10.4319/lo.2008.53.3.0955)
+</details>
+
+The function uses default values of input arguments (see Input arguments section) when options are not specified.
+
+An entry will be added to the `history` field of the `dataout`, detailing the  options used for `fitslopes`. 
+
+<details open>
+<summary><b>`dataout = fitslopes(data,Name,Value)`</b>
+</summary>
+<a name="syntax2"></a>
 
 Specifies additional options using one or more name-value pair arguments. For example, you can specify the Wavelength range for long-range exponential slope fitting using `LongRange` or turn plotting options on or off. <br>
-Example: `fitslopes(data,  'plot',false, LongRange=[300 700], rsq=0.9)` to fit slopes using the specified options.
+Example: 
 
->
-### fitslopes([ ___ , Name,Value](#varargin)) <a name="syntax2"></a>
+</details>
 
-Runs the function in diagnostic mode, e.g. when you want to use `details=true` to inspect fits and adjust the default value of `rsq` or the wavelength range for the exponential slope before obtaining the slopes.
+
+
+
+<details>
+<summary><b>`fitslopes(data,Name,Value)`- Diagnostic mode</b>
+</summary>
+ <a name="syntax2"></a>
+
+Runs the function in diagnostic mode. In this mode, opeions are automatically set to `details=true` and `plot=true` to inspect fits and adjust the default value of `rsq` or the wavelength range for the exponential slope before obtaining the slopes.
+
+</details>
+
+## Examples
+`data = fitslopes(data,  'plot',false, LongRange=[300 700], rsq=0.9)` 
+Fit slopes using a custom wavelength range for the expoential slope and use an R2 threshold of 0.9 to omit bad fits while also not producing any final plot.
 
 ## Input arguments ##
-#### data - drEEMdataset containing absorbance data  <a name="varargin"></a> <br> Type: drEEMdataset class object
-Dataset of the class `drEEMdataset`, with standardized contents and automated validation methods that contains absorbance data.
+<details>
+    <summary><b>`data` - contains CDOM spectra to fit slopes to</b></summary>
+    <i>drEEMdataset</i>
+        
+A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. If no absorbance is present, the function will return an error.
+</details>
 
-##### Name-Value Arguments  <a name="data"></a>
-Specify optional pairs of arguments as `Name1=Value1,...,NameN=ValueN`, where `Name` is the argument name and `Value` is the corresponding value. Name-value arguments must appear after other arguments, `data` in this case, but the order of the pairs does not matter. 
 
 
-#### LongRange - specify the range to use for extrapolation   <a name="varargin"></a> <br> Type:  (1,2) numeric
+## Name-Value arguments
+Specify pairs of arguments as `Name1=Value1,...,NameN=ValueN`, where `Name` is the argument name and `Value` is the corresponding value. The notation `"Name",Value` is also supported. Name-value arguments must appear after other arguments, `data` in this case, but the order of the pairs does not matter. 
+<a name="NameValue"></a>
+
+<details open>
+    <summary><b>`LongRange `- Range of the exponential slope</b></summary>
+    <i>numeric [1x2]</i>
+    
 Numeric array specifying Wavelength range for long-range exponential slope fitting. Default is `[300 600]`.
 
+</details>
 
-#### rsq - specify R-squared threshold   <a name="varargin"></a> <br> Type: numeric
+<details open>
+    <summary><b>`rsq `- R-squared threshold for fits</b></summary>
+    <i>numeric</i>
+    
 A scalar numeric specifying R-squared threshold for linear fits. `rsq` must be numeric and less than or equal to `1`.
 Default is `0.95`.
 
+</details>
 
-#### plot - Flag to plot the results <a name="varargin"></a> <br> Type: numeric | logical
-Logical or numeric value to specify if a plot showing the results should be generated. The plot shows an overview of slopes for all sample in `data`.
+<details open>
+    <summary><b>`plot`- switch to plot the results</b></summary>
+    <i>logical</i>
+
+Logical or numeric value to specify if a plot showing the results should be generated. The plot shows an overview of slopes for all sample in `data`. If no output argument is supplied, plotting is enabled automatically.
+
 Default is `true`.
 
+</details>
 
+</details>
 
-#### details - specify if diagnostics plots should be shown<a name="varargin"></a> <br> Type: numeric | logical
-Logical or numeric value to specify if detailed diagnostic plots should be shown for each sample. Each plot will show the raw, modeled, and residual data if a fit was possible.<br>
+<details open>
+    <summary><b>`details `- switch to plot diagnostics</b></summary>
+    <i>logical</i>
+
+Logical or numeric value to specify if detailed diagnostic plots should be shown for each sample. Each plot will show the raw, modeled, and residual data if a fit was possible.If no output argument is supplied, the option is enabled automatically.
+
 Default is `false`.
-
-
-#### quiet - suppress the command window output <a name="varargin"></a> <br> Type: numeric | logical
-Flag to suppress command window outputs. Default is `false`.
-
-
-
-## Output arguments (optional)##
-#### dataout - drEEMdataset   <a name="varargin"></a> <br> Type: drEEMdataset class object
-A drEEMdataset object with updated metadata including the fitted slopes. If no output argument is specified, the function overwrites the original object, `data`, in the workspace.<br> 
-
-#### slopes - a table with the slopes for each sample   <a name="varargin"></a> <br> Type: table
-Table containing the slope fitting results with the following columns:
-
-- `exp_slope_microm`: Long-range exponential slope.
-- `S_275_295`: Slope for the range `275`-`295` nm.
-- `S_350_400`: Slope for the range `350`-`400` nm.
-- `Sr`: Ratio of slopes `S_275_295` to `S_350_400`.
-
-
-#### slopes - a table with fitting details   <a name="varargin"></a> <br> Type: table
-Table containing metadata with fitting details, including:
-
-- `Exp_rsq`: R-squared of exponential fit.
-- `Exp_a350_model`: Modeled absorbance at `350` nm.
-- `Exp_offset`: Offset of exponential fit.
-- `log_275_Rsq`: R-squared of linear fit for `275`-`295` nm.
-- `log_350_Rsq`: R-squared of linear fit for `350`-`400` nm.
-
-#### model - absorbance modeled data   <a name="varargin"></a> <br> Type: matrix
-Matrix containing the modeled absorbance data for each sample.
-
-
-## Fitting algorithm
-The function fits slopes to the data using three ranges:<br>
-1. Long range exponential slope fitting (specified by `options.LongRange`).<br>
-2.  Linear slope fitting for the wavelength range `275`-`295` nm.<br>
-3.  Linear slope fitting for the wavelength range `350`-`400` nm.<br>
-The fitting process includes handling of NaN values, ensuring robust fits, and logging any fitting issues.
-
-
-## See Also ##
-
-<a href="link.com">Link1</a> | 
-<a href="link.com"> Link2 </a> |
-<a href="link.com"> Link3 </a> |
-
-
-## Topics ##
