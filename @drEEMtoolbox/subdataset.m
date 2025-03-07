@@ -37,25 +37,6 @@ end
 outSample=options.outSample;
 outEm=options.outEm;
 outEx=options.outEx;
-% Validation of outSample input (not possible in the arguments block)
-try 
-    mustBeLessThanOrEqual(outSample,data.nSample)
-catch ME
-    error(['outSample: ',ME.message])
-end
-
-% Validation of outEx input (not possible in the arguments block)
-try 
-    mustBeLessThanOrEqual(outEx,data.nEx)
-catch ME
-    error(['outEx: ',ME.message,' Do not provide wavelengths.'])
-end
-% Validation of outEm input (not possible in the arguments block)
-try 
-    mustBeLessThanOrEqual(outEm,data.nEm)
-catch ME
-    error(['outEm: ',ME.message,' Do not provide wavelengths.'])
-end
 
 % Find first unscaled dataset and subset it as well (otherwise, errors occur
 % during scaling reversion)
