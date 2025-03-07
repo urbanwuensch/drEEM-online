@@ -1,4 +1,4 @@
-function dataout = splitdataset(data,options)
+function dataout = splitdataset(data,splitType,options)
 % <a href = "matlab:doc splitdataset">dataout = splitdataset(data,options) (click to access documentation)</a>
 %
 % <strong>Split dataset into subsets</strong> for split-validation of PARAFAC models
@@ -7,7 +7,7 @@ function dataout = splitdataset(data,options)
 % data {drEEMdataset.validate}
 % 
 % <strong>INPUTS - Optional</strong>
-% options.splitType (1,:) {mustBeMember(["blind","byMetadata"])} = "blind"
+% splitType (1,:) {mustBeMember(["blind","byMetadata"])}
 % options.blindType (1,:)     {mustBeMember(["alternating","random","contiguous"])} = "alternating"
 % options.metadataColumn (1,:)    {drEEMdataset.mustBeMetadataColumn} = []
 % options.numsplit (1,1)  {mustBePositive} = 2
@@ -23,21 +23,13 @@ function dataout = splitdataset(data,options)
 
 arguments
     data {drEEMdataset.validate(data)}
-    options.splitType (1,:) {mustBeText,mustBeMember(options.splitType,["blind","byMetadata"])} = "blind"
-    options.blindType (1,:)     {mustBeMember(options.blindType,["alternating","random","contiguous"])} = "alternating"  
-    options.metadataColumn (1,:)    {drEEMdataset.mustBeMetadataColumn(data,options.metadataColumn)} = []
-    options.numsplit (1,1)  {mustBePositive} = 2
+    splitType (1,:) {mustBeText,mustBeMember(splitType,["blind","byMetadata"])} = "blind"
+    options.blindType (1,:)     {mustBeMember(options.blindType,["alternating","random","contiguous"]),optValBT(splitType,options.blindType)} = "alternating"  
+    options.metadataColumn (1,:)    {drEEMdataset.mustBeMetadataColumn(data,options.metadataColumn),optValMC(splitType,options.metadataColumn)} = []
+    options.numSplit (1,1)  {mustBePositive} = 2
     
 end
 
-if matches(options.splitType,'byMetadata')&&isempty(options.metadataColumn)
-    error(['Invalid option combination. When specifying splitType="byMetadata",' ...
-        ' option "metadataColumn" cannot be empty and must point to a column of the metadata table'])
-end
-
-if matches(options.splitType,"blind")&&not(isempty(options.metadataColumn))
-    warning('Ignoring input to "metadataColumn" since splitType="blind".')
-end
 
 % Experimental feature; overwrite workspace variable, needs no outputarg check
 if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
@@ -45,12 +37,12 @@ if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
 end
 
 % This bit is doing the splitting
-switch options.splitType
+switch splitType
     case "blind"
         % #1 Create an alternating-type split allocation by repeating 1:nSplit
         % until number of samples is exceeded.
         % This can be used by several methods
-        splitIdent=repmat((1:options.numsplit)',ceil(data.nSample./options.numsplit),1);
+        splitIdent=repmat((1:options.numSplit)',ceil(data.nSample./options.numSplit),1);
         % #2 since nSample can be exceeded, truncate the identity vector to nSample
         splitIdent=splitIdent(1:data.nSample);
     case "byMetadata"
@@ -61,11 +53,11 @@ switch options.splitType
             idx=groups==grps{j};
             splitIdent(idx,1)=j;
         end
-        options.numsplit=numel(grps);
+        options.numSplit=numel(grps);
 end
 
 % If blind case, and an option other than alternating (default) was specified, do that!
-if matches(options.splitType,'blind')
+if matches(splitType,'blind')
     switch options.blindType
         case "random"
             mixer=randperm(data.nSample);
@@ -77,7 +69,7 @@ end
 dataout=data;
 
 dataout.split=drEEMdataset; % Overwrite any preexisting split
-for j=1:options.numsplit
+for j=1:options.numSplit
     out=not(splitIdent==j);
     dataout.split(j,1)=drEEMdataset.rmsamples(data,out);
     dataout.split(j,1).history=...
@@ -100,3 +92,22 @@ end
 end
 
 
+function optValBT(splitType,option)
+
+if matches(splitType,'blind')&&not(isempty(option))
+    warning('<strong>Conflicting inputs: </strong>splitType="blind", takes precedent over specifying input to "metadataColumn".')
+end
+
+if matches(splitType,'byMetadata')&&isempty(option)
+    error(['<strong>Invalid input: </strong> When specifying splitType="byMetadata",' ...
+        ' option "metadataColumn" cannot be empty.'])
+end
+
+
+
+end
+
+
+function optValMC(splitType,option)
+
+end
