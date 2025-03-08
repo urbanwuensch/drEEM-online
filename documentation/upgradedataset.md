@@ -30,6 +30,7 @@ The functions assumes that `data` is a typical drEEM data structure built by pre
 Other fields in the `data` that have compatible size will be transferred to the `metadata` table of the drEEMdataset `dataout`. 
 
 If models are present in `data` they will be transferred to the `models` field.
+</details>
 
 <details>
 <summary>

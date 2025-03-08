@@ -23,13 +23,13 @@ The function ensures that the identifiers in both the `data` and the metadata ex
 If no output argument is specified, the function overwrites the original object in the workspace.
 
 
-> ***`associatemetadata` will always provide basic output on the associations made between tables and the dataset. This is done with console output:***
+> **Note:** `associatemetadata` will always provide basic output on the associations made between tables and the dataset. This is done with console output:
 > 
 > <img src="associatemetadata_output.png" width="auto" height="auto" align="justified"/>
 
-Always inspect the outcome! 
+Always inspect the outcome.
 
-> ***`associatemetadata` stores the metadata in `data.metadata`. Access and extract by calling  `md=data.metadata`.***
+> **Info:** `associatemetadata` stores the metadata in `data.metadata`. Access and extract by calling  `md=data.metadata`.
 
 Many functions support content in the metadata table and will offer to enrich plots by referring to the contents.
 
@@ -103,6 +103,8 @@ The name of the column in the metadata table that contains the identifiers to ma
 
 </details>
 
+## Optional input arguments
+
 <details open>
     <summary><b>`datakey` - identifier key in data</b></summary>
     <i>char | string</i>
@@ -112,6 +114,11 @@ Default: `filelist`
 
 </details>
 
-<!---
-## Name-Value arguments
--->
+
+## Output arguments
+<details>
+    <summary><b>`dataout` - dataset with new columns in metadata table</b></summary>
+    <i>drEEMdataset</i>
+        
+A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+</details>

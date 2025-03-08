@@ -6,14 +6,14 @@ Visualize and analyze the spectral variability in fluorescence and absorbance da
 
 
 ## Syntax
-` spectralvariance(data)](#syntax1)`
+` viewspectralvariance(data)](#syntax1)`
 
 
 
 
 ## Description
 
-The `spectralvariance` function plots the spectral variability of absorbance and fluorescence data. The function scales all data to unit variance in the sample mode, giving each sample equal weighting.
+The `viewspectralvariance` function plots the spectral variability of absorbance and fluorescence data. The function scales all data to unit variance in the sample mode, giving each sample equal weighting.
 
 
 

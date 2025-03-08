@@ -71,16 +71,16 @@ h6 tt, h6 code {
   font-size: inherit; }
 
 h1 {
-  font-size: 16px;
+  font-size: 18px;
   color: #c05708; }
 
 h2 {
-  font-size: 14px;
+  font-size: 16px;
   border-bottom: 1px solid #cccccc;
   color: #393939; }
 
 h3 {
-  font-size: 18px;
+  font-size: 15px;
   color: #c05708;}
 
 h4 {
@@ -159,9 +159,10 @@ dl {
       margin-bottom: 0; }
 
 blockquote {
-  border-left: 4px solid #dddddd;
+  border-left: 4px solid #f4cccc;
   padding: 0 15px;
-  color: #777777; }
+  color: #777777;
+  background-color: #white;}
   blockquote > :first-child {
     margin-top: 0; }
   blockquote > :last-child {
@@ -259,8 +260,8 @@ code, tt {
   padding: 5px 5px;
   color: #006bcc;
   white-space: nowrap;
-  border: 1px solid #f9f9f9;
-  background-color: #f9f9f9;
+  border: 1px none #f9f9f9;
+  background-color: transparent;
   border-radius: 5px; }
 
 pre code {
@@ -331,6 +332,48 @@ kbd {
     padding: 2cm; 
   }
 }
+
+details {
+  font:inherit;
+  border: solid 1px #939393;
+  border-radius: 3px 3px 3px 3px;
+  background-color: white;
+  border-top-style: solid;
+  border-right-style: solid;
+  border-bottom-style: solid;
+  border-left-style: solid;
+}
+
+details > summary {
+  padding: 9px 9px;
+  border: solid 1px #939393;
+  border-radius: 3px 3px 3px 3px;
+  background-color: #f9f9f9;
+  border-top-style: none;
+  border-right-style: none;
+  border-bottom-style: solid;
+  border-left-style: none;
+    
+}
+
+details > p {
+  border-radius: 3px 3px 3px 3px;
+  background-color: white;
+  padding: 2px 6px;
+  margin: 0;
+}
+
+details:open > summary {
+  padding: 9px 9px;
+  border: solid 1px #939393;
+  border-radius: 3px 3px 3px 3px;
+  background-color: #f9f9f9;
+  border-top-style: none;
+  border-right-style: none;
+  border-bottom-style: solid;
+  border-left-style: none;
+}
+
 </style>
 
 
@@ -364,15 +407,15 @@ kbd {
 If no output argument is specified, the function overwrites the original object in the workspace.</p>
 
 <blockquote>
-<p><strong><em><code>associatemetadata</code> will always provide basic output on the associations made between tables and the dataset. This is done with console output:</em></strong></p>
+<p><strong>Note:</strong> <code>associatemetadata</code> will always provide basic output on the associations made between tables and the dataset. This is done with console output:</p>
 
 <p><img src="associatemetadata_output.png" width="auto" height="auto" align="justified"/></p>
 </blockquote>
 
-<p>Always inspect the outcome! </p>
+<p>Always inspect the outcome.</p>
 
 <blockquote>
-<p><strong><em><code>associatemetadata</code> stores the metadata in <code>data.metadata</code>. Access and extract by calling  <code>md=data.metadata</code>.</em></strong></p>
+<p><strong>Info:</strong> <code>associatemetadata</code> stores the metadata in <code>data.metadata</code>. Access and extract by calling  <code>md=data.metadata</code>.</p>
 </blockquote>
 
 <p>Many functions support content in the metadata table and will offer to enrich plots by referring to the contents.</p>
@@ -448,6 +491,8 @@ The following extensions are supported: <code>.txt</code>, <code>.dat</code>, <c
 
 <p></details></p>
 
+<h2 id="toc_5">Optional input arguments</h2>
+
 <p><details open>
     <summary><b><code>datakey</code> - identifier key in data</b></summary>
     <i>char | string</i></p>
@@ -457,9 +502,14 @@ Default: <code>filelist</code></p>
 
 <p></details></p>
 
-<!---
-## Name-Value arguments
--->
+<h2 id="toc_6">Output arguments</h2>
+
+<p><details>
+    <summary><b><code>dataout</code> - dataset with new columns in metadata table</b></summary>
+    <i>drEEMdataset</i></p>
+
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. 
+</details></p>
 
 
 

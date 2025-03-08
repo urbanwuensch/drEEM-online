@@ -159,9 +159,10 @@ dl {
       margin-bottom: 0; }
 
 blockquote {
-  border-left: 4px solid #dddddd;
+  border-left: 4px solid #f4cccc;
   padding: 0 15px;
-  color: #777777; }
+  color: #777777;
+  background-color: #white;}
   blockquote > :first-child {
     margin-top: 0; }
   blockquote > :last-child {
@@ -259,8 +260,8 @@ code, tt {
   padding: 5px 5px;
   color: #006bcc;
   white-space: nowrap;
-  border: 1px solid #f9f9f9;
-  background-color: #f9f9f9;
+  border: 1px none #f9f9f9;
+  background-color: transparent;
   border-radius: 5px; }
 
 pre code {
@@ -331,6 +332,48 @@ kbd {
     padding: 2cm; 
   }
 }
+
+details {
+  font:inherit;
+  border: solid 1px #939393;
+  border-radius: 3px 3px 3px 3px;
+  background-color: white;
+  border-top-style: solid;
+  border-right-style: solid;
+  border-bottom-style: solid;
+  border-left-style: solid;
+}
+
+details > summary {
+  padding: 9px 9px;
+  border: solid 1px #939393;
+  border-radius: 3px 3px 3px 3px;
+  background-color: #f9f9f9;
+  border-top-style: none;
+  border-right-style: none;
+  border-bottom-style: solid;
+  border-left-style: none;
+    
+}
+
+details > p {
+  border-radius: 3px 3px 3px 3px;
+  background-color: white;
+  padding: 2px 6px;
+  margin: 0;
+}
+
+details:open > summary {
+  padding: 9px 9px;
+  border: solid 1px #939393;
+  border-radius: 3px 3px 3px 3px;
+  background-color: #f9f9f9;
+  border-top-style: none;
+  border-right-style: none;
+  border-bottom-style: solid;
+  border-left-style: none;
+}
+
 </style>
 
 
@@ -521,8 +564,6 @@ Th function <code>pickpeaks</code> extracts predefined fluorescence peaks, inclu
 
 <p></details></p>
 
-<p></details></p>
-
 <p><details open>
     <summary><b><code>details</code>- switch to plot diagnostics</b></summary>
     <i>logical</i></p>
@@ -531,10 +572,12 @@ Th function <code>pickpeaks</code> extracts predefined fluorescence peaks, inclu
 
 <p>Default is <code>false</code>.</p>
 
+<p></details></p>
+
 <h2 id="toc_5">Output arguments</h2>
 
 <p><details open>
-    <summary><b><code>data</code> - contains results</b></summary>
+    <summary><b><code>dataout</code> - contains results</b></summary>
     <i>drEEMdataset</i></p>
 
 <p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. The output contains the results in the table <code>.opticalMetadata</code>

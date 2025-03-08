@@ -172,7 +172,6 @@ Default is `true`.
 
 </details>
 
-</details>
 
 <details open>
     <summary><b>`details `- switch to plot diagnostics</b></summary>
@@ -182,11 +181,12 @@ Logical or numeric value to specify if detailed diagnostic plots should be shown
 
 Default is `false`.
 
+</details>
 
 ## Output arguments
 
 <details open>
-    <summary><b>`data` - contains results</b></summary>
+    <summary><b>`dataout` - contains results</b></summary>
     <i>drEEMdataset</i>
         
 A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. The output contains the results in the table `.opticalMetadata`

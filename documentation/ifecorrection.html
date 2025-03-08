@@ -71,16 +71,16 @@ h6 tt, h6 code {
   font-size: inherit; }
 
 h1 {
-  font-size: 16px;
+  font-size: 18px;
   color: #c05708; }
 
 h2 {
-  font-size: 14px;
+  font-size: 16px;
   border-bottom: 1px solid #cccccc;
   color: #393939; }
 
 h3 {
-  font-size: 18px;
+  font-size: 15px;
   color: #c05708;}
 
 h4 {
@@ -159,9 +159,10 @@ dl {
       margin-bottom: 0; }
 
 blockquote {
-  border-left: 4px solid #dddddd;
+  border-left: 4px solid #f4cccc;
   padding: 0 15px;
-  color: #777777; }
+  color: #777777;
+  background-color: #white;}
   blockquote > :first-child {
     margin-top: 0; }
   blockquote > :last-child {
@@ -259,8 +260,8 @@ code, tt {
   padding: 5px 5px;
   color: #006bcc;
   white-space: nowrap;
-  border: 1px solid #f9f9f9;
-  background-color: #f9f9f9;
+  border: 1px none #f9f9f9;
+  background-color: transparent;
   border-radius: 5px; }
 
 pre code {
@@ -331,6 +332,48 @@ kbd {
     padding: 2cm; 
   }
 }
+
+details {
+  font:inherit;
+  border: solid 1px #939393;
+  border-radius: 3px 3px 3px 3px;
+  background-color: white;
+  border-top-style: solid;
+  border-right-style: solid;
+  border-bottom-style: solid;
+  border-left-style: solid;
+}
+
+details > summary {
+  padding: 9px 9px;
+  border: solid 1px #939393;
+  border-radius: 3px 3px 3px 3px;
+  background-color: #f9f9f9;
+  border-top-style: none;
+  border-right-style: none;
+  border-bottom-style: solid;
+  border-left-style: none;
+    
+}
+
+details > p {
+  border-radius: 3px 3px 3px 3px;
+  background-color: white;
+  padding: 2px 6px;
+  margin: 0;
+}
+
+details:open > summary {
+  padding: 9px 9px;
+  border: solid 1px #939393;
+  border-radius: 3px 3px 3px 3px;
+  background-color: #f9f9f9;
+  border-top-style: none;
+  border-right-style: none;
+  border-bottom-style: solid;
+  border-left-style: none;
+}
+
 </style>
 
 
@@ -348,14 +391,17 @@ kbd {
 
 <p><a href="#syntax1"><code>dataout = ifecorrection(data,Name,Value)</code></a></p>
 
-<p><a href="#syntax1"><code>ifecorrection(data,Name,Value)</code></a></p>
+<p><a href="#syntax2"><code>ifecorrection(data,Name,Value)</code></a></p>
 
 <h2 id="toc_2">Description</h2>
 
 <p><details open>
-    <summary><b><code>dataout = ifecorrection(data)</code> - apply IFE correction</b></summary></p>
+    <summary><b><code>dataout = ifecorrection(data,Name,Value)</code> - apply IFE correction</b></summary>
+<a name="syntax1"></a> </p>
 
-<p>Applies an inner filter effect correction on fluorescence EEMs in a dataset. <code>ifecorrection</code> implements Absorbance (ABA) Method for correcting fluorescence inner filter effects. The method assumes that EEMs and Absorbance were measured in a square cuvette of a pathlength of 10mm (1cm) with standard right-angle geometry. </p>
+<p>Applies an inner filter effect correction on fluorescence EEMs in a dataset. <code>ifecorrection</code> implements Absorbance (ABA) Method for correcting fluorescence inner filter effects. The method assumes that EEMs and Absorbance were measured in a square cuvette of a pathlength of 10mm (1cm) with standard right-angle geometry.</p>
+
+<p>Additional settings can be changed with the <a href="#NameValue">name-value</a> pair notation.</p>
 
 <blockquote>
 <p>Reference: Parker, C. A.; Barnes, W. J., Some experiments with spectrofluorimeters and filter fluorimeters. Analyst 1957, 82, 606-618.</p>
@@ -371,10 +417,15 @@ kbd {
 
 <p>An entry will be added to the <code>history</code> field of the <code>data</code>, detailing the processing options used.</p>
 
+<blockquote>
+<p><strong><em>The status-property &quot;IFEcorrection&quot; must be &quot;not applied&quot;. Otherwise, the function returns a validation error. This property changes upon completion of the function to &quot;applied by toolbox&quot;.</em></strong></p>
+</blockquote>
+
 <p></details></p>
 
 <p><details open>
-    <summary><b><code>ifecorrection(data)</code> - diagnostic mode</b></summary></p>
+    <summary><b><code>ifecorrection(data)</code> - diagnostic mode</b></summary>
+<a name="syntax2"></a></p>
 
 <p>By not supplying an output argument, the function will run in diagnostic mode. IFEs will be calculated and the average IFE will be shown, but the IFE correction will not be applied to the dataset.</p>
 
@@ -383,10 +434,14 @@ kbd {
 <h2 id="toc_3">Input arguments</h2>
 
 <p><details>
-    <summary><b><code>data</code> - dataset with fluorescence and absorbance data.</b></summary>
+    <summary><b><code>data</code> - dataset with fluorescence and absorbance data</b></summary>
     <i>drEEMdataset</i></p>
 
 <p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. </p>
+
+<blockquote>
+<p>The property <code>data.status.signalCalibration</code> must be <code>&quot;not applied&quot;</code>. Otherwise, the function returns a validation error.</p>
+</blockquote>
 
 <p></details></p>
 
@@ -402,6 +457,18 @@ kbd {
 <p>Logical or numeric value to specify if a plot showing the results should be generated. The plot shows an overview of slopes for all sample in <code>data</code>. If no output argument is supplied, plotting is enabled automatically.</p>
 
 <p>Default is <code>true</code>.</p>
+
+<p></details></p>
+
+<h2 id="toc_5">Output arguments</h2>
+
+<p><details>
+    <summary><b><code>dataout</code> - IFE corrected dataset</b></summary>
+    <i>drEEMdataset</i></p>
+
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>.</p>
+
+<p>The status of the dataset is changed to reflect the fact that an IFE correction has been applied by the drEEM toolbox.</p>
 
 <p></details></p>
 

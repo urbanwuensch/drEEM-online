@@ -34,7 +34,6 @@ Match sample names across multiple datasets (`N≥2`) and remove the unmatched s
 <details open>
 	<summary><b>`alignsamples([dsin1, __, dsinN])` - diagnostic mode</b>
 	</summary>
- <a name="syntax1"></a>
  <a name="syntax2"></a>
 
 Runs the function in diagnostic mode. Without output arguments, the function will run as always, but no output arguments are assigned. Use this notation for testing. This gives the chance to fix issues with filenames. First, console output will be provided, followed by a table with more information to take action:
