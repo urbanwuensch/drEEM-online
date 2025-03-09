@@ -8,6 +8,12 @@ This documentation is intended to ease the use of the toolbox and will walk you 
 
 Since the initial release of drEEM in 2013, Matlab has expanded considerably in terms of ease-of-use, functionality, and computation speed. drEEM version 2 takes advantage of new Matlab features and is a complete redevelopment of the code.
 
+<p align="center">
+ <iframe width="80%" height="400" allowfullscreen="true"
+src="https://www.youtube.com/embed/9OyxSKEWmbE?autoplay=1&mute=1">
+</iframe>
+</p>
+
 ## About the developers
 ### Urban Wünsch
 
