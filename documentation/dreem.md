@@ -10,16 +10,19 @@ Since the initial release of drEEM in 2013, Matlab has expanded considerably in 
 
 <p align="center">
  <iframe width="80%" height="400" allowfullscreen="true"
-src="https://www.youtube.com/embed/9OyxSKEWmbE?autoplay=1&mute=1">
+src="https://www.youtube.com/embed/N_M8hMbKJFA?autoplay=1&mute=1&hl=en&cc_lang_pref=en&cc_load_policy=1">
 </iframe>
 </p>
 
 ## About the developers
 ### Urban Wünsch
 
-<img src="dev_urban.jpeg" width="100" height="auto" align="right"/>Urban is a researcher in the field of aquatic environmental chemistry. He has obtained his PhD at the Technical University of Denmark (DTU) in 2018 and since held postdoctoral positions at Chalmers University of Technology and DTU. He is a teacher in the reocuring online workshop [Parallel Factor Analysis for DOM fluorescence](https://dreem.gitlab.io/coursepage/). Read more on his [personal website](https://ujwunsch.com).
+<img src="dev_urban.jpeg" width="100" height="auto" align="right"/>Urban is a researcher in the field of aquatic environmental chemistry. He has obtained his PhD at the Technical University of Denmark (DTU) in 2018 and since held postdoctoral positions at Chalmers University of Technology and DTU. Urban does research on Dissolved Organic Matter biogeochemistry with the aim to identify mechanisms of tranformation and degradation. He is also interested in innovative applications of optical sensors for in situ measurements. Urban is a teacher in the reocuring online workshop [Parallel Factor Analysis for DOM fluorescence](https://dreem.gitlab.io/coursepage/). 
 
-Urban is the main developer of the toolbox.
+Since June 2025, Urban is an Assitant Professor at Chalmers University of Technology. He is the main developer of the toolbox.
+
+### Ali Esmaeeli
+<img src="dev_ali.jpeg" width="100" height="auto" align="right"/>Ali is an environmental engineer with a focus on developing methods and sensors for water treatability/quality prediction. Ali's research group aim at using fluorescence technology to get a better understanding of water characteristics which could later be used in online and real-time sensors that are not currently available. Ali's main supervisor in this path is Dr. Kathleen Murphy, who carries more than twenty years of knowledge in this area. The outcome of Ali's research study can benefit a whole variety of different sectors at various levels. For example, by applying it in a treatment plant, one can produce cleaner water, using less resources, which in turn will help people, society as a whole, and the environment.
 
 ### Kathleen Murphy
 
@@ -27,10 +30,9 @@ Urban is the main developer of the toolbox.
 
 Kate is a Associate Professor at Chalmers University of Technology (Gothenburg, Sweden).
 
-### Ali Esmaeeli
-<img src="dev_ali.jpeg" width="100" height="auto" align="right"/>Ali is an environmental engineer with a focus on developing methods and sensors for water treatability/quality prediction. Ali's research group aim at using fluorescence technology to get a better understanding of water characteristics which could later be used in online and real-time sensors that are not currently available. Ali's main supervisor in this path is Dr. Kathleen Murphy, who carries more than twenty years of knowledge in this area. The outcome of Ali's research study can benefit a whole variety of different sectors at various levels. For example, by applying it in a treatment plant, one can produce cleaner water, using less resources, which in turn will help people, society as a whole, and the environment.
+
 ### Rasmus Bro
 
-<img src="dev_rasmus.jpg" width="100" height="auto" align="right"/>Rasmus Bro is performing research on most aspect of machine learning and artificial intelligence within analytical chemistry (chemometrics). He is heading an industrial research consortium, ODIN, focusing on Process Analytical Technology (PAT) . He has been an editor of Journal of Chemometrics for many years and is the author of a number of matlab toolboxes that are made freely available.
+<img src="dev_rasmus.jpg" width="100" height="auto" align="right"/>Rasmus Bro is performing research on most aspect of machine learning and artificial intelligence within analytical chemistry (chemometrics). He is heading an industrial research consortium, ODIN, focusing on Process Analytical Technology (PAT) . He has been an editor of Journal of Chemometrics for many years and is the author of a number of Matlab toolboxes that are made freely available.
 
 For the toolbox, Rasmus develops new methods for performing machine learning.
