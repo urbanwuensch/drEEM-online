@@ -37,6 +37,7 @@ if exist(filename,"file")
 end
 
 % Prepare temp folder for the export
+disp('<strong> Writing to temporary directory</strong>')
 tempfolder='drEEMexportTemporary';
 mkdir(tempfolder)
 
@@ -46,6 +47,7 @@ cd(tempfolder)
 % disp(['<strong> Writing to file: ',filename,'</strong>'])
 t=historyConverter(data);
 writetable(t,'dataset_history.xlsx',"FileType",'spreadsheet')
+disp('    Finished file: dataset_history.xlsx')
 
 % Export dataset status
 flds=fieldnames(data.status);
@@ -67,7 +69,7 @@ stat=stat(:,[2 1]);
 warning on
 writetable(stat,'dataset_status.csv',...
     "WriteMode","overwrite")
-
+disp('    Finished file: dataset_status.csv')
 % Export dataset scatter treatment
 scatter_i=drEEMhistory.searchhistory(data.history,'handlescatter','all');
 
@@ -110,7 +112,7 @@ else
 
     end
 end
-
+disp('    Finished file: dataset_scatterRemovalParameters.xlsx')
 % Export optical metadata
 warning off
 data=drEEMtoolbox.fitslopes(data,quiet=true);
@@ -121,6 +123,7 @@ pl=[pl data.opticalMetadata];
 writetable(pl,'dataset_opticalIndiciesAndPeakIntensities.csv',...
     "WriteMode","overwrite")
 warning on
+disp('    Finished file: dataset_opticalIndiciesAndPeakIntensities.csv')
 
 
 % Export metadata
@@ -135,6 +138,7 @@ end
 writetable(pl,'dataset_metadata.csv',...
     "WriteMode","overwrite")
 warning on
+disp('    Finished file: dataset_metadata.csv')
 
 % Export toolbox data
 pl=struct2table(data.toolboxdata);
@@ -144,7 +148,7 @@ try pl.uifig=[];end
 
 writetable(pl,'drEEM_versionInformation.csv',...
     "WriteMode","overwrite")
-
+disp('    Finished file: drEEM_versionInformation.csv')
 
 % Make readme
 T=["The contents of this file was created with the drEEM toolbox for Matlab",newline,...
@@ -172,6 +176,7 @@ FN = 'README.txt';  % better to use fullfile(path,name)
 fid = fopen(FN,'w');    % open file for writing (overwrite if necessary)
 fprintf(fid,'%s',T);          % Write the char array, interpret newline as new line
 fclose(fid);                  % Close the file (important)
+disp('    Finished file: README.txt')
 
 % export dataset as mat file.
 warning off
@@ -191,6 +196,7 @@ warning on
 dataExported=temp2;
 clearvars temp temp2
 save("dataset_dreem.mat","dataExported")
+disp('    Finished file: dataset_dreem.mat')
 
 % export EEMs as csv's
 mkdir('EEMs')
@@ -212,6 +218,7 @@ for j=1:data.nSample
     end
 
 end
+disp('    Finished files: Sample (and Blanks if available) EEMs')
 cd ..
 
 % export Absorbance as csv's
@@ -226,12 +233,16 @@ if not(isempty(data.abs))
         absData=array2table(absData,"VariableNames",{'wavelength',data.status.absorbanceUnit});
         writetable(absData,[data.filelist{j},'.csv'],"Delimiter",',','WriteMode','overwrite')
     end
+    disp('    Finished files: Absorbance spectra')
 end
 cd ..
 zip(filename,{'absorbance spectra','EEMs','*.csv','*.mat','*.txt','*.xlsx'});
 movefile([pwd,filesep,filename],[rootdir,filesep,filename])
+disp(['    Finished files: ',filename])
 cd(rootdir)
 rmdir("drEEMexportTemporary",'s')
+disp('    Removed temporary directory.')
+disp('<strong> Success! Done with export.</strong>')
 
 end
 
