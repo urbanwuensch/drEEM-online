@@ -179,10 +179,11 @@ if diagn
     'Callback',{@pltnext});
     uialert(dfig,'Press "next" button (bottom right) to see the next sample. Closing the figure continues the function without detail plots.', ...
         'Information',Icon='Info')
-end
+
 t=tiledlayout(dfig);
 for j=1:3
     ax(j)=nexttile(t);
+end
 end
 for i=1:data.nSample
     try
