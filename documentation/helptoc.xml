@@ -22,6 +22,10 @@
         </tocitem>
         <tocitem target="drEEMdataset.html">The drEEM dataset object
         </tocitem>
+        <tocitem target="drEEMhistory.html">The drEEM dataset history
+        </tocitem>
+        <tocitem target="drEEMstatus.html">The drEEM dataset status
+        </tocitem>
         <!-- User Guide comes next -->
         <tocitem target="tutorials_01.html" 
             image="HelpIcon.USER_GUIDE">Tutorials (Toolbox and Matlab)

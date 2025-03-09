@@ -34,6 +34,7 @@ Upon successful import, the `changestatus` GUI will appear on screen and pause t
 <a name="syntax1"></a><br>
 returns a drEEMdataset class object that contains fluorescence EEMs and their associated information.
 
+</details>
 
 <details open>
 <summary><b>

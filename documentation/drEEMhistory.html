@@ -5,7 +5,7 @@
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>importeems</title>
+<title>drEEMhistory</title>
 
 
 <style type="text/css">
@@ -383,132 +383,50 @@ details:open > summary {
 
 <p><img src="top right corner logo.png" width="100" height="auto" align="right"/></p>
 
-<h1 id="toc_0">importeems</h1>
+<h1 id="toc_0">The dataset history</h1>
 
-<p>Import measurement files and create drEEMdataset object</p>
+<p>Since version 2.0.0, drEEM keeps a detailed record of operations it performs on a dataset. All major operations involved in the processing are fully implemented in methods no matter how simple they theoretically are (e.g. blank subtraction). How does it keep this record?</p>
 
-<h2 id="toc_1">Syntax</h2>
+<p><strong><em>With the <code>drEEMhistory</code> property!</em></strong></p>
 
-<p><a href="#syntax1"><code>dataout = importeems(filePattern)</code></a></p>
+<p>It is one one of the properties (i.e. a field in a Matlab structure) of the <a href="dreemdataset.html"><code>drEEMdataset</code></a> object, so you&#39;ll find a history in each dataset you&#39;ll work with.</p>
 
-<p><a href="#syntax2"><code>dataout = importeems( ___ , Name,Value)</code></a></p>
+<p>The history will give you basic information on a dataset even if it has been years since you&#39;ve worked on it. For example, when <em>did</em> you last work on it? What <em>has</em> actually already been done on it?</p>
 
-<h2 id="toc_2">Description</h2>
-
-<p>This function scans the current working directory (<code>pwd</code>) for files using a given filename pattern, reads each file, and returns a <code>drEEMdataset</code> containing the fluorescence data.</p>
-
-<p>The function does two passes of imports. The first is used to read the dimensions of each file and to subsequently check that all data contains the same wavelength information.</p>
+<p>Though very helpful in itself, the history gets even more useful in conjunction with the dataset status (<a href="drEEMstatus.html"><code>drEEMstatus</code></a> object). And the best thing is that you can add information to the history yourself with the <a href="addcomment.html"><code>addcomment</code> </a> method! </p>
 
 <blockquote>
-<p><strong><em>All files must have the same dimensions. If this is not the case, the function will attempt to resolve the issue but most likely return an error!</em></strong></p>
+<p><strong><em>Remember</em></strong>: The more information you add to the history when running an analysis, the more reprodicible your workflow will be. For everybody else, but also for yourself when you return to an old dataset.</p>
 </blockquote>
 
-<p>Upon successful import, the <code>changestatus</code> GUI will appear on screen and pause the execution until the user has acknowledged the status of the dataset. You are asked to specify to what level the dataset has been processed. Since the drEEMdataset can contain fluorescence and / or absorbance, the GUI will ask about absorbance properties. Please ignore these and focus on the property the remainder of the fields.</p>
-
-<p><img src="newfldata.png" width="auto" height="auto" align="center"/></p>
+<p>The idea behind the history is that you need not much know about it; the history is takes care of itself and gets exported with <a href="export2zip.hmtl"><code>export2zip</code></a> or <a href="exportresults.html"><code>exportresults</code></a>. So it always stays with the dataset, even after an export.</p>
 
 <blockquote>
-<p><strong><em>It is important to specify the correct properties at this moment. If you are unsure as to what has been done already, please reach out to the instrument manufacturer, collaborator, laboratory manager or similar to ensure that the right information is supplied here.</em></strong></p>
+<p><strong>Note</strong>: The history is also how the toolbox knows about signal scaling or scatter treatment. Certain methods search the history and use the information stored in it.</p>
 </blockquote>
 
-<p><details open>
-<summary><b>
-<code>dataout = importeems(filePattern)</code> - standard options (fits e.g. HYJ Export for AquaLog data)</b>
-</summary>
-<a name="syntax1"></a><br>
-returns a drEEMdataset class object that contains fluorescence EEMs and their associated information.</p>
+<p>The history has a (hidden) property called <code>details</code>. Here, the optional input arguments to any function are stored. In this way, you&#39;ll always know excactly how the function was applied. Though hidden, <a href="viewhistory.html"><code>viewhistory</code></a> can restore the details to the workspace and you could apply the same options to another dataset with a tiny bit of work on your end.</p>
 
-<p></details></p>
+<p>The history has a (hidden) property <code>previous</code>. Though strickly limited to keep file sizes reasonable, the toolbox uses this functionality when e.g. scaling signals: The unscaled EEMs are kept in as the previous version of the dataset. Any call to <a href="subdataset.html"><code>subdataset</code></a> or <a href="zapnoise.html"><code>zapnoise</code></a> will search the <code>previous</code> dataset and apply the operation to the unscaled dataset kept in the history. This version of the dataset is then used to reverse the scaling when <code>scalesamples(data,&#39;reverse&#39;)</code> would be called.</p>
 
-<p><details open>
-<summary><b>
-<code>dataout = importeems([ ___ ], Name,Value)</code> - custom options</b>
-</summary>
-<a name="syntax2"></a></p>
+<h2 id="toc_1">Properties</h2>
 
-<p>Custom options are specifed with optional pairs of arguments using one or more name-value arguments. For example, you can specify the orentation of the EEM, or the wavelength vector if it is not given in each file.</p>
+<p>You can see above that there are tons of properties (i.e. variables) in the object. Many of these could be familiar from previous use of drEEM or DOMFluor, but many are also new. We will run through them.</p>
 
-<h2 id="toc_3">Examples</h2>
+<ul>
+<li><strong>timestamp</strong>: A date/time stamp marking the time when the function completed its modification on the dataset.</li>
+<li><strong>fname</strong>: The name of the drEEM function that was modifying the dataset.</li>
+<li><strong>fmessage</strong>: A short message with basic information about what was done.</li>
+<li><strong>usercomment</strong>: If you use <code>addcomment</code>, this is where your message will be stored. It will be associated with the last function by default since comments often refer to something that the last function was doing (or failed to do). Use <code>addcomment(data,&#39;___&#39;,&#39;newline&#39;)</code> to make a separate observation that stands alone by itself and is not associated with another function.</li>
+</ul>
 
-<p><strong>Horiba AquaLog:</strong>
-<code>blanks = tbx.importeems(&quot; - Waterfall Plot Blank.dat&quot;);</code></p>
+<h1 id="toc_2">Hidden properties</h1>
 
-<p><strong>Horiba FluoroMax:</strong>     <code>blanks=tbx.importeems(&#39;*.dat&#39;,&#39;columnIsExcitation&#39;,true,&#39;columnWave&#39;,240:10:450);</code></p>
-
-<p><strong>Cary Eclipse</strong>  <code>samples=tbx.importeems(&quot;*.csv&quot;,&quot;columnIsExcitation&quot;,true);</code></p>
-
-<h2 id="toc_4">Input arguments</h2>
-
-<p><details open>
-    <summary><b><code>filePattern</code> Text pattern to identify files for import</b></summary>
-    <i>char | string</i></p>
-
-<p>A text specifying the pattern of the files to be imported. This can include wildcard characters (*) to match multiple files. The pattern will be completely removed from the sample name after import to leave only the non-repeating filename information. For example <code>S001PEM.dat</code> will be known as <code>S001</code> in the produced dataset.</p>
-
-<p>Example: <code>&#39;*.csv&#39;</code></p>
-
-<p>Example: <code>&#39;* - Waterfall Plot Samples.dat&#39;</code></p>
-
-<p></details></p>
-
-<h2 id="toc_5">Name-Value arguments</h2>
-
-<p>Specify pairs of arguments as <code>Name1=Value1,...,NameN=ValueN</code>, where <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. The notation <code>&quot;Name&quot;,Value</code> is also supported. Name-value arguments must appear after other arguments, <code>data</code> in this case, but the order of the pairs does not matter. 
-<a name="NameValue"></a></p>
-
-<p><details open>
-    <summary><b><code>columnWave</code>- specify if first column contains wavelength data (or specify them)</b></summary>
-    <i>numeric | logical</i></p>
-
-<p>If <code>true</code>, the data in the measurement files are expected to have wavelength information in columns. Default is <code>true</code>.</p>
-
-<p>If numeric, the function assumes that you provide the wavelength vector to associate it with the data. In this case, the length of the vector must be equal to the number of columns in each file. </p>
-
-<p><em>Take care that the vector is supplied in the same orientation as the data was recorded (increasing vs. decreasing wavelength).</em>
-</details></p>
-
-<p><details open>
-    <summary><b><code>rowWave</code>- specify if first row contains wavelength data (or specify them)</b></summary>
-    <i>numeric | logical</i></p>
-
-<p>If <code>true</code>, the data in the measurement files are expected to have wavelength information in rows. Default is <code>true</code>.</p>
-
-<p>If numeric, the function assumes that you provide the wavelength vector to associate it with the data. In this case, the length of the vector must be equal to the number of rows in each file. </p>
-
-<p><em>Take care that the vector is supplied in the same orientation as the data was recorded (increasing vs. decreasing wavelength).</em>
-</details></p>
-
-<p><details open>
-    <summary><b><code>columnIsExcitation</code>- specify the orientation of the EEM</b></summary>
-    <i>numeric | logical</i></p>
-
-<p>If <code>true</code>, the columns represent excitation wavelengths. If <code>false</code>, the data matrix will be rotated so that it matches the standard settings in the toolbox. Default is <code>true</code>.</p>
-
-<p></details></p>
-
-<p><details open>
-    <summary><b><code>NumHeaderLines</code>- number of header lines to ignore</b></summary>
-    <i>numeric</i></p>
-
-<p>Specify the number of  lines (rows) to skip from the top in each file. Default is <code>0</code>.<br></p>
-
-<p>Example: <code>&#39;NumHeaderLines&#39;, 2</code> to remove the first 2 rows of each file<br></p>
-
-<p>Default is <code>0</code>.</p>
-
-<p></details></p>
-
-<h2 id="toc_6">Output arguments</h2>
-
-<p><details open>
-    <summary><b><code>data</code> - contains EEMs </b></summary>
-    <i>drEEMdataset</i></p>
-
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. </p>
-
-<p>The fluorescence data is stored using the properties <code>.X</code>, <code>.Ex</code>, <code>.Em</code>, <code>.nEx</code>, <code>.nEm</code>, and sample names are stored in <code>.filelist</code>. Read the documentation on the <code>drEEMdataset</code> for more information.</p>
-
-<p></details></p>
+<ul>
+<li><strong>details</strong>: If a function uses name-value pair input arguments or option structures, all of that will be put in here.</li>
+<li><strong>backup</strong>: Unused. Disabled to reduce dataset size, but theoretically could store backups.</li>
+<li><strong>previous</strong>: In certain cases (e.g. <a href="scalesamples.html"><code>scalesamples</code></a>) an unmodified version of the dataset will be stored here. This property is used to then later undo this operation.</li>
+</ul>
 
 
 
