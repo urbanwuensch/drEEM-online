@@ -111,15 +111,7 @@ if all(size(samples_mod.X)==size(blanks_mod.X))
     % the dataset because they will be exported if export2zip is used.
     dataout.XBlank=blanks_mod.X;
     
-    % drEEMhistory entry
-    idx=height(dataout.history)+1;
-    dataout.history(idx,1)=...
-        drEEMhistory.addEntry(mfilename,'Blanks successfully subtracted',[],dataout);
-    dataout.validate(dataout);
     
-    if nargout==0
-        clearvars dataout
-    end
 
 else
     error('subtractblanks: Dimension missmatch. Cannot perform blank subtraction.')
@@ -181,6 +173,14 @@ if options.plot
     title(t,'Emission spectra closest to Ex = 275 nm')
 end
 
+% drEEMhistory entry
+idx=height(dataout.history)+1;
+dataout.history(idx,1)=...
+    drEEMhistory.addEntry(mfilename,'Blanks successfully subtracted',[],dataout);
+dataout.validate(dataout);
 
+if nargout==0
+    clearvars dataout
+end
 
 end
