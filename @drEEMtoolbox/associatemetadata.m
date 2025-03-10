@@ -66,7 +66,7 @@ if ischar(pathtofile)||isstring(pathtofile)
 
     if not(any(matches(md.Properties.VariableNames,metadatakey)))
         disp(md.Properties.VariableNames)
-        error(['column header: ',metadatakey,'does not exist in '' imported metadata table.'''])
+        error(['column header: ',char(metadatakey),'does not exist in '' imported metadata table.'''])
     end
 elseif istable(pathtofile)
     md=pathtofile;
@@ -113,8 +113,8 @@ metadata=table('Size',[data.nSample,width(md)],'VariableTypes',type,'VariableNam
 warning on
 
 % Check for non-unique identifiers (these will make trouble during matching)
-if numel(unique(lower(data.(datakey))))<data.nSample
-    c = categorical(data.(datakey));
+if numel(unique(lower(data.metadata.(datakey))))<data.nSample
+    c = categorical(data.metadata.(datakey));
     cats=categories(c);
     counts=countcats(c);
     nonunique=cats(counts>1);
@@ -150,7 +150,7 @@ if numel(unique(lower(md.(metadatakey))))<height(md)
 end
 
 % Make sure key and lock are the same class
-a=lower(data.(datakey));
+a=lower(data.metadata.(datakey));
 b=lower(md.(metadatakey));
 ca=class(a);
 cb=class(b);
@@ -165,7 +165,7 @@ if matches(cb,'char')
 end
 
 if not(matches(ca,cb))
-    error(['data.',datakey,' and metadata.',metadatakey,' are not of the same class. Please convert one or both and try again.'])
+    error(['datakey: ',datakey,' and metadata.',metadatakey,' are not of the same class. Please convert one or both and try again.'])
 end
     
 
