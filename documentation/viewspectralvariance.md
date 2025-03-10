@@ -6,7 +6,7 @@ Visualize and analyze the spectral variability in fluorescence and absorbance da
 
 
 ## Syntax
-` viewspectralvariance(data)](#syntax1)`
+	viewspectralvariance(data)
 
 
 
