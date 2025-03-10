@@ -11,7 +11,7 @@ The installation of the drEEM toolbox is straightforward and there are software 
 
 
 ## Requirements
-The drEEM toolbox requires the [Statistics and Machine Learning Toolbox](https://www.mathworks.com/products/statistics.html) to calculate exponential CDOM slopes. Such fits are used to to calculate the long wavelength range CDOM slope and to extrapolate CDOM absorbance data in cases where the measured fluorescence emission exceeds the coverage of absorbance data. If you don't require these features, the toolbox will run fine without the toolbox.
+The drEEM toolbox requires the [Statistics and Machine Learning Toolbox](https://www.mathworks.com/products/statistics.html) to calculate exponential CDOM slopes. Such fits are used to to calculate the long wavelength range CDOM slope and to extrapolate CDOM absorbance data in cases where the measured fluorescence emission exceeds the coverage of absorbance data. If you don't require these features, drEEM will run fine without the toolbox.
 
 Considerable speed advantages can be achieved if the [Parallel Processing Toolbox](https://www.mathworks.com/products/parallel-computing.html) is installed. This toolbox is needed to take advantage of modern multi-core CPUs. However, the toolbox is designed to run without the toolbox as well.
 

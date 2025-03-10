@@ -10,7 +10,7 @@ Export a PARAFAC model to a spreadheet file. This includes a comprehensive descr
 
 The `exportresults` function takes a drEEMdataset object, `data`, a `filename`, and a PARAFAC model index, `f`, and exports relevant data and results, including history, status, scatter treatment, Coble peaks and indicies, chosen parafac model overview, fluorescence maxima of samples, and excitation and emission loadings, to an Excel file. The function ensures the specified PARAFAC model exists within the `data` and organizes the data into several sheets within the spreadsheet.
 
-> The function deletes any existing file with the same name before writing the new data.
+> ***Note:*** The function deletes any existing file with the same name before writing the new data.
 
 ## Examples
 
@@ -23,7 +23,7 @@ Export the 5-component model from `data` to Excel spreadsheet `mymodel.xlsx`.
     <summary><b>`data` - dataset to extract model from</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`. 
 </details>
 
 <details open>

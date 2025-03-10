@@ -39,7 +39,7 @@ The function offers guidance on each aspect of the status. This can be accessed 
     <summary><b>`data` - dataset in need of status update</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`. 
 </details>
 
 
@@ -47,3 +47,10 @@ A dataset of the class `drEEMdataset` that passes the validation function `data.
 <!---
 ## Name-Value arguments
 -->
+## Output arguments
+<details>
+    <summary><b>`dataout` - dataset with new status</b></summary>
+    <i>drEEMdataset</i>
+        
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(dataout)`. 
+</details>

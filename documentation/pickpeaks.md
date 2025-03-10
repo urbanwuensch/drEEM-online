@@ -18,7 +18,7 @@ Extract common fluorescence peaks and indices from a drEEMdataset object.
 
 The function returns fluorescence intensities and ratios at predefined points in the EEM for every sample.
 
-> ***Data coverage differs between datasets. If a peak or index is out of the range covered by the measurements, NaNs will be returned. If the distance between the peak definition and the measurements is equal to or greater than 5nm, a message will be displayed to disclose this. The function does not and cannot perform interpolations to solve the issue.***
+> ***Note:*** Data coverage differs between datasets. If a peak or index is out of the range covered by the measurements, NaNs will be returned. If the distance between the peak definition and the measurements is equal to or greater than 5nm, a message will be displayed to disclose this. The function does not and cannot perform interpolations to solve the issue.
 
 1. **Peak Extraction:**<br>
 	1. Single Point: The peak value is taken directly from the specified Em/Ex pair.
@@ -29,7 +29,7 @@ The function returns fluorescence intensities and ratios at predefined points in
 	3. Biological Index (BIX): Ratio of fluorescence intensities at `Em=380` nm and `Em=430` nm for `Ex=310` nm.
 	4. Humification Index (HIX): Ratio of the sum of fluorescence intensities between `Em=435` nm and `Em=480` nm to the sum of intensities between `Em=300` nm and `Em=345` nm plus `Em=435` nm and `Em=480` nm for `Ex=254` nm.
 
-> ***For fluorescence indices, the emission scans in question are smoothed using `smoothdata(___,'sgolay',2)`. Verify with `pickpeaks(data,details=true)` if this represents _your_ data well in _your_ case.***
+> ***Info:*** For fluorescence indices, the emission scans in question are smoothed using `smoothdata(___,'sgolay',2)`. Verify with `pickpeaks(data,details=true)` if this represents _your_ data well in _your_ case.
 
 <table border="1">
     <tr>
@@ -152,7 +152,7 @@ If no output argument is provided, the function will automatically set `plot=tru
     <summary><b>`data` - contains sample fluorescence</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`.
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`.
 
 </details>
 
@@ -189,5 +189,5 @@ Default is `false`.
     <summary><b>`dataout` - contains results</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. The output contains the results in the table `.opticalMetadata`
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(dataout)`. The output contains the results in the table `.opticalMetadata`
 </details>

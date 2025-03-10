@@ -8,7 +8,7 @@ Visualize, evaluate the performance, and compare different aspects of the PARAFA
 
 
 ## Syntax
-[`viewmodels(data)`](#syntax1)
+	viewmodels(data)
 
 
 
@@ -106,6 +106,6 @@ Left-clicking on the `view correlations vs. metadata` button opens a new app, in
     <summary><b>`data` - dataset containing PARAFAC models</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`.
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`.
 
 </details>

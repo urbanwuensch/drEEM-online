@@ -67,7 +67,7 @@ Specifies the interpolation method to use for filling cut scatters.`'inpaint'` u
     <summary><b>`data` - dataset containing fluorescence data</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`.
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`.
 
 </details>
 

@@ -6,7 +6,8 @@ Visualize and analyze Excitation Emission Matrices (EEMs) and modeled data.
 
 
 ## Syntax
-[`vieweems(data)`](#syntax1)
+
+	vieweems(data)
 
 
 
@@ -56,9 +57,9 @@ Note: Vertical lines represent the positions of Raman and Rayleigh scatter peaks
 
 ## Input arguments ##
 <details>
-    <summary><b>`dataout` - dataset containing fluorescence and absorbance data</b></summary>
+    <summary><b>`data` - dataset containing fluorescence and absorbance data</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`.
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`.
 
 </details>

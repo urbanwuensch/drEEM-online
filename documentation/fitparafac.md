@@ -44,8 +44,8 @@ Most often, the default options will not suffice or do the trick. Custom options
 
 </details>
 
-> Even with parallelization and optimized algorithms, the function might take a long time to finish. If you wish to abort, please use the "cancel" button next to the waitbar for each model. The function will attempt to finish, but might return an error if no usable models have been found. Note that this option is only available when `parallelization=true`. For conventional execution, `Ctrl+c` will abort the execution.
-> <img src="blockbar.png" width="auto" height="auto" align="justify"/>
+> **Info:** Even with parallelization and optimized algorithms, the function might take a long time to finish. If you wish to abort, please use the "cancel" button next to the waitbar for each model. The function will attempt to finish, but might return an error if no usable models have been found. Note that this option is only available when `parallelization=true`. For conventional execution, `Ctrl+c` will abort the execution.
+> <img src="blockbar.png" width="auto" height="auto" align="center"/>
 
 ## Examples
 
@@ -71,7 +71,7 @@ Equivalent to the **former splitanalysis**
     <summary><b>`data`- contains EEMs to fit models to</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`. 
 </details>
 
 
@@ -194,6 +194,42 @@ Specify the toolbox to use for the PARAFAC algorithm. You can choose from:
  
  
 Default is `"parafac3w"`.
+
+
+</details>
+
+
+## Output arguments
+<details>
+    <summary><b>`dataout` - dataset with PARAFAC models</b></summary>
+    <i>drEEMdataset</i>
+        
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(dataout)`.
+
+Models are stored in dataout.models. Each model is a `drEEMmodel` object contains the following information (no contents in this case):
+
+	drEEMmodel
+
+	ans = 
+
+	  drEEMmodel with properties:
+
+                    loads: {[]  []  []}
+                leverages: {[]  []  []}
+                      sse: {[]  []  []}
+                   status: ""
+         percentExplained: NaN
+                    error: NaN
+                     core: NaN
+       percentUnconverged: NaN
+    componentContribution: NaN
+           initialization: ""
+                   starts: NaN
+              convergence: NaN
+              constraints: ""
+                  toolbox: ""
+
+
 
 
 </details>

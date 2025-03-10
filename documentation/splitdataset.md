@@ -63,7 +63,7 @@ Is the same as:
     <summary><b>`data` - dataset to be split into smaller datasets</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`. 
 
 </details>
 
@@ -127,6 +127,6 @@ Default is `2`.
     <summary><b>`dataout` - dataset with contents in `.split`</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`.
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(dataout)`.
 
 </details>

@@ -389,17 +389,15 @@ details:open > summary {
 
 <h2 id="toc_1">Syntax</h2>
 
-<p><a href="#syntax1"><code>dataout = subtractblanks(samples, blanks)</code></a></p>
+<p><a href="#syntax1"><code>samplesout = subtractblanks(samples, blanks)</code></a></p>
 
 <h2 id="toc_2">Description</h2>
-
-<p><a href="#varargout">dataout</a> = subtractblanks(<a href="#varargin">samples, blanks</a>) <a name="syntax1"></a></p>
 
 <p>Subtracts EEMs of blank stored in <code>blanks</code> from EEMs stored in <code>samples</code>.
 The function <code>subtractblanks</code> makes sure the <code>blanks</code> and <code>samples</code>  have the same wavelengths, as this can be the case, especially,
 after the <code>ifecorrection</code> function has been applied on <code>samples</code> and some parts are deleted due to lacking absorbance coverage. <code>subtractblanks</code> makes sure that the <code>blanks</code> will also be cut to be compatible.</p>
 
-<p>Next, if the subtraction was successful, the function will plot the EEMs stored in <code>samples</code>, <code>blanks</code>, and <code>dataout</code> at an excitation of 275, where protein-like and humic-like fluorescence signal is likely to be observed, for the user to check the performance of the subtraction.</p>
+<p>Next, if the subtraction was successful, the function will plot the EEMs stored in <code>samples</code>, <code>blanks</code>, and <code>samplesout</code> at an excitation of 275, where protein-like and humic-like fluorescence signal is likely to be observed, for the user to check the performance of the subtraction.</p>
 
 <p><img src="blankdiag.png" width="auto" height="auto" align="left"/></p>
 
@@ -413,7 +411,7 @@ after the <code>ifecorrection</code> function has been applied on <code>samples<
 <p><strong><em>Always inspect the results of the blank subtraction and pay close attention to potential issues.</em></strong></p>
 </blockquote>
 
-<p>An entry will be added to the <code>history</code> field of the <code>dataout</code>. If no output argument is specified, the function will overwrite the original <code>samples</code> in the workspace.</p>
+<p>An entry will be added to the <code>history</code> field of the <code>samplesout</code>.</p>
 
 <h2 id="toc_3">Input arguments</h2>
 
@@ -421,7 +419,7 @@ after the <code>ifecorrection</code> function has been applied on <code>samples<
     <summary><b><code>samples</code> - dataset with sample fluorescence</b></summary>
     <i>drEEMdataset</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. </p>
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(samples)</code>. </p>
 
 <blockquote>
 <p>The property <code>samples.status.blankSubtraction</code> must be <code>&quot;not applied&quot;</code>. Otherwise, the function returns a validation error.</p>
@@ -433,7 +431,7 @@ after the <code>ifecorrection</code> function has been applied on <code>samples<
     <summary><b><code>blanks</code> - dataset blank fluorescence</b></summary>
     <i>drEEMdataset</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. </p>
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(blanks)</code>. </p>
 
 <blockquote>
 <p>The property <code>blanks.status.blankSubtraction</code> must be <code>&quot;not applied&quot;</code>. Otherwise, the function returns a validation error.</p>
@@ -444,10 +442,10 @@ after the <code>ifecorrection</code> function has been applied on <code>samples<
 <h2 id="toc_4">Output arguments</h2>
 
 <p><details>
-    <summary><b><code>dataout</code> - processed dataset </b></summary>
+    <summary><b><code>samplesout</code> - processed dataset </b></summary>
     <i>drEEMdataset</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. </p>
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(samplesout)</code>. </p>
 
 <blockquote>
 <p>The property <code>samples.status.blankSubtraction</code> will have changed from <code>&quot;not applied&quot;</code> to <code>&quot;applied by toolbox&quot;</code>.</p>

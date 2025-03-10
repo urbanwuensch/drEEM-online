@@ -10,7 +10,7 @@ Set part of emission or excitation spectra from one or more samples to NaN.
 [`dataout = zapnoise(data, sampleIdent, emRange, exRange)`](#syntax1)
 
 
-## Description ##
+## Description
 
 Removes bad fluorescence data (set to `NaN`) in the emission range of `EmRange` and excitation range of `ExRange` from specified `sampleIdent `, in `data`.
 
@@ -39,7 +39,7 @@ Removes bad fluorescence data (set to `NaN`) in the emission range of `EmRange` 
     <summary><b>`data` - dataset containing fluorescence EEMs</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`.
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`.
 
 </details>
 
@@ -88,11 +88,11 @@ Example: `(__, __, __, 400)` to remove data between the first excitation wavelen
 
 Example: `(__, __, __, [min(data.Ex):max(data.Ex)])` to remove data between  the first and last excitation wavelengths.
 
-## Output arguments (optional)##
+## Output arguments
 <details>
     <summary><b>`dataout` - treated dataset</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`.
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(dataout)`.
 
 </details>

@@ -400,7 +400,7 @@ details:open > summary {
 <p>The function returns fluorescence intensities and ratios at predefined points in the EEM for every sample.</p>
 
 <blockquote>
-<p><strong><em>Data coverage differs between datasets. If a peak or index is out of the range covered by the measurements, NaNs will be returned. If the distance between the peak definition and the measurements is equal to or greater than 5nm, a message will be displayed to disclose this. The function does not and cannot perform interpolations to solve the issue.</em></strong></p>
+<p><strong><em>Note:</em></strong> Data coverage differs between datasets. If a peak or index is out of the range covered by the measurements, NaNs will be returned. If the distance between the peak definition and the measurements is equal to or greater than 5nm, a message will be displayed to disclose this. The function does not and cannot perform interpolations to solve the issue.</p>
 </blockquote>
 
 <ol>
@@ -421,7 +421,7 @@ details:open > summary {
 </ol>
 
 <blockquote>
-<p><strong><em>For fluorescence indices, the emission scans in question are smoothed using <code>smoothdata(___,&#39;sgolay&#39;,2)</code>. Verify with <code>pickpeaks(data,details=true)</code> if this represents <em>your</em> data well in <em>your</em> case.</em></strong></p>
+<p><strong><em>Info:</em></strong> For fluorescence indices, the emission scans in question are smoothed using <code>smoothdata(___,&#39;sgolay&#39;,2)</code>. Verify with <code>pickpeaks(data,details=true)</code> if this represents <em>your</em> data well in <em>your</em> case.</p>
 </blockquote>
 
 <table border="1">
@@ -545,7 +545,7 @@ Th function <code>pickpeaks</code> extracts predefined fluorescence peaks, inclu
     <summary><b><code>data</code> - contains sample fluorescence</b></summary>
     <i>drEEMdataset</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>.</p>
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(data)</code>.</p>
 
 <p></details></p>
 
@@ -580,7 +580,7 @@ Th function <code>pickpeaks</code> extracts predefined fluorescence peaks, inclu
     <summary><b><code>dataout</code> - contains results</b></summary>
     <i>drEEMdataset</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. The output contains the results in the table <code>.opticalMetadata</code>
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(dataout)</code>. The output contains the results in the table <code>.opticalMetadata</code>
 </details></p>
 
 

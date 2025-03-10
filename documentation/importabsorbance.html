@@ -422,6 +422,8 @@ details:open > summary {
 <a name="syntax1"></a><br>
 returns a drEEMdataset class object that contains absorbance spectra and   their associated information.</p>
 
+<p></details></p>
+
 <p><details open>
 <summary><b>
 <code>dataout = importabsorbance([ ___ ], Name,Value)</code> - custom options</b>
@@ -429,6 +431,8 @@ returns a drEEMdataset class object that contains absorbance spectra and   their
 <a name="syntax2"></a></p>
 
 <p>Custom options are specifed with optional pairs of arguments using one or more name-value arguments. For example, you can specify the column number that holds the wavelength data or the column that holds the absorbance data.</p>
+
+<p></details></p>
 
 <h2 id="toc_3">Examples</h2>
 
@@ -480,7 +484,8 @@ returns a drEEMdataset class object that contains absorbance spectra and   their
 
 <p>Specify which column of data in the measurement files contains the absorbance data. </p>
 
-<p>Default is column <code>10</code>.</p>
+<p>Default is column <code>10</code>.
+</details></p>
 
 <p>Example: <code>&#39;AbsorbanceColumn&#39;, 10</code> if the tenth column contains the absorbance data.</p>
 
@@ -504,7 +509,7 @@ returns a drEEMdataset class object that contains absorbance spectra and   their
     <summary><b><code>data</code> - contains CDOM spectra </b></summary>
     <i>drEEMdataset</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>.
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(dataout)</code>.
 The absorbance data is stored using the properties <code>.abs</code>, <code>.absWave</code>, and sample names are stored in <code>.filelist</code>. Read the documentation on the <code>drEEMdataset</code> for more information.</p>
 
 <p></details></p>

@@ -23,7 +23,7 @@ Export the 5-component model of `data` to text file `mymodel.txt`.
     <summary><b>`data` - dataset to extract model from</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`. 
 </details>
 
 <details open>

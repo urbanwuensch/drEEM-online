@@ -36,6 +36,7 @@ Upon successful import, the `changestatus` GUI will appear on screen and pause t
 <a name="syntax1"></a><br>
 returns a drEEMdataset class object that contains absorbance spectra and   their associated information.
 
+</details>
 
 <details open>
 <summary><b>
@@ -45,6 +46,7 @@ returns a drEEMdataset class object that contains absorbance spectra and   their
 
 Custom options are specifed with optional pairs of arguments using one or more name-value arguments. For example, you can specify the column number that holds the wavelength data or the column that holds the absorbance data.
 
+</details>
 
 ## Examples
 
@@ -95,7 +97,7 @@ Default is `1`.
 Specify which column of data in the measurement files contains the absorbance data. 
 
 Default is column `10`.
-
+</details>
 
 Example: `'AbsorbanceColumn', 10` if the tenth column contains the absorbance data.
     
@@ -118,7 +120,7 @@ Default is `0`.
     <summary><b>`data` - contains CDOM spectra </b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`.
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(dataout)`.
 The absorbance data is stored using the properties `.abs`, `.absWave`, and sample names are stored in `.filelist`. Read the documentation on the `drEEMdataset` for more information.
 
 </details>

@@ -402,7 +402,7 @@ details:open > summary {
 <p>If the names between samples, blanks, and absorbance files differs prior to import, make sure to use a metadata table and import it to replace the diverging filenames  with the matching ones. Take a look at the <a href="import_tutorial_02.html">complex data import tutorial</a> to learn how this can be done.</p>
 
 <blockquote>
-<p><strong><em>If no common sample names between the datasets are found, the function will always return an error prior to any console or figure output.</em></strong></p>
+<p><strong><em>Note:</em></strong> If no common sample names between the datasets are found, the function will always return an error prior to assigning an output.</p>
 </blockquote>
 
 <p><details open>
@@ -450,7 +450,7 @@ absorbance: No action necessary. All files between supplied datasets had same na
     <summary><b><code>dsin1, __, dsinN</code>- datasets for comparisons</b></summary>
     <i>drEEMdataset class</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. 
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(data)</code>. 
 </details>
 <!---
 <details>
@@ -463,6 +463,16 @@ absorbance: No action necessary. All files between supplied datasets had same na
 <!---
 ## Name-Value arguments
 -->
+
+<h2 id="toc_5">Output arguments</h2>
+
+<p><details>
+    <summary><b><code>dsout1, __, dsoutN</code> - datasets with same sample sequence</b></summary>
+    <i>drEEMdataset</i></p>
+
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(dsout1)</code>.</p>
+
+<p></details></p>
 
 
 

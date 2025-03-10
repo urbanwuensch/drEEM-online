@@ -7,7 +7,7 @@ Visualize a split validation on a specific model present in data.
 
 ## Syntax
 
-[`dataout = viewsplitvalidation(data, fac)`](#syntax1)
+	dataout = viewsplitvalidation(data, fac)
 
 ## Description
 
@@ -29,7 +29,7 @@ The function includes detailed error messages to help diagnose why a validation 
     <summary><b>`data` - dataset with PARAFAC models</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`. 
 
 PARAFAC models should be present in the overall dataset and all splits for full functionality.
 

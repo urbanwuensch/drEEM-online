@@ -391,9 +391,22 @@ details:open > summary {
 
 <p><a href="#s1"><code>dataout = addcomments(data,comment)</code></a></p>
 
+<p><a href="#s2"><code>dataout = addcomments(data,comment,&#39;newline&#39;)</code></a></p>
+
 <h2 id="toc_2">Description</h2>
 
-<p><code>dataout = addcomments(data)</code> <a name="s1"></a> adds a comment to a drEEMdataset that describes an observation, justifies a decision, or documents any other kind of process. The comment field will be stored in the document&#39;s history and can be retreived with <a href="viewhistory.hmtl"><code>viewistory</code></a> and <a href="displayhistory.hmtl"><code>displayhistory</code></a> and will be exported with <a href="exportresults.hmtl"><code>exportresults</code></a> and <a href="export2zip.hmtl"><code>export2zip</code></a></p>
+<p><code>dataout = addcomments(data,&#39;new comment here&#39;)</code> <a name="s1"></a> adds a comment to a drEEMdataset that describes an observation, justifies a decision, or documents any other kind of process. The comment field will be stored in the document&#39;s history and can be retreived with <a href="viewhistory.hmtl"><code>viewistory</code></a> and <a href="displayhistory.hmtl"><code>displayhistory</code></a> and will be exported with <a href="exportresults.hmtl"><code>exportresults</code></a> and <a href="export2zip.hmtl"><code>export2zip</code></a>. </p>
+
+<p>By default, the function assumes that a comment is being made on a previous operation, such as noise removal, a PARAFAC fit, or similar. The comment will thus be in the same line and belong to the entry of the as the last function call. This will look as follows:
+<img src="addcomment_inline.png" width="auto" height="auto" align="right"/></p>
+
+<p>If you wish to make a comment independent of the last function call, use the <code>newline</code> attribute.</p>
+
+<p><code>dataout = addcomments(data,&#39;new comment here&#39;,&#39;newline&#39;)</code> <a name="s2"></a> </p>
+
+<p>This will result in the comment being it&#39;s own, independent entry in the dataset history.</p>
+
+<p><img src="addcomment_newline.png" width="auto" height="auto" align="right"/></p>
 
 <h2 id="toc_3">Examples</h2>
 
@@ -405,7 +418,7 @@ details:open > summary {
     <summary><b><code>data</code> - dataset to add comment to</b></summary>
     <i>drEEMdataset class</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. 
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(data)</code>. 
 </details></p>
 
 <p><details open>
@@ -416,9 +429,15 @@ details:open > summary {
 
 <p></details></p>
 
-<!---
-## Name-Value arguments
--->
+<h2 id="toc_5">Output arguments</h2>
+
+<p><details>
+    <summary><b><code>dataout</code> - dataset with new comment</b></summary>
+    <i>drEEMdataset</i></p>
+
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(dataout)</code>.</p>
+
+<p></details></p>
 
 
 

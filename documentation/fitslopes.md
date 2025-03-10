@@ -70,7 +70,7 @@ Fit slopes using a custom wavelength range for the expoential slope and use an R
     <summary><b>`data` - contains CDOM spectra to fit slopes to</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. If no absorbance is present, the function will return an error.
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`. If no absorbance is present, the function will return an error.
 </details>
 
 
@@ -106,7 +106,7 @@ Default is `true`.
 
 </details>
 
-</details>
+
 
 <details open>
     <summary><b>`details `- switch to plot diagnostics</b></summary>
@@ -115,3 +115,16 @@ Default is `true`.
 Logical or numeric value to specify if detailed diagnostic plots should be shown for each sample. Each plot will show the raw, modeled, and residual data if a fit was possible.If no output argument is supplied, the option is enabled automatically.
 
 Default is `false`.
+
+</details>
+
+## Output arguments
+<details>
+    <summary><b>`dataout` - dataset with slope data in .opticalMetadata</b></summary>
+    <i>drEEMdataset</i>
+        
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(dataout)`.
+
+All calculated slopes are saved in a table inside the dataset called `opticalMetadata`. The table can be extracted to the workspace, e.g. slopes=dataout.opticalMetadata.
+
+</details>

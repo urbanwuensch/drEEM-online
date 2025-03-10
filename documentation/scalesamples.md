@@ -92,7 +92,7 @@ The function adds an entry to the dataset's history where the unscaled data is s
     <summary><b>`data` - dataset containing EEMs to be scaled.</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`. 
 
 > If the status property `data.status.signalScaling` is not `"original scale"`, the function automatically searches the original dataset and does not repeat scaling on scaled EEMs.
 
@@ -116,10 +116,10 @@ Default is `2`.
 ## Output arguments (optional)##
 
 <details>
-    <summary><b>`data` - dataset containing scaled or original (restored) EEMs.</b></summary>
+    <summary><b>`dataout` - dataset containing scaled or original (restored) EEMs.</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(dataout)`. 
 
 > If the status property `data.status.signalScaling` follows any changes made by the function.
 

@@ -428,8 +428,8 @@ An entry will be added to the <code>history</code> field of the <code>data</code
 <p></details></p>
 
 <blockquote>
-<p>Even with parallelization and optimized algorithms, the function might take a long time to finish. If you wish to abort, please use the &quot;cancel&quot; button next to the waitbar for each model. The function will attempt to finish, but might return an error if no usable models have been found. Note that this option is only available when <code>parallelization=true</code>. For conventional execution, <code>Ctrl+c</code> will abort the execution.
-<img src="blockbar.png" width="auto" height="auto" align="justify"/></p>
+<p><strong>Info:</strong> Even with parallelization and optimized algorithms, the function might take a long time to finish. If you wish to abort, please use the &quot;cancel&quot; button next to the waitbar for each model. The function will attempt to finish, but might return an error if no usable models have been found. Note that this option is only available when <code>parallelization=true</code>. For conventional execution, <code>Ctrl+c</code> will abort the execution.
+<img src="blockbar.png" width="auto" height="auto" align="center"/></p>
 </blockquote>
 
 <h2 id="toc_3">Examples</h2>
@@ -452,7 +452,7 @@ Equivalent to the <strong>former splitanalysis</strong></p>
     <summary><b><code>data</code>- contains EEMs to fit models to</b></summary>
     <i>drEEMdataset</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. 
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(data)</code>. 
 </details></p>
 
 <h2 id="toc_5">Name-Value arguments</h2>
@@ -574,6 +574,39 @@ Default is <code>3000</code> iterations. The lower <code>convergence</code>, the
 </ul>
 
 <p>Default is <code>&quot;parafac3w&quot;</code>.</p>
+
+<p></details></p>
+
+<h2 id="toc_6">Output arguments</h2>
+
+<p><details>
+    <summary><b><code>dataout</code> - dataset with PARAFAC models</b></summary>
+    <i>drEEMdataset</i></p>
+
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(dataout)</code>.</p>
+
+<p>Models are stored in dataout.models. Each model is a <code>drEEMmodel</code> object contains the following information (no contents in this case):</p>
+
+<div><pre><code class="language-none">drEEMmodel
+
+ans = 
+
+  drEEMmodel with properties:
+
+                loads: {[]  []  []}
+            leverages: {[]  []  []}
+                  sse: {[]  []  []}
+               status: &quot;&quot;
+     percentExplained: NaN
+                error: NaN
+                 core: NaN
+   percentUnconverged: NaN
+componentContribution: NaN
+       initialization: &quot;&quot;
+               starts: NaN
+          convergence: NaN
+          constraints: &quot;&quot;
+              toolbox: &quot;&quot;</code></pre></div>
 
 <p></details></p>
 

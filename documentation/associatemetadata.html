@@ -406,6 +406,8 @@ details:open > summary {
 <p>The function ensures that the identifiers in both the <code>data</code> and the metadata exist, are of the same class and are unique, then performs necessary type conversions to limit the associated data to be of type <code>char</code>, <code>double</code>, or <code>categorical</code>. The <code>metadata</code> field entries for the unmatched samples  are filled with <code>missing</code> or <code>NaN</code> values.
 If no output argument is specified, the function overwrites the original object in the workspace.</p>
 
+<p>Metadata are stored in <code>data.metadata</code>. To access and extract,  <code>md=data.metadata</code> would extract the metadata from the dataset and create a table in the workspace.</p>
+
 <blockquote>
 <p><strong>Note:</strong> <code>associatemetadata</code> will always provide basic output on the associations made between tables and the dataset. This is done with console output:</p>
 
@@ -413,10 +415,6 @@ If no output argument is specified, the function overwrites the original object 
 </blockquote>
 
 <p>Always inspect the outcome.</p>
-
-<blockquote>
-<p><strong>Info:</strong> <code>associatemetadata</code> stores the metadata in <code>data.metadata</code>. Access and extract by calling  <code>md=data.metadata</code>.</p>
-</blockquote>
 
 <p>Many functions support content in the metadata table and will offer to enrich plots by referring to the contents.</p>
 
@@ -469,7 +467,7 @@ If no output argument is specified, the function overwrites the original object 
     <summary><b><code>data</code> - dataset to include metadata in</b></summary>
     <i>drEEMdataset</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. 
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(data)</code>. 
 </details></p>
 
 <p><details open></p>
@@ -508,7 +506,7 @@ Default: <code>filelist</code></p>
     <summary><b><code>dataout</code> - dataset with new columns in metadata table</b></summary>
     <i>drEEMdataset</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. 
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(dataout)</code>. 
 </details></p>
 
 

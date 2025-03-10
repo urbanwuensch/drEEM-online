@@ -94,7 +94,7 @@ This example figures show the diagnostic plot (`details=true`) that can help to 
     <summary><b>`data` - dataset with fluorescence data.</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`. 
 
 </details>
 
@@ -155,6 +155,6 @@ Default is `false`.
     <summary><b>`dataout` - despiked fluorescence data</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`.
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(dataout)`.
 
 </details>

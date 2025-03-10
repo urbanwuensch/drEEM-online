@@ -28,7 +28,7 @@ The function identifies samples with very low signals and will generate a warnin
     <summary><b>`data` - dataset with fluorescence and absorbance data.</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`. 
 
 
 </details>

@@ -22,6 +22,7 @@ Metadata that describes samples is helpful in describing dynamics between sample
 The function ensures that the identifiers in both the `data` and the metadata exist, are of the same class and are unique, then performs necessary type conversions to limit the associated data to be of type `char`, `double`, or `categorical`. The `metadata` field entries for the unmatched samples  are filled with `missing` or `NaN` values.
 If no output argument is specified, the function overwrites the original object in the workspace.
 
+Metadata are stored in `data.metadata`. To access and extract,  `md=data.metadata` would extract the metadata from the dataset and create a table in the workspace.
 
 > **Note:** `associatemetadata` will always provide basic output on the associations made between tables and the dataset. This is done with console output:
 > 
@@ -29,7 +30,6 @@ If no output argument is specified, the function overwrites the original object 
 
 Always inspect the outcome.
 
-> **Info:** `associatemetadata` stores the metadata in `data.metadata`. Access and extract by calling  `md=data.metadata`.
 
 Many functions support content in the metadata table and will offer to enrich plots by referring to the contents.
 
@@ -81,7 +81,7 @@ Read metadata from the path specified in `filename` and  use sampleID column in 
     <summary><b>`data` - dataset to include metadata in</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`. 
 </details>
 
 <details open>
@@ -120,5 +120,5 @@ Default: `filelist`
     <summary><b>`dataout` - dataset with new columns in metadata table</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(dataout)`. 
 </details>

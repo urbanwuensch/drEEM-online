@@ -395,28 +395,18 @@ details:open > summary {
 
 <p>The function removes, i.e. truncates parts of a dataset. Use this to remove problematic samples, noisy excitation scans, or unneeded emission scans.</p>
 
-<blockquote>
-<p><strong><em>A particularly useful case is the removal of EEM regions that contain only NaN or zeros. These can disturb various processing functions and prove problematic for PARAFAC.</em></strong></p>
-</blockquote>
+<p>A particularly useful case is the removal of EEM regions that contain only NaN or zeros. These can disturb various processing functions and prove problematic for PARAFAC.</p>
 
 <p>The <code>history</code> field of the <code>dataout</code> contains a summary of the results of the carried-out subsetting, including which sample, emission and excitation wavelengths were successfully removed. </p>
 
-<p><strong><em>Please note:</em></strong></p>
-
 <blockquote>
-<p><strong><em>If the function <code>scalesamples</code> has been used prior to using the <code>subdataset</code>, the <code>subdataset</code> will automatically perform the subsetting on the unscaled dataset. This will ensure the toolbox works smoothly if the scaling is reverted. For more information see <code>scalesamples</code> function.</em></strong></p>
-</blockquote>
+<p><strong>Note:</strong> When <code>subdataset</code> is called:</p>
 
-<p>For datasets that have advanced far in the data analysis routine:</p>
-
-<blockquote>
-<p><strong><em>When <code>subdataset</code> is called, any existing PARAFAC models are deleted since they no longer reflect the data. The function displays a message to inform you.</em></strong></p>
-</blockquote>
-
-<p>and also:</p>
-
-<blockquote>
-<p><strong><em>When datasets have already been split, the removal will automatically be carried out in the splits as well! However, if you use the function on splits, the original dataset remains untouched (the function would not have access to it).</em></strong></p>
+<ul>
+<li>If the function <code>scalesamples</code> has been used prior to using the <code>subdataset</code>, the orginal unscaled data will also be cut.</li>
+<li>any existing PARAFAC models are deleted since they no longer reflect the data.</li>
+<li>the removal will automatically be carried out in any splits as well!</li>
+</ul>
 </blockquote>
 
 <p><details open>
@@ -428,7 +418,7 @@ details:open > summary {
 <p>You can specify any combination of <code>outSample</code>,<code>outEm</code>, or <code>outEx</code>. If one of these is not explicitly specified as input, it is automatically set to <code>false</code>, resulting in no action along that dimension of the dataset.</p>
 
 <blockquote>
-<p><strong><em><code>subdataset</code> works <em>only</em> with logical inputs. Do not provide indicies of wavelength or wavelengths directly. This will be caught during the input validation and results in an error message.</em></strong></p>
+<p><strong><em>Note:</em></strong> <code>subdataset</code> works <em>only</em> with logical inputs. Do not provide indicies of wavelength or wavelengths directly. This will be caught during the input validation and results in an error message.</p>
 </blockquote>
 
 <p></details></p>
@@ -457,7 +447,7 @@ details:open > summary {
     <summary><b><code>data</code> - dataset to truncate</b></summary>
     <i>drEEMdataset</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. </p>
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(data)</code>. </p>
 
 <p></details></p>
 
@@ -499,7 +489,7 @@ details:open > summary {
     <summary><b><code>dataout</code> - truncated dataset</b></summary>
     <i>drEEMdataset</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>.</p>
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(dataout)</code>.</p>
 
 <p></details></p>
 

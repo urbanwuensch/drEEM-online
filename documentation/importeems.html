@@ -428,6 +428,8 @@ returns a drEEMdataset class object that contains fluorescence EEMs and their as
 
 <p>Custom options are specifed with optional pairs of arguments using one or more name-value arguments. For example, you can specify the orentation of the EEM, or the wavelength vector if it is not given in each file.</p>
 
+<p></details></p>
+
 <h2 id="toc_3">Examples</h2>
 
 <p><strong>Horiba AquaLog:</strong>
@@ -501,10 +503,10 @@ returns a drEEMdataset class object that contains fluorescence EEMs and their as
 <h2 id="toc_6">Output arguments</h2>
 
 <p><details open>
-    <summary><b><code>data</code> - contains EEMs </b></summary>
+    <summary><b><code>dataout</code> - contains EEMs </b></summary>
     <i>drEEMdataset</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. </p>
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(dataout)</code>. </p>
 
 <p>The fluorescence data is stored using the properties <code>.X</code>, <code>.Ex</code>, <code>.Em</code>, <code>.nEx</code>, <code>.nEm</code>, and sample names are stored in <code>.filelist</code>. Read the documentation on the <code>drEEMdataset</code> for more information.</p>
 

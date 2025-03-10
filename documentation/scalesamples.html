@@ -472,7 +472,7 @@ details:open > summary {
     <summary><b><code>data</code> - dataset containing EEMs to be scaled.</b></summary>
     <i>drEEMdataset</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. </p>
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(data)</code>. </p>
 
 <blockquote>
 <p>If the status property <code>data.status.signalScaling</code> is not <code>&quot;original scale&quot;</code>, the function automatically searches the original dataset and does not repeat scaling on scaled EEMs.</p>
@@ -495,10 +495,10 @@ details:open > summary {
 <h2 id="toc_5">Output arguments (optional)</h2>
 
 <p><details>
-    <summary><b><code>data</code> - dataset containing scaled or original (restored) EEMs.</b></summary>
+    <summary><b><code>dataout</code> - dataset containing scaled or original (restored) EEMs.</b></summary>
     <i>drEEMdataset</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. </p>
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(dataout)</code>. </p>
 
 <blockquote>
 <p>If the status property <code>data.status.signalScaling</code> follows any changes made by the function.</p>

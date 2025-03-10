@@ -564,7 +564,7 @@ dataout = handlescatter(data, scatteroptions);</code></pre></div>
     <summary><b><code>data</code> - dataset with scatter for removal</b></summary>
     <i>drEEMdataset</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. </p>
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(data)</code>. </p>
 
 <blockquote>
 <p>The property <code>data.status.scatterTreatment</code> must be <code>&quot;not applied&quot;</code>. Otherwise, the function returns a validation error.</p>
@@ -593,7 +593,7 @@ dataout = handlescatter(data, scatteroptions);</code></pre></div>
     <summary><b><code>dataout</code> - contains EEMs of samples, hopefully without scatter</b></summary>
     <i>drEEMdataset</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>.</p>
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(dataout)</code>.</p>
 
 <p>The status of the dataset is changed to reflect the fact that the scatter excision has been performed by the drEEM toolbox</p>
 

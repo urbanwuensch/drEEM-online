@@ -14,22 +14,16 @@ Remove samples, emission spectra or excitation spectra from the dataset.
 
 The function removes, i.e. truncates parts of a dataset. Use this to remove problematic samples, noisy excitation scans, or unneeded emission scans.
 
-> ***A particularly useful case is the removal of EEM regions that contain only NaN or zeros. These can disturb various processing functions and prove problematic for PARAFAC.***
+A particularly useful case is the removal of EEM regions that contain only NaN or zeros. These can disturb various processing functions and prove problematic for PARAFAC.
 
 
 The `history` field of the `dataout` contains a summary of the results of the carried-out subsetting, including which sample, emission and excitation wavelengths were successfully removed. 
 
-**_Please note:_**
-
-> ***If the function `scalesamples` has been used prior to using the `subdataset`, the `subdataset` will automatically perform the subsetting on the unscaled dataset. This will ensure the toolbox works smoothly if the scaling is reverted. For more information see `scalesamples` function.***
-
-For datasets that have advanced far in the data analysis routine:
-
-> ***When `subdataset` is called, any existing PARAFAC models are deleted since they no longer reflect the data. The function displays a message to inform you.***
-
-and also:
-
-> ***When datasets have already been split, the removal will automatically be carried out in the splits as well! However, if you use the function on splits, the original dataset remains untouched (the function would not have access to it).***
+> **Note:** When `subdataset` is called:
+> 
+> * If the function `scalesamples` has been used prior to using the `subdataset`, the orginal unscaled data will also be cut.
+> * any existing PARAFAC models are deleted since they no longer reflect the data.
+> * the removal will automatically be carried out in any splits as well!
 
 <details open>
 <summary><b>`dataout = subdataset(data, Name,Value)` - remove parts of a dataset entirely</b>
@@ -39,7 +33,7 @@ Contrary to previous version of `subdataset`, only two inputs are required and t
 
 You can specify any combination of `outSample`,`outEm`, or `outEx`. If one of these is not explicitly specified as input, it is automatically set to `false`, resulting in no action along that dimension of the dataset.
 
-> ***`subdataset` works _only_ with logical inputs. Do not provide indicies of wavelength or wavelengths directly. This will be caught during the input validation and results in an error message.***
+> ***Note:*** `subdataset` works _only_ with logical inputs. Do not provide indicies of wavelength or wavelengths directly. This will be caught during the input validation and results in an error message.
 
 </details>
 
@@ -73,7 +67,7 @@ You can specify any combination of `outSample`,`outEm`, or `outEx`. If one of th
     <summary><b>`data` - dataset to truncate</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`. 
 
 </details>
 
@@ -115,6 +109,6 @@ Functions to use include: `==`, `~`, `<`, `>`, `drEEMtoolbox.isNearest(data.Em,_
     <summary><b>`dataout` - truncated dataset</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`.
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(dataout)`.
 
 </details>

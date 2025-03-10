@@ -11,7 +11,7 @@ Visualize the raw data, modeled data, and residual EEM plots for every sample in
 
 
 
-## Description ##
+## Description
 
 The app visualizes the EEMs of raw data (unmodeled data), modeled data, and the residuals of a specified sample and a PARAFAC model. You can go through different models and samples using the `Model` and `Sample` drop-down menus, respectively. 
 
@@ -25,13 +25,13 @@ To adjust the upper limit of the Residual plot's colorbar, use the `% of max. in
 
 An example of the `viewdmr` GUI
 
-## Input arguments ##
+## Input arguments
 
 <details>
     <summary><b>`data` - dataset containing PARAFAC models</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`.
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`.
 
 </details>
 

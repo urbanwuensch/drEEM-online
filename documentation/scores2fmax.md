@@ -20,7 +20,7 @@ Convert model scores to fluorescence maxima in the original intensity units. Whi
     <summary><b>`data` - dataset with PARAFAC models</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`. 
 
 </details>
 

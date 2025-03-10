@@ -174,7 +174,7 @@ Retreive and modify options to apply them:
     <summary><b>`data` - dataset with scatter for removal</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`. 
 
 > The property `data.status.scatterTreatment` must be `"not applied"`. Otherwise, the function returns a validation error.
 
@@ -202,7 +202,7 @@ If a **structure of the type handlescatterOptions** is supplied, the app applies
     <summary><b>`dataout` - contains EEMs of samples, hopefully without scatter</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`.
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(dataout)`.
 
 
 The status of the dataset is changed to reflect the fact that the scatter excision has been performed by the drEEM toolbox

@@ -396,7 +396,7 @@ details:open > summary {
 <p>The <code>exportresults</code> function takes a drEEMdataset object, <code>data</code>, a <code>filename</code>, and a PARAFAC model index, <code>f</code>, and exports relevant data and results, including history, status, scatter treatment, Coble peaks and indicies, chosen parafac model overview, fluorescence maxima of samples, and excitation and emission loadings, to an Excel file. The function ensures the specified PARAFAC model exists within the <code>data</code> and organizes the data into several sheets within the spreadsheet.</p>
 
 <blockquote>
-<p>The function deletes any existing file with the same name before writing the new data.</p>
+<p><strong><em>Note:</em></strong> The function deletes any existing file with the same name before writing the new data.</p>
 </blockquote>
 
 <h2 id="toc_3">Examples</h2>
@@ -411,7 +411,7 @@ details:open > summary {
     <summary><b><code>data</code> - dataset to extract model from</b></summary>
     <i>drEEMdataset</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. 
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(data)</code>. 
 </details></p>
 
 <p><details open></p>

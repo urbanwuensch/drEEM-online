@@ -107,7 +107,7 @@ Default is `[]`, meaning the option remains unused.
     <summary><b>`dataout` - upgraded dataset</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`.
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`.
 
 </details>
 

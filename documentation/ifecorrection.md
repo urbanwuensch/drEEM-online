@@ -52,7 +52,7 @@ By not supplying an output argument, the function will run in diagnostic mode. I
     <summary><b>`data` - dataset with fluorescence and absorbance data</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`. 
 
 > The property `data.status.signalCalibration` must be `"not applied"`. Otherwise, the function returns a validation error.
 
@@ -77,7 +77,7 @@ Default is `true`.
     <summary><b>`dataout` - IFE corrected dataset</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`.
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(dataout)`.
 
 
 The status of the dataset is changed to reflect the fact that an IFE correction has been applied by the drEEM toolbox.

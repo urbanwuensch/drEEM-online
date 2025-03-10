@@ -61,7 +61,7 @@ Run the function with the default options. This will pick the emission scan at e
     <summary><b>`samples` - contains EEMs of samples</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`.
+A dataset of the class `drEEMdataset` that passes the validation function `tbs.validatedataset(samples)`.
 
 > The property `samples.status.signalCalibration` must be `"not applied"`. Otherwise, the function returns a validation error.
 
@@ -71,7 +71,7 @@ A dataset of the class `drEEMdataset` that passes the validation function `data.
     <summary><b>`blanks` - contains EEMs of blanks</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(blanks)`. 
 
 > The property `blanks.status.signalCalibration` must be `"not applied"`. Otherwise, the function returns a validation error.
 
@@ -129,7 +129,7 @@ Default is `true`.
     <summary><b>`dataout` - contains EEMs of samples with intensities in Raman Units</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`.
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(dataout)`.
 
 
 The status of the dataset is changed to reflect the fact that a Raman calibration has been applied by the drEEM toolbox

@@ -16,7 +16,7 @@ For the correction of inner-filter effects, blank subtractions, and Raman signal
 
 If the names between samples, blanks, and absorbance files differs prior to import, make sure to use a metadata table and import it to replace the diverging filenames  with the matching ones. Take a look at the [complex data import tutorial](import_tutorial_02.html) to learn how this can be done.
 
-> ***If no common sample names between the datasets are found, the function will always return an error prior to any console or figure output.***
+> ***Note:*** If no common sample names between the datasets are found, the function will always return an error prior to assigning an output.
 
 <details open>
 	<summary><b>`[dsout1, __, dsoutN] = alignsamples(dsin1, __, dsinN)`</b>
@@ -63,7 +63,7 @@ Perform the comparisons of sample names and delete the non-ubiquitous samples in
     <summary><b>`dsin1, __, dsinN `- datasets for comparisons</b></summary>
     <i>drEEMdataset class</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`. 
 </details>
 <!---
 <details>
@@ -76,3 +76,12 @@ A dataset of the class `drEEMdataset` that passes the validation function `data.
 <!---
 ## Name-Value arguments
 -->
+
+## Output arguments
+<details>
+    <summary><b>`dsout1, __, dsoutN ` - datasets with same sample sequence</b></summary>
+    <i>drEEMdataset</i>
+        
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(dsout1)`.
+
+</details>

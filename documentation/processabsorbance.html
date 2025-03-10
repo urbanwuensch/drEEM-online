@@ -451,7 +451,7 @@ If no output is specified, the function will simply give a visual overview over 
     <summary><b><code>data</code> - contains CDOM spectra to correct</b></summary>
     <i>drEEMdataset</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>. If no absorbance is present, the function will return an error.
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(data)</code>. If no absorbance is present, the function will return an error.
 </details></p>
 
 <h2 id="toc_5">Name-Value arguments</h2>
@@ -512,6 +512,15 @@ Default is <code>false</code>.</p>
 <p>Default is <code>true</code>.</p>
 
 <p></details></p>
+
+<h2 id="toc_6">Output arguments</h2>
+
+<p><details open>
+    <summary><b><code>dataout</code> - dataset with processed absorbance</b></summary>
+    <i>drEEMdataset</i></p>
+
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(dataout)</code>.
+</details></p>
 
 
 

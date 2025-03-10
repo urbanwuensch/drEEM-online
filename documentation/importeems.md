@@ -44,6 +44,8 @@ returns a drEEMdataset class object that contains fluorescence EEMs and their as
 
 Custom options are specifed with optional pairs of arguments using one or more name-value arguments. For example, you can specify the orentation of the EEM, or the wavelength vector if it is not given in each file.
 
+</details>
+
 ## Examples
 <strong>Horiba AquaLog:</strong>
 `blanks = tbx.importeems(" - Waterfall Plot Blank.dat");`
@@ -119,10 +121,10 @@ Default is `0`.
 
 ## Output arguments
 <details open>
-    <summary><b>`data` - contains EEMs </b></summary>
+    <summary><b>`dataout` - contains EEMs </b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`. 
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(dataout)`. 
 
 The fluorescence data is stored using the properties `.X`, `.Ex`, `.Em`, `.nEx`, `.nEm`, and sample names are stored in `.filelist`. Read the documentation on the `drEEMdataset` for more information.
 

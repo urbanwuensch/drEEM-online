@@ -427,7 +427,7 @@ details:open > summary {
     <summary><b><code>data</code> - dataset containing fluorescence EEMs</b></summary>
     <i>drEEMdataset</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>.</p>
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(data)</code>.</p>
 
 <p></details></p>
 
@@ -473,13 +473,13 @@ Example: <code>(__, __, [min(data.Em):350], __)</code> to remove emission data b
 
 <p>Example: <code>(__, __, __, [min(data.Ex):max(data.Ex)])</code> to remove data between  the first and last excitation wavelengths.</p>
 
-<h2 id="toc_5">Output arguments (optional)</h2>
+<h2 id="toc_5">Output arguments</h2>
 
 <p><details>
     <summary><b><code>dataout</code> - treated dataset</b></summary>
     <i>drEEMdataset</i></p>
 
-<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>data.validate(data)</code>.</p>
+<p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(dataout)</code>.</p>
 
 <p></details></p>
 

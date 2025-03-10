@@ -6,7 +6,7 @@ View and export a summary of the functions carried out on data and their details
 
 ## Syntax
 
-[`viewhistory(data)`](#syntax1)
+	viewhistory(data)
 
 ## Description
 
@@ -23,9 +23,9 @@ By clicking on any of the functions (in drEEM function column) that accept some 
 
 ## Input arguments ##
 <details>
-    <summary><b>`dataout`</b></summary>
+    <summary><b>`data`</b></summary>
     <i>drEEMdataset</i>
         
-A dataset of the class `drEEMdataset` that passes the validation function `data.validate(data)`.
+A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`.
 
 </details>

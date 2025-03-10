@@ -5,7 +5,7 @@ Plot match results from OpenFluor.
 ## Syntax
 
 
-`[summary,M]=viewopenfluormatches(filename)`
+	[summary,M]=viewopenfluormatches(filename)
 
 
 ##Description
