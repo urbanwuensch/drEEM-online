@@ -15,8 +15,10 @@ end
 
 if containsfluorescence(data)&&containsabsorbance(data)
     pltcase=1;
+    dat=data.X;
 elseif containsfluorescence(data)&&~containsabsorbance(data)
     pltcase=2;
+    dat=data.X;
 elseif containsabsorbance(data)&&~containsfluorescence(data)
     pltcase=3;
 else
@@ -30,9 +32,8 @@ end
 
 
 if pltcase==1||pltcase==2
-    [X,~,fscales]=nprocess(data.X,[0 0 0],[1 0 0],[],[],1,-1);
+    [X,~,fscales]=nprocess(dat,[0 0 0],[1 0 0],[],[],1,-1);
     fdom=squeeze(std(X,'omitmissing'));
-    %mfdom=squeeze(mean(X,'omitmissing'));
 end
 if pltcase==1||pltcase==3
     [Y,~,~]=nprocess(data.abs,[0 0],[1 0],[],[],1,-1);
@@ -86,9 +87,10 @@ if pltcase==1||pltcase==2
     pltdata=squeeze(fdom);%./squeeze(mfdom);
     pltdata(pltdata==0)=nan;
     ploteem(ax(2),pltdata,data.Ex,data.Em)
+    set(ax(2),ColorScale='log')
 end
 c=colorbar(ax(2));
-ylabel(c,'Std. dev. fluorescence')
+ylabel(c,'Std. dev. fluorescence (log scale)')
 title(ax(2),'FDOM fluorescence')
 set(ax(2),'units','pixel')
 set(ax(2),'YTickLabel','','XTickLabel','')
