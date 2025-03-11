@@ -15,7 +15,9 @@ Visualize and analyze Excitation Emission Matrices (EEMs) and modeled data.
 ## Description ##
 
 Opens up the `vieweems`'s user interface app. The app allows users to visualize contour or 3D plots of EEMs and 2D spectra of excitation, emission and absorbance data, using adjustable settings, e.g. number of contours, colormap, colorlimits, showing Coble peaks, etc.<br>
-Note: The app does not accept any output arguments!
+
+<img src="vieweems_example.png" width="auto" height="auto" align="center"/>
+
 
 Interface components include:<br>
 <strong>Sample Control panel:<br></strong> Use the arrow buttons, <img src="next.png" width="auto" height="14" display="inline"/> and<img src="back.png" width="auto" height="14" display="inline"/>, to navigate through different samples in `data`. Use the Ex/Em pair selection button,<img src="spectrum.png" width="auto" height="14" display="inline"/>, to visualize the 2D spectra. By selecting this button, a crosshair appears that by hovering it to the point of interest and left-clicking both 2D Ex and Em spectra will be plotted.

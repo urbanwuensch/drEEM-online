@@ -5,7 +5,7 @@
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>vieweems</title>
+<title>viewabsorbance</title>
 
 
 <style type="text/css">
@@ -383,68 +383,32 @@ details:open > summary {
 
 <p><img src="top right corner logo.png" width="100" height="auto" align="right"/></p>
 
-<h1 id="toc_0">vieweems</h1>
+<h1 id="toc_0">viewabsorbance</h1>
 
-<p>Visualize and analyze Excitation Emission Matrices (EEMs) and modeled data.</p>
+<p>Visualize and analyze CDOM absorbance data.</p>
 
 <h2 id="toc_1">Syntax</h2>
 
-<div><pre><code class="language-none">vieweems(data)</code></pre></div>
+<div><pre><code class="language-none">viewabsorbance(data)</code></pre></div>
 
 <h2 id="toc_2">Description</h2>
 
-<p>Opens up the <code>vieweems</code>&#39;s user interface app. The app allows users to visualize contour or 3D plots of EEMs and 2D spectra of excitation, emission and absorbance data, using adjustable settings, e.g. number of contours, colormap, colorlimits, showing Coble peaks, etc.<br></p>
+<p><img src="viewabsorbance_example.png" width="auto" height="auto" align="center"/></p>
 
-<p><img src="vieweems_example.png" width="auto" height="auto" align="center"/></p>
+<p>Opens up the <code>viewabsorbance</code> user interface app. The app allows users to visualize absorbance spectra, switch between displayed absorbance units, and color spectra according to metadata in <code>data.metadata</code>.</p>
 
-<p>Interface components include:<br>
-<strong>Sample Control panel:<br></strong> Use the arrow buttons, <img src="next.png" width="auto" height="14" display="inline"/> and<img src="back.png" width="auto" height="14" display="inline"/>, to navigate through different samples in <code>data</code>. Use the Ex/Em pair selection button,<img src="spectrum.png" width="auto" height="14" display="inline"/>, to visualize the 2D spectra. By selecting this button, a crosshair appears that by hovering it to the point of interest and left-clicking both 2D Ex and Em spectra will be plotted.</p>
+<p>Spectra can be plotted all at once or on a single sample basis. If a single sample is selected, the spectral area of the different CDOM slopes can be highlighted.</p>
 
-<ul>
-<li><code>Sample</code>: Dropdown menu to select the sample to be visualized.</li>
-<li><code>Data type</code>: Specify the type of data to be used for visualization. If models have been fit to the <code>data</code>, the modeled data or model residuals can be selected and plotted.</li>
-<li><code>Number of component</code>: If models have been fit to the <code>data</code>, any of the fitted models can be selected and plotted. <comment> [I have to come back here and check] </comment></li>
-</ul>
+<p>The app automatically calcualtes CDOM slopes during startup and these can be explored when selecting a different tab for visualization. The tab &quot;slopes&quot; shows Box-Whisker plots for each slope.</p>
 
-<p><strong>EEM Format panel:<br></strong></p>
+<p><img src="viewabsorbance_Sexample.png" width="auto" height="auto" align="center"/></p>
 
-<ul>
-<li><code>Colormap</code>: Dropdown menu to select the colormap for visualizing EEM data. Available colormaps include: <code>turbo</code>, <code>parula</code>, <code>jet</code>, <code>hsv</code>, <code>blue-red</code>.</li>
-<li><code>Number of Contours.</code>: Specify the number of contour levels displayed on the EEM plot.</li>
-<li><code>remember rotation</code>: Specify to remember the rotation settings of the EEM plot, if the plot has been rotated, when moving across samples.</li>
-<li><code>remember colorlimits</code>: Retain the colormap limits across different samples.</li>
-<li><code>show Coble Peaks</code>: Specify to display standard Coble peaks, e.g. Peak A, Peak C, Peak T, etc., on the EEM.</li>
-<li><code>show indices</code>: Specify to display fluorescence indices, e.g. FI, HIX, BIX, etc., on the EEM.</li>
-</ul>
-
-<p><strong>Spectra Format panel:<br></strong></p>
-
-<ul>
-<li><code>hold on</code>: Allows to overlay multiple spectra at the same time for comparison.</li>
-<li><code>remember selection</code>: Retain the current (last) selection settings for Ex/Em spectra pair for any subsequent sample. Checking this option will automatically plot the 2D spectra when moving through samples.</li>
-<li><code>show scatter position</code>: Check to display the positions of scatter peaks (Rayleigh and Raman) on the 2D spectra.</li>
-<li><code>show absorbance</code>: Check to plot the absorbance data of the samples on the right y-axis of the excitation plot. If the <code>abs</code> field in the <code>data</code> is empty the option is automatically disabled. </li>
-</ul>
-
-<p><strong>Excitation Emission Matrix:<br></strong></p>
-
-<ul>
-<li>EEM Plot:: Displays the EEM for the selected sample. The axes represent excitation (nm) and emission (nm) wavelengths, while the color scale represents fluorescence intensity.</li>
-<li><code>Color Limit (percentiles):</code>: Slider to adjust the percentile limits for the colormap, allowing users to focus on different intensity ranges, e.g. to ignore scatter, highlight weak signals or compensate for negative values. The slider is disabled for residual plots as is expected behavior.</li>
-</ul>
-
-<p><strong>2D spectra panel:<br></strong></p>
-
-<ul>
-<li>Excitation Spectrum at Emission = X: Shows the excitation spectrum at a fixed emission wavelength, X, selected by using the Ex/Em pair selection button. This plot also depicts the absorbance data on the right y-axis, if absorbance data is available and the <code>show absorbance</code> checkbox is checked.</li>
-<li>Emission Spectrum at Excitation = Y nm: Shows the emission spectrum at a fixed excitation wavelength, Y, selected by using the Ex/Em pair selection button.<br><br>
-Note: Vertical lines represent the positions of Raman and Rayleigh scatter peaks for both excitation and emission spectra.</li>
-</ul>
+<p>The &quot;OTHER&quot; tab (above) displays the CDOM source diagram according to <a href="https://doi.org/10.1006/ecss.2000.0645">Stedmon et al (2000)</a>. Two dilution lines for allochthonous and autochthonous material are provided with default values according to the publication and samples are inserted according to their exponential CDOM slope and Naperian absorption coefficient at 375nm. This visualization can be used to assign a dominant punative source for CDOM.</p>
 
 <h2 id="toc_3">Input arguments</h2>
 
 <p><details>
-    <summary><b><code>data</code> - dataset containing fluorescence and absorbance data</b></summary>
+    <summary><b><code>data</code> - dataset containing  absorbance data</b></summary>
     <i>drEEMdataset</i></p>
 
 <p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(data)</code>.</p>
