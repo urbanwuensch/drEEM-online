@@ -4,7 +4,11 @@ Fit PARAFAC models to fluorescence data.
 
 ## Syntax
 
-[`dataout = dataout(data)`](#syntax1)
+[`dataout = dataout(data,mode)`](#syntax1)
+
+[`dataout = dataout(data,"fitoverall")`](#syntax1)
+
+[`dataout = dataout(data,"fitsplits")`](#syntax1)
 
 [`dataout = fitparafac(___ , Name,Value)`](#syntax2)
 
@@ -16,13 +20,13 @@ The function supports parallelization performance-optimization, but the parallel
 An entry will be added to the `history` field of the `data`, detailing the  options used for `fitparafac`. 
 
 <details open>
-    <summary><b>`dataout = fitparafac(data)` - default options</b></summary>
+    <summary><b>`dataout = fitparafac(data,mode)` - default options</b></summary>
     <a name="syntax1"></a>
         
 
 
 
-The function supports fitting models with default options. However, these are conservative in nature with low convergence and many consecutive starts with random numbers. The defaults are:
+The function supports fitting models with default options, where mode specifies if the function is to fit a model to the overall (global) dataset or to the splitdatasets stored within. Note that the default are conservative in nature with low convergence and many consecutive starts with random numbers. The defaults are:
 
 * fitting 2-7 component models
 * nonnegativity constraints in all modes
@@ -50,19 +54,23 @@ Most often, the default options will not suffice or do the trick. Custom options
 ## Examples
 
 `samples=tbx.fitparafac(samples,f=2:7,convergence=1e-4,starts=2);`
-Fit models similar to the previous **outliertest**
+
+Fit models similar to the previous **outliertest**. Note that mode is not specified, so it is assumed a fit to the overall global dataset is requested. State this explicitly to avoid code ambiguity.
 
 
 
-`samples=tbx.fitparafac(samples,f=4:6,convergence=1e-8,starts=50,maxIteration=5000);  `
-Find the **global minimum** for a dataset
+`samples=tbx.fitparafac(samples,"fitoverall",f=4:6,convergence=1e-8,starts=50,maxIteration=5000);  `
+
+Find the **global minimum** for a dataset. 
 
 
-`samples=tbx.fitparafac(samples,f=2:7,constraints="unconstrained",convergence=1e-6,starts=10,maxIteration=5000);`
+`samples=tbx.fitparafac(samples,"fitoverall",f=2:7,constraints="unconstrained",convergence=1e-6,starts=10,maxIteration=5000);`
+
 Explore what happens with **no constraints**
 
 
-`samples=tbx.fitparafac(samples,f=2:7,mode="split",convergence=1e-8,starts=50,maxIteration=5000);`
+`samples=tbx.fitparafac(samples,"fitsplits",f=2:7,convergence=1e-8,starts=50,maxIteration=5000);`
+
 Equivalent to the **former splitanalysis**
    
 
@@ -74,6 +82,18 @@ Equivalent to the **former splitanalysis**
 A dataset of the class `drEEMdataset` that passes the validation function `tbx.validatedataset(data)`. 
 </details>
 
+<details open>
+    <summary><b>`mode`- mode switch for data source</b></summary>
+    <i>char | string</i>
+ 
+ Mode should be one of:
+ 
+ * `"fitoverall"` (default)
+ * `"fitsplits"`       
+ 
+ Since a default value is set, this argument does not need to be set explicitly. However, we recommend to set it with every call to make the intention explicit.
+ 
+</details>
 
 
 ## Name-Value arguments
@@ -88,13 +108,6 @@ Numeric array specifying the number of components to use in the PARAFAC  models.
 
 </details>
 
-<details open>
-    <summary><b>`mode` - fit models to the overall dataset or splits</b></summary>
-    <i>string | char</i>
-
-A text specifying the mode of operation. Can be set to `"overall"` for analyzing the whole dataset in `data` (default) or `"split"` for analyzing subsets of the data obtained from `data.splits`. Subsets of `data` should be previously created using `splitdataset` function. Default is `"overall"`.
-
-</details>
 
 <details open>
     <summary><b>`constraints` - force PARAFAC to adhere to rules</b></summary>

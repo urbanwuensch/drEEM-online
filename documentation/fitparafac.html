@@ -389,7 +389,11 @@ details:open > summary {
 
 <h2 id="toc_1">Syntax</h2>
 
-<p><a href="#syntax1"><code>dataout = dataout(data)</code></a></p>
+<p><a href="#syntax1"><code>dataout = dataout(data,mode)</code></a></p>
+
+<p><a href="#syntax1"><code>dataout = dataout(data,&quot;fitoverall&quot;)</code></a></p>
+
+<p><a href="#syntax1"><code>dataout = dataout(data,&quot;fitsplits&quot;)</code></a></p>
 
 <p><a href="#syntax2"><code>dataout = fitparafac(___ , Name,Value)</code></a></p>
 
@@ -400,10 +404,10 @@ The function supports parallelization performance-optimization, but the parallel
 An entry will be added to the <code>history</code> field of the <code>data</code>, detailing the  options used for <code>fitparafac</code>. </p>
 
 <p><details open>
-    <summary><b><code>dataout = fitparafac(data)</code> - default options</b></summary>
+    <summary><b><code>dataout = fitparafac(data,mode)</code> - default options</b></summary>
     <a name="syntax1"></a></p>
 
-<p>The function supports fitting models with default options. However, these are conservative in nature with low convergence and many consecutive starts with random numbers. The defaults are:</p>
+<p>The function supports fitting models with default options, where mode specifies if the function is to fit a model to the overall (global) dataset or to the splitdatasets stored within. Note that the default are conservative in nature with low convergence and many consecutive starts with random numbers. The defaults are:</p>
 
 <ul>
 <li>fitting 2-7 component models</li>
@@ -434,17 +438,21 @@ An entry will be added to the <code>history</code> field of the <code>data</code
 
 <h2 id="toc_3">Examples</h2>
 
-<p><code>samples=tbx.fitparafac(samples,f=2:7,convergence=1e-4,starts=2);</code>
-Fit models similar to the previous <strong>outliertest</strong></p>
+<p><code>samples=tbx.fitparafac(samples,f=2:7,convergence=1e-4,starts=2);</code></p>
 
-<p><code>samples=tbx.fitparafac(samples,f=4:6,convergence=1e-8,starts=50,maxIteration=5000);</code>
-Find the <strong>global minimum</strong> for a dataset</p>
+<p>Fit models similar to the previous <strong>outliertest</strong>. Note that mode is not specified, so it is assumed a fit to the overall global dataset is requested. State this explicitly to avoid code ambiguity.</p>
 
-<p><code>samples=tbx.fitparafac(samples,f=2:7,constraints=&quot;unconstrained&quot;,convergence=1e-6,starts=10,maxIteration=5000);</code>
-Explore what happens with <strong>no constraints</strong></p>
+<p><code>samples=tbx.fitparafac(samples,&quot;fitoverall&quot;,f=4:6,convergence=1e-8,starts=50,maxIteration=5000);</code></p>
 
-<p><code>samples=tbx.fitparafac(samples,f=2:7,mode=&quot;split&quot;,convergence=1e-8,starts=50,maxIteration=5000);</code>
-Equivalent to the <strong>former splitanalysis</strong></p>
+<p>Find the <strong>global minimum</strong> for a dataset. </p>
+
+<p><code>samples=tbx.fitparafac(samples,&quot;fitoverall&quot;,f=2:7,constraints=&quot;unconstrained&quot;,convergence=1e-6,starts=10,maxIteration=5000);</code></p>
+
+<p>Explore what happens with <strong>no constraints</strong></p>
+
+<p><code>samples=tbx.fitparafac(samples,&quot;fitsplits&quot;,f=2:7,convergence=1e-8,starts=50,maxIteration=5000);</code></p>
+
+<p>Equivalent to the <strong>former splitanalysis</strong></p>
 
 <h2 id="toc_4">Input arguments</h2>
 
@@ -454,6 +462,21 @@ Equivalent to the <strong>former splitanalysis</strong></p>
 
 <p>A dataset of the class <code>drEEMdataset</code> that passes the validation function <code>tbx.validatedataset(data)</code>. 
 </details></p>
+
+<p><details open>
+    <summary><b><code>mode</code>- mode switch for data source</b></summary>
+    <i>char | string</i></p>
+
+<p>Mode should be one of:</p>
+
+<ul>
+<li><code>&quot;fitoverall&quot;</code> (default)</li>
+<li><p><code>&quot;fitsplits&quot;</code>       </p>
+
+<p>Since a default value is set, this argument does not need to be set explicitly. However, we recommend to set it with every call to make the intention explicit.</p></li>
+</ul>
+
+<p></details></p>
 
 <h2 id="toc_5">Name-Value arguments</h2>
 
@@ -465,14 +488,6 @@ Equivalent to the <strong>former splitanalysis</strong></p>
     <i>numeric</i></p>
 
 <p>Numeric array specifying the number of components to use in the PARAFAC  models. Default is <code>[2, 3, 4, 5, 6, 7]</code>. Can be specified as array, e.g. <code>2:6</code> for simplicity.</p>
-
-<p></details></p>
-
-<p><details open>
-    <summary><b><code>mode</code> - fit models to the overall dataset or splits</b></summary>
-    <i>string | char</i></p>
-
-<p>A text specifying the mode of operation. Can be set to <code>&quot;overall&quot;</code> for analyzing the whole dataset in <code>data</code> (default) or <code>&quot;split&quot;</code> for analyzing subsets of the data obtained from <code>data.splits</code>. Subsets of <code>data</code> should be previously created using <code>splitdataset</code> function. Default is <code>&quot;overall&quot;</code>.</p>
 
 <p></details></p>
 

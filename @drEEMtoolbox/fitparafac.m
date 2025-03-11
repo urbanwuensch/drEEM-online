@@ -1,4 +1,4 @@
-function dataout = fitparafac(data,options)
+function dataout = fitparafac(data,mode,options)
 % <a href = "matlab:doc fitparafac">dataout = fitparafac(data,options) (click to access documentation)</a>
 %
 % <strong>Fit PARAFAC models to fluorescence data</strong>
@@ -31,10 +31,10 @@ function dataout = fitparafac(data,options)
 arguments
     % Required
     data (1,:)                      {drEEMdataset.sanityCheckPARAFAC(data)}
-
+    mode (1,:)              {mustBeMember(mode,["fitoverall","fitsplits"])} = 'fitoverall'
     % Optional (but important)
     options.f (1,:)                 {mustBeNumeric,mustBeNonempty} = 2:7
-    options.mode (1,:)              {mustBeMember(options.mode,["overall","split"])} = 'overall'
+    
 
     % Optional
     options.constraints (1,:)       {mustBeMember(options.constraints,["unconstrained", "nonnegativity", "unimodnonneg"])} = 'nonnegativity'
@@ -50,9 +50,9 @@ arguments
 end
 
 %% Input argument handling
-if matches(options.mode,"split")
+if matches(mode,"fitsplits")
     if numel(data.split)==0
-        error('mode="split" requires data.split to be populated with datasets. Have you run "splitdataset.m"?')
+        error('mode="fitsplits" requires data.split to be populated with datasets. Have you run "splitdataset.m"?')
     end
 end
 
@@ -80,11 +80,11 @@ opt = setoptions(options.toolbox,...
     options.initialization);
 fac=options.f;
 
-if matches(options.mode,'overall')
+if matches(mode,'fitoverall')
     nsplit=1;
     mdata=data;
     mdata.split=mdata; % mdata.split is a dummy to make the modes work
-elseif matches(options.mode,'split')
+elseif matches(mode,'fitsplits')
     nsplit=numel(data.split);
     mdata=data;
 end
@@ -233,18 +233,11 @@ switch funmode
     end
 end
 
-figHandles = get(0,'Children');
-try
-    if any(contains({figHandles.Name},'Scores / Spectral loadings plot'))
-        close(figHandles(contains({figHandles.Name},'Scores / Spectral loadings plot')))
-    end
-end
-
 idx=height(dataout.history)+1;
 dataout.history(idx,1)=...
-    drEEMhistory.addEntry(mfilename,['fit parafac models (',char(options.mode),')'],options,dataout);
+    drEEMhistory.addEntry(mfilename,['fit parafac models (',char(mode),')'],options,dataout);
 
-if matches(options.mode,"split")
+if matches(mode,"fitsplits")
     f=drEEMdataset.modelsWithContent(dataout);
     C=intersect(f,options.f);
     for j=1:numel(C)
