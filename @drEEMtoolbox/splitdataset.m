@@ -93,15 +93,15 @@ end
 
 
 function optValBT(splitType,option)
-
-if matches(splitType,'blind')&&not(isempty(option))
-    warning('<strong>Conflicting inputs: </strong>splitType="blind", takes precedent over specifying input to "metadataColumn".')
-end
-
-if matches(splitType,'byMetadata')&&isempty(option)
-    error(['<strong>Invalid input: </strong> When specifying splitType="byMetadata",' ...
-        ' option "metadataColumn" cannot be empty.'])
-end
+% %option is blindType
+% if not(matches(splitType,'blind'))&&not(isempty(option))
+%     warning('<strong>Conflicting inputs: </strong>splitType", takes precedent over specifying input to "metadataColumn".')
+% end
+% 
+% if matches(splitType,'byMetadata')&&isempty(option)
+%     error(['<strong>Invalid input: </strong> When specifying splitType="byMetadata",' ...
+%         ' option "metadataColumn" cannot be empty.'])
+% end
 
 
 
@@ -109,5 +109,8 @@ end
 
 
 function optValMC(splitType,option)
-
+%option is metadataColumn
+if matches(splitType,'blind')&&not(isempty(option))
+    warning('<strong>Conflicting inputs: </strong>splitType", takes precedent over specifying input to "metadataColumn".')
+end
 end
