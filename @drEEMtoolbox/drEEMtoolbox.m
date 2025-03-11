@@ -184,7 +184,7 @@ classdef drEEMtoolbox < handle
         % PARAFAC
         dataout = fitparafac(data,options)
         dataout = splitdataset(data,options)
-                  splitvalidation(data,fac)
+                  viewsplitvalidation(data,fac)
         fmax = scores2fmax(data,f)
 
         % Data export

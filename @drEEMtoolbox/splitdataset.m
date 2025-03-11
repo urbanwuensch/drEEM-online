@@ -25,7 +25,7 @@ arguments
     data {drEEMdataset.validate(data)}
     splitType (1,:) {mustBeText,mustBeMember(splitType,["blind","byMetadata"])} = "blind"
     options.blindType (1,:)     {mustBeMember(options.blindType,["alternating","random","contiguous"]),optValBT(splitType,options.blindType)} = "alternating"  
-    options.metadataColumn (1,:)    {drEEMdataset.mustBeMetadataColumn(data,options.metadataColumn),optValMC(splitType,options.metadataColumn)} = []
+    options.metadataColumn (1,:)    {drEEMdataset.mustBeMetadataColumn(data,options.metadataColumn),optValMC(splitType,options.metadataColumn)} = string.empty
     options.numSplit (1,1)  {mustBePositive} = 2
     
 end
