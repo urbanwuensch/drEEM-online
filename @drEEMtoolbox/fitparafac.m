@@ -28,6 +28,11 @@ function dataout = fitparafac(data,mode,options)
 %   4. Equivalent to the former <strong>splitanalysis</strong>
 %       samples = tbx.fitparafac(samples,f=2:7,mode="split",convergence=1e-8,starts=50,maxIteration=5000);
 
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments
     % Required
     data (1,:)                      {drEEMdataset.sanityCheckPARAFAC(data)}

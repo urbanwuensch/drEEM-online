@@ -24,6 +24,12 @@ function dataout=subdataset(data,options)
 %       samples = tbx.subdataset(samples,outEx=samples.Ex==275);
 %   6. drEEM ships with a <strong>nearest neighbor function</strong>: isNearest, use it if wavelengths have many decimals
 %       samples = tbx.subdataset(samples,outEm=tbx.isNearest(samples.Em,349));
+
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments
     data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
     options.outSample (1,:) {mustBeA(options.outSample,'logical'),outSampleVal(data,options.outSample)} = false

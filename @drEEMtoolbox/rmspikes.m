@@ -18,7 +18,11 @@ function dataout = rmspikes(data,options)
 %   3. Delete signals 20x above the noise floor and interpolate over deletions
 %       samples = tbx.rmspikes(samples,thresholdFactor=20,interpolate=true);
 
-
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments
     data (1,1) {drEEMdataset.validate(data)}
     options.thresholdFactor (1,1) {mustBeNumeric} = 10

@@ -1,5 +1,11 @@
 function dataout = spectralcorrection(data,options)
 
+
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments (Input)
     data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),...
         drEEMdataset.sanityCheckSpectralCorrection(data)}

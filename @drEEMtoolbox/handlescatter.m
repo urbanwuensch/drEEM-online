@@ -16,6 +16,12 @@ function dataout = handlescatter(data,option)
 %       samples = tbx.handlescatter(samples,scatteroptions);
 %   3. get interactive help with option defintion
 %       samples = tbx.handlescatter(samples,'gui');
+
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments
     data (1,:) {dataValidation(data)}
     option (1,:) {optionValidation(data,option)} = handlescatterOptions;

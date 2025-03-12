@@ -25,7 +25,11 @@ function dataout = ramancalibration(samples,blanks,options)
 %   4. Different Raman peak (you decide start and end wavelength of peaks visually please)
 %       samples = tbx.ramancalibration(samples,blanks,ExWave=275,iStart=...,iEnd=...);
 
-
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments
     % Required
     samples (1,1) {mustBeA(samples,"drEEMdataset"),drEEMdataset.validate(samples),...

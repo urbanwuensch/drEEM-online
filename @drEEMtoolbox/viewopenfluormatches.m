@@ -9,6 +9,11 @@ function [summary,M]  =  viewopenfluormatches(filename)
 % <strong>EXAMPLE(S)</strong>
 %   [summary,M] = tbx.viewopenfluormatches(which("OpenFluorSearch_384_osPARAFAC_Tapajos_20250223.csv"))
 
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments
     filename (1,:) {mustBeFile}
 end

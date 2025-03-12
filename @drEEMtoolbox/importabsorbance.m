@@ -17,6 +17,11 @@ function data = importabsorbance(filePattern,options)
 %   2. <strong>csv-export of data from software</strong>
 %       absorbance = tbx.importabsorbance(".csv",waveColumn=1,absColumn=2);
 
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments
         % Required
         filePattern (1,:) {mustBeText}

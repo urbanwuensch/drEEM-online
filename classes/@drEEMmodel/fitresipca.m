@@ -1,4 +1,9 @@
 function results = fitresipca(model,data)
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments
     % Required
     model (1,1) {mustBeA(model,"drEEMmodel")}

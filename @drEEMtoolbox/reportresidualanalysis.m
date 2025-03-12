@@ -12,6 +12,11 @@ function fhandle = reportresidualanalysis(data,ftarget,mdfield)
 %   1. Report residual analysis of a bad 3 component model
 %       fig = tbx.reportresidualanalysis(samples,3,'i');
 
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments
     data {mustBeA(data,"drEEMdataset")}
     ftarget {mustBeNumeric,drEEMdataset.mustBeModel(data,ftarget)}

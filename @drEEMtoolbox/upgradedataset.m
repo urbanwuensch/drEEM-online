@@ -19,6 +19,12 @@ function dataout = upgradedataset(data,atypicalFieldnames)
 %   4. Upgrade drEEM tutorial dataset from previous version (produces warning due to non-existent absorbance data)
 %       load(which('drEEM_tutorial_DS_old.mat')),
 %       samples = tbx.upgradedataset(dreemdata,{'longID','filelist'})
+
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments
     data (1,1) {mustBeA(data,'struct')}
     atypicalFieldnames (:,2) cell = {}

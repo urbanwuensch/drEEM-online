@@ -11,6 +11,12 @@ function dataout = addcomment(data,comment,newopt)
 % <strong>EXAMPLE(S)</strong>
 %   samples = tbx.addcomment(data,'This last modification really made a difference');
 
+
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments
     data (1,1)    {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
     comment (1,:) {mustBeText}

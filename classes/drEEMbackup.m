@@ -1,4 +1,9 @@
 classdef drEEMbackup < drEEMdataset
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
     properties
     end
     methods (Static=true)

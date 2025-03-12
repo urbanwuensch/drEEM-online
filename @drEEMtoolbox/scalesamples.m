@@ -19,6 +19,11 @@ function dataout = scalesamples(data,option)
 %   5. <strong>Don't know what to do? </strong> Get decision help
 %       samples = tbx.scalesamples(samples,'help');
 
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments
     data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
     option (1,:) {optionValidator(option)} = 2
