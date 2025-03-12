@@ -66,7 +66,11 @@ classdef drEEMhistory
                     conv(k).(flds{j})=history(k).(flds{j});
                 end
             end
-            tableout=struct2table(conv);
+            if isscalar(conv)
+                tableout=struct2table(conv,AsArray=true);
+            else
+                tableout=struct2table(conv);
+            end
 
         end
     end
