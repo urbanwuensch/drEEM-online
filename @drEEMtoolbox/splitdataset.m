@@ -78,7 +78,7 @@ for j=1:options.numSplit
 end
 idx=height(dataout.history)+1;
 dataout.history(idx,1)=...
-    drEEMhistory.addEntry(mfilename,'splits of dataset created',options,dataout);
+    drEEMhistory.addEntry(mfilename,['dataset split with split-type: "',char(splitType),'"'],options,dataout);
 
 % Will only run if toolbox is set to overwrite workspace variable and user
 % didn't provide an output argument
