@@ -159,7 +159,7 @@ split_i=drEEMhistory.searchhistory(data.history,'splitdataset','all');
 if not(isempty(split_i))
     splitH=data.history(split_i(1));
     splittable=struct2table(splitH.details);
-    splittable.Properties.VariableNames={'Split approach','Split assignment','Metadata column used','Number of splits'};
+    splittable.Properties.VariableNames={'Split approach','Metadata column used','Number of splits'};
     if isempty(splittable.("Metadata column used"))
         splittable.("Metadata column used")='not used.';
     end
@@ -173,9 +173,9 @@ if not(isempty(split_i))
         for j=2:numel(split_i)
             splitH=data.history(split_i(j));
             temp=struct2table(splitH.details);
-            temp.Properties.VariableNames={'Split by Variable','Number of splits','Assignment into splits'};
-            if isempty(temp.("Split by Variable"))
-                temp.("Split by Variable")='option not used.';
+            temp.Properties.VariableNames={'Split approach','Metadata column used','Number of splits'};
+            if isempty(temp.("Metadata column used"))
+                temp.("Metadata column used")='not used.';
             end
             temp.('Date / time created')=splitH.timestamp;
             temp.('Dataset history entry #')=split_i(j);
