@@ -224,10 +224,6 @@ elseif checkedoverall&&passed
         comps{k}=[cellOfNames{comparisons(k,1)}, "vs. ", cellOfNames{comparisons(k,2)}];
     end
     
-idx=height(dataout.history)+1;
-dataout.history(idx,1)=...
-    drEEMhistory.addEntry(mfilename,'Successful validation of a ',num2str(fac),'-component model',[],dataout);
-
 
 end
 
