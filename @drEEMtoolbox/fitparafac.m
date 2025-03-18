@@ -140,13 +140,18 @@ switch funmode
         [Model,Iter,Err,ttc]=...
             trackprogress(modout,numstarts,facCalls,options.consoleoutput,splitsource);
 end
-
+disp('<strong>All models finsished.</strong> Calculating model metrics ...')
 restoreoldpath(oldp,newp); % In case matlabpath was changed, restore it.
 %% Retreive results
 Err=cellfun(@(x) x(:),Err);
 Iter(cellfun(@(x) isempty(x),Iter))={NaN};
 Iter=cellfun(@(x) x(:),Iter);
 dataout=data;
+
+if (nsplit*numel(fac))>7
+    disp(['This might take a moment with ',num2str(nsplit*numel(fac)),' models in total ...'])
+end
+
 for j=1:nsplit
     %mdl=drEEMmodel;
     for k=1:numel(fac)
