@@ -13,6 +13,11 @@ function export2openfluor(data, f, filename)
 %   OpenFluor.org with an automatic date addition to the filename
 %       tbx.export2openfluor(samples,5,['myAwesome5Cmodel_',char(datetime('today'))]);
 
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments
     data (1,1)      {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
     f   (1,1)       {mustBeInteger,drEEMdataset.mustBeModel(data,f)}

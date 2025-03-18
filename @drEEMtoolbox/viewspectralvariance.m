@@ -9,6 +9,11 @@ function viewspectralvariance(data)
 % <strong>EXAMPLE(S)</strong>
 %   spectralvariance(data);
 
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments
     data (1,1)              {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
 end

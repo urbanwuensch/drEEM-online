@@ -3,7 +3,12 @@ function [fighandleout] = dreemfig(fighandlein)
 %
 % <strong>Inputs - Required</strong>
 % fighandlein (1,:)                 {mustBeA('matlab.ui.Figure')}
-% 
+
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments
         % Inputs - Required
         fighandlein (1,1)                   {mustBeA(fighandlein,'matlab.ui.Figure')} = figure

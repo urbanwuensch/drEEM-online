@@ -10,6 +10,11 @@ function viewsplitvalidation(data,fac)
 % <strong>EXAMPLE(S)</strong>
 %       samples = splitvalidation(samples,5)
 
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments
     data (1,1) {mustBeA(data,'drEEMdataset'),drEEMdataset.validate(data)}
     fac (1,1) {mustBeNumeric,drEEMdataset.mustBeModel(data,fac)}

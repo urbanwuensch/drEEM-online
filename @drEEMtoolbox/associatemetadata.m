@@ -17,6 +17,11 @@ function dataout = associatemetadata(data,pathtofile,metadatakey,datakey)
 %   2. merge metadata from existing (already loaded) table into a dataset
 %       samples = tbx.associatemetadata(samples,someTable,'EEMfile');
 
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments
     data(1,1)           {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
     pathtofile          {assocMetaValidator(pathtofile)}

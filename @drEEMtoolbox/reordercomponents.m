@@ -1,5 +1,11 @@
 function [ modelout,neworder] = reordercomponents( model,varargin )
 % Internal function, hence no documentation.
+
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 %% Input parsing
 if nargin==1
     method='emmax';

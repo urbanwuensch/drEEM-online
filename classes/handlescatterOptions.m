@@ -1,4 +1,9 @@
 classdef handlescatterOptions
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
     properties
         cutout (1,4) double = [1 1 1 1]
         interpolate (1,4) double = [0 0 0 0]

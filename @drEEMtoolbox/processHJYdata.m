@@ -1,7 +1,11 @@
 function [DS,DSb] = processHJYdata(Xin,opt)
 % This function is part of undocumented drEEM and not intended for general use
 
-
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 if strcmp(Xin,'options')
     opt=defaultopts;
     if strcmp(Xin,'options')

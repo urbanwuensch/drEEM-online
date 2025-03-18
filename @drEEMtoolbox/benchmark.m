@@ -3,6 +3,12 @@ function  varargout=benchmark
 %
 % <strong>Perform CPU benchmark</strong> using a PARAFAC problem.
 %
+
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 funmode=parallelcomp;
 
 fpath=[drEEMtoolbox.tbxpath,'documentation',filesep,'benchmarkDataset.mat'];

@@ -1,4 +1,9 @@
 classdef drEEMhistory
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
     properties
         timestamp (1,1) datetime
         fname (1,:) {mustBeText} = ""

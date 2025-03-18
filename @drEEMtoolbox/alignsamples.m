@@ -12,6 +12,11 @@ function varargout = alignsamples(varargin)
 %   2. FDOM only
 %       [samples,blanks] = tbx.alignsamples(samples,blanks);
 
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments (Repeating)
     varargin {mustBeA(varargin,"drEEMdataset"),drEEMdataset.validate(varargin)}
 end

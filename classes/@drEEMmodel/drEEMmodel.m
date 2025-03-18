@@ -1,5 +1,9 @@
 classdef drEEMmodel
-
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
     properties
         loads (1,3) cell 
         leverages (1,3) cell

@@ -7,6 +7,11 @@ classdef drEEMdataset
 %   2. Validate if your dataset is formatted correctly
 %       drEEMdataset.validate(samples);
 
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
     properties
         history (:,1) drEEMhistory
         X (:,:,:) double {mustBeNumeric}

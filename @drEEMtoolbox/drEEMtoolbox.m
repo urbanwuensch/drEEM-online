@@ -6,7 +6,12 @@ classdef drEEMtoolbox < handle
 %       tbx = drEEMtoolbox;
 %   2. Call a method from the class directly
 %       samples=drEEMtoolbox.processabsorbance(samples);
-%       
+
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
     properties (Constant = true, Hidden = false)
         version = "2.0.0"
         url = "GitLab URL for release goes here"

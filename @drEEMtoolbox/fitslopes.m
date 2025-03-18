@@ -18,7 +18,11 @@ function dataout = fitslopes(data,options)
 %   2. fit slopes but don't show final plots or fit details
 %       samples = tbx.fitslopes(samples,plot=false);
 
-
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments
     data (1,1)              {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
     options.LongRange (1,2) {mustBeNumeric} = [300 600]

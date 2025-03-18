@@ -15,6 +15,12 @@ function dataout = subtractblanks(samples,blanks,options)
 %       samples = tbx.subtractblanks(samples,blanks)
 %   2. Blank subtraction without visual output (not recommended)
 %       samples = tbx.subtractblanks(samples,blanks,plot=false)
+
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments
     samples (1,1) {mustBeNonempty,drEEMdataset.validate(samples),...
         drEEMdataset.sanityCheckBlankSubtraction(samples)}

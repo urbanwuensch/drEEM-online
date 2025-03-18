@@ -1,6 +1,11 @@
 function Xout = aqualogimport(workingpath,file,selector,deselector)
 % This function is part of undocumented drEEM and not intended for general use
 
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 %% Establish a connection to Origin Pro
 try
     disp('   Establishing connection with Origin Pro (1st attempt)...')

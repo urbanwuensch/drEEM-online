@@ -12,6 +12,11 @@ function export2zip(data,filename)
 %   processing steps to a zip file including README.txt for upload to data  repository
 %       tbx.export2zip(samples,'project_XY_asPublished',char(datetime('today'))]);
 
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments
     data (1,1) {mustBeA(data,'drEEMdataset'),drEEMdataset.validate(data)}
     filename (1,:) {mustBeText}

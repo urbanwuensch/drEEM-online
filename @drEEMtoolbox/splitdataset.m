@@ -20,7 +20,11 @@ function dataout = splitdataset(data,splitType,options)
 %   3. Split dataset according to metadata variable "origin" (must exist, needs to be adopted to your dataset)
 %       samples = splitdataset(samples,splitType='byMetadata',metadataColumn='origin');
 
-
+% Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
+% Chalmers University of Technology
+% Department of Architecture and Civil Engineering
+% Sven Hultins Gata 6
+% 41296 Gothenburg (Sweden)
 arguments
     data {drEEMdataset.validate(data)}
     splitType (1,:) {mustBeText,mustBeMember(splitType,["blind","byMetadata"])} = "blind"
@@ -78,7 +82,7 @@ for j=1:options.numSplit
 end
 idx=height(dataout.history)+1;
 dataout.history(idx,1)=...
-    drEEMhistory.addEntry(mfilename,'splits of dataset created',options,dataout);
+    drEEMhistory.addEntry(mfilename,['dataset split with split-type: "',char(splitType),'"'],options,dataout);
 
 % Will only run if toolbox is set to overwrite workspace variable and user
 % didn't provide an output argument
