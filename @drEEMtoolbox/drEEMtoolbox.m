@@ -199,11 +199,23 @@ classdef drEEMtoolbox < handle
         function vieweems(data)
             vieweems(data)
         end
-        function viewmodels(data)
-            viewmodels(data)
+        function viewmodels(data,startTab,f)
+            arguments
+                data (1,1) {mustBeA(data,'drEEMdataset'),drEEMdataset.validate(data)}
+                startTab (1,:) {mustBeText,...
+                    mustBeMember(startTab,["Overview","Scores & loadings",...
+                    "Spectral loadings","Loadings & leverages","Errors & leverages", ...
+                    "Fingerprint plots","SSE","Score correlation"])} = "Overview"
+                f (1,1) {mustBeNumeric} = nan
+            end
+            viewmodels(data,startTab,f)
         end
-        function viewdmr(data)
-            viewdmr(data)
+        function viewdmr(data,f)
+            arguments
+                data (1,1) {mustBeA(data,'drEEMdataset'),drEEMdataset.validate(data)}
+                f (1,1) {mustBeNumeric} = nan
+            end
+            viewdmr(data,f)
         end
         function viewcompcorr(data)
             viewcompcorr(data)
