@@ -1,4 +1,4 @@
-function [Consistency,G,stdG,Target]=corcond(X,Factors,Weights,Plot);
+function [Consistency,G,stdG,Target]=corcond(X,Factors,Weights,Plot)
 
 %CORCOND Core consistency for PARAFAC model
 %
@@ -183,7 +183,7 @@ G = G(:);
 
 G = reshape(G,DimG);
 
-function [G,stdG]=regg(X,Factors,Weights);
+function [G,stdG]=regg(X,Factors,Weights)
 
 %REGG Calculate Tucker core
 %
@@ -202,7 +202,7 @@ if ord<3
    return
 end
 
-if length(Fac)==1
+if isscalar(Fac)
    for i=1:length(Factors)
       Fac(i) = size(Factors{i},2);
    end
@@ -213,7 +213,7 @@ vecX=X(:); % Vectorize X
 if nargin<3
    Weights=ones(size(X));
 end
-if length(Weights(:))~=length(X(:));
+if length(Weights(:))~=length(X(:))
    Weights=ones(size(X));
 end
 Weights=Weights(:);
