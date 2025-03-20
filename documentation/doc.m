@@ -31,13 +31,20 @@ end
 
 
 % Search for existing documentation based on entries in "functiondirectory"
-try
-    web([char(functionname),'.html']);
-    return
-catch
-    % If nothing was found, just display the default MATLAB output
+mthds=methods('drEEMtoolbox');
+if matches(functionname,mthds)
+    try
+        web([char(functionname),'.html']);
+        return
+    catch
+        % If nothing was found, just display the default MATLAB output
+        cd(fileparts(doclocs{restoredoc_i}));
+        help(functionname);
+        warning('didn''t find the fancy doc html page')
+    end
+else
     cd(fileparts(doclocs{restoredoc_i}));
-    help(functionname);
+    doc(functionname);
     warning('didn''t find the fancy doc html page')
-end
+
 end
