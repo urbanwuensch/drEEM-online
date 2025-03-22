@@ -108,6 +108,16 @@ if drEEMtoolbox.outputscenario(nargout)=="implicitOut"
     return
 end
 
+f=drEEMdataset.modelsWithContent(dataout);
+if not(isempty(f))
+    dataout.models=drEEMmodel;
+    idx=height(dataout.history)+1;
+    dataout.history(idx,1)=...
+        drEEMhistory.addEntry(mfilename,...
+        'deleted models due to call to zapnoise (likely through subdataset)',[],dataout);
+    disp('A call to zapnoise with pre-existing models results in their deletion.')
+end
+
 end
 
 function [vout] = rcvec(v,rc)
