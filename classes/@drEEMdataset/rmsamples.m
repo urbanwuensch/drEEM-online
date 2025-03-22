@@ -45,6 +45,7 @@ if not(isempty(f))
     dataout.history(idx,1)=...
         drEEMhistory.addEntry(mfilename,...
         'deleted models due to call to rmsamples (likely through subdataset)',[],dataout);
+    disp('A call to subdataset with pre-existing models results in their deletion.')
 end
 
 
