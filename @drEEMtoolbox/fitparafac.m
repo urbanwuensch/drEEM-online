@@ -66,6 +66,11 @@ if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
     nargoutchk(1,1)
 end
 
+if not(matches(options.constraints,'nonnegativity'))&&matches(options.toolbox,'parafac3w')
+    disp('<strong>Notice:</strong> Automatically changed from the default toolbox to nway')
+    options.toolbox="nway";
+end
+
 %% Version check
 if isMATLABReleaseOlderThan("R2022a")
     error("You need Matlab R2022a or newer to use this function.")
