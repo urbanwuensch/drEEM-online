@@ -288,6 +288,15 @@ classdef drEEMdataset
         function f=modelsWithContent(data)
             f=find(arrayfun(@(x) not(isempty(x.loads{1})),data.models));
         end
+
+        function f=validatableModels(data)
+            f=find(arrayfun(@(x) not(isempty(x.loads{1})),data.models));
+            for j=1:numel(data.split)
+                fs{j,1}=find(arrayfun(@(x) not(isempty(x.loads{1})),data.split(j).models));
+            end
+            fs=unique(vertcat(fs{:}));
+            f=intersect(f,fs);
+        end
         
         function mustBeModel(data,fac)
             f{1}=find(arrayfun(@(x) not(isempty(x.loads{1})),data.models));

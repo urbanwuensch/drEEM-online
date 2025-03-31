@@ -396,16 +396,20 @@ details:open > summary {
 <p>The <code>viewsplitvalidation</code> function visualizes the split validation on a provided dataset by checking the similarities of excitation and emission spectral loading between different subsets. Two spectra are sufficiently similar if the Tucker congruence coefficient is greater than <code>0.95</code>.</p>
 
 <blockquote>
-<p><strong><em>The actual split validation is already performed after a call to <code>fitparafac</code> with the option <code>mode=&#39;split&#39;</code>. There, the results are shown as console output but no plots are shown. Use this function to find out how well the validation worked or where it did not succeed.</em></strong></p>
+<p><strong><em>The actual split validation is already performed after a call to <code>fitparafac</code> with the option <code>mode=&#39;fitsplits&#39;</code>. There, the results are shown as console output but no plots are shown. Use this function to find out how well the validation worked or where it did not succeed.</em></strong></p>
 </blockquote>
 
-<p>The function checks if the model specified by the number of components <code>fac</code> is validated across different splits and the model obtained from all of the data, <code>&quot;overall&quot;</code> (see <code>fitparafac</code> function for options <code>&quot;overall&quot;</code> and <code>&quot;split&quot;</code>).</p>
+<p>The function checks if the model specified by the number of components <code>fac</code> is validated across different splits and the model obtained from all of the data, <code>&quot;overall&quot;</code> (see <code>fitparafac</code> function for options <code>&quot;fitoverall&quot;</code> and <code>&quot;fitsplit&quot;</code>).</p>
 
 <p>If validation check is passes, the function plots the validated models, displaying their loadings and contours, and provides diagnostic plots if validation fails. </p>
 
 <p>The function includes detailed error messages to help diagnose why a validation might have failed.</p>
 
-<p><code>viewsplitvalidation</code> checks for the presence of the <code>&quot;overall&quot;</code> model and splits. If <code>&quot;overall</code>&quot; does not exist the validation will only be performed across splits. But if the <code>splits</code> is empty, the function won&#39;t be able to perform any validation test and will cause an error.</p>
+<p><code>viewsplitvalidation</code> checks for the presence of desired model in the overall and all split datasets during the input parsing. If a model is not found in all cases, an error will be shown. </p>
+
+<blockquote>
+<p><strong><em>Note:</em></strong> A splitvalidation with the function is only possible if the overall model can be compared with models in all splits.</p>
+</blockquote>
 
 <h2 id="toc_3">Input arguments</h2>
 

@@ -1,5 +1,5 @@
 function viewsplitvalidation(data,fac)
-% <a href = "matlab:doc splitvalidation">dataout = splitvalidation(data,fac) (click to access documentation)</a>
+% <a href = "matlab:doc viewsplitvalidation">dataout = viewsplitvalidation(data,fac) (click to access documentation)</a>
 %
 % <strong>Compare PARAFAC models</strong> of a dataset to validate a model
 %
@@ -8,7 +8,7 @@ function viewsplitvalidation(data,fac)
 % fac (1,1)  {mustBeInteger,drEEMdataset.mustBeModel}
 %
 % <strong>EXAMPLE(S)</strong>
-%       samples = splitvalidation(samples,5)
+%       viewsplitvalidation(samples,5)
 
 % Copyright (C) 2025 Urban J. Wuensch - wuensch@chalmers.se
 % Chalmers University of Technology
@@ -335,7 +335,7 @@ for k=1:numel(models)
     for l=1:fac
         ci=[];
         besttcc(k,l)=max(sum(simiExtract(l,:,:),3))/2;
-        if numel(find(matchingExAndEm(l,:)))==1 % Uniequivolval match
+        if isscalar(find(matchingExAndEm(l,:))) % Uniequivolval match
             ci=find(matchingExAndEm(l,:));
         elseif numel(find(matchingExAndEm(l,:)))>1 % Take the best when multiple are similar
             [~,ci]=max(sum(simiExtract(l,:,:),3)); 

@@ -253,8 +253,10 @@ dataout.history(idx,1)=...
     drEEMhistory.addEntry(mfilename,['fit parafac models (',char(mode),')'],options,dataout);
 
 if matches(mode,"fitsplits")
-    f=drEEMdataset.modelsWithContent(dataout);
-    C=intersect(f,options.f);
+    C=drEEMdataset.validatableModels(dataout);
+    if isempty(C)
+        warning('"f = drEEMdataset.validatableModels(data)" is empty. Could not auto-validate the models in the dataset.')
+    end
     for j=1:numel(C)
         res=drEEMtoolbox.silentvalidation(dataout,C(j));
         if res
