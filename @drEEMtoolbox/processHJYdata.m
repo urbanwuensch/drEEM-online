@@ -387,101 +387,101 @@ end
 % end
 
 
-function [vout] = rcvec(v,rc)
+% function [vout] = rcvec(v,rc)
 % Make row or column vector
 % v: vector
 % rc: either 'row' ([1:5])or 'column' ([1:5]')
-sz=size(v);
-if ~any(sz==1)
-    error('Input is not a vector')
-end
+% sz=size(v);
+% if ~any(sz==1)
+%     error('Input is not a vector')
+% end
+% 
+% switch rc
+%     case 'row'
+%         if ~(sz(1)<sz(2))
+%             vout=v';
+%         else
+%             vout=v;
+%         end
+%     case 'column'
+%         if ~(sz(1)>sz(2))
+%             vout=v';
+%         else
+%             vout=v;
+%         end
+%     otherwise
+%             error('Input ''rc'' not recognized. Options are: ''row'' and ''column''.')
+% end
+% 
+% end
 
-switch rc
-    case 'row'
-        if ~(sz(1)<sz(2))
-            vout=v';
-        else
-            vout=v;
-        end
-    case 'column'
-        if ~(sz(1)>sz(2))
-            vout=v';
-        else
-            vout=v;
-        end
-    otherwise
-            error('Input ''rc'' not recognized. Options are: ''row'' and ''column''.')
-end
-
-end
-
-function [Y,BaseArea]=RamanAreaI(M,EmMin,EmMax)
-% [Y,EmMin,EmMax]=RamanAreaI(M,EmMin,EmMax)
-% Find the area under the curves in M between wavelengths EmMin and EmMax, 
-% data are interpolated to 0.5 nm intervals
-
-%interpolate to 0.5 nm intervals
-waveint=0.5; %nm
-waves=(EmMin:waveint:EmMax)';
-Mpt5 = FastLinearInterp(M(1,:)', M(2:end,:)', waves)'; %faster linear interp
-%figure, plot(Mpt5)
-%Mpt5 = interp1(M(1,:)', M(2:end,:)', waves,'spline')'; %built in alternative
-
-%integrate
-RAsum=trapz(waves,Mpt5,2);
-% BaseArea=trapz([waves(1) waves(end)]',[Mpt5(:,1) Mpt5(:,end)]')';
-BaseArea=(EmMax-EmMin)*(Mpt5(:,1)+0.5*(Mpt5(:,end)-Mpt5(:,1)));
-
-% RAsumfit=trapz(waves,feval(fit(waves,Mpt5',"gauss1"),waves));
-
-% Old formula from Kate, equal to trapezoidal integration
+% function [Y,BaseArea]=RamanAreaI(M,EmMin,EmMax)
+% % [Y,EmMin,EmMax]=RamanAreaI(M,EmMin,EmMax)
+% % Find the area under the curves in M between wavelengths EmMin and EmMax, 
+% % data are interpolated to 0.5 nm intervals
+% 
+% %interpolate to 0.5 nm intervals
+% waveint=0.5; %nm
+% waves=(EmMin:waveint:EmMax)';
+% Mpt5 = FastLinearInterp(M(1,:)', M(2:end,:)', waves)'; %faster linear interp
+% %figure, plot(Mpt5)
+% %Mpt5 = interp1(M(1,:)', M(2:end,:)', waves,'spline')'; %built in alternative
+% 
+% %integrate
+% RAsum=trapz(waves,Mpt5,2);
+% % BaseArea=trapz([waves(1) waves(end)]',[Mpt5(:,1) Mpt5(:,end)]')';
 % BaseArea=(EmMax-EmMin)*(Mpt5(:,1)+0.5*(Mpt5(:,end)-Mpt5(:,1)));
-
-
-% plot(waves,Mpt5),hold on,plot([waves(1) waves(end)],[Mpt5(1) Mpt5(end)])
-% plot(waves,feval(fit(waves,Mpt5',"gauss1"),waves))
-
-
-%RAsum=trapz(waves,Mpt5,2)*waveint;%;
-%BaseArea=(EmMax-EmMin)*(Mpt5(:,1)+0.5*(Mpt5(:,end)-Mpt5(:,1)))*waveint;
-% disp([RAsum BaseArea BaseArea./RAsum]);
-Y = RAsum;% - BaseArea;
-end
-
-function Yi = FastLinearInterp(X, Y, Xi)
-%by Jan Simon
-% X and Xi are column vectros, Y a matrix with data along the columns
-[dummy, Bin] = histc(Xi, X);  %#ok<HISTC,ASGLU>
-H            = diff(X);       % Original step size
-% Extra treatment if last element is on the boundary:
-sizeY = size(Y);
-if Bin(length(Bin)) >= sizeY(1)
-    Bin(length(Bin)) = sizeY(1) - 1;
-end
-Xj = Bin + (Xi - X(Bin)) ./ H(Bin);
-% Yi = ScaleTime(Y, Xj);  % FASTER MEX CALL HERE
-% return;
-% Interpolation parameters:
-Sj = Xj - floor(Xj);
-Xj = floor(Xj);
-% Shift frames on boundary:
-edge     = (Xj == sizeY(1));
-Xj(edge) = Xj(edge) - 1;
-Sj(edge) = 1;           % Was: Sj(d) + 1;
-% Now interpolate:
-if sizeY(2) > 1
-    Sj = Sj(:, ones(1, sizeY(2)));  % Expand Sj
-end
-Yi = Y(Xj, :) .* (1 - Sj) + Y(Xj + 1, :) .* Sj;
-end
+% 
+% % RAsumfit=trapz(waves,feval(fit(waves,Mpt5',"gauss1"),waves));
+% 
+% % Old formula from Kate, equal to trapezoidal integration
+% % BaseArea=(EmMax-EmMin)*(Mpt5(:,1)+0.5*(Mpt5(:,end)-Mpt5(:,1)));
+% 
+% 
+% % plot(waves,Mpt5),hold on,plot([waves(1) waves(end)],[Mpt5(1) Mpt5(end)])
+% % plot(waves,feval(fit(waves,Mpt5',"gauss1"),waves))
+% 
+% 
+% %RAsum=trapz(waves,Mpt5,2)*waveint;%;
+% %BaseArea=(EmMax-EmMin)*(Mpt5(:,1)+0.5*(Mpt5(:,end)-Mpt5(:,1)))*waveint;
+% % disp([RAsum BaseArea BaseArea./RAsum]);
+% Y = RAsum;% - BaseArea;
+% end
+% 
+% function Yi = FastLinearInterp(X, Y, Xi)
+% %by Jan Simon
+% % X and Xi are column vectros, Y a matrix with data along the columns
+% [dummy, Bin] = histc(Xi, X);  %#ok<HISTC,ASGLU>
+% H            = diff(X);       % Original step size
+% % Extra treatment if last element is on the boundary:
+% sizeY = size(Y);
+% if Bin(length(Bin)) >= sizeY(1)
+%     Bin(length(Bin)) = sizeY(1) - 1;
+% end
+% Xj = Bin + (Xi - X(Bin)) ./ H(Bin);
+% % Yi = ScaleTime(Y, Xj);  % FASTER MEX CALL HERE
+% % return;
+% % Interpolation parameters:
+% Sj = Xj - floor(Xj);
+% Xj = floor(Xj);
+% % Shift frames on boundary:
+% edge     = (Xj == sizeY(1));
+% Xj(edge) = Xj(edge) - 1;
+% Sj(edge) = 1;           % Was: Sj(d) + 1;
+% % Now interpolate:
+% if sizeY(2) > 1
+%     Sj = Sj(:, ones(1, sizeY(2)));  % Expand Sj
+% end
+% Yi = Y(Xj, :) .* (1 - Sj) + Y(Xj + 1, :) .* Sj;
+% end
 
 
 function opt = defaultopts
-opt.blanksubtract=true;
-opt.blankmedian=true;
+opt.blanksubtract=false;
+opt.blankmedian=false;
 opt.visualize=false;
 opt.doublebinning=false;
-opt.ramannormalize=true;
+opt.ramannormalize=false;
 opt.nanoversat=true;
 end
 
