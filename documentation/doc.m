@@ -32,6 +32,7 @@ end
 
 % Search for existing documentation based on entries in "functiondirectory"
 mthds=methods('drEEMtoolbox');
+mthds=[{'dreem'};mthds];
 if matches(functionname,mthds) % User is looking for drEEM function
     try
         web([char(functionname),'.html']);
@@ -45,5 +46,4 @@ if matches(functionname,mthds) % User is looking for drEEM function
 else % User wants other documentation, let's do that!
     cd(fileparts(doclocs{restoredoc_i}));
     doc(functionname);
-
 end
