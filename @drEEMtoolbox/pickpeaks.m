@@ -171,6 +171,7 @@ FI=nan(1,data.nSample);
 FrI=nan(1,data.nSample);
 BIX=nan(1,data.nSample);
 HIX=nan(1,data.nSample);
+arix=nan(1,data.nSample);
 if diagn
     if data.toolboxOptions.uifig
         dfig=drEEMtoolbox.dreemuifig;
@@ -289,6 +290,8 @@ for i=1:data.nSample
             HIX(i)=Val1/Val2;
             
         end
+        
+        
     catch
         HIX(i)=NaN;
     end
@@ -308,22 +311,32 @@ for i=1:data.nSample
         catch
             BIX(i)=nan;
         end
+        
+        % ARIX
+        EmScan320=data.(Xname)(i,:,drEEMtoolbox.mindist(data.Ex,320));
+        Val1=EmScan320(mindist(data.Em,520));
+        Val2=EmScan320(mindist(data.Em,390));
+        arix(i)=Val1/Val2;
 end
 
 
 %% Results
 VarName=[peaks.name]';
-VarName{end+1}='FluI';VarName{end+1}='FrI'; VarName{end+1}='BIX'; VarName{end+1}='HIX';
+VarName{end+1}='FluI';
+VarName{end+1}='FrI';
+VarName{end+1}='BIX';
+VarName{end+1}='HIX';
+VarName{end+1}='ARIX';
 
 metadata=table;
 metadata.C=[md.Ex(:,5) md.Em(:,5)];
 metadata.M=[md.Ex(:,4) md.Em(:,4)];
 if ~HIX_excl
-    picklist=array2table([Cpeak FI' FrI' BIX' HIX'],...
+    picklist=array2table([Cpeak FI' FrI' BIX' HIX',arix'],...
         'VariableNames',VarName);
 else
-    picklist=array2table([Cpeak FI' FrI' BIX'],...
-        'VariableNames',VarName(1:end-1));
+    picklist=array2table([Cpeak FI' FrI' BIX',arix'],...
+        'VariableNames',VarName([1:end-2,end]));
 end
 
 if plt
@@ -349,12 +362,13 @@ if plt
     plot(ax,FI,'LineWidth',1.5)
     plot(ax,FrI,'LineWidth',1.5)
     plot(ax,BIX,'LineWidth',1.5)
+    plot(ax,arix,'LineWidth',1.5)
     if ~HIX_excl
         plot(ax,HIX,'LineWidth',1.5)
-        legend(ax,'Fluorescence index','Freshness index' ,'Biological index','Humification index', ...
+        legend(ax,'Fluorescence index','Freshness index' ,'Biological index','Humification index','Aromaticity index', ...
             'location','bestoutside')
     else
-        legend(ax,'Fluorescence index','Freshness index','Biological index', ...
+        legend(ax,'Fluorescence index','Freshness index','Biological index','Aromaticity index', ...
             'location','bestoutside')
     end
     title(ax,'Fluorescence indicies')
