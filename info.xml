@@ -2,13 +2,13 @@
     xsi:noNamespaceSchemaLocation="optional">
     <?xml-stylesheet type="text/xsl"href="optional"?>
     <!-- info.xml file for the drEEM toolbox -->
-    <!-- Version 1.0 -->
-    <!-- Copyright (2020) (Urban J. Wuensch).-->
+    <!-- Version 2.0 -->
+    <!-- Copyright (2025) (Urban J. Wuensch).-->
     
     <!-- Supply the following six elements in the order specified -->
     <!-- (Required) Release of MATLAB. Not currently used but required -->
     <!-- to parse the file -->
-    <matlabrelease>R2024b</matlabrelease>
+    <matlabrelease>R2025a</matlabrelease>
     <!-- (Required) Title of toolbox. Appears in the Contents pane -->
     <name>drEEM</name>
     <!-- (Required) Label for the toolbox. pick one: -->
