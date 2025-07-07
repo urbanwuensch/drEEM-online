@@ -25,9 +25,9 @@ MATLAB toolbox aiding the multiway decomposition of fluorescence EEMs into under
 - Email the project team at [dreem@openfluor.net](mailto:dreem@openfluor.net)
 
 ## Version history
-- 2.0.0 : June   2025 : Redevelopment of the code base (Urban J Wünsch)
-- 0.6.0 : August 2020 : Sixth release (Urban J. Wuensch & Kathleen Murphy)
-- 0.5.0 : April  2019 : Fifth release (Urban J. Wuensch & Kathleen Murphy)
-- 0.4.0 : June   2017 : Fourth release (Kathleen Murphy)
+- 2.0.0 :        2025 : Redevelopment of the code base (Urban J Wünsch)
+- 0.6.0 :        2020 : Sixth release (Urban J. Wuensch & Kathleen Murphy)
+- 0.5.0 :        2019 : Fifth release (Urban J. Wuensch & Kathleen Murphy)
+- 0.4.0 :        2017 : Fourth release (Kathleen Murphy)
 - 0.2.0 : June   2014 : Second release (Kathleen Murphy)
 - 0.1.0 : Sept   2013 : Initial release (Kathleen Murphy)
