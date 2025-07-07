@@ -14,8 +14,8 @@ classdef drEEMtoolbox < handle
 % 41296 Gothenburg (Sweden)
     properties (Constant = true, Hidden = false)
         version = "2.0.0"
-        url = "GitLab URL for release goes here"
-        requiredVersion = 'R2022a'
+        url = "https://gitlab.com/dreem/drEEM-2/-/archive/2.0.0/drEEM-2-2.0.0.zip"
+        requiredVersion = 'R2023a'
         rootfolder = drEEMtoolbox.tbxpath;
         options=drEEMtoolbox.defaultOptions;
     end
