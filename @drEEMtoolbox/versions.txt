@@ -1,1 +1,1 @@
-2.0.0;https://gitlab.com/dreem/drEEM-2/-/archive/2.0.0/drEEM-2-2.0.0.zip;
+2.25.07;https://gitlab.com/dreem/drEEM-2/-/archive/2.25.07/drEEM-2-2.25.07.zip;

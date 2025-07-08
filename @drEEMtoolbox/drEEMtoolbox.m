@@ -13,8 +13,8 @@ classdef drEEMtoolbox < handle
 % Sven Hultins Gata 6
 % 41296 Gothenburg (Sweden)
     properties (Constant = true, Hidden = false)
-        version = "2.0.0"
-        url = "https://gitlab.com/dreem/drEEM-2/-/archive/2.0.0/drEEM-2-2.0.0.zip"
+        version = "2.25.07"
+        url = "https://gitlab.com/dreem/drEEM-2/-/archive/2.25.07/drEEM-2-2.25.07.zip"
         requiredVersion = 'R2023a'
         rootfolder = drEEMtoolbox.tbxpath;
         options=drEEMtoolbox.defaultOptions;
