@@ -30,7 +30,7 @@ function dataout = processabsorbance(data,options)
 arguments
     % Required
     data (1,:) {mustBeNonempty,mustBeA(data,"drEEMdataset"),...
-        drEEMdataset.validate(data),drEEMdataset.sanityCheckAbsorbance(data)}
+        drEEMdataset.validate(data),drEEMdataset.sanityCheckAbsorbance(data),drEEMdataset.mustContainSamples(data)}
 
     % Optional
     options.correctBase (1,:)   {mustBeNumericOrLogical} = true

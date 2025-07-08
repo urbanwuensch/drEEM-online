@@ -8,7 +8,7 @@ function dataout = spectralcorrection(data,options)
 % 41296 Gothenburg (Sweden)
 arguments (Input)
     data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),...
-        drEEMdataset.sanityCheckSpectralCorrection(data)}
+        drEEMdataset.sanityCheckSpectralCorrection(data),drEEMdataset.mustContainSamples(data)}
     options.XCor (:,2) {mustBeNumeric}
     options.MCor (:,2) {mustBeNumeric}
     options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;

@@ -943,8 +943,9 @@ input_class=class(input);
 switch input_class
     case "drEEMdataset"
         try
-        drEEMdataset.validate(input)
-        drEEMdataset.sanityCheckScatter(input)
+            drEEMdataset.validate(input)
+            drEEMdataset.sanityCheckScatter(input)
+            drEEMdataset.mustContainSamples(input)
         catch ME
             throwAsCaller(ME)
         end

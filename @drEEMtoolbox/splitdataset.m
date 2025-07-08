@@ -26,7 +26,7 @@ function dataout = splitdataset(data,splitType,options)
 % Sven Hultins Gata 6
 % 41296 Gothenburg (Sweden)
 arguments
-    data {drEEMdataset.validate(data)}
+    data {drEEMdataset.validate(data),drEEMdataset.mustContainSamples(data)}
     splitType (1,:) {mustBeText,mustBeMember(splitType,["blind","byMetadata"])} = "blind"
     options.blindType (1,:)     {mustBeMember(options.blindType,["alternating","random","contiguous"]),optValBT(splitType,options.blindType)} = "alternating"  
     options.metadataColumn (1,:)    {drEEMdataset.mustBeMetadataColumn(data,options.metadataColumn),optValMC(splitType,options.metadataColumn)} = string.empty

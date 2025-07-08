@@ -31,7 +31,7 @@ function dataout=subdataset(data,options)
 % Sven Hultins Gata 6
 % 41296 Gothenburg (Sweden)
 arguments
-    data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+    data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),drEEMdataset.mustContainSamples(data)}
     options.outSample (1,:) {mustBeA(options.outSample,'logical'),outSampleVal(data,options.outSample)} = false
     options.outEm (1,:) {mustBeA(options.outEm,'logical'),outEmVal(data,options.outEm)} = false
     options.outEx (1,:) {mustBeA(options.outEx,'logical'),outExVal(data,options.outEx)} = false

@@ -202,11 +202,14 @@ classdef drEEMtoolbox < handle
         % Visualization (incl. app workarounds)
         viewspectralvariance(data)
         function vieweems(data)
+            arguments
+                data (1,1) {mustBeA(data,'drEEMdataset'),drEEMdataset.validate(data),drEEMdataset.mustContainSamples(data)}
+            end
             vieweems(data)
         end
         function viewmodels(data,startTab,f)
             arguments
-                data (1,1) {mustBeA(data,'drEEMdataset'),drEEMdataset.validate(data)}
+                data (1,1) {mustBeA(data,'drEEMdataset'),drEEMdataset.validate(data),drEEMdataset.mustContainSamples(data)}
                 startTab (1,:) {mustBeText,...
                     mustBeMember(startTab,["Overview","Scores & loadings",...
                     "Spectral loadings","Loadings & leverages","Errors & leverages", ...
@@ -217,24 +220,39 @@ classdef drEEMtoolbox < handle
         end
         function viewdmr(data,f)
             arguments
-                data (1,1) {mustBeA(data,'drEEMdataset'),drEEMdataset.validate(data)}
+                data (1,1) {mustBeA(data,'drEEMdataset'),drEEMdataset.validate(data),drEEMdataset.mustContainSamples(data)}
                 f (1,1) {mustBeNumeric} = nan
             end
             viewdmr(data,f)
         end
         function viewcompcorr(data)
+            arguments
+                data (1,1) {mustBeA(data,'drEEMdataset'),drEEMdataset.mustContainSamples(data)}
+            end
             viewcompcorr(data)
         end
         function viewhistory(data)
+            arguments
+                data (1,1) {mustBeA(data,'drEEMdataset'),drEEMdataset.mustContainSamples(data)}
+            end
+            if height(data.history)==0
+                error('No entries to display.')
+            end
             viewhistory(data)
         end
         % function explorevariability(data)
         %     explorevariability(data)
         % end
         function viewscatter(data)
+            arguments
+                data (1,1) {mustBeA(data,'drEEMdataset'),drEEMdataset.mustContainSamples(data)}
+            end
             viewscatter(data)
         end
         function viewabsorbance(data)
+            arguments
+                data (1,1) {mustBeA(data,'drEEMdataset'),drEEMdataset.mustContainSamples(data),drEEMdataset.sanityCheckAbsorbance(data)}
+            end
             viewabsorbance(data)
         end
         [summary,M]  =  viewopenfluormatches(filename)

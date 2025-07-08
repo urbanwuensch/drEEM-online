@@ -68,6 +68,9 @@ classdef drEEMdataset
             data.toolboxdata.matlabVersion=version;
             data.toolboxdata.matlabToolboxes=ver;
             data.status=drEEMstatus;
+            data.history=drEEMhistory;
+            data.history(1).fname='drEEMdataset.create';
+            data.history(1).fmessage='drEEMdataset created (empty)';
         end
 
         function data = saveall(data)
@@ -318,6 +321,14 @@ classdef drEEMdataset
                 throwAsCaller(MException("drEEM:IncorrectInput",message))
             end
         end
+
+        function mustContainSamples(data)
+            if data.nSample==0
+                throwAsCaller(MException("drEEM:NoSamples",'Dataset contains no samples.'))
+            end
+        end
+
+        
         
 
         function VariableNames=returnVariableNames(data)

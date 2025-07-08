@@ -24,7 +24,7 @@ function dataout = fitslopes(data,options)
 % Sven Hultins Gata 6
 % 41296 Gothenburg (Sweden)
 arguments
-    data (1,1)              {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+    data (1,1)              {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),drEEMdataset.sanityCheckAbsorbance(data),drEEMdataset.mustContainSamples(data)}
     options.LongRange (1,2) {mustBeNumeric} = [300 600]
     options.rsq (1,1)       {mustBeNumeric,mustBeLessThanOrEqual(options.rsq,1)} = 0.95
     options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;

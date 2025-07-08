@@ -23,7 +23,7 @@ function dataout = associatemetadata(data,pathtofile,metadatakey,datakey)
 % Sven Hultins Gata 6
 % 41296 Gothenburg (Sweden)
 arguments
-    data(1,1)           {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+    data(1,1)           {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),drEEMdataset.mustContainSamples(data)}
     pathtofile          {assocMetaValidator(pathtofile)}
     metadatakey (1,:)   {mustBeText}
     datakey (1,:)       {mustBeText} = 'filelist';

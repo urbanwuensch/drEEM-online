@@ -5,7 +5,12 @@ function displayhistory(data)
 % Sven Hultins Gata 6
 % 41296 Gothenburg (Sweden)
 arguments
-    data {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+    data {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),drEEMdataset.mustContainSamples(data)}
+end
+
+
+if height(data.history)==0
+    error('No entries to display.')
 end
 
 t=drEEMhistory.convert2table(data.history);

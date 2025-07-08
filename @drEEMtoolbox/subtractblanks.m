@@ -23,9 +23,9 @@ function dataout = subtractblanks(samples,blanks,options)
 % 41296 Gothenburg (Sweden)
 arguments
     samples (1,1) {mustBeNonempty,drEEMdataset.validate(samples),...
-        drEEMdataset.sanityCheckBlankSubtraction(samples)}
+        drEEMdataset.sanityCheckBlankSubtraction(samples),drEEMdataset.mustContainSamples(samples)}
     blanks (1,1) {mustBeNonempty,drEEMdataset.validate(blanks),...
-        drEEMdataset.sanityCheckBlankSubtraction(blanks)}
+        drEEMdataset.sanityCheckBlankSubtraction(blanks),drEEMdataset.mustContainSamples(blanks)}
     options.plot (1,1) {mustBeNumericOrLogical} = samples.toolboxOptions.plotByDefault;
 end
 

@@ -18,7 +18,7 @@ function dataout = ifecorrection(data,options)
 % 41296 Gothenburg (Sweden)
 arguments
     data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),...
-        drEEMdataset.sanityCheckIFE(data)}
+        drEEMdataset.sanityCheckIFE(data),drEEMdataset.mustContainSamples(data)}
     options.plot (1,1) {mustBeNumericOrLogical} = data.toolboxOptions.plotByDefault;
 end
 % Experimental feature; overwrite workspace variable, needs no outputarg check

@@ -33,9 +33,9 @@ function dataout = ramancalibration(samples,blanks,options)
 arguments
     % Required
     samples (1,1) {mustBeA(samples,"drEEMdataset"),drEEMdataset.validate(samples),...
-        drEEMdataset.sanityCheckSignalCalibration(samples)}
+        drEEMdataset.sanityCheckSignalCalibration(samples),drEEMdataset.mustContainSamples(samples)}
     blanks (1,1) {mustBeA(blanks,"drEEMdataset"),drEEMdataset.validate(blanks),...
-        drEEMdataset.sanityCheckSignalCalibration(blanks)}
+        drEEMdataset.sanityCheckSignalCalibration(blanks),drEEMdataset.mustContainSamples(blanks)}
 
     % Optional (but important)
     options.ExWave (1,1) {mustBeNumeric} = 350

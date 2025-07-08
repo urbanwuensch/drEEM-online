@@ -35,7 +35,7 @@ function dataout = fitparafac(data,mode,options)
 % 41296 Gothenburg (Sweden)
 arguments
     % Required
-    data (1,:)                      {drEEMdataset.sanityCheckPARAFAC(data)}
+    data (1,:)                      {drEEMdataset.sanityCheckPARAFAC(data),drEEMdataset.mustContainSamples(data)}
     mode (1,:)              {mustBeMember(mode,["fitoverall","fitsplits"])} = 'fitoverall'
     % Optional (but important)
     options.f (1,:)                 {mustBeNumeric,mustBeNonempty} = 2:7

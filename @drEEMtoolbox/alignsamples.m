@@ -18,7 +18,7 @@ function varargout = alignsamples(varargin)
 % Sven Hultins Gata 6
 % 41296 Gothenburg (Sweden)
 arguments (Repeating)
-    varargin {mustBeA(varargin,"drEEMdataset"),drEEMdataset.validate(varargin)}
+    varargin {mustBeA(varargin,"drEEMdataset"),drEEMdataset.validate(varargin),drEEMdataset.mustContainSamples(varargin)}
 end
 % Optional feature; overwrite workspace variable, needs no outputarg check
 if drEEMtoolbox.outputscenario(nargout)=="explicitOut"

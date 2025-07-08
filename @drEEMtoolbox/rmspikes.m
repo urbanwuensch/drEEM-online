@@ -24,7 +24,7 @@ function dataout = rmspikes(data,options)
 % Sven Hultins Gata 6
 % 41296 Gothenburg (Sweden)
 arguments
-    data (1,1) {drEEMdataset.validate(data)}
+    data (1,1) {drEEMdataset.validate(data),drEEMdataset.mustContainSamples(data)}
     options.thresholdFactor (1,1) {mustBeNumeric} = 10
     options.interpolate (1,:) {mustBeNumericOrLogical} = false
     options.details (1,:) {mustBeNumericOrLogical} = false

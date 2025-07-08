@@ -24,7 +24,7 @@ function dataout = zapnoise(data,sampleIdent,emRange,exRange)
 % Sven Hultins Gata 6
 % 41296 Gothenburg (Sweden)
 arguments
-    data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+    data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),drEEMdataset.mustContainSamples(data)}
     sampleIdent  (1,:) {mustBeNonempty(sampleIdent),mustBeA(sampleIdent,'logical'),outSampleVal(data,sampleIdent)}
     emRange (1,:) {mustBeNumeric,drEEMdataset.mustBeInRangeEm(data,emRange)}
     exRange (1,:) {mustBeNumeric,drEEMdataset.mustBeInRangeEx(data,exRange)}

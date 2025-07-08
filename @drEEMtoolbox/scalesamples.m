@@ -25,7 +25,7 @@ function dataout = scalesamples(data,option)
 % Sven Hultins Gata 6
 % 41296 Gothenburg (Sweden)
 arguments
-    data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data)}
+    data (1,1) {mustBeA(data,"drEEMdataset"),drEEMdataset.validate(data),drEEMdataset.mustContainSamples(data)}
     option (1,:) {optionValidator(option)} = 2
 end
 
