@@ -323,12 +323,20 @@ classdef drEEMdataset
         end
 
         function mustContainSamples(data)
+            varname = inputname(1);
+            if not(isempty(varname))
+                varname=['"',varname,'"',': '];
+            end
+            message='';
             if data.nSample==0
-                throwAsCaller(MException("drEEM:NoSamples",'Dataset contains no samples.'))
+               
+               message=[message,'\n<strong>',varname,'Dataset contains no samples.\n</strong>' ...
+                    ' \n'];
+                throwAsCaller(MException("drEEM:NoSamples",message))
             end
         end
 
-        
+
         
 
         function VariableNames=returnVariableNames(data)
