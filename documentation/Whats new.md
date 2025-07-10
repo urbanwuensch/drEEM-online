@@ -3,22 +3,25 @@
 
 drEEM version 2 introduces a set of new functionality, workflows, object-oriented programming, visualizations, and graphical user interfaces that aim to make the processing of fluorescence EEMs straightforward for users with limited programming experience. We should not need to be Matlab experts to process fluorescence data.
 
-Please head over to the section [Toolbox setup](dreem_workflow.html) to learn how to work with version 2. If you're used to [DOMFluor](https://doi.org/10.4319/lom.2008.6.572b) or [drEEM 0.1-0.6.x](https://doi.org/10.1039/C3AY41160E), things have changed considerably and I'm affraid there are lots of "breaking changes" (i.e. your old scripts will need to change).
+Please head over to the section [Toolbox setup](dreem_workflow.html) to learn how to work with version 2. If you're used to [DOMFluor](https://doi.org/10.4319/lom.2008.6.572b) or [drEEM 0.1-0.6.x](https://doi.org/10.1039/C3AY41160E), things have changed considerably and there are lots of "breaking changes". But luckly we have tutorials that should help.
 
-<details>
+
+<!--<details>
 <summary><b>Take a tour of the new toolbox (video on page)</b>
 </summary>
 
-<p align="center">
+
+
+ <p align="center">
 <div class="responsive-iframe-container">
  <iframe width="80%" height="400" allowfullscreen="true"
 src="https://www.youtube.com/embed/N_M8hMbKJFA?autoplay=0&mute=1&hl=en&cc_lang_pref=en&cc_load_policy=1" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </iframe>
-</p>
+</p> 
 
 </details>
-
-## Version 2.0.0
+-->
+## Version 2.25.07
 
 
 ### New features
