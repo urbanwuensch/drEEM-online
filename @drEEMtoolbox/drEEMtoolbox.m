@@ -26,14 +26,13 @@ classdef drEEMtoolbox < handle
         dataout = sampleQimport(workingpath,data)
         [DS,DSb] = processHJYdata(Xin,opt)
     end
-
+    
     % This is hidden because it's only ever used for install
     methods (Hidden = true,Static = true)
         function out=defaultOptions
             out.plotByDefault = true;
             out.OvrWrteUnless = false;
             out.uifig = true;
-
         end
         function versionRequires
             if isMATLABReleaseOlderThan(drEEMtoolbox.requiredVersion)
@@ -52,6 +51,93 @@ classdef drEEMtoolbox < handle
             end
 
         end
+
+        function tbx=drEEMtoolbox
+            % Class constructor method, used to perform version check atm
+            %% Check for updates if needed
+            % Has check already been done today? Trying to minimize delays.
+            debugging=false;
+            lastcheck=getenv('drEEM update checked');
+            if datetime(lastcheck)<datetime('today')||isempty(lastcheck)
+                check=true;
+                if debugging,disp('Check=true'),end
+            else
+                check=false;
+                if debugging,disp('Check=false'),end
+            end
+
+            if not(check)
+                
+                return
+            end
+            options = weboptions;
+            options.Timeout=1;
+            directory='https://gitlab.com/dreem/dreem-2/-/raw/main/@drEEMtoolbox/versions.txt';
+            try
+                disp('Checking for updates (takes a moment if offline)...')
+                vhist=webread(directory,options);
+                if debugging,disp('online=true'),end
+            catch
+                setenv('drEEM update checked',char(datetime("today")))
+                if debugging,disp('offline=true'),end
+                return
+            end
+            cellvhist=textscan(vhist,'%s%s','Delimiter',';');
+
+            online=table;
+            online.version=cellvhist{1};
+            online.url=cellvhist{2};
+
+            existing=ver;
+            existing=existing(arrayfun(@(x) contains(x.Name,'drEEM'),existing));
+            existing=rmfield(existing,{'Date','Release','Name'});
+
+
+            ov=online.version{1}; % latest online version
+            ev={existing.Version}; % installed version(s)
+
+            % digest version numbers
+            ov=cellfun(@(x) str2double(x),strsplit(ov,'.'));
+            for j=1:length(ev)
+                evd(j,:)=cellfun(@(x) str2double(x),strsplit(ev{j},'.'));
+            end
+
+            % Compare versions
+            update=true;
+            for j=1:height(evd)
+                if ov(1)>=evd(j,1)
+                    if ov(2)>=evd(j,2)
+                        if ov(3)>evd(j,3)
+                            update(j)=true;
+                             if debugging,disp('update=true'),end
+                        else
+                            update(j)=false;
+                             if debugging,disp('update=false'),end
+                        end
+                    else
+                        update(j)=false;
+                    end
+                else
+                    update(j)=false;
+                end
+            end
+
+            if any(update)
+                answer = questdlg('Your version of the drEEM toolbox is outdated. Would you like to update?' ...
+                    ,'Update notice','Yes','Yes','No','Why am I seeing this?');
+                if matches(answer,'Yes')
+                    dreeminstall
+                end
+            else
+                disp('<strong>Using the latest version of the drEEM toolbox.</strong>')
+                setenv('drEEM update checked',char(datetime("today")))
+            end
+
+
+        end
+
+
+
     end
 
     % These are not really needed to be visible to the user
