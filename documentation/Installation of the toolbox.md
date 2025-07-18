@@ -5,9 +5,10 @@ The installation of the drEEM toolbox is straightforward and there are software 
 
 ## Download and installation
 
-1. Go to [dreem.openfluor.org](https://dreem.openfluor.org/). In the top right corner of the website, click on "Download latest" and follow the instructions to download.
-2. *Alternative*: In Matlab, click on the HOME tab, then find "Addons" to open the Addon Explorer and search for "drEEM toolbox"
-3. Either way, you download an .mlapp file. Run it and follow the GUI instructions to "Download & install" the toolbox. Done.
+
+- Open MATLAB® on the HOME tab, use Add-ons browser to search and install and add drEEM to MATLAB®.
+- Alternatively, download on MATLAB® File Exchange and follow instructions mentioned there.
+
 
 
 ## Requirements
