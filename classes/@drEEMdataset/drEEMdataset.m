@@ -43,6 +43,7 @@ classdef drEEMdataset
 
     properties (Hidden = true)
         XBlank
+        absBlank
     end
 
     properties (SetAccess = private, Hidden = true)
@@ -67,18 +68,10 @@ classdef drEEMdataset
             data.toolboxdata.host = strtrim(lower(name));
             data.toolboxdata.matlabVersion=version;
             data.toolboxdata.matlabToolboxes=ver;
-            data.status=drEEMstatus;
+            %data.metadata=array2table(zeros(0,10), 'VariableNames',{'i','filtration (um)','storage temperature (C)','storage duration (d)','dilution factor absorbance','diltion factor fluorescence','datetime sampling (UTC)','datetime measurement (UTC)','Latitude','Longitude'});
             data.history=drEEMhistory;
             data.history(1).fname='drEEMdataset.create';
             data.history(1).fmessage='drEEMdataset created (empty)';
-        end
-
-        function data = saveall(data)
-            error('This function is currently under development and does not behave as intended. Exiting...')
-            % varname=inputname(1);
-            % eval([varname,'=data;'])
-            % save(['drEEMdataset_',char(datetime("today")),'_inclBackupus','.mat'],varname)
-            % disp('drEEMdataset was saved including backups.')
         end
 
         function validate(data)
