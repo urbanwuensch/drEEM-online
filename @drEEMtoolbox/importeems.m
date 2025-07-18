@@ -38,8 +38,19 @@ arguments
         options.columnIsExcitation (1,:)    {mustBeNumericOrLogical}= true
         options.NumHeaderLines (1,1)        {mustBeNumeric}= 0
         options.waveDiffTollerance (1,1)    {mustBeNumeric} = 1
+        options.changeStatusMessage (1,:) {mustBeText} = 'New fluorescence dataset.';
 end
-nargoutchk(1,1)
+
+% Diagnostic mode feature
+if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
+    if nargout>0
+        nargoutchk(1,1)
+        diagnostic=false;
+    else
+        disp('<strong>Diagnostic mode</strong> to test whether options work as intended.')
+        diagnostic=true;
+    end
+end
 
 
 % Find files & throw error when none are found
@@ -164,8 +175,10 @@ for j=1:numel(files)
     tc=toc(tc);
     ttl=num2str(numel(files));
     remain=num2str(round(tc.*(numel(files)-j),2));
-    disp([num2str(j),'/',ttl,': ',filelist{cnt,1},...
-        ' (',remain,' sec. remaining)'])
+    if not(diagnostic)
+        disp([num2str(j),'/',ttl,': ',filelist{cnt,1},...
+            ' (',remain,' sec. remaining)'])
+    end
     cnt=cnt+1; % +1 on the counter for a successful import.
 end
 
@@ -183,22 +196,29 @@ data.metadata.i=data.i;
 
 % Validate the dataset to make sure it's good to go (class-specific method)
 data.validate(data);
+if not(diagnostic)
 
-% User needs to tell the toolbox what the status of the dataset is.
-handle=setstatus(data,'data','New fluorescence dataset.');
-waitfor(handle,"finishedHere",true);
-try
-    data=handle.data;
-    delete(handle)
-catch
-    error('setstatus closed before save & exit button was pushed.')
+    % User needs to tell the toolbox what the status of the dataset is.
+    handle=setstatus(data,'data',options.changeStatusMessage);
+    options=rmfield(options,'changeStatusMessage');
+    waitfor(handle,"finishedHere",true);
+    try
+        data=handle.data;
+        delete(handle)
+    catch
+        error('setstatus closed before save & exit button was pushed.')
+    end
+    
+    % Final step: Make the drEEMhistory entry.
+    idx=1;
+    data.history(idx,1)=...
+        drEEMhistory.addEntry(mfilename,'created dataset',options,data);
+else
+    if nargout==0
+        clearvars data
+    end
+    disp('<strong>Success.</strong> These options work. To go ahead with an import, you can assign an output argument now.')
 end
-
-% Final step: Make the drEEMhistory entry.
-idx=1;
-data.history(idx,1)=...
-    drEEMhistory.addEntry(mfilename,'created dataset',options,data);
-
 
 end
 
