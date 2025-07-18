@@ -53,7 +53,10 @@ classdef drEEMtoolbox < handle
         end
 
         function tbx=drEEMtoolbox
-            % Class constructor method, used to perform version check atm
+            % Class constructor method: Update check and requirements
+            if isMATLABReleaseOlderThan('R2023a')
+                error('<strong>The drEEM toolbox for MATLAB requires R2023a or newer</strong>. Please update.')
+            end
             %% Check for updates if needed
             % Has check already been done today? Trying to minimize delays.
             debugging=false;
@@ -67,7 +70,6 @@ classdef drEEMtoolbox < handle
             end
 
             if not(check)
-                
                 return
             end
             options = weboptions;
@@ -301,6 +303,11 @@ classdef drEEMtoolbox < handle
                     "Spectral loadings","Loadings & leverages","Errors & leverages", ...
                     "Fingerprint plots","SSE","Score correlation"])} = "Overview"
                 f (1,1) {mustBeNumeric} = nan
+            end
+            f=find(arrayfun(@(x) not(isempty(x.loads{1})),data.models));
+            ncomp=numel(f);
+            if ncomp==0
+               error('Can''t find any models to plot.')
             end
             viewmodels(data,startTab,f)
         end
