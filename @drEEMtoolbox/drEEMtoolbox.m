@@ -15,7 +15,7 @@ classdef drEEMtoolbox < handle
     properties (Constant = true, Hidden = false)
         version = "2.25.07"
         url = "https://gitlab.com/dreem/drEEM-2/-/archive/2.25.07/drEEM-2-2.25.07.zip"
-        requiredVersion = 'R2023a'
+        requiredVersion = 'R2024b'
         rootfolder = drEEMtoolbox.tbxpath;
         options=drEEMtoolbox.defaultOptions;
     end
@@ -54,8 +54,8 @@ classdef drEEMtoolbox < handle
 
         function tbx=drEEMtoolbox
             % Class constructor method: Update check and requirements
-            if isMATLABReleaseOlderThan('R2023a')
-                error('<strong>The drEEM toolbox for MATLAB requires R2023a or newer</strong>. Please update.')
+            if isMATLABReleaseOlderThan('R2024b')
+                error('<strong>The drEEM toolbox for MATLAB requires R2024b or newer</strong>. Please update.')
             end
             %% Check for updates if needed
             % Has check already been done today? Trying to minimize delays.
