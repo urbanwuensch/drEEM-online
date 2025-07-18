@@ -304,12 +304,11 @@ classdef drEEMtoolbox < handle
                     "Fingerprint plots","SSE","Score correlation"])} = "Overview"
                 f (1,1) {mustBeNumeric} = nan
             end
-            f=find(arrayfun(@(x) not(isempty(x.loads{1})),data.models));
-            ncomp=numel(f);
+            ncomp=numel(find(arrayfun(@(x) not(isempty(x.loads{1})),data.models)));
             if ncomp==0
                error('Can''t find any models to plot.')
             end
-            viewmodels(data,startTab,f)
+            viewmodels(data,startTab,f(1))
         end
         function viewdmr(data,f)
             arguments
