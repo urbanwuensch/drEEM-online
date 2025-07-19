@@ -295,14 +295,24 @@ classdef drEEMdataset
         end
         
         function mustBeModel(data,fac)
-            f{1}=find(arrayfun(@(x) not(isempty(x.loads{1})),data.models));
+            arguments
+                data (1,1) {mustBeA(data,'drEEMdataset')}
+                fac (1,1) {mustBeNumeric}
+            end
+            vec=@(x) x(:);
+            fac=vec(fac);
+            f{1}=vec(find(arrayfun(@(x) not(isempty(x.loads{1})),data.models)));
             
             for j=1:numel(data.split)
-                f{j+1}=find(arrayfun(@(x) not(isempty(x.loads{1})),data.split(j).models));
+                f{j+1}=vec(find(arrayfun(@(x) not(isempty(x.loads{1})),data.split(j).models)));
             end
-            message=[];
+            message='';
             for j=1:numel(f)
-                if not(ismember(fac,f{j}))
+                if any(not(ismember(fac,f{j})))
+                    % Skip if fac is a nan input
+                    if isscalar(fac)&&isnan(fac)
+                        continue
+                    end
                     if j==1
                         message=[message,num2str(fac),'-component model not present in the main dataset. \n'];
                     else

@@ -302,13 +302,13 @@ classdef drEEMtoolbox < handle
                     mustBeMember(startTab,["Overview","Scores & loadings",...
                     "Spectral loadings","Loadings & leverages","Errors & leverages", ...
                     "Fingerprint plots","SSE","Score correlation"])} = "Overview"
-                f (1,1) {mustBeNumeric} = nan
+                f (1,1) {mustBeNumeric,drEEMdataset.mustBeModel(data,f)} = nan
             end
             ncomp=numel(find(arrayfun(@(x) not(isempty(x.loads{1})),data.models)));
             if ncomp==0
                error('Can''t find any models to plot.')
             end
-            viewmodels(data,startTab,f(1))
+            viewmodels(data,startTab,f)
         end
         function viewdmr(data,f)
             arguments
