@@ -210,6 +210,9 @@ classdef drEEMtoolbox < handle
     methods (Static = true , Access = public)
 
         % import functions
+        function importwizard
+            importwizard
+        end
         data = importeems(filePattern,options)
         data = importabsorbance(filePattern,options)
         dataout = associatemetadata(data,pathtofile,metadatakey,datakey)
