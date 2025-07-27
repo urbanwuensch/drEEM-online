@@ -32,16 +32,28 @@ arguments
         options.NumHeaderLines (1,1) {mustBeNumeric}= 0
         options.changeStatusMessage (1,:) {mustBeText} = 'New absorbance dataset.';
 end
+
+ST = dbstack;
+if numel(ST)>1
+    silent = true;
+else
+    silent = false;
+end
+
 % Diagnostic mode feature
 if drEEMtoolbox.outputscenario(nargout)=="explicitOut"
     if nargout>0
         nargoutchk(1,1)
         diagnostic=false;
     else
-        disp('<strong>Diagnostic mode</strong> to test whether options work as intended.')
+        if not(silent)
+            disp('<strong>Diagnostic mode</strong> to test whether options work as intended.')
+        end
         diagnostic=true;
     end
 end
+
+
 
 % Find files & throw error when none are found
 files=dir(filePattern);
@@ -51,7 +63,7 @@ end
 
 
 % Extract & diagnose wavelengths
-disp('Checking wavelength integrity of data set')
+if not(silent),disp('Checking wavelength integrity of data set'),end
 sz=nan(numel(files),2);
 for j=1:numel(files)
     x=readmatrix(files(j).name,...
@@ -101,7 +113,7 @@ for j=1:numel(files)
         tc=toc(tc);
         ttl=num2str(numel(files));
         remain=num2str(round(tc.*(numel(files)-j),2));
-        if not(diagnostic)
+        if not(diagnostic)||not(silent)
             disp([num2str(j),'/',ttl,': ',filelist{j,1},...
                 ' (',remain,' sec. remaining)'])
         end
@@ -139,7 +151,9 @@ else
     if nargout==0
         clearvars data
     end
-    disp('<strong>Success.</strong> These options work. To go ahead with an import, you can assign an output argument now.')
+    if not(silent)
+        disp('<strong>Success.</strong> These options work. To go ahead with an import, you can assign an output argument now.')
+    end
 end
 
 end
@@ -178,7 +192,7 @@ function diagnoseDimensionIssue(filenames,sz)
 
 
 if isscalar(unique(sz(:,1)))&&isscalar(unique(sz(:,2)))
-    disp('Dimension check for files <strong>passed</strong>.')
+    %disp('Dimension check for files <strong>passed</strong>.')
 else
     message='Dimension check for files <strong>not passed</strong>. Information follows ... \n\n';
     szident=["Rows","Columns"];
