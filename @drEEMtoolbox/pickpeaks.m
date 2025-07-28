@@ -209,7 +209,9 @@ for i=1:data.nSample
         % Smoothing
         EmScan370s = smoothdata(EmScan370,21,'sgolay',2);
         EmScan310s = smoothdata(EmScan310,21,'sgolay',2);
-        EmScan254s = smoothdata(EmScan254,21,'sgolay',2);
+        if ~HIX_excl
+            EmScan254s = smoothdata(EmScan254,21,'sgolay',2);
+        end
         EmScan320s = smoothdata(EmScan320,21,'sgolay',2);
 
     try % Fluorescence index
@@ -221,9 +223,7 @@ for i=1:data.nSample
         if diagn
             cla(ax(1))
             hold(ax(1),"on")
-            h1=plot(ax(1),data.Em,EmScan370,'LineStyle','none','Marker','+','Color','k');
-            h2=plot(ax(1),data.Em,EmScan370s,'LineWidth',1.7);
-            axis(ax(1),"tight")
+            h1=plot(ax(1),data.Em,EmScan370,'LineStyle','none','Marker','+','Color','k');            axis(ax(1),"tight")
             cylim=get(ax(1),'YLim');
             ylim(ax(1),[0 cylim(2)])
             cylim=get(ax(1),'YLim');
