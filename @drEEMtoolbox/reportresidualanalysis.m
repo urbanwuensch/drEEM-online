@@ -99,7 +99,7 @@ else
             clim(ax,[1 max(round(linspace(1,numel(cats),samples)))])
             c.Ticks=round(linspace(1,numel(cats),samples));
             c.TickLabels=cats(round(linspace(1,numel(cats),samples)));
-            ylabel(c,fld,'Interpreter','none')
+            ylabel(c,fldname,'Interpreter','none')
         case 'double'
             colormap(ax,gcolor(unique(mdp)))
             c = colorbar(ax);
