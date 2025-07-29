@@ -78,24 +78,13 @@ elseif init>1
     C = mod{b(1)}.C;
 end
 
-misinterpmethod='inpaint_nans';
 % Missing data
 Xorig = X;
 if any(isnan(X(:)))
     mis = 1;
-    switch misinterpmethod
-        case 'inpaintn'
-            X = inpaintn(X);% fill in missing data
-        case 'fillmissing'
-            X = fillmissing(X,'nearest',2);
-            X(isnan(X(:))) = 0; % Just fill remaining missing with 0 % Can happen if a whole vector is missing
-        case 'inpaint_nans'
-            for j=1:size(X,1),X(j,:,:)=inpaint_nans(squeeze(X(j,:,:)),4);end
-        otherwise
-            error('Don''t know the interpolation method for dealing with NaNs')
+    for j=1:size(X,1)
+        X(j,:,:)=inpaint_nans(squeeze(X(j,:,:)),4);
     end
-
-    %for j=1:size(X,1),contourf(squeeze(Xi(j,:,:))),title(j),pause,end
 else
     mis = 0;
 end
