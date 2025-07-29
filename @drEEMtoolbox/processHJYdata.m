@@ -148,7 +148,7 @@ for j=1:DS.nSample
     if opt.visualize
         
         
-        imin=[mindist(DS.Em,260) mindist(DS.Ex,400)];
+        imin=[drEEMtoolbox.mindist(DS.Em,260) drEEMtoolbox.mindist(DS.Ex,400)];
         
         t=tiledlayout('flow');
         
