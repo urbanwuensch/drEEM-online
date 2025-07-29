@@ -917,27 +917,6 @@ end
 
 end
 
-function opts=convertopts(smooth)
-    opts=defaultoptions;
-    smooth=cellfun(@(x) str2num(x),strsplit(smooth,','),'UniformOutput',false);
-    opts.ray1=fliplr(smooth{1});
-    opts.ram1=fliplr(smooth{2});
-    opts.ray2=fliplr(smooth{3});
-    opts.ram2=fliplr(smooth{4});
-    opts.interpolate=smooth{5};
-    opts.d2zero=smooth{6};
-    opts.imethod='fillmissing';
-    opts.negativetozero='on';
-    for j=1:4
-        if all(smooth{j}==0)
-            opts.cutout(j)=0;
-        else
-            opts.cutout(j)=1;
-        end
-    end
-    opts.description='Options converted from smootheem to be handlescatter-compatible';
-end
-
 function dataValidation(input)
 input_class=class(input);
 switch input_class
