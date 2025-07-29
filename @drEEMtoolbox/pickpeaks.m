@@ -223,7 +223,9 @@ for i=1:data.nSample
         if diagn
             cla(ax(1))
             hold(ax(1),"on")
-            h1=plot(ax(1),data.Em,EmScan370,'LineStyle','none','Marker','+','Color','k');            axis(ax(1),"tight")
+            h1=plot(ax(1),data.Em,EmScan370,'LineStyle','none','Marker','+','Color','k');
+            h2=plot(ax(1),data.Em,EmScan370s,'LineWidth',1.7);
+            axis(ax(1),"tight")
             cylim=get(ax(1),'YLim');
             ylim(ax(1),[0 cylim(2)])
             cylim=get(ax(1),'YLim');
