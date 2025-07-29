@@ -564,9 +564,9 @@ elseif Init==1
         if showfit~=-1
             disp(' Using singular values for initialization')
         end
-        try %#ok<TRYNC>
+        try
             Factors=ini(reshape(X,DimX),Fac,2);
-            catchs
+        catch
             Factors=[];
             for i=1:length(DimX)
                 l = rand(DimX(i),Fac);
