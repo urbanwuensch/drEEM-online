@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding="utf-8"?>
+
+<toc version="2.0">
+<!-- First tocitem specifies top level in Help browser Contents pane -->
+<!-- This can be a roadmap page, as shown below, or a content page -->
+    <tocitem target="dreem.html">drEEM Toolbox
+        <!-- Nest tocitems to create hierarchical entries in  Contents-->
+        <!-- To include icons, use the following syntax for tocitems: -->
+        <!-- <tocitem target="foo.html" image="HelpIcon.NAME"> -->
+        <!-- Title-of-Section </tocitem> -->
+        <!-- where NAME is one of the following (use capital letters): -->
+        <!-- FUNCTION, USER_GUIDE, EXAMPLES, BLOCK, GETTING_STARTED, -->
+        <!-- DEMOS, RELEASE_NOTES --> 
+        <!-- Icon images used for these entries are also stored in -->
+        <!-- matlabroot/toolbox/matlab/icons -->
+        <!-- A Getting Started Guide usually comes first -->
+        <tocitem target="installation of the toolbox.html">Installation and Requirements
+        </tocitem>
+        <tocitem target="function_overview.html">Function overview (graphical)
+            </tocitem>
+        <tocitem target="Whats new.html">What's new
+        </tocitem>
+        <tocitem target="drEEMdataset.html">The drEEM dataset object
+        </tocitem>
+        <tocitem target="drEEMhistory.html">The dataset history
+        </tocitem>
+        <tocitem target="drEEMstatus.html">The dataset status
+        </tocitem>
+        <!-- User Guide comes next -->
+        <tocitem target="tutorials_01.html" 
+            image="HelpIcon.USER_GUIDE">Tutorials (Toolbox and Matlab)
+            <tocitem target="dreem_workflow.html">Working with the toolbox
+            </tocitem>
+            <tocitem target="tips_tricks.html">Tips and Tricks
+            </tocitem>
+		</tocitem>
+		<tocitem target="tutorials_02.html" 
+            image="HelpIcon.USER_GUIDE">Tutorials (Toolbox and CDOM analysis)
+            <tocitem target="import_tutorial_01.html">Simple data import (recommended)
+            </tocitem>
+            <tocitem target="import_tutorial_02.html">Complex data import (not recommended)
+            </tocitem>
+            <tocitem target="processing_tutorial_01.html">Data processing
+            </tocitem>
+            <tocitem target="prepare4Parafac_tutorial.html">Data quality inspection
+            </tocitem>
+            <tocitem target="parafac_tutorial_01.html">PARAFAC
+            </tocitem>
+            <tocitem target="tutorial_export_01.html">Open research data (data export)
+            </tocitem>
+        </tocitem>
+        <!-- Optional link or links to your or other Web sites -->
+        <tocitem target="http://dreem.openfluor.org/"
+                 image="$toolbox/matlab/icons/webicon.gif">
+        drEEM project website
+        </tocitem>
+        <tocitem target="https://gitlab.com/dreem"
+                 image="$toolbox/matlab/icons/webicon.gif">
+        GitLab
+        </tocitem>
+    </tocitem>
+</toc>
+
