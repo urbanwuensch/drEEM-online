@@ -33,3 +33,6 @@ resources/project/
 
 # Cloud based storage dotfile
 .MATLABDriveTag
+
+# macOS stuff
+.DS_Store
